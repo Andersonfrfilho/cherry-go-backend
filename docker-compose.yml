@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  database_postgres:
+    image: postgres
+    container_name: database_ignite
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=ignite
+      - POSTGRES_DB=rentx
+    volumes:
+      - pgdata:/data/postgres
+  
+  database-redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - pgredis:/data/redis
+
+  database-mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - pgmongo:/data/mongo
+
+volumes:
+  pgdata:
+    driver: local
+  pgredis:
+    driver: local  
+  pgmongo:
+    driver: local

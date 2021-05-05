@@ -1,0 +1,8 @@
+node_modules/
+!tmp/avatar/.gitkeep
+!tmp/cars/.gitkeep
+.env
+covarage/
+dist/
+ormconfig.json
+*.pem
