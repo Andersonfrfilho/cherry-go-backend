@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class createService1620180538850 implements MigrationInterface {
+export class CreateService1620180538850 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -39,24 +39,6 @@ export class createService1620180538850 implements MigrationInterface {
             name: "deleted_at",
             type: "timestamp",
             isNullable: true,
-          },
-        ],
-        foreignKeys: [
-          {
-            name: "FKAppointmentUsers",
-            referencedTableName: "users",
-            referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
-          },
-          {
-            name: "FKUsersAppointment",
-            referencedTableName: "users",
-            referencedColumnNames: ["id"],
-            columnNames: ["provider_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
           },
         ],
       })

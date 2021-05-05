@@ -13,7 +13,7 @@ services:
       - POSTGRES_DB=rentx
     volumes:
       - pgdata:/data/postgres
-  
+
   database-redis:
     image: redis:alpine
     ports:
@@ -32,6 +32,6 @@ volumes:
   pgdata:
     driver: local
   pgredis:
-    driver: local  
+    driver: local
   pgmongo:
     driver: local
