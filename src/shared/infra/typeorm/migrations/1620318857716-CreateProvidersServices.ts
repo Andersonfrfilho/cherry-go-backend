@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAppointmentAddress1620179728523
+export class CreateProvidersServices1620318857716
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointment_address",
+        name: "providers_services",
         columns: [
           {
             name: "id",
@@ -15,11 +15,11 @@ export class CreateAppointmentAddress1620179728523
             default: "uuid_generate_v4()",
           },
           {
-            name: "appointment_id",
+            name: "provider_id",
             type: "uuid",
           },
           {
-            name: "address_id",
+            name: "service_id",
             type: "uuid",
           },
           {
@@ -40,18 +40,18 @@ export class CreateAppointmentAddress1620179728523
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentAddress",
-            referencedTableName: "appointments",
+            name: "FKProvidersServices",
+            referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["appointment_id"],
+            columnNames: ["provider_id"],
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },
           {
-            name: "FKAddressAppointment",
-            referencedTableName: "address",
+            name: "FKServicesProviders",
+            referencedTableName: "services",
             referencedColumnNames: ["id"],
-            columnNames: ["address_id"],
+            columnNames: ["service_id"],
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },
@@ -61,6 +61,6 @@ export class CreateAppointmentAddress1620179728523
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointment_address");
+    await queryRunner.dropTable("providers_services");
   }
 }

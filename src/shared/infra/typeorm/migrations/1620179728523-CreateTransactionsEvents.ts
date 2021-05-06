@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAppointmentPayment1620179073423
+export class CreateTransactionsEvents1620179728523
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointment_payment",
+        name: "transactions_events",
         columns: [
           {
             name: "id",
@@ -15,12 +15,17 @@ export class CreateAppointmentPayment1620179073423
             default: "uuid_generate_v4()",
           },
           {
-            name: "appointment_id",
+            name: "transaction_id",
             type: "uuid",
           },
           {
-            name: "payment_id",
-            type: "uuid",
+            name: "status",
+            type: "varchar",
+          },
+          {
+            name: "description",
+            type: "varchar",
+            isNullable: true,
           },
           {
             name: "created_at",
@@ -40,18 +45,10 @@ export class CreateAppointmentPayment1620179073423
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentPayment",
-            referencedTableName: "appointments",
+            name: "FKTransactionsEventsPaymentType",
+            referencedTableName: "transactions",
             referencedColumnNames: ["id"],
-            columnNames: ["appointment_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
-          },
-          {
-            name: "FKPaymentAppointment",
-            referencedTableName: "payments",
-            referencedColumnNames: ["id"],
-            columnNames: ["payment_id"],
+            columnNames: ["transaction_id"],
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },
@@ -61,6 +58,6 @@ export class CreateAppointmentPayment1620179073423
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointment_payment");
+    await queryRunner.dropTable("transactions_events");
   }
 }

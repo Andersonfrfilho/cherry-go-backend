@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreatePayment1620178822424 implements MigrationInterface {
+export class CreateAppointmentsAddresses1620180538850
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "payment",
+        name: "appointments_transports",
         columns: [
           {
             name: "id",
@@ -14,24 +15,12 @@ export class CreatePayment1620178822424 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "current_value",
-            type: "varchar",
-          },
-          {
-            name: "type_id",
+            name: "appointment_id",
             type: "uuid",
           },
           {
-            name: "origin_value",
-            type: "varchar",
-          },
-          {
-            name: "discount",
-            type: "varchar",
-          },
-          {
-            name: "increment",
-            type: "varchar",
+            name: "transport_id",
+            type: "uuid",
           },
           {
             name: "created_at",
@@ -51,10 +40,18 @@ export class CreatePayment1620178822424 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKPaymentType",
-            referencedTableName: "payment_types",
+            name: "FKAppointmentsAddresses",
+            referencedTableName: "appointments",
             referencedColumnNames: ["id"],
-            columnNames: ["type_id"],
+            columnNames: ["appointment_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKAddressesAppointments",
+            referencedTableName: "appointments",
+            referencedColumnNames: ["id"],
+            columnNames: ["transport_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -64,6 +61,6 @@ export class CreatePayment1620178822424 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("payment");
+    await queryRunner.dropTable("appointments_transports");
   }
 }

@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateService1620180538850 implements MigrationInterface {
+export class CreateUsersTokens1618360653234 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "services",
+        name: "users_tokens",
         columns: [
           {
             name: "id",
@@ -14,16 +14,16 @@ export class CreateService1620180538850 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "name",
+            name: "refresh_token",
             type: "varchar",
           },
           {
-            name: "value",
-            type: "varchar",
+            name: "user_id",
+            type: "uuid",
           },
           {
-            name: "duration",
-            type: "varchar",
+            name: "expires_date",
+            type: "timestamp",
           },
           {
             name: "created_at",
@@ -41,11 +41,21 @@ export class CreateService1620180538850 implements MigrationInterface {
             isNullable: true,
           },
         ],
+        foreignKeys: [
+          {
+            name: "FKUserToken",
+            referencedTableName: "users",
+            referencedColumnNames: ["id"],
+            columnNames: ["user_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+          },
+        ],
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointment_address");
+    await queryRunner.dropTable("users_tokens");
   }
 }

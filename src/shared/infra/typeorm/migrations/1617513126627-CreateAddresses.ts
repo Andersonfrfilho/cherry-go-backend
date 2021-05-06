@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAppointmentUsers1620179969765 implements MigrationInterface {
+export class CreateAddresses1617513126627 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointment_users",
+        name: "addresses",
         columns: [
           {
             name: "id",
@@ -14,12 +14,33 @@ export class CreateAppointmentUsers1620179969765 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "client_id",
-            type: "uuid",
+            name: "street",
+            type: "varchar",
           },
           {
-            name: "provider_id",
+            name: "number",
+            type: "varchar",
+          },
+          {
+            name: "zipcode",
+            type: "varchar",
+          },
+          {
+            name: "district",
+            type: "varchar",
+          },
+          {
+            name: "state",
+            type: "varchar",
+          },
+          {
+            name: "country",
+            type: "varchar",
+          },
+          {
+            name: "user_id",
             type: "uuid",
+            isNullable: false,
           },
           {
             name: "created_at",
@@ -39,18 +60,10 @@ export class CreateAppointmentUsers1620179969765 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentUsers",
+            name: "FKUserAddress",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["client_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
-          },
-          {
-            name: "FKUsersAppointment",
-            referencedTableName: "users",
-            referencedColumnNames: ["id"],
-            columnNames: ["provider_id"],
+            columnNames: ["user_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -60,6 +73,6 @@ export class CreateAppointmentUsers1620179969765 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointment_address");
+    await queryRunner.dropTable("addresses");
   }
 }

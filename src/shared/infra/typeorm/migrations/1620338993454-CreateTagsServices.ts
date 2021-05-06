@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateUsersToken1618360653234 implements MigrationInterface {
+export class CreateTagsServices1620338993454 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "users_tokens",
+        name: "tags_services",
         columns: [
           {
             name: "id",
@@ -14,16 +14,12 @@ export class CreateUsersToken1618360653234 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "refresh_token",
-            type: "varchar",
-          },
-          {
-            name: "user_id",
+            name: "tag_id",
             type: "uuid",
           },
           {
-            name: "expires_date",
-            type: "timestamp",
+            name: "service_id",
+            type: "uuid",
           },
           {
             name: "created_at",
@@ -43,12 +39,20 @@ export class CreateUsersToken1618360653234 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKUserToken",
-            referencedTableName: "users",
+            name: "FKTagsServices",
+            referencedTableName: "tags",
             referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
+            columnNames: ["tag_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKServicesTags",
+            referencedTableName: "services",
+            referencedColumnNames: ["id"],
+            columnNames: ["service_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
           },
         ],
       })
@@ -56,6 +60,6 @@ export class CreateUsersToken1618360653234 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("users_tokens");
+    await queryRunner.dropTable("tags_services");
   }
 }

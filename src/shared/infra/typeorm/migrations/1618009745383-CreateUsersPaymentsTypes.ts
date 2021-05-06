@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAddress1617513126627 implements MigrationInterface {
+export class CreateUsersPaymentsTypes1618009745383
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "address",
+        name: "users_payments_types",
         columns: [
           {
             name: "id",
@@ -14,33 +15,17 @@ export class CreateAddress1617513126627 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "street",
-            type: "varchar",
-          },
-          {
-            name: "number",
-            type: "varchar",
-          },
-          {
-            name: "zipcode",
-            type: "varchar",
-          },
-          {
-            name: "district",
-            type: "varchar",
-          },
-          {
-            name: "state",
-            type: "varchar",
-          },
-          {
-            name: "country",
-            type: "varchar",
-          },
-          {
-            name: "user_id",
+            name: "provider_id",
             type: "uuid",
-            isNullable: false,
+          },
+          {
+            name: "payment_type_id",
+            type: "uuid",
+          },
+          {
+            name: "active",
+            type: "boolean",
+            default: true,
           },
           {
             name: "created_at",
@@ -60,12 +45,20 @@ export class CreateAddress1617513126627 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKUserAddress",
+            name: "FKUserPaymentType",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
+            columnNames: ["provider_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+          },
+          {
+            name: "FKPaymentTypeUser",
+            referencedTableName: "payments_types",
+            referencedColumnNames: ["id"],
+            columnNames: ["payment_type_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
           },
         ],
       })
@@ -73,6 +66,6 @@ export class CreateAddress1617513126627 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("address");
+    await queryRunner.dropTable("users_payments_types");
   }
 }

@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateUserImage1618073840737 implements MigrationInterface {
+export class CreateAppointmentsTransactions1620179969765
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "user_image",
+        name: "appointments_transactions",
         columns: [
           {
             name: "id",
@@ -14,11 +15,11 @@ export class CreateUserImage1618073840737 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "user_id",
+            name: "appointment_id",
             type: "uuid",
           },
           {
-            name: "image_id",
+            name: "transaction_id",
             type: "uuid",
           },
           {
@@ -39,20 +40,20 @@ export class CreateUserImage1618073840737 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKUserImage",
-            referencedTableName: "users",
+            name: "FKAppointmentPayment",
+            referencedTableName: "appointments",
             referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
+            columnNames: ["appointment_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
           },
           {
-            name: "FKImageUser",
-            referencedTableName: "images",
+            name: "FKPaymentAppointment",
+            referencedTableName: "transactions",
             referencedColumnNames: ["id"],
-            columnNames: ["image_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
+            columnNames: ["transaction_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
           },
         ],
       })
@@ -60,6 +61,6 @@ export class CreateUserImage1618073840737 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("user_image");
+    await queryRunner.dropTable("appointments_transactions");
   }
 }
