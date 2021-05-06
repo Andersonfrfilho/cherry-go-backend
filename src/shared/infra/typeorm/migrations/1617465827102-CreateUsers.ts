@@ -17,29 +17,40 @@ export default class CreateUsers1617465827102 implements MigrationInterface {
           {
             name: "name",
             type: "varchar",
+            isNullable: false,
           },
           {
             name: "last_name",
             type: "varchar",
+            isNullable: false,
           },
           {
             name: "cpf",
             type: "varchar",
             isUnique: true,
+            isNullable: false,
           },
           {
             name: "rg",
             type: "varchar",
             isUnique: true,
+            isNullable: false,
           },
           {
             name: "email",
             type: "varchar",
             isUnique: true,
+            isNullable: false,
           },
           {
             name: "password_hash",
             type: "varchar",
+            isNullable: false,
+          },
+          {
+            name: "birth_date",
+            type: "timestamp",
+            isNullable: false,
           },
           {
             name: "created_at",

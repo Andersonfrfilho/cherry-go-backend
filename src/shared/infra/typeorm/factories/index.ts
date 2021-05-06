@@ -1,5 +1,3 @@
-import {UserFactory} from './UserFactory';
+import { UserFactory } from "@shared/infra/typeorm/factories/UserFactory";
 
-export {
-  UserFactory,
-};
+export { UserFactory };

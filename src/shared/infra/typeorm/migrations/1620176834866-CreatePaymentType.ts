@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreatePayment1620178822424 implements MigrationInterface {
+export class CreatePaymentType1620176834866 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "payment",
+        name: "payment_types",
         columns: [
           {
             name: "id",
@@ -14,23 +14,11 @@ export class CreatePayment1620178822424 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "current_value",
+            name: "name",
             type: "varchar",
           },
           {
-            name: "type_id",
-            type: "uuid",
-          },
-          {
-            name: "origin_value",
-            type: "varchar",
-          },
-          {
-            name: "discount",
-            type: "varchar",
-          },
-          {
-            name: "increment",
+            name: "description",
             type: "varchar",
           },
           {
@@ -49,21 +37,11 @@ export class CreatePayment1620178822424 implements MigrationInterface {
             isNullable: true,
           },
         ],
-        foreignKeys: [
-          {
-            name: "FKPaymentType",
-            referencedTableName: "payment_types",
-            referencedColumnNames: ["id"],
-            columnNames: ["type_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
-          },
-        ],
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("payment");
+    await queryRunner.dropTable("payment_types");
   }
 }

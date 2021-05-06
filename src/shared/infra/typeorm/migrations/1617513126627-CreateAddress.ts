@@ -40,6 +40,7 @@ export class CreateAddress1617513126627 implements MigrationInterface {
           {
             name: "user_id",
             type: "uuid",
+            isNullable: false,
           },
           {
             name: "created_at",

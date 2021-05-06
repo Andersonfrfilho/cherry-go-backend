@@ -1,13 +1,15 @@
 import faker from "faker";
 
-import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 
 interface IUserInterfaceFactory {
   quantity: number;
 }
 
 class UserFactory {
-  public generate({ quantity = 1 }: IUserInterfaceFactory): Omit<User, "id">[] {
+  public generate({
+    quantity = 1,
+  }: IUserInterfaceFactory): Omit<Phone, "id">[] {
     const arrayUsers = Array.from(
       { length: quantity },
       (): Omit<User, "id"> => ({

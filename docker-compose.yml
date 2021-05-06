@@ -3,30 +3,33 @@ version: "3.9"
 services:
   database_postgres:
     image: postgres
-    container_name: database_ignite
+    container_name: database_pg
     restart: always
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=ignite
-      - POSTGRES_DB=rentx
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=102030
+      - POSTGRES_DB=cherry_go
     volumes:
       - pgdata:/data/postgres
 
+  database-mongo:
+    image: mongo
+    container_name: database_mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - pgmongo:/data/mongo
+
   database-redis:
     image: redis:alpine
+    container_name: database_redis
     ports:
       - 6379:6379
     volumes:
       - pgredis:/data/redis
 
-  database-mongo:
-    image: mongo
-    ports:
-      - 27017:27017
-    volumes:
-      - pgmongo:/data/mongo
 
 volumes:
   pgdata:

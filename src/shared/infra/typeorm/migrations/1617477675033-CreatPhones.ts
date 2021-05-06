@@ -16,18 +16,22 @@ export class CreatePhones1617477675033 implements MigrationInterface {
           {
             name: "country_code",
             type: "varchar",
+            isNullable: false,
           },
           {
             name: "ddd",
             type: "varchar",
+            isNullable: false,
           },
           {
             name: "number",
             type: "varchar",
+            isNullable: false,
           },
           {
             name: "user_id",
             type: "uuid",
+            isNullable: false,
           },
           {
             name: "created_at",

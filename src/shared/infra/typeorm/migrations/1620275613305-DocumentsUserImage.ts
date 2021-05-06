@@ -1,7 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class createDocumentsUserImage1620176834866
-  implements MigrationInterface {
+export class DocumentsUserImage1620275613305 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
