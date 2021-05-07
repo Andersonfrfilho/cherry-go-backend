@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateUsersPaymentsTypes1618009745383
+export class CreateAppointmentsProvidersServices1620344865886
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "providers_payments_types",
+        name: "appointments_providers_services",
         columns: [
           {
             name: "id",
@@ -19,13 +19,12 @@ export class CreateUsersPaymentsTypes1618009745383
             type: "uuid",
           },
           {
-            name: "payment_type_id",
+            name: "appointment_id",
             type: "uuid",
           },
           {
-            name: "active",
-            type: "boolean",
-            default: true,
+            name: "service_id",
+            type: "uuid",
           },
           {
             name: "created_at",
@@ -45,20 +44,28 @@ export class CreateUsersPaymentsTypes1618009745383
         ],
         foreignKeys: [
           {
-            name: "FKUserPaymentType",
+            name: "FKAppointmentsProvidersServices",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
             columnNames: ["provider_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
           },
           {
-            name: "FKPaymentTypeUser",
-            referencedTableName: "payments_types",
+            name: "FKProvidersAppointmentsServices",
+            referencedTableName: "appointments",
             referencedColumnNames: ["id"],
-            columnNames: ["payment_type_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
+            columnNames: ["appointment_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKServicesProvidersAppointments",
+            referencedTableName: "services",
+            referencedColumnNames: ["id"],
+            columnNames: ["service_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
           },
         ],
       })
@@ -66,6 +73,6 @@ export class CreateUsersPaymentsTypes1618009745383
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("providers_payments_types");
+    await queryRunner.dropTable("appointments_providers_services");
   }
 }

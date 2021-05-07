@@ -7,34 +7,13 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("addresses")
-class Address {
+@Entity("images")
+class Image {
   @PrimaryColumn()
   id?: string;
 
   @Column()
-  street: string;
-
-  @Column()
-  number: string;
-
-  @Column()
-  zipcode: string;
-
-  @Column()
-  district: string;
-
-  @Column()
-  city: string;
-
-  @Column()
-  state: string;
-
-  @Column()
-  country: string;
-
-  @Column()
-  id_user: string;
+  link: Date;
 
   @CreateDateColumn()
   created_at?: Date;
@@ -46,4 +25,4 @@ class Address {
   deleted_at?: Date;
 }
 
-export { Address };
+export { Image };

@@ -7,7 +7,7 @@ import {
   PrimaryColumn,
 } from "typeorm";
 
-import { User } from "./User";
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
 @Entity("users_tokens")
 class UserTokens {

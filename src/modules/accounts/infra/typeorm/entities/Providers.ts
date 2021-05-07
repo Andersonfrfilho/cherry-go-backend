@@ -15,9 +15,12 @@ import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { Type } from "@modules/accounts/infra/typeorm/entities/Type";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
+import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
+
+import { Service } from "./Services";
 
 @Entity("users")
-class User {
+class Provider {
   @PrimaryColumn()
   id?: string;
 
@@ -59,13 +62,29 @@ class User {
   })
   types: Type[];
 
+  @ManyToMany(() => Type)
+  @JoinTable({
+    name: "providers_payments_types",
+    joinColumns: [{ name: "provider_id" }],
+    inverseJoinColumns: [{ name: "payment_type_id" }],
+  })
+  payments_type: PaymentType[];
+
   @ManyToMany(() => Appointment)
   @JoinTable({
-    name: "users_appointments",
-    joinColumns: [{ name: "user_id" }],
+    name: "providers_appointments",
+    joinColumns: [{ name: "provider_id" }],
     inverseJoinColumns: [{ name: "appointment_id" }],
   })
   appointments: Appointment[];
+
+  @ManyToMany(() => Service)
+  @JoinTable({
+    name: "providers_services",
+    joinColumns: [{ name: "provider_id" }],
+    inverseJoinColumns: [{ name: "service_id" }],
+  })
+  services: Service[];
 
   @CreateDateColumn()
   created_at?: Date;
@@ -89,4 +108,4 @@ class User {
   }
 }
 
-export { User };
+export { Provider };

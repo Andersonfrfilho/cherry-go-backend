@@ -7,13 +7,16 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("types")
+@Entity("types_users")
 class Type {
   @PrimaryColumn()
   id?: string;
 
   @Column()
   name: string;
+
+  @Column()
+  active: boolean;
 
   @CreateDateColumn()
   created_at?: Date;

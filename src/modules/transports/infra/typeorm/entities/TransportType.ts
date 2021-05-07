@@ -3,38 +3,29 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("addresses")
-class Address {
+import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
+
+@Entity("transports_types")
+class TransportType {
   @PrimaryColumn()
   id?: string;
 
   @Column()
-  street: string;
+  name: string;
 
   @Column()
-  number: string;
+  description: string;
 
   @Column()
-  zipcode: string;
+  active: boolean;
 
-  @Column()
-  district: string;
-
-  @Column()
-  city: string;
-
-  @Column()
-  state: string;
-
-  @Column()
-  country: string;
-
-  @Column()
-  id_user: string;
+  @OneToMany(() => Transport, (transports) => transports)
+  transport?: Transport[];
 
   @CreateDateColumn()
   created_at?: Date;
@@ -46,4 +37,4 @@ class Address {
   deleted_at?: Date;
 }
 
-export { Address };
+export { TransportType };
