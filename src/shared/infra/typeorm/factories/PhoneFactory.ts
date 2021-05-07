@@ -6,21 +6,25 @@ interface IUserInterfaceFactory {
   quantity: number;
 }
 
-class UserFactory {
+class PhoneFactory {
   public generate({
     quantity = 1,
   }: IUserInterfaceFactory): Omit<Phone, "id">[] {
     const arrayUsers = Array.from(
       { length: quantity },
-      (): Omit<User, "id"> => ({
-        name: faker.name.findName(),
-        password: faker.internet.password(),
-        email: faker.internet.email(),
-        driver_license: faker.name.jobType(),
-        isAdmin: faker.datatype.boolean(),
+      (): Omit<Phone, "id"> => ({
+        country_code: `+${faker.datatype
+          .number({ min: 10, max: 99 })
+          .toString()}`,
+        ddd: `0${faker.datatype.number({ min: 10, max: 99 }).toString()}`,
+        number: `${faker.datatype
+          .number({ min: 1000, max: 9999 })
+          .toString()}-${faker.datatype
+          .number({ min: 1000, max: 9999 })
+          .toString()}`,
       })
     );
     return arrayUsers;
   }
 }
-export { UserFactory };
+export { PhoneFactory };

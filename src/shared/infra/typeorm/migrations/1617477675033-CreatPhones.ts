@@ -32,6 +32,7 @@ export class CreatePhones1617477675033 implements MigrationInterface {
             name: "user_id",
             type: "uuid",
             isNullable: false,
+            isUnique: true,
           },
           {
             name: "created_at",

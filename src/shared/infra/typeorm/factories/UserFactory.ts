@@ -11,11 +11,13 @@ class UserFactory {
     const arrayUsers = Array.from(
       { length: quantity },
       (): Omit<User, "id"> => ({
-        name: faker.name.findName(),
-        password: faker.internet.password(),
+        name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
         email: faker.internet.email(),
-        driver_license: faker.name.jobType(),
-        isAdmin: faker.datatype.boolean(),
+        birth_date: faker.date.past(),
+        cpf: faker.random.alphaNumeric(11),
+        rg: faker.random.alphaNumeric(10),
+        password_hash: faker.internet.password(),
       })
     );
     return arrayUsers;

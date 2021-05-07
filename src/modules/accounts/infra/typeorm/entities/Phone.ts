@@ -22,7 +22,7 @@ class Phone {
   number: string;
 
   @Column()
-  id_user: string;
+  user_id?: string;
 
   @CreateDateColumn()
   created_at?: Date;
