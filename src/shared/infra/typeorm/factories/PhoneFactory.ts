@@ -10,7 +10,7 @@ class PhoneFactory {
   public generate({
     quantity = 1,
   }: IUserInterfaceFactory): Omit<Phone, "id">[] {
-    const arrayUsers = Array.from(
+    return Array.from(
       { length: quantity },
       (): Omit<Phone, "id"> => ({
         country_code: `+${faker.datatype
@@ -24,7 +24,6 @@ class PhoneFactory {
           .toString()}`,
       })
     );
-    return arrayUsers;
   }
 }
 export { PhoneFactory };

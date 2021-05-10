@@ -33,9 +33,6 @@ class Address {
   @Column()
   country: string;
 
-  @Column()
-  id_user: string;
-
   @CreateDateColumn()
   created_at?: Date;
 

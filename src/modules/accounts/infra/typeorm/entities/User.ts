@@ -43,11 +43,21 @@ class User {
   @Column()
   birth_date: Date;
 
-  @OneToMany(() => Phone, (phone) => phone)
+  @ManyToMany(() => Phone)
+  @JoinTable({
+    name: "users_phones",
+    joinColumns: [{ name: "user_id" }],
+    inverseJoinColumns: [{ name: "phone_id" }],
+  })
   phones?: Phone[];
 
-  @OneToMany(() => Address, (address) => address)
-  address?: Address[];
+  @ManyToMany(() => Address)
+  @JoinTable({
+    name: "users_addresses",
+    joinColumns: [{ name: "user_id" }],
+    inverseJoinColumns: [{ name: "address_id" }],
+  })
+  addresses?: Address[];
 
   @ManyToMany(() => Image)
   @JoinTable({

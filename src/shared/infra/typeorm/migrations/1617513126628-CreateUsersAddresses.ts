@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreatePhones1617477675033 implements MigrationInterface {
+export class CreateAddresses1617513126628 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "phones",
+        name: "users_addresses",
         columns: [
           {
             name: "id",
@@ -14,18 +14,13 @@ export class CreatePhones1617477675033 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "country_code",
-            type: "varchar",
+            name: "user_id",
+            type: "uuid",
             isNullable: false,
           },
           {
-            name: "ddd",
-            type: "varchar",
-            isNullable: false,
-          },
-          {
-            name: "number",
-            type: "varchar",
+            name: "address_id",
+            type: "uuid",
             isNullable: false,
           },
           {
@@ -44,25 +39,35 @@ export class CreatePhones1617477675033 implements MigrationInterface {
             isNullable: true,
           },
         ],
+        foreignKeys: [
+          {
+            name: "FKUserAddress",
+            referencedTableName: "users",
+            referencedColumnNames: ["id"],
+            columnNames: ["user_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKAddressUser",
+            referencedTableName: "addresses",
+            referencedColumnNames: ["id"],
+            columnNames: ["address_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+        ],
         indices: [
           {
-            columnNames: ["country_code", "ddd", "number"],
+            columnNames: ["user_id", "address_id"],
             isUnique: true,
           },
         ],
       })
     );
-    // await queryRunner.createIndex(
-    //   "phones",
-    //   new TableIndex({
-    //     name: "index_phone_with_country_code_ddd_id_user",
-    //     columnNames: ["country_code", "ddd", "number"],
-    //     isUnique: true,
-    //   })
-    // );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("phones");
+    await queryRunner.dropTable("users_addresses");
   }
 }

@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreatePhones1617477675033 implements MigrationInterface {
+export class CreateUsersPhones1617477675034 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "phones",
+        name: "users_phones",
         columns: [
           {
             name: "id",
@@ -14,18 +14,13 @@ export class CreatePhones1617477675033 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "country_code",
-            type: "varchar",
+            name: "user_id",
+            type: "uuid",
             isNullable: false,
           },
           {
-            name: "ddd",
-            type: "varchar",
-            isNullable: false,
-          },
-          {
-            name: "number",
-            type: "varchar",
+            name: "phone_id",
+            type: "uuid",
             isNullable: false,
           },
           {
@@ -44,9 +39,27 @@ export class CreatePhones1617477675033 implements MigrationInterface {
             isNullable: true,
           },
         ],
+        foreignKeys: [
+          {
+            name: "FKUsersPhones",
+            referencedTableName: "users",
+            referencedColumnNames: ["id"],
+            columnNames: ["user_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+          },
+          {
+            name: "FKPhonesUsers",
+            referencedTableName: "phones",
+            referencedColumnNames: ["id"],
+            columnNames: ["phone_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+          },
+        ],
         indices: [
           {
-            columnNames: ["country_code", "ddd", "number"],
+            columnNames: ["user_id", "phone_id"],
             isUnique: true,
           },
         ],
@@ -63,6 +76,6 @@ export class CreatePhones1617477675033 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("phones");
+    await queryRunner.dropTable("users_phones");
   }
 }

@@ -21,9 +21,6 @@ class Phone {
   @Column()
   number: string;
 
-  @Column()
-  user_id?: string;
-
   @CreateDateColumn()
   created_at?: Date;
 
