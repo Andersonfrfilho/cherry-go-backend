@@ -2,7 +2,7 @@ import { getConnection, MigrationInterface, QueryRunner } from "typeorm";
 
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { AddressFactory } from "@shared/infra/typeorm/factories/AddressFactory";
+import { AddressesFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateAddresses1620612729413 implements MigrationInterface {
   public async up(): Promise<void> {
@@ -10,7 +10,7 @@ export class CreateAddresses1620612729413 implements MigrationInterface {
       .getRepository("users")
       .find()) as User[];
 
-    const addressFactory = new AddressFactory();
+    const addressFactory = new AddressesFactory();
 
     const addresses = addressFactory.generate({
       quantity: users.length,

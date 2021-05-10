@@ -1,13 +1,10 @@
 import faker from "faker";
 
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { UserFactory } from "@shared/infra/typeorm/dtos/Factory.dto";
 
-interface IUserInterfaceFactory {
-  quantity: number;
-}
-
-class UserFactory {
-  public generate({ quantity = 1 }: IUserInterfaceFactory): Omit<User, "id">[] {
+class UsersFactory {
+  public generate({ quantity = 1 }: UserFactory): Omit<User, "id">[] {
     const arrayUsers = Array.from(
       { length: quantity },
       (): Omit<User, "id"> => ({
@@ -23,4 +20,4 @@ class UserFactory {
     return arrayUsers;
   }
 }
-export { UserFactory };
+export { UsersFactory };

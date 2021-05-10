@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateTagsServices1620338993454 implements MigrationInterface {
+export class CreateAppointmentsProviders1617669642962
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "tags_services",
+        name: "appointments_providers",
         columns: [
           {
             name: "id",
@@ -14,13 +15,14 @@ export class CreateTagsServices1620338993454 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "tag_id",
+            name: "provider_id",
             type: "uuid",
           },
           {
-            name: "service_id",
+            name: "appointment_id",
             type: "uuid",
           },
+
           {
             name: "created_at",
             type: "timestamp",
@@ -39,18 +41,18 @@ export class CreateTagsServices1620338993454 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKTagsServices",
-            referencedTableName: "tags",
+            name: "FKAppointmentsProviders",
+            referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["tag_id"],
+            columnNames: ["provider_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
           {
-            name: "FKServicesTags",
-            referencedTableName: "services",
+            name: "FKProvidersAppointments",
+            referencedTableName: "appointments",
             referencedColumnNames: ["id"],
-            columnNames: ["service_id"],
+            columnNames: ["appointment_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -60,6 +62,6 @@ export class CreateTagsServices1620338993454 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("tags_services");
+    await queryRunner.dropTable("appointments_providers");
   }
 }

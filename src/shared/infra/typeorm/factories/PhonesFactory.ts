@@ -1,15 +1,10 @@
 import faker from "faker";
 
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
+import { UserFactory } from "@shared/infra/typeorm/dtos/Factory.dto";
 
-interface IUserInterfaceFactory {
-  quantity: number;
-}
-
-class PhoneFactory {
-  public generate({
-    quantity = 1,
-  }: IUserInterfaceFactory): Omit<Phone, "id">[] {
+class PhonesFactory {
+  public generate({ quantity = 1 }: UserFactory): Omit<Phone, "id">[] {
     return Array.from(
       { length: quantity },
       (): Omit<Phone, "id"> => ({
@@ -26,4 +21,4 @@ class PhoneFactory {
     );
   }
 }
-export { PhoneFactory };
+export { PhonesFactory };

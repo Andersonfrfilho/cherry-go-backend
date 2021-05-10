@@ -6,14 +6,13 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
-  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
-import { Type } from "@modules/accounts/infra/typeorm/entities/Type";
+import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
 
@@ -67,13 +66,13 @@ class User {
   })
   images?: Image[];
 
-  @ManyToMany(() => Type)
+  @ManyToMany(() => TypeUser)
   @JoinTable({
-    name: "users_types",
+    name: "users_types_users",
     joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "type_id" }],
+    inverseJoinColumns: [{ name: "user_type_id" }],
   })
-  types?: Type[];
+  types?: TypeUser[];
 
   @ManyToMany(() => Appointment)
   @JoinTable({

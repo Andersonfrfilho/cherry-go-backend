@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 
 @Entity("types_users")
-class Type {
+class TypeUser {
   @PrimaryColumn()
   id?: string;
 
@@ -28,4 +28,4 @@ class Type {
   deleted_at?: Date;
 }
 
-export { Type };
+export { TypeUser };

@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateUsersPaymentsTypes1618009745383
-  implements MigrationInterface {
+export class CreatePaymentsTypes1617669642950 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "providers_payments_types",
+        name: "payments_types",
         columns: [
           {
             name: "id",
@@ -15,17 +14,17 @@ export class CreateUsersPaymentsTypes1618009745383
             default: "uuid_generate_v4()",
           },
           {
-            name: "provider_id",
-            type: "uuid",
+            name: "name",
+            type: "varchar",
           },
           {
-            name: "payment_type_id",
-            type: "uuid",
+            name: "description",
+            type: "varchar",
+            isNullable: true,
           },
           {
             name: "active",
             type: "boolean",
-            default: true,
           },
           {
             name: "created_at",
@@ -43,29 +42,11 @@ export class CreateUsersPaymentsTypes1618009745383
             isNullable: true,
           },
         ],
-        foreignKeys: [
-          {
-            name: "FKUserPaymentType",
-            referencedTableName: "users",
-            referencedColumnNames: ["id"],
-            columnNames: ["provider_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
-          },
-          {
-            name: "FKPaymentTypeUser",
-            referencedTableName: "payments_types",
-            referencedColumnNames: ["id"],
-            columnNames: ["payment_type_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
-          },
-        ],
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("providers_payments_types");
+    await queryRunner.dropTable("payments_types");
   }
 }

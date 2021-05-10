@@ -1,9 +1,12 @@
 import faker from "faker";
 
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
+import { UserFactory } from "@shared/infra/typeorm/dtos/Factory.dto";
 
-class AddressFactory {
-  public generate({ quantity = 1 }): Omit<Address, "id" | "id_user">[] {
+class AddressesFactory {
+  public generate({
+    quantity = 1,
+  }: UserFactory): Omit<Address, "id" | "id_user">[] {
     return Array.from(
       { length: quantity },
       (): Omit<Address, "id" | "id_user"> => ({
@@ -18,4 +21,4 @@ class AddressFactory {
     );
   }
 }
-export { AddressFactory };
+export { AddressesFactory };

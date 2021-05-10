@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateDocumentsUsersImages1620351888879
-  implements MigrationInterface {
+export class CreateTagsServices1617669642957 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "documents_users_images",
+        name: "tags_services",
         columns: [
           {
             name: "id",
@@ -15,16 +14,12 @@ export class CreateDocumentsUsersImages1620351888879
             default: "uuid_generate_v4()",
           },
           {
-            name: "user_id",
+            name: "tag_id",
             type: "uuid",
           },
           {
-            name: "image_id",
+            name: "service_id",
             type: "uuid",
-          },
-          {
-            name: "value",
-            type: "varchar",
           },
           {
             name: "created_at",
@@ -44,18 +39,18 @@ export class CreateDocumentsUsersImages1620351888879
         ],
         foreignKeys: [
           {
-            name: "FKDocumentsImages",
-            referencedTableName: "users",
+            name: "FKTagsServices",
+            referencedTableName: "tags",
             referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
+            columnNames: ["tag_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
           {
-            name: "FKImagesDocuments",
-            referencedTableName: "images",
+            name: "FKServicesTags",
+            referencedTableName: "services",
             referencedColumnNames: ["id"],
-            columnNames: ["image_id"],
+            columnNames: ["service_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -65,6 +60,6 @@ export class CreateDocumentsUsersImages1620351888879
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("documents_users_images");
+    await queryRunner.dropTable("tags_services");
   }
 }

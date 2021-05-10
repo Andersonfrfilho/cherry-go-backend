@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAppointmentsProvidersServices1620344865886
-  implements MigrationInterface {
+export class CreateTags1617669642956 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointments_providers_services",
+        name: "tags",
         columns: [
           {
             name: "id",
@@ -15,15 +14,15 @@ export class CreateAppointmentsProvidersServices1620344865886
             default: "uuid_generate_v4()",
           },
           {
-            name: "provider_id",
-            type: "uuid",
+            name: "name",
+            type: "varchar",
           },
           {
-            name: "appointment_id",
-            type: "uuid",
+            name: "description",
+            type: "varchar",
           },
           {
-            name: "service_id",
+            name: "image_id",
             type: "uuid",
           },
           {
@@ -44,26 +43,10 @@ export class CreateAppointmentsProvidersServices1620344865886
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentsProvidersServices",
-            referencedTableName: "users",
+            name: "FKTagsImages",
+            referencedTableName: "images",
             referencedColumnNames: ["id"],
-            columnNames: ["provider_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
-          },
-          {
-            name: "FKProvidersAppointmentsServices",
-            referencedTableName: "appointments",
-            referencedColumnNames: ["id"],
-            columnNames: ["appointment_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
-          },
-          {
-            name: "FKServicesProvidersAppointments",
-            referencedTableName: "services",
-            referencedColumnNames: ["id"],
-            columnNames: ["service_id"],
+            columnNames: ["image_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -73,6 +56,6 @@ export class CreateAppointmentsProvidersServices1620344865886
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointments_providers_services");
+    await queryRunner.dropTable("tags");
   }
 }

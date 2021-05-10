@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateTags1620338871582 implements MigrationInterface {
+export class CreateUsersImages1617669642953 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "tags",
+        name: "users_images",
         columns: [
           {
             name: "id",
@@ -14,12 +14,8 @@ export class CreateTags1620338871582 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "name",
-            type: "varchar",
-          },
-          {
-            name: "description",
-            type: "varchar",
+            name: "user_id",
+            type: "uuid",
           },
           {
             name: "image_id",
@@ -43,7 +39,15 @@ export class CreateTags1620338871582 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKTagsImages",
+            name: "FKUserImage",
+            referencedTableName: "users",
+            referencedColumnNames: ["id"],
+            columnNames: ["user_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKImageUser",
             referencedTableName: "images",
             referencedColumnNames: ["id"],
             columnNames: ["image_id"],
@@ -56,6 +60,6 @@ export class CreateTags1620338871582 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("tags");
+    await queryRunner.dropTable("users_images");
   }
 }

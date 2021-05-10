@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAppointmentsProviders1620344630014
+export class CreateAppointmentsProvidersServices1617669642963
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointments_providers",
+        name: "appointments_providers_services",
         columns: [
           {
             name: "id",
@@ -22,7 +22,10 @@ export class CreateAppointmentsProviders1620344630014
             name: "appointment_id",
             type: "uuid",
           },
-
+          {
+            name: "service_id",
+            type: "uuid",
+          },
           {
             name: "created_at",
             type: "timestamp",
@@ -41,7 +44,7 @@ export class CreateAppointmentsProviders1620344630014
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentsProviders",
+            name: "FKAppointmentsProvidersServices",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
             columnNames: ["provider_id"],
@@ -49,10 +52,18 @@ export class CreateAppointmentsProviders1620344630014
             onUpdate: "SET NULL",
           },
           {
-            name: "FKProvidersAppointments",
+            name: "FKProvidersAppointmentsServices",
             referencedTableName: "appointments",
             referencedColumnNames: ["id"],
             columnNames: ["appointment_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKServicesProvidersAppointments",
+            referencedTableName: "services",
+            referencedColumnNames: ["id"],
+            columnNames: ["service_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -62,6 +73,6 @@ export class CreateAppointmentsProviders1620344630014
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointments_providers");
+    await queryRunner.dropTable("appointments_providers_services");
   }
 }

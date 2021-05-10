@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateTransactionsEvents1620179728523
+export class CreateDocumentsUsersImages1617669642959
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "transactions_events",
+        name: "documents_users_images",
         columns: [
           {
             name: "id",
@@ -15,17 +15,16 @@ export class CreateTransactionsEvents1620179728523
             default: "uuid_generate_v4()",
           },
           {
-            name: "transaction_id",
+            name: "user_id",
             type: "uuid",
           },
           {
-            name: "status",
-            type: "varchar",
+            name: "image_id",
+            type: "uuid",
           },
           {
-            name: "description",
+            name: "value",
             type: "varchar",
-            isNullable: true,
           },
           {
             name: "created_at",
@@ -45,12 +44,20 @@ export class CreateTransactionsEvents1620179728523
         ],
         foreignKeys: [
           {
-            name: "FKTransactionsEventsPaymentType",
-            referencedTableName: "transactions",
+            name: "FKDocumentsImages",
+            referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["transaction_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
+            columnNames: ["user_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKImagesDocuments",
+            referencedTableName: "images",
+            referencedColumnNames: ["id"],
+            columnNames: ["image_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
           },
         ],
       })
@@ -58,6 +65,6 @@ export class CreateTransactionsEvents1620179728523
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("transactions_events");
+    await queryRunner.dropTable("documents_users_images");
   }
 }

@@ -13,7 +13,7 @@ import {
 
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
-import { Type } from "@modules/accounts/infra/typeorm/entities/Type";
+import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 
@@ -54,15 +54,15 @@ class Provider {
   @OneToMany(() => Address, (address) => address)
   address?: Address[];
 
-  @ManyToMany(() => Type)
+  @ManyToMany(() => TypeUser)
   @JoinTable({
-    name: "users_types",
+    name: "users_types_users",
     joinColumns: [{ name: "user_id" }],
     inverseJoinColumns: [{ name: "type_id" }],
   })
-  types: Type[];
+  types: TypeUser[];
 
-  @ManyToMany(() => Type)
+  @ManyToMany(() => PaymentType)
   @JoinTable({
     name: "providers_payments_types",
     joinColumns: [{ name: "provider_id" }],

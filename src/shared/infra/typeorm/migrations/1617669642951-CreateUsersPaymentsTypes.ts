@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAppointmentsUsers1620180736452
+export class CreateUsersPaymentsTypes1617669642951
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointments_users",
+        name: "providers_payments_types",
         columns: [
           {
             name: "id",
@@ -15,14 +15,18 @@ export class CreateAppointmentsUsers1620180736452
             default: "uuid_generate_v4()",
           },
           {
-            name: "user_id",
+            name: "provider_id",
             type: "uuid",
           },
           {
-            name: "appointment_id",
+            name: "payment_type_id",
             type: "uuid",
           },
-
+          {
+            name: "active",
+            type: "boolean",
+            default: true,
+          },
           {
             name: "created_at",
             type: "timestamp",
@@ -41,20 +45,20 @@ export class CreateAppointmentsUsers1620180736452
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentsUsers",
+            name: "FKUserPaymentType",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
+            columnNames: ["provider_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
           },
           {
-            name: "FKUsersAppointments",
-            referencedTableName: "appointments",
+            name: "FKPaymentTypeUser",
+            referencedTableName: "payments_types",
             referencedColumnNames: ["id"],
-            columnNames: ["appointment_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
+            columnNames: ["payment_type_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
           },
         ],
       })
@@ -62,6 +66,6 @@ export class CreateAppointmentsUsers1620180736452
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointments_users");
+    await queryRunner.dropTable("providers_payments_types");
   }
 }

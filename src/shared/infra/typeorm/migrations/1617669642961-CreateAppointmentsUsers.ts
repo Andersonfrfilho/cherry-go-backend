@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateUsersTokens1618360653234 implements MigrationInterface {
+export class CreateAppointmentsUsers1617669642961
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "users_tokens",
+        name: "appointments_users",
         columns: [
           {
             name: "id",
@@ -14,17 +15,14 @@ export class CreateUsersTokens1618360653234 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "refresh_token",
-            type: "varchar",
-          },
-          {
             name: "user_id",
             type: "uuid",
           },
           {
-            name: "expires_date",
-            type: "timestamp",
+            name: "appointment_id",
+            type: "uuid",
           },
+
           {
             name: "created_at",
             type: "timestamp",
@@ -43,12 +41,20 @@ export class CreateUsersTokens1618360653234 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKUserToken",
+            name: "FKAppointmentsUsers",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
             columnNames: ["user_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKUsersAppointments",
+            referencedTableName: "appointments",
+            referencedColumnNames: ["id"],
+            columnNames: ["appointment_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
           },
         ],
       })
@@ -56,6 +62,6 @@ export class CreateUsersTokens1618360653234 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("users_tokens");
+    await queryRunner.dropTable("appointments_users");
   }
 }

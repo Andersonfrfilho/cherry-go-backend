@@ -7,10 +7,12 @@ services:
     restart: always
     ports:
       - 5432:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=102030
-      - POSTGRES_DB=cherry_go
+    # environment:
+    #   - POSTGRES_USER=postgres
+    #   - POSTGRES_PASSWORD=102030
+    #   - POSTGRES_DB=cherry_go
+    env_file:
+      - .env
     volumes:
       - pgdata:/data/postgres
 
