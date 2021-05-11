@@ -22,7 +22,7 @@ module.exports = [
     type: "postgres",
     port: process.env.POSTGRES_PORT || 5432,
     host: process.env.POSTGRES_HOST || "localhost",
-    username: process.env.POSTGRES_USER || "docker",
+    username: process.env.POSTGRES_USER || "postgres",
     password: process.env.POSTGRES_PASSWORD || "102030",
     database: process.env.POSTGRES_DB || "cherry_go",
     migrations: [
