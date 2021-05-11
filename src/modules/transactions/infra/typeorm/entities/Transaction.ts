@@ -31,7 +31,7 @@ class Transaction {
   increment_amount: string;
 
   @OneToMany(() => PaymentType, (payment_type) => payment_type)
-  payment_type?: PaymentType[];
+  payments_types?: PaymentType[];
 
   @CreateDateColumn()
   created_at?: Date;

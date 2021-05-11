@@ -10,7 +10,7 @@ import {
 
 import { Payment } from "@modules/appointments/infra/typeorm/entities/Payment";
 
-@Entity("payment_type")
+@Entity("payments_types")
 class PaymentType {
   @PrimaryColumn()
   id?: string;

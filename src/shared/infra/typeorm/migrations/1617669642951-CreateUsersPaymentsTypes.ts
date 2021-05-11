@@ -26,6 +26,7 @@ export class CreateUsersPaymentsTypes1617669642951
             name: "active",
             type: "boolean",
             default: true,
+            isNullable: true,
           },
           {
             name: "created_at",
@@ -59,6 +60,12 @@ export class CreateUsersPaymentsTypes1617669642951
             columnNames: ["payment_type_id"],
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
+          },
+        ],
+        indices: [
+          {
+            columnNames: ["provider_id", "payment_type_id"],
+            isUnique: true,
           },
         ],
       })

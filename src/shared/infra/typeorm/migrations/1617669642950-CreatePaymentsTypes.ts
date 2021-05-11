@@ -16,6 +16,7 @@ export class CreatePaymentsTypes1617669642950 implements MigrationInterface {
           {
             name: "name",
             type: "varchar",
+            isUnique: true,
           },
           {
             name: "description",
@@ -25,6 +26,8 @@ export class CreatePaymentsTypes1617669642950 implements MigrationInterface {
           {
             name: "active",
             type: "boolean",
+            default: true,
+            isNullable: true,
           },
           {
             name: "created_at",

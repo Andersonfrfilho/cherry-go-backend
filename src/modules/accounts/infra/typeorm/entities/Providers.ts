@@ -45,20 +45,17 @@ class Provider {
   @Column()
   birth_date: string;
 
-  @Column()
-  avatar?: string;
-
   @OneToMany(() => Phone, (phone) => phone)
   phones?: Phone[];
 
   @OneToMany(() => Address, (address) => address)
-  address?: Address[];
+  addresses?: Address[];
 
   @ManyToMany(() => TypeUser)
   @JoinTable({
     name: "users_types_users",
     joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "type_id" }],
+    inverseJoinColumns: [{ name: "user_type_id" }],
   })
   types: TypeUser[];
 
@@ -68,7 +65,7 @@ class Provider {
     joinColumns: [{ name: "provider_id" }],
     inverseJoinColumns: [{ name: "payment_type_id" }],
   })
-  payments_type: PaymentType[];
+  payments_types: PaymentType[];
 
   @ManyToMany(() => Appointment)
   @JoinTable({
@@ -94,18 +91,6 @@ class Provider {
 
   @DeleteDateColumn()
   deleted_at?: Date;
-
-  @Expose({ name: "avatar_url" })
-  avatar_url?(): string {
-    switch (process.env.DISK_STORAGE_PROVIDER) {
-      case "local":
-        return `${process.env.APP_API_URL}/avatar/${this.avatar}`;
-      case "s3":
-        return `${process.env.AWS_BUCKET_URL}/avatar/${this.avatar}`;
-      default:
-        return null;
-    }
-  }
 }
 
 export { Provider };

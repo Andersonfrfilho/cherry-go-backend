@@ -1,17 +1,17 @@
 import faker from "faker";
 
+import { UserTypes } from "@modules/accounts/enums/UserTypes";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 
-class TypesFactory {
+class UsersTypesFactory {
   public generate(): Omit<TypeUser, "id">[] {
-    const types = ["ADMIN", "CLIENT", "PROVIDER"];
     return Array.from(
-      { length: types.length },
+      { length: Object.keys(UserTypes).length },
       (element, index): Omit<TypeUser, "id"> => ({
-        name: types[index],
+        name: Object.values(UserTypes)[index],
         active: true,
       })
     );
   }
 }
-export { TypesFactory };
+export { UsersTypesFactory };

@@ -2,7 +2,7 @@ import { getConnection, MigrationInterface, QueryRunner } from "typeorm";
 
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { TypesFactory } from "@shared/infra/typeorm/factories";
+import { UsersTypesFactory } from "@shared/infra/typeorm/factories";
 import randomNumbers from "@utils/randomNumbers";
 
 export class CreateUsersTypes1620665114995 implements MigrationInterface {
@@ -11,21 +11,21 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
       .getRepository("users")
       .find()) as User[];
 
-    const typesFactory = new TypesFactory();
+    const usersTypesFactory = new UsersTypesFactory();
 
-    const types = typesFactory.generate();
+    const types = usersTypesFactory.generate();
 
     await getConnection("seed").getRepository("types_users").save(types);
 
-    const types_list = (await getConnection("seed")
+    const types_list = await getConnection("seed")
       .getRepository("types_users")
-      .find()) as TypeUser[];
+      .find();
 
-    const relationshipUsersTypes = users.map((user, index) => ({
+    const relationshipUsersTypes = users.map((user) => ({
       ...user,
       types: Array.from({
         length: randomNumbers({ min: 1, max: 3 }),
-      }).map((element, index) => types_list[index]),
+      }).map((_, index) => types_list[index]),
     }));
 
     await getConnection("seed")

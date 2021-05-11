@@ -1,9 +1,7 @@
-enum Continents {
-  North_America,
-  South_America,
-  Africa,
-  Asia,
-  Europe,
-  Antartica,
-  Australia,
+enum UserTypes {
+  PROVIDER = "provider",
+  CLIENT = "client",
+  ADMIN = "admin",
 }
+
+export { UserTypes };
