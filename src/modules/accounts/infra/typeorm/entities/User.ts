@@ -66,11 +66,13 @@ class User {
   })
   images?: Image[];
 
-  @ManyToMany(() => TypeUser)
+  @ManyToMany((type) => TypeUser, (type_user) => type_user.users, {
+    cascade: true,
+  })
   @JoinTable({
     name: "users_types_users",
-    joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "user_type_id" }],
+    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "user_type_id", referencedColumnName: "id" }],
   })
   types?: TypeUser[];
 

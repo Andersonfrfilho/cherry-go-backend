@@ -3,7 +3,7 @@ import { getConnection, MigrationInterface, QueryRunner } from "typeorm";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 import randomNumbers from "@utils/randomNumbers";
 
-export class created1619485791890 implements MigrationInterface {
+export class createdUsers1619485791890 implements MigrationInterface {
   public async up(): Promise<void> {
     const userFactory = new UsersFactory();
     const users = userFactory.generate({

@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { PaymentType } from "@modules/transactions/infra/typeorm/entities/PaymentType";
+import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 
 @Entity("transactions")
 class Transaction {

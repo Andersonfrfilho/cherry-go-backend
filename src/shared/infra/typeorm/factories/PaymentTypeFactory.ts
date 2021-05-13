@@ -1,7 +1,7 @@
 import faker from "faker";
 
+import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { PaymentTypes } from "@modules/transactions/enums/PaymentTypes.enum";
-import { PaymentType } from "@modules/transactions/infra/typeorm/entities/PaymentType";
 
 class PaymentsTypesFactory {
   public generate(): Omit<PaymentType, "id">[] {

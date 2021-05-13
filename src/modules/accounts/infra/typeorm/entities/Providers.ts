@@ -59,11 +59,15 @@ class Provider {
   })
   types: TypeUser[];
 
-  @ManyToMany(() => PaymentType)
+  @ManyToMany(() => PaymentType, (payment_type) => payment_type.providers, {
+    cascade: true,
+  })
   @JoinTable({
     name: "providers_payments_types",
-    joinColumns: [{ name: "provider_id" }],
-    inverseJoinColumns: [{ name: "payment_type_id" }],
+    joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [
+      { name: "payment_type_id", referencedColumnName: "id" },
+    ],
   })
   payments_types: PaymentType[];
 

@@ -7,13 +7,16 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("images")
-class Image {
+@Entity("users_types_users")
+class UserTypeUser {
   @PrimaryColumn()
   id?: string;
 
   @Column()
-  link: string;
+  user_id: string;
+
+  @Column()
+  user_type_id: string;
 
   @CreateDateColumn()
   created_at?: Date;
@@ -25,4 +28,4 @@ class Image {
   deleted_at?: Date;
 }
 
-export { Image };
+export { UserTypeUser };

@@ -1,5 +1,5 @@
-interface UserFactory {
+interface ParametersFactoryDTO {
   quantity: number;
 }
 
-export { UserFactory };
+export { ParametersFactoryDTO };

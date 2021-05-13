@@ -1,10 +1,10 @@
 import faker from "faker";
 
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { UserFactory } from "@shared/infra/typeorm/dtos/Factory.dto";
+import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
 class UsersFactory {
-  public generate({ quantity = 1 }: UserFactory): Omit<User, "id">[] {
+  public generate({ quantity = 1 }: ParametersFactoryDTO): Omit<User, "id">[] {
     const arrayUsers = Array.from(
       { length: quantity },
       (): Omit<User, "id"> => ({

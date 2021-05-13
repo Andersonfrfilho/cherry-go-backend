@@ -1,11 +1,8 @@
-import { getConnection, MigrationInterface, QueryRunner } from "typeorm";
+import { getConnection, MigrationInterface } from "typeorm";
 
-import { UserTypes } from "@modules/accounts/enums/UserTypes";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Providers";
-import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { PaymentsTypesFactory } from "@shared/infra/typeorm/factories";
 import randomNumbers from "@utils/randomNumbers";
-
-import { PaymentsTypesFactory } from "../factories/PaymentTypeFactory";
 
 export class CreatePaymentTypes1620675129709 implements MigrationInterface {
   public async up(): Promise<void> {

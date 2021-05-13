@@ -17,19 +17,23 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
 
     await getConnection("seed").getRepository("types_users").save(types);
 
-    const types_list = await getConnection("seed")
+    const types_list = (await getConnection("seed")
       .getRepository("types_users")
-      .find();
+      .find()) as TypeUser[];
 
-    const relationshipUsersTypes = users.map((user) => ({
-      ...user,
-      types: Array.from({
-        length: randomNumbers({ min: 1, max: 3 }),
-      }).map((_, index) => types_list[index]),
-    }));
+    const relationshipUsersTypes = users
+      .map((user) =>
+        Array.from({
+          length: randomNumbers({ min: 1, max: types_list.length }),
+        }).map((_, index) => ({
+          user_type_id: types_list[index].id,
+          user_id: user.id,
+        }))
+      )
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
 
     await getConnection("seed")
-      .getRepository("users")
+      .getRepository("users_types_users")
       .save(relationshipUsersTypes);
   }
 

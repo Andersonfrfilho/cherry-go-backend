@@ -1,10 +1,12 @@
 import faker from "faker";
 
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
-import { UserFactory } from "@shared/infra/typeorm/dtos/Factory.dto";
+import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
 class AppointmentsFactory {
-  public generate({ quantity = 1 }: UserFactory): Omit<Appointment, "id">[] {
+  public generate({
+    quantity = 1,
+  }: ParametersFactoryDTO): Omit<Appointment, "id">[] {
     return Array.from(
       { length: quantity },
       (): Omit<Appointment, "id"> => ({

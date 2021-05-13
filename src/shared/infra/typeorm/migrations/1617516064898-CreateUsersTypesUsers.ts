@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm";
 
 export class CreateUsersTypesUsers1617516064898 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -63,6 +63,14 @@ export class CreateUsersTypesUsers1617516064898 implements MigrationInterface {
         ],
       })
     );
+    // await queryRunner.createIndex(
+    //   "users_types_users",
+    //   new TableIndex({
+    //     name: "index_users_types_users",
+    //     columnNames: ["user_id", "user_type_id"],
+    //     isUnique: true,
+    //   })
+    // );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
