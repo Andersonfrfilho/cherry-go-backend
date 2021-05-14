@@ -18,7 +18,7 @@ export class CreateServices1617669642955 implements MigrationInterface {
             type: "varchar",
           },
           {
-            name: "value",
+            name: "amount",
             type: "varchar",
           },
           {

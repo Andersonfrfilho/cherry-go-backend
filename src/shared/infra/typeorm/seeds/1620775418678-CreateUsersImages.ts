@@ -1,9 +1,7 @@
-import { getConnection, MigrationInterface, Not, QueryRunner } from "typeorm";
+import { getConnection, MigrationInterface } from "typeorm";
 
-import { Provider } from "@modules/accounts/infra/typeorm/entities/Providers";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
-import { usersRoutes } from "@shared/infra/http/routes/users.routes";
 import { ImagesFactory } from "@shared/infra/typeorm/factories";
 import randomNumbers from "@utils/randomNumbers";
 

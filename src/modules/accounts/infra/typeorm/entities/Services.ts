@@ -11,27 +11,37 @@ import {
 
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
+import { Provider } from "./Providers";
+
 @Entity("services")
 class Service {
   @PrimaryColumn()
   id?: string;
 
   @Column()
-  tag_id: string;
+  name: string;
 
   @Column()
   amount: string;
 
   @Column()
-  duration: number;
+  duration: string;
 
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Provider)
+  @JoinTable({
+    name: "providers_services",
+    joinColumns: [{ name: "service_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
+  })
+  providers?: Provider[];
+
+  @ManyToMany(() => Tag, { cascade: true })
   @JoinTable({
     name: "tags_services",
-    joinColumns: [{ name: "tag_id" }],
-    inverseJoinColumns: [{ name: "service_id" }],
+    joinColumns: [{ name: "service_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "tag_id", referencedColumnName: "id" }],
   })
-  types: Tag[];
+  tags?: Tag[];
 
   @CreateDateColumn()
   created_at?: Date;

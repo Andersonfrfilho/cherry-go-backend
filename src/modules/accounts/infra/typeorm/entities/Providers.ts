@@ -51,11 +51,11 @@ class Provider {
   @OneToMany(() => Address, (address) => address)
   addresses?: Address[];
 
-  @ManyToMany(() => TypeUser)
+  @ManyToMany(() => TypeUser, { cascade: true })
   @JoinTable({
     name: "users_types_users",
-    joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "user_type_id" }],
+    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "user_type_id", referencedColumnName: "id" }],
   })
   types: TypeUser[];
 
@@ -71,19 +71,21 @@ class Provider {
   })
   payments_types: PaymentType[];
 
-  @ManyToMany(() => Appointment)
+  @ManyToMany(() => Appointment, { cascade: true })
   @JoinTable({
     name: "providers_appointments",
-    joinColumns: [{ name: "provider_id" }],
-    inverseJoinColumns: [{ name: "appointment_id" }],
+    joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [
+      { name: "appointment_id", referencedColumnName: "id" },
+    ],
   })
   appointments: Appointment[];
 
-  @ManyToMany(() => Service)
+  @ManyToMany(() => Service, { cascade: true })
   @JoinTable({
     name: "providers_services",
-    joinColumns: [{ name: "provider_id" }],
-    inverseJoinColumns: [{ name: "service_id" }],
+    joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "service_id", referencedColumnName: "id" }],
   })
   services: Service[];
 

@@ -28,40 +28,46 @@ class Appointment {
   @ManyToMany(() => User)
   @JoinTable({
     name: "appointments_users",
-    joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "appointment_id" }],
+    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [
+      { name: "appointment_id", referencedColumnName: "id" },
+    ],
   })
   users?: User[];
 
   @ManyToMany(() => User)
   @JoinTable({
     name: "appointments_providers",
-    joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "appointment_id" }],
+    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [
+      { name: "appointment_id", referencedColumnName: "id" },
+    ],
   })
   providers?: User[];
 
   @ManyToMany(() => User)
   @JoinTable({
     name: "appointments_transactions",
-    joinColumns: [{ name: "appointment_id" }],
-    inverseJoinColumns: [{ name: "transaction_id" }],
+    joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [
+      { name: "transaction_id", referencedColumnName: "id" },
+    ],
   })
   transactions?: Transaction[];
 
   @ManyToMany(() => Transport)
   @JoinTable({
     name: "appointments_transports",
-    joinColumns: [{ name: "appointment_id" }],
-    inverseJoinColumns: [{ name: "transport_id" }],
+    joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "transport_id", referencedColumnName: "id" }],
   })
   transports?: Transaction[];
 
   @ManyToMany(() => Service)
   @JoinTable({
     name: "appointments_providers_services",
-    joinColumns: [{ name: "appointment_id" }],
-    inverseJoinColumns: [{ name: "service_id" }],
+    joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "service_id", referencedColumnName: "id" }],
   })
   services_providers?: Service[];
 

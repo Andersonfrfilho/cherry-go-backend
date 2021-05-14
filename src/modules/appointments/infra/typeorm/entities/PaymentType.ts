@@ -30,7 +30,7 @@ class PaymentType {
   @OneToMany(() => Payment, (payment) => payment)
   payment?: Payment[];
 
-  @ManyToMany((_) => Provider, (provider) => provider.payments_types)
+  @ManyToMany(() => Provider, (provider) => provider.payments_types)
   providers?: Provider[];
 
   @CreateDateColumn()
