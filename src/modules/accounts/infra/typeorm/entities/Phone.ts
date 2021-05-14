@@ -3,9 +3,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
+
+import { User } from "./User";
 
 @Entity("phones")
 class Phone {
@@ -20,6 +24,14 @@ class Phone {
 
   @Column()
   number: string;
+
+  @ManyToMany(() => User, { cascade: true })
+  @JoinTable({
+    name: "users_phones",
+    joinColumns: [{ name: "phone_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+  })
+  users?: User[];
 
   @CreateDateColumn()
   created_at?: Date;

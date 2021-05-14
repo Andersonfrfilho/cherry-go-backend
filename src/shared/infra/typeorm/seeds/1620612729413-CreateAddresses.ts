@@ -28,7 +28,7 @@ export class CreateAddresses1620612729413 implements MigrationInterface {
     }));
 
     await getConnection("seed")
-      .getRepository("users")
+      .getRepository(User)
       .save(relationshipUsersAddresses);
   }
 

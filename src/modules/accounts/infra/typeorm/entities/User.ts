@@ -42,19 +42,19 @@ class User {
   @Column()
   birth_date: Date;
 
-  @ManyToMany(() => Phone)
+  @ManyToMany(() => Phone, { cascade: true })
   @JoinTable({
     name: "users_phones",
-    joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "phone_id" }],
+    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "phone_id", referencedColumnName: "id" }],
   })
   phones?: Phone[];
 
-  @ManyToMany(() => Address)
+  @ManyToMany(() => Address, { cascade: true })
   @JoinTable({
     name: "users_addresses",
-    joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "address_id" }],
+    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "address_id", referencedColumnName: "id" }],
   })
   addresses?: Address[];
 

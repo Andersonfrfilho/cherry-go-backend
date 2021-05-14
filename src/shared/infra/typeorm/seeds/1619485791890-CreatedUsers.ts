@@ -7,7 +7,7 @@ export class CreatedUsers1619485791890 implements MigrationInterface {
   public async up(): Promise<void> {
     const userFactory = new UsersFactory();
     const users = userFactory.generate({
-      quantity: randomNumbers({ min: 5, max: 10 }),
+      quantity: randomNumbers({ min: 2, max: 6 }),
     });
     await getConnection("seed").getRepository("users").save(users);
   }
