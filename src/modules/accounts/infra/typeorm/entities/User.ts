@@ -78,7 +78,7 @@ class User {
 
   @ManyToMany(() => Appointment)
   @JoinTable({
-    name: "users_appointments",
+    name: "appointments_users",
     joinColumns: [{ name: "user_id" }],
     inverseJoinColumns: [{ name: "appointment_id" }],
   })

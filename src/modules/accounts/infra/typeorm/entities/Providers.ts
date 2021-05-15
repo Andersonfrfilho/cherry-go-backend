@@ -73,7 +73,7 @@ class Provider {
 
   @ManyToMany(() => Appointment, { cascade: true })
   @JoinTable({
-    name: "providers_appointments",
+    name: "appointments_providers",
     joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
     inverseJoinColumns: [
       { name: "appointment_id", referencedColumnName: "id" },
