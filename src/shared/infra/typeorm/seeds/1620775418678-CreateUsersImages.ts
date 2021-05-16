@@ -29,13 +29,13 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
       )
       .getMany();
 
-    const imagesFactory = new ImagesFactory();
+    const images_factory = new ImagesFactory();
 
-    const clients_images = imagesFactory.generate({
+    const clients_images = images_factory.generate({
       quantity: clients.length,
     });
 
-    const providers_images = imagesFactory.generate({
+    const providers_images = images_factory.generate({
       quantity: randomNumbers({
         min: providers.length,
         max: providers.length * providers.length,

@@ -12,21 +12,21 @@ export class CreateDocumentsImages1620960362104 implements MigrationInterface {
       .getRepository("users")
       .find()) as User[];
 
-    const imagesFactory = new ImagesFactory();
+    const images_factory = new ImagesFactory();
 
-    const imagesFactoryList = imagesFactory.generate({
+    const images_factory_list = images_factory.generate({
       quantity: users.length,
     });
 
     const images_saves = await getConnection("seed")
       .getRepository("images")
-      .save(imagesFactoryList);
+      .save(images_factory_list);
 
     const images_list = (await getConnection("seed")
       .getRepository("images")
       .find(images_saves)) as Image[];
 
-    const documentUserImages = users.map((user, index) => ({
+    const document_user_images = users.map((user, index) => ({
       user_id: user.id,
       image_id: images_list[index].id,
       value: faker.datatype.number({ precision: 2 }).toString(),
@@ -34,7 +34,7 @@ export class CreateDocumentsImages1620960362104 implements MigrationInterface {
 
     await getConnection("seed")
       .getRepository("documents_users_images")
-      .save(documentUserImages);
+      .save(document_user_images);
   }
 
   public async down(): Promise<void> {

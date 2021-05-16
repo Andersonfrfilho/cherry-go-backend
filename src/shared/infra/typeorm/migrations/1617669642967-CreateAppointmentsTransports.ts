@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateTransportsTypes1620176834866 implements MigrationInterface {
+export class CreateAppointmentsTransports1617669642967
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "transports_types",
+        name: "appointments_transports",
         columns: [
           {
             name: "id",
@@ -14,19 +15,11 @@ export class CreateTransportsTypes1620176834866 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "name",
-            type: "varchar",
+            name: "appointment_id",
+            type: "uuid",
           },
           {
-            name: "description",
-            type: "varchar",
-          },
-          {
-            name: "active",
-            type: "boolean",
-          },
-          {
-            name: "payment_type_id",
+            name: "transport_id",
             type: "uuid",
           },
           {
@@ -45,11 +38,29 @@ export class CreateTransportsTypes1620176834866 implements MigrationInterface {
             isNullable: true,
           },
         ],
+        foreignKeys: [
+          {
+            name: "FKAppointmentsTransports",
+            referencedTableName: "appointments",
+            referencedColumnNames: ["id"],
+            columnNames: ["appointment_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKTransportsAppointments",
+            referencedTableName: "transports",
+            referencedColumnNames: ["id"],
+            columnNames: ["transport_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+        ],
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("transports_types");
+    await queryRunner.dropTable("appointments_transports");
   }
 }

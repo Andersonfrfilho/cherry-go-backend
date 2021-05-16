@@ -34,7 +34,7 @@ class Appointment {
   })
   users?: User[];
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => Provider)
   @JoinTable({
     name: "appointments_providers",
     joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
@@ -42,7 +42,7 @@ class Appointment {
   })
   providers?: Provider[];
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => Transaction)
   @JoinTable({
     name: "appointments_transactions",
     joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
@@ -58,7 +58,7 @@ class Appointment {
     joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
     inverseJoinColumns: [{ name: "transport_id", referencedColumnName: "id" }],
   })
-  transports?: Transaction[];
+  transports?: Transport[];
 
   @ManyToMany(() => Service)
   @JoinTable({

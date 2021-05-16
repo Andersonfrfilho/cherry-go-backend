@@ -18,9 +18,9 @@ export class CreateServices1620945118173 implements MigrationInterface {
       )
       .getMany();
 
-    const servicesFactory = new ServicesFactory();
+    const services_factory = new ServicesFactory();
 
-    const servicesFactoryList = servicesFactory.generate({
+    const services_factoryList = services_factory.generate({
       quantity: randomNumbers({
         min: providers.length,
         max: providers.length * 2,
@@ -29,7 +29,7 @@ export class CreateServices1620945118173 implements MigrationInterface {
 
     await getConnection("seed")
       .getRepository("services")
-      .save(servicesFactoryList);
+      .save(services_factoryList);
 
     const services = (await getConnection("seed")
       .getRepository("services")

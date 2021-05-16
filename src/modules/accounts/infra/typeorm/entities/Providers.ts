@@ -81,7 +81,7 @@ class Provider {
   })
   appointments: Appointment[];
 
-  @ManyToMany(() => Service, { cascade: true })
+  @ManyToMany(() => Service, { cascade: true, eager: true })
   @JoinTable({
     name: "providers_services",
     joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],

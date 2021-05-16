@@ -3,29 +3,23 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 
-import { Provider } from "@modules/accounts/infra/typeorm/entities/Providers";
-
-@Entity("payments_types")
-class PaymentType {
+@Entity("transports_types_payments_types")
+class TransportTypePaymentType {
   @PrimaryColumn()
   id?: string;
 
   @Column()
-  name: string;
+  transport_type_id: string;
 
   @Column()
-  description: string;
+  payment_type_id: string;
 
   @Column()
   active: boolean;
-
-  @ManyToMany(() => Provider, (provider) => provider.payments_types)
-  providers?: Provider[];
 
   @CreateDateColumn()
   created_at?: Date;
@@ -37,4 +31,4 @@ class PaymentType {
   deleted_at?: Date;
 }
 
-export { PaymentType };
+export { TransportTypePaymentType };

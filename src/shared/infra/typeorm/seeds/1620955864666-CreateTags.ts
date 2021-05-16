@@ -1,4 +1,4 @@
-import { getConnection, MigrationInterface, QueryRunner } from "typeorm";
+import { getConnection, MigrationInterface } from "typeorm";
 
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
@@ -11,29 +11,29 @@ export class CreateTags1620955864666 implements MigrationInterface {
       .getRepository("services")
       .find()) as Service[];
 
-    const tagsFactory = new TagsFactory();
-    const imagesFactory = new ImagesFactory();
+    const tags_factory = new TagsFactory();
+    const images_factory = new ImagesFactory();
 
-    const tagsFactoryList = tagsFactory.generate({
+    const tags_factory_list = tags_factory.generate({
       quantity: randomNumbers({
         min: services.length,
         max: services.length * 2,
       }),
     });
 
-    const imagesFactoryList = imagesFactory.generate({
-      quantity: tagsFactoryList.length,
+    const images_factory_list = images_factory.generate({
+      quantity: tags_factory_list.length,
     });
 
     const images = await getConnection("seed")
       .getRepository("images")
-      .save(imagesFactoryList);
+      .save(images_factory_list);
 
     const images_list = (await getConnection("seed")
       .getRepository("images")
       .find(images)) as Image[];
 
-    const images_tags = tagsFactoryList.map((tag, index) => ({
+    const images_tags = tags_factory_list.map((tag, index) => ({
       ...tag,
       image_id: images_list[index].id,
     }));
@@ -42,7 +42,7 @@ export class CreateTags1620955864666 implements MigrationInterface {
 
     const tags = await getConnection("seed").getRepository("tags").find();
 
-    const services_tags = services.map((service, index) => ({
+    const services_tags = services.map((service) => ({
       ...service,
       tags: Array.from({
         length: randomNumbers({

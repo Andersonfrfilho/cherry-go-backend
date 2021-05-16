@@ -6,13 +6,13 @@ import randomNumbers from "@utils/randomNumbers";
 
 export class CreatePaymentTypes1620675129709 implements MigrationInterface {
   public async up(): Promise<void> {
-    const paymentTypesFactory = new PaymentsTypesFactory();
+    const payment_types_factory = new PaymentsTypesFactory();
 
-    const paymentTypes = paymentTypesFactory.generate();
+    const payment_types = payment_types_factory.generate();
 
     await getConnection("seed")
       .getRepository("payments_types")
-      .save(paymentTypes);
+      .save(payment_types);
 
     const payments_types_list = await getConnection("seed")
       .getRepository("payments_types")
@@ -29,7 +29,7 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
       )
       .getMany();
 
-    const relationshipProvidersPaymentsTypes = providers.map((provider) => ({
+    const relationship_providers_payments_types = providers.map((provider) => ({
       ...provider,
       payments_types: Array.from({
         length: randomNumbers({ min: 1, max: payments_types_list.length }),
@@ -38,7 +38,7 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
 
     await getConnection("seed")
       .getRepository(Provider)
-      .save(relationshipProvidersPaymentsTypes);
+      .save(relationship_providers_payments_types);
   }
 
   public async down(): Promise<void> {

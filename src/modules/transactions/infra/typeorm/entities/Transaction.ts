@@ -3,12 +3,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
+  JoinTable,
+  ManyToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 
-import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 
 @Entity("transactions")
 class Transaction {
@@ -16,13 +17,10 @@ class Transaction {
   id?: string;
 
   @Column()
-  amount: string;
+  current_amount: string;
 
   @Column()
-  type_payment_id: string;
-
-  @Column()
-  origin_amount: string;
+  original_amount: string;
 
   @Column()
   discount_amount: string;
@@ -30,8 +28,18 @@ class Transaction {
   @Column()
   increment_amount: string;
 
-  @OneToMany(() => PaymentType, (payment_type) => payment_type)
-  payments_types?: PaymentType[];
+  @Column()
+  status: string;
+
+  @ManyToMany(() => Appointment)
+  @JoinTable({
+    name: "appointments_transactions",
+    joinColumns: [{ name: "transaction_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [
+      { name: "appointment_id", referencedColumnName: "id" },
+    ],
+  })
+  appointments?: Appointment[];
 
   @CreateDateColumn()
   created_at?: Date;

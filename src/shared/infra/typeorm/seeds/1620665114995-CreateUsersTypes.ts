@@ -1,4 +1,4 @@
-import { getConnection, MigrationInterface, QueryRunner } from "typeorm";
+import { getConnection, MigrationInterface } from "typeorm";
 
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -11,9 +11,9 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
       .getRepository("users")
       .find()) as User[];
 
-    const usersTypesFactory = new UsersTypesFactory();
+    const users_types_factory = new UsersTypesFactory();
 
-    const types = usersTypesFactory.generate();
+    const types = users_types_factory.generate();
 
     await getConnection("seed").getRepository("types_users").save(types);
 
@@ -21,7 +21,7 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
       .getRepository("types_users")
       .find()) as TypeUser[];
 
-    const relationshipUsersTypes = users
+    const relationship_users_types = users
       .map((user) =>
         Array.from({
           length: randomNumbers({ min: 1, max: types_list.length }),
@@ -34,7 +34,7 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
 
     await getConnection("seed")
       .getRepository("users_types_users")
-      .save(relationshipUsersTypes);
+      .save(relationship_users_types);
   }
 
   public async down(): Promise<void> {

@@ -10,9 +10,9 @@ export class CreatePhones1620358650178 implements MigrationInterface {
       .getRepository("users")
       .find()) as User[];
 
-    const phoneFactory = new PhonesFactory();
+    const phone_factory = new PhonesFactory();
 
-    const phones = phoneFactory.generate({
+    const phones = phone_factory.generate({
       quantity: users.length,
     });
 
@@ -22,14 +22,14 @@ export class CreatePhones1620358650178 implements MigrationInterface {
       .getRepository("phones")
       .find()) as Phone[];
 
-    const relationshipUsersPhones = users.map((user, index) => ({
+    const relationship_users_phones = users.map((user, index) => ({
       ...user,
       phones: [phones_list[index]],
     }));
 
     await getConnection("seed")
       .getRepository(User)
-      .save(relationshipUsersPhones);
+      .save(relationship_users_phones);
   }
 
   public async down(): Promise<void> {

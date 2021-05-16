@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAppointmentsTransports1620180538850
-  implements MigrationInterface {
+export class CreateTransportsTypes1617669642965 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointments_transports",
+        name: "transports_types_payments_types",
         columns: [
           {
             name: "id",
@@ -15,12 +14,16 @@ export class CreateAppointmentsTransports1620180538850
             default: "uuid_generate_v4()",
           },
           {
-            name: "appointment_id",
+            name: "transport_type_id",
             type: "uuid",
           },
           {
-            name: "transport_id",
+            name: "payment_type_id",
             type: "uuid",
+          },
+          {
+            name: "active",
+            type: "boolean",
           },
           {
             name: "created_at",
@@ -40,18 +43,18 @@ export class CreateAppointmentsTransports1620180538850
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentsAddresses",
-            referencedTableName: "appointments",
+            name: "FKTransportsTypePaymentsTypes",
+            referencedTableName: "transports_types",
             referencedColumnNames: ["id"],
-            columnNames: ["appointment_id"],
+            columnNames: ["transport_type_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
           {
-            name: "FKAddressesAppointments",
-            referencedTableName: "appointments",
+            name: "FKPaymentsTypesTransportsType",
+            referencedTableName: "payments_types",
             referencedColumnNames: ["id"],
-            columnNames: ["transport_id"],
+            columnNames: ["payment_type_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -61,6 +64,6 @@ export class CreateAppointmentsTransports1620180538850
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointments_transports");
+    await queryRunner.dropTable("transports_types");
   }
 }

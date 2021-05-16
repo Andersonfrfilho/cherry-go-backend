@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 @Entity("transports_types")

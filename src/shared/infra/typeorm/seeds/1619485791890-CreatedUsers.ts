@@ -1,13 +1,13 @@
-import { getConnection, MigrationInterface, QueryRunner } from "typeorm";
+import { getConnection, MigrationInterface } from "typeorm";
 
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 import randomNumbers from "@utils/randomNumbers";
 
 export class CreatedUsers1619485791890 implements MigrationInterface {
   public async up(): Promise<void> {
-    const userFactory = new UsersFactory();
-    const users = userFactory.generate({
-      quantity: randomNumbers({ min: 2, max: 6 }),
+    const user_factory = new UsersFactory();
+    const users = user_factory.generate({
+      quantity: randomNumbers({ min: 3, max: 8 }),
     });
     await getConnection("seed").getRepository("users").save(users);
   }

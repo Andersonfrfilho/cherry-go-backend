@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateTransactionsEvents1617669642965
+export class CreateAppointmentsTransactions1617669642970
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "transactions_events",
+        name: "appointments_transactions",
         columns: [
           {
             name: "id",
@@ -15,17 +15,12 @@ export class CreateTransactionsEvents1617669642965
             default: "uuid_generate_v4()",
           },
           {
-            name: "transaction_id",
+            name: "appointment_id",
             type: "uuid",
           },
           {
-            name: "status",
-            type: "varchar",
-          },
-          {
-            name: "description",
-            type: "varchar",
-            isNullable: true,
+            name: "transaction_id",
+            type: "uuid",
           },
           {
             name: "created_at",
@@ -45,7 +40,15 @@ export class CreateTransactionsEvents1617669642965
         ],
         foreignKeys: [
           {
-            name: "FKTransactionsEventsPaymentType",
+            name: "FKAppointmentPayment",
+            referencedTableName: "appointments",
+            referencedColumnNames: ["id"],
+            columnNames: ["appointment_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+          },
+          {
+            name: "FKPaymentAppointment",
             referencedTableName: "transactions",
             referencedColumnNames: ["id"],
             columnNames: ["transaction_id"],
@@ -58,6 +61,6 @@ export class CreateTransactionsEvents1617669642965
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("transactions_events");
+    await queryRunner.dropTable("appointments_transactions");
   }
 }

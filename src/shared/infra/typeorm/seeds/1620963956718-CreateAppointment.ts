@@ -30,9 +30,9 @@ export class CreateAppointment1620963956718 implements MigrationInterface {
       )
       .getMany()) as Provider[];
 
-    const appointmentsFactory = new AppointmentsFactory();
+    const appointments_factory = new AppointmentsFactory();
 
-    const appointmentsFactoryList = appointmentsFactory.generate({
+    const appointments_factory_list = appointments_factory.generate({
       quantity: faker.datatype.number({
         min: clients.length,
         max: clients.length * 2,
@@ -41,13 +41,13 @@ export class CreateAppointment1620963956718 implements MigrationInterface {
 
     const appointments_factories_saves = await getConnection("seed")
       .getRepository("appointments")
-      .save(appointmentsFactoryList);
+      .save(appointments_factory_list);
 
     const appointments_list = (await getConnection("seed")
       .getRepository("appointments")
       .find(appointments_factories_saves)) as Appointment[];
 
-    const usersAppointments = clients.map((user) => ({
+    const users_appointments = clients.map((user) => ({
       ...user,
       appointments: Array.from({
         length: faker.datatype.number({
@@ -57,9 +57,9 @@ export class CreateAppointment1620963956718 implements MigrationInterface {
       }).map((_, index) => appointments_list[index]),
     }));
 
-    await getConnection("seed").getRepository(User).save(usersAppointments);
+    await getConnection("seed").getRepository(User).save(users_appointments);
 
-    const providersAppointments = providers.map((user) => ({
+    const providers_appointments = providers.map((user) => ({
       ...user,
       appointments: Array.from({
         length: faker.datatype.number({
@@ -71,7 +71,7 @@ export class CreateAppointment1620963956718 implements MigrationInterface {
 
     await getConnection("seed")
       .getRepository(Provider)
-      .save(providersAppointments);
+      .save(providers_appointments);
   }
 
   public async down(): Promise<void> {
