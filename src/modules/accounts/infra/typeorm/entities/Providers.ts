@@ -1,4 +1,3 @@
-import { Expose } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -44,6 +43,9 @@ class Provider {
 
   @Column()
   birth_date: string;
+
+  @Column()
+  active: boolean;
 
   @OneToMany(() => Phone, (phone) => phone)
   phones?: Phone[];

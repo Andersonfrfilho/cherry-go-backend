@@ -1,4 +1,3 @@
-import { Expose } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -41,6 +40,9 @@ class User {
 
   @Column()
   birth_date: Date;
+
+  @Column()
+  active: boolean;
 
   @ManyToMany(() => Phone, { cascade: true })
   @JoinTable({
@@ -92,18 +94,6 @@ class User {
 
   @DeleteDateColumn()
   deleted_at?: Date;
-
-  // @Expose({ name: "avatar_url" })
-  // avatar_url?(): string {
-  //   switch (process.env.DISK_STORAGE_PROVIDER) {
-  //     case "local":
-  //       return `${process.env.APP_API_URL}/avatar/${this.avatar}`;
-  //     case "s3":
-  //       return `${process.env.AWS_BUCKET_URL}/avatar/${this.avatar}`;
-  //     default:
-  //       return null;
-  //   }
-  // }
 }
 
 export { User };

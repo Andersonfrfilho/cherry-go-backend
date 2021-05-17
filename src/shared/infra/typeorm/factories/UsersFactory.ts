@@ -15,6 +15,7 @@ class UsersFactory {
         cpf: faker.random.alphaNumeric(11),
         rg: faker.random.alphaNumeric(10),
         password_hash: faker.internet.password(),
+        active: faker.datatype.boolean(),
       })
     );
     return arrayUsers;
