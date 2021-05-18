@@ -17,6 +17,7 @@ import swaggerFile from "../../../swagger.json";
 import { router } from "./routes";
 
 import "@shared/container";
+import { HttpErrorCodes } from "@shared/enums/statusCode";
 
 createConnection();
 const app = express();
@@ -47,17 +48,16 @@ if (process.env.ENVIRONMENT === "production") {
   app.use(Sentry.Handlers.errorHandler());
 }
 app.use(errors());
-app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
+app.use((err: Error, _: Request, response: Response, next: NextFunction) => {
+  console.log(err);
   if (err instanceof AppError) {
-    return response.status(err.statusCode).json({
+    return response.status(err.status_code).json({
       status: "error",
       message: err.message,
     });
   }
 
-  console.error(err);
-
-  return response.status(500).json({
+  return response.status(HttpErrorCodes.INTERNAL_SERVER_ERROR).json({
     status: "error",
     message: err.message,
   });

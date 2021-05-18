@@ -9,6 +9,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+import { lowercase } from "@utils/lowercaseTypeorm";
+
 import { User } from "./User";
 
 @Entity("addresses")
@@ -16,7 +18,7 @@ class Address {
   @PrimaryColumn()
   id?: string;
 
-  @Column()
+  @Column({ transformer: [lowercase] })
   street: string;
 
   @Column()
@@ -25,16 +27,16 @@ class Address {
   @Column()
   zipcode: string;
 
-  @Column()
+  @Column({ transformer: [lowercase] })
   district: string;
 
-  @Column()
+  @Column({ transformer: [lowercase] })
   city: string;
 
-  @Column()
+  @Column({ transformer: [lowercase] })
   state: string;
 
-  @Column()
+  @Column({ transformer: [lowercase] })
   country: string;
 
   @ManyToMany(() => User, { cascade: true })

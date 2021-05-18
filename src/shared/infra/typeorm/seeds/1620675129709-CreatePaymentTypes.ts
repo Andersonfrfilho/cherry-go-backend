@@ -1,8 +1,8 @@
+import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Providers";
 import { PaymentsTypesFactory } from "@shared/infra/typeorm/factories";
-import randomNumbers from "@utils/randomNumbers";
 
 export class CreatePaymentTypes1620675129709 implements MigrationInterface {
   public async up(): Promise<void> {
@@ -32,7 +32,10 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
     const relationship_providers_payments_types = providers.map((provider) => ({
       ...provider,
       payments_types: Array.from({
-        length: randomNumbers({ min: 1, max: payments_types_list.length }),
+        length: faker.datatype.number({
+          min: 1,
+          max: payments_types_list.length,
+        }),
       }).map((_, index) => payments_types_list[index]),
     }));
 

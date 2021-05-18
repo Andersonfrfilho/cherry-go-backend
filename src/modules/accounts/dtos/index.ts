@@ -1,3 +1,5 @@
+import { ICreateUserAddressClientDTO } from "@modules/accounts/dtos/ICreateUserAddressClientDTO";
+import { ICreateUserAddressClientRequestDTO } from "@modules/accounts/dtos/ICreateUserAddressClientRequestDTO";
 import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
 import { ICreateUserTokenDTO } from "@modules/accounts/dtos/ICreateUserTokenDTO";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
@@ -8,4 +10,6 @@ export {
   ICreateUserTokenDTO,
   IFindUserEmailCpfRgDTO,
   IUserResponseDTO,
+  ICreateUserAddressClientDTO,
+  ICreateUserAddressClientRequestDTO,
 };

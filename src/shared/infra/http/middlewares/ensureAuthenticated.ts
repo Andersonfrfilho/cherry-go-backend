@@ -2,6 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import { verify } from "jsonwebtoken";
 
 import auth from "@config/auth";
+import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
 
 interface IPayload {
@@ -10,13 +11,16 @@ interface IPayload {
 
 export async function ensureAuthenticated(
   request: Request,
-  response: Response,
+  _: Response,
   next: NextFunction
 ) {
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new AppError("Token missing");
+    throw new AppError({
+      message: "token is missing",
+      status_code: HttpErrorCodes.UNAUTHORIZED,
+    });
   }
 
   const [, token] = authHeader.split(" ");
@@ -28,7 +32,10 @@ export async function ensureAuthenticated(
     } = JSON.parse(sub);
 
     if (!active) {
-      throw new AppError("User is not active", 401);
+      throw new AppError({
+        message: "User is not active",
+        status_code: HttpErrorCodes.FORBIDDEN,
+      });
     }
 
     request.user = {
@@ -37,6 +44,9 @@ export async function ensureAuthenticated(
 
     return next();
   } catch {
-    throw new AppError("Invalid token", 401);
+    throw new AppError({
+      message: "Invalid token",
+      status_code: HttpErrorCodes.UNAUTHORIZED,
+    });
   }
 }

@@ -1,8 +1,8 @@
+import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 import { AppointmentProviderService } from "@modules/appointments/infra/typeorm/entities/AppointmentsProvidersServices";
-import randomNumbers from "@utils/randomNumbers";
 
 export class CreateAppointmentServices1621058145504
   implements MigrationInterface {
@@ -18,7 +18,7 @@ export class CreateAppointmentServices1621058145504
         appointment.providers
           .map((provider) =>
             Array.from({
-              length: randomNumbers({
+              length: faker.datatype.number({
                 min: 1,
                 max: provider.services.length,
               }),

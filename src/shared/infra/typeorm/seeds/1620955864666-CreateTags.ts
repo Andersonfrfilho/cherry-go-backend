@@ -1,9 +1,9 @@
+import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
 import { ImagesFactory, TagsFactory } from "@shared/infra/typeorm/factories";
-import randomNumbers from "@utils/randomNumbers";
 
 export class CreateTags1620955864666 implements MigrationInterface {
   public async up(): Promise<void> {
@@ -15,7 +15,7 @@ export class CreateTags1620955864666 implements MigrationInterface {
     const images_factory = new ImagesFactory();
 
     const tags_factory_list = tags_factory.generate({
-      quantity: randomNumbers({
+      quantity: faker.datatype.number({
         min: services.length,
         max: services.length * 2,
       }),
@@ -45,7 +45,7 @@ export class CreateTags1620955864666 implements MigrationInterface {
     const services_tags = services.map((service) => ({
       ...service,
       tags: Array.from({
-        length: randomNumbers({
+        length: faker.datatype.number({
           min: 1,
           max: tags.length,
         }),

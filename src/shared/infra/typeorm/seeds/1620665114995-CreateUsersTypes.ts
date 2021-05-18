@@ -1,9 +1,9 @@
+import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UsersTypesFactory } from "@shared/infra/typeorm/factories";
-import randomNumbers from "@utils/randomNumbers";
 
 export class CreateUsersTypes1620665114995 implements MigrationInterface {
   public async up(): Promise<void> {
@@ -24,7 +24,7 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
     const relationship_users_types = users
       .map((user) =>
         Array.from({
-          length: randomNumbers({ min: 1, max: types_list.length }),
+          length: faker.datatype.number({ min: 1, max: types_list.length }),
         }).map((_, index) => ({
           user_type_id: types_list[index].id,
           user_id: user.id,

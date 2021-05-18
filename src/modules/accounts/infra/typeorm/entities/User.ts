@@ -15,16 +15,17 @@ import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
+import { lowercase } from "@utils/lowercaseTypeorm";
 
 @Entity("users")
 class User {
   @PrimaryColumn()
   id?: string;
 
-  @Column()
+  @Column({ transformer: [lowercase] })
   name: string;
 
-  @Column()
+  @Column({ transformer: [lowercase] })
   last_name: string;
 
   @Column({ unique: true })
@@ -33,7 +34,7 @@ class User {
   @Column({ unique: true })
   rg: string;
 
-  @Column({ unique: true })
+  @Column({ transformer: [lowercase] })
   email: string;
 
   @Column()

@@ -36,7 +36,7 @@ class AuthenticateUserUseCase {
     const { expires_in, secret } = auth;
 
     if (!user) {
-      throw new AppError("User not exist");
+      throw new AppError({ message: "User not exist" });
     }
 
     const passwordHash = await this.hashProvider.compareHash(
@@ -45,7 +45,7 @@ class AuthenticateUserUseCase {
     );
 
     if (!passwordHash) {
-      throw new AppError("User password does match");
+      throw new AppError({ message: "User password does match" });
     }
 
     const token = sign({}, secret.token, {

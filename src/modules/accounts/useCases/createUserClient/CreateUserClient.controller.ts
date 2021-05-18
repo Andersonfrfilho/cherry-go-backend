@@ -2,7 +2,7 @@ import { classToClass } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { CreateUserClientUseCase } from "@modules/accounts/useCases/createUserClient/CreateUserClient.services";
+import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.services";
 
 class CreateUserClientController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -16,9 +16,9 @@ class CreateUserClientController {
       birth_date,
     } = request.body;
 
-    const createUserClientUseCase = container.resolve(CreateUserClientUseCase);
+    const createUserClientService = container.resolve(CreateUserClientService);
 
-    const user = await createUserClientUseCase.execute({
+    const user = await createUserClientService.execute({
       name,
       last_name,
       cpf,

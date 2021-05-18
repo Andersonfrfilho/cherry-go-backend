@@ -7,7 +7,7 @@ import { IHashProvider } from "@shared/container/providers/HashProvider/IHashPro
 import { AppError } from "@shared/errors/AppError";
 
 @injectable()
-class CreateUserClientUseCase {
+class CreateUserClientService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
@@ -30,7 +30,7 @@ class CreateUserClientUseCase {
     });
 
     if (userAlreadyExists) {
-      throw new AppError("User client already exist");
+      throw new AppError({ message: "User client already exist" });
     }
 
     const password_hash = await this.hashProvider.generateHash(password);
@@ -48,4 +48,4 @@ class CreateUserClientUseCase {
     return user;
   }
 }
-export { CreateUserClientUseCase };
+export { CreateUserClientService };
