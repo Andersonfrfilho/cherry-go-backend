@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -36,13 +37,15 @@ class User {
   email: string;
 
   @Column()
+  @Exclude()
   password_hash: string;
 
   @Column()
+  @Exclude()
   birth_date: Date;
 
-  @Column()
-  active: boolean;
+  @Column("boolean", { default: true })
+  active?: boolean;
 
   @ManyToMany(() => Phone, { cascade: true })
   @JoinTable({
@@ -87,12 +90,15 @@ class User {
   appointments?: Appointment[];
 
   @CreateDateColumn()
+  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at?: Date;
 }
 

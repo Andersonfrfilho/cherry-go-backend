@@ -50,6 +50,7 @@ class AuthenticateUserUseCase {
       subject: user.id,
       expiresIn: expires_in.refresh,
     });
+
     const refresh_token_expires_date = this.dateProvider.addDays(
       expires_in.refresh_days
     );

@@ -5,7 +5,6 @@ import auth from "@config/auth";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "@shared/errors/AppError";
-import { deleteFile } from "@utils/file";
 
 interface IPayload {
   sub: string;
@@ -21,13 +20,13 @@ class RefreshTokenUseCase {
   constructor(
     @inject("UsersTokensRepository")
     private usersTokensRepository: IUsersTokensRepository,
-    @inject("DayjsDateProvider")
+    @inject("DateProvider")
     private dateProvider: IDateProvider
   ) {}
   async execute(token: string): Promise<ITokenResponse> {
     const { email, sub } = verify(token, auth.secret.refresh) as IPayload;
 
-    const user_id = sub;
+    const user_id = JSON.parse(sub);
 
     const userToken = await this.usersTokensRepository.findByUserIdAndRefreshToken(
       user_id,
@@ -61,7 +60,7 @@ class RefreshTokenUseCase {
     });
 
     return {
-      refresh_token,
+      refresh_token: newToken,
       token,
     };
   }

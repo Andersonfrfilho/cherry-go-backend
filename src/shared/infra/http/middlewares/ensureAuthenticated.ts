@@ -22,10 +22,17 @@ export async function ensureAuthenticated(
   const [, token] = authHeader.split(" ");
 
   try {
-    const { sub: user_id } = verify(token, auth.secret.token) as IPayload;
+    const { sub } = verify(token, auth.secret.token) as IPayload;
+    const {
+      user: { id, active },
+    } = JSON.parse(sub);
+
+    if (!active) {
+      throw new AppError("User is not active", 401);
+    }
 
     request.user = {
-      id: user_id,
+      id,
     };
 
     return next();

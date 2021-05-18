@@ -14,7 +14,8 @@ class UsersFactory {
         birth_date: faker.date.past(),
         cpf: faker.random.alphaNumeric(11),
         rg: faker.random.alphaNumeric(10),
-        password_hash: faker.internet.password(),
+        password_hash:
+          process.env.PASSWORD_USER_SEED_HASH || faker.internet.password(),
         active: faker.datatype.boolean(),
       })
     );
