@@ -7,7 +7,7 @@ import { TransactionsFactory } from "../factories/TransactionsFactory";
 export class CreateTransactions1621147024941 implements MigrationInterface {
   public async up(): Promise<void> {
     const transaction_factory = new TransactionsFactory();
-    console.log(transaction_factory);
+
     const appointments = (await getConnection("seed")
       .getRepository("appointments")
       .find()) as Appointment[];

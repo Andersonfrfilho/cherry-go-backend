@@ -33,6 +33,7 @@ class AuthenticateUserUseCase {
   ) {}
   async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
+
     const { expires_in, secret } = auth;
 
     if (!user) {

@@ -21,19 +21,23 @@ class UsersRepositoryInMemory implements IUsersRepository {
     password,
   }: ICreateUserClientDTO): Promise<User> {
     const user = new User();
+
     if (this.users.some((user) => user.email === email)) {
       throw new AppError({ message: "User client already exist" });
     }
+
     Object.assign(user, {
-      name,
-      last_name,
-      email,
+      name: name.toLowerCase(),
+      last_name: last_name.toLowerCase(),
+      email: email.toLowerCase(),
       cpf,
       rg,
       birth_date,
-      password,
-    });
+      password_hash: password,
+    }) as User;
+
     this.users.push(user);
+
     return user;
   }
 
@@ -90,7 +94,7 @@ class UsersRepositoryInMemory implements IUsersRepository {
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = this.users.find((user) => user.email === email);
+    const user = this.users.find((user) => user.email === email.toLowerCase());
     return user;
   }
 
@@ -112,7 +116,8 @@ class UsersRepositoryInMemory implements IUsersRepository {
     cpf,
   }: IFindUserEmailCpfRgDTO): Promise<User> {
     return this.users.find(
-      (user) => user.cpf === cpf && user.rg === rg && user.email === email
+      (user) =>
+        user.cpf === cpf && user.rg === rg && user.email === email.toLowerCase()
     );
   }
 }
