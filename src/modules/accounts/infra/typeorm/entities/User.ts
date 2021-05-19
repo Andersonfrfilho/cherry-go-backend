@@ -72,7 +72,7 @@ class User {
   })
   images?: Image[];
 
-  @ManyToMany((type) => TypeUser, (type_user) => type_user.users, {
+  @ManyToMany(() => TypeUser, (type_user) => type_user.users, {
     cascade: true,
   })
   @JoinTable({

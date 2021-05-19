@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +10,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+import { initialUpperCase } from "@utils/initialUppercaseTypeorm";
 import { lowercase } from "@utils/lowercaseTypeorm";
 
 import { User } from "./User";
@@ -36,7 +38,7 @@ class Address {
   @Column({ transformer: [lowercase] })
   state: string;
 
-  @Column({ transformer: [lowercase] })
+  @Column({ transformer: [initialUpperCase] })
   country: string;
 
   @ManyToMany(() => User, { cascade: true })
@@ -48,12 +50,15 @@ class Address {
   users?: User[];
 
   @CreateDateColumn()
+  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at?: Date;
 }
 

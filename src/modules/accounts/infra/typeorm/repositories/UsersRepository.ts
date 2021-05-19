@@ -5,15 +5,18 @@ import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDT
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { UserAddress } from "@modules/accounts/infra/typeorm/entities/UsersAddress";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 
 class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
   private repository_address: Repository<Address>;
+  private repository_user_address: Repository<UserAddress>;
 
   constructor() {
     this.repository = getRepository(User);
     this.repository_address = getRepository(Address);
+    this.repository_user_address = getRepository(UserAddress);
   }
   async createUserAddress({
     user,
@@ -25,21 +28,24 @@ class UsersRepository implements IUsersRepository {
     country,
     city,
   }: ICreateUserAddressClientDTO): Promise<User> {
-    const address = await this.repository_address.save({
-      zipcode,
-      street,
-      state,
-      number,
-      district,
-      country,
-      city,
+    const address_exist = await this.repository_address.findOne({
+      where: { street, number, zipcode, city },
     });
 
-    const address_find = await this.repository_address.findOne(address);
+    if (address_exist) {
+      const user_addresses = user;
+      user_addresses.addresses = [address_exist];
 
-    await this.repository.save({ ...user, addresses: [address_find] });
+      await this.repository.save(user_addresses);
 
-    return user;
+      return user_addresses;
+    }
+    const user_addresses = user;
+    user_addresses.addresses = [address_exist];
+
+    await this.repository.save(user_addresses);
+
+    return user_addresses;
   }
 
   async create({
