@@ -9,7 +9,7 @@ const router = Router();
 
 // router.use("/users", usersRoutes);
 router.use("/users/clients", clientsRoutes);
-router.use("/password", passwordRoutes);
+// router.use("/password", passwordRoutes);
 router.use(authenticateUsersRoutes);
 
 export { router };

@@ -6,5 +6,6 @@ interface ICreateUserClientDTO {
   email: string;
   password: string;
   birth_date: Date;
+  active?: boolean;
 }
 export { ICreateUserClientDTO };

@@ -7,6 +7,7 @@ import { AuthenticateUserUseCase } from "@modules/accounts/useCases/authenticate
 import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.services";
 import { DateFnsProvider } from "@shared/container/providers/DateProvider/implementations/DateFnsProvider";
 import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
+import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
 
 let authenticateUserUseCase: AuthenticateUserUseCase;
@@ -96,6 +97,11 @@ describe("Authenticate User", () => {
         email: user.email,
         password: "password",
       })
-    ).rejects.toEqual(new AppError({ message: "User password does match" }));
+    ).rejects.toEqual(
+      new AppError({
+        message: "User password does match",
+        status_code: HttpErrorCodes.UNAUTHORIZED,
+      })
+    );
   });
 });

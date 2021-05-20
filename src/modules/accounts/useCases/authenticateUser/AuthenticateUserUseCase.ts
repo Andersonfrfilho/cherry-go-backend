@@ -6,6 +6,7 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
+import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
 
 interface IResponse {
@@ -46,7 +47,10 @@ class AuthenticateUserUseCase {
     );
 
     if (!passwordHash) {
-      throw new AppError({ message: "User password does match" });
+      throw new AppError({
+        message: "User password does match",
+        status_code: HttpErrorCodes.UNAUTHORIZED,
+      });
     }
 
     const token = sign({}, secret.token, {

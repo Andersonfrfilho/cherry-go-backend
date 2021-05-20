@@ -1,22 +1,42 @@
 import faker from "faker";
 
+import { ICreateUserClientDTO } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
+interface ICreateUserParametersFactory
+  extends Partial<ICreateUserClientDTO>,
+    ParametersFactoryDTO {}
+
 class UsersFactory {
-  public generate({ quantity = 1 }: ParametersFactoryDTO): Omit<User, "id">[] {
+  public generate({
+    name,
+    last_name,
+    email,
+    rg,
+    cpf,
+    birth_date,
+    password = process.env.PASSWORD_USER_SEED_HASH,
+    active,
+    quantity = 1,
+  }: ICreateUserParametersFactory): Omit<User, "id">[] {
     const arrayUsers = Array.from(
       { length: quantity },
       (): Omit<User, "id"> => ({
-        name: faker.name.firstName(),
-        last_name: faker.name.lastName(),
-        email: faker.internet.email(),
-        birth_date: faker.date.past(),
-        cpf: faker.random.alphaNumeric(11),
-        rg: faker.random.alphaNumeric(10),
-        password_hash:
-          process.env.PASSWORD_USER_SEED_HASH || faker.internet.password(),
-        active: faker.datatype.boolean(),
+        name: name || faker.name.firstName(),
+        last_name: last_name || faker.name.lastName(),
+        email: email || faker.internet.email(),
+        birth_date: birth_date || faker.date.past(),
+        cpf:
+          rg ||
+          faker.datatype
+            .number({ min: 10000000000, max: 99999999999 })
+            .toString(),
+        rg:
+          cpf ||
+          faker.datatype.number({ min: 10000000, max: 999999999 }).toString(),
+        password_hash: password || faker.internet.password(),
+        active: active || faker.datatype.boolean(),
       })
     );
     return arrayUsers;

@@ -8,7 +8,10 @@ const authenticateUsersRoutes = Router();
 const createSpecificationController = new AuthenticatedUserController();
 const refreshTokenController = new RefreshTokenController();
 
-authenticateUsersRoutes.post("/sessions", createSpecificationController.handle);
+authenticateUsersRoutes.post(
+  "/users/sessions",
+  createSpecificationController.handle
+);
 authenticateUsersRoutes.post("/refresh-token", refreshTokenController.handle);
 
 export { authenticateUsersRoutes };

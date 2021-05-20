@@ -9,6 +9,7 @@ import swaggerUi from "swagger-ui-express";
 import upload from "@config/upload";
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
+import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
 import rateLimiter from "@shared/infra/http/middlewares/rateLimiter";
 import createConnection from "@shared/infra/typeorm";
@@ -17,7 +18,6 @@ import swaggerFile from "../../../swagger.json";
 import { router } from "./routes";
 
 import "@shared/container";
-import { HttpErrorCodes } from "@shared/enums/statusCode";
 
 createConnection();
 const app = express();
