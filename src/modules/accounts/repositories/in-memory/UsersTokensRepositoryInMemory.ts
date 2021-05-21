@@ -23,12 +23,10 @@ class UsersTokensRepositoryInMemory implements IUsersTokensRepository {
     user_id: string,
     refresh_token: string
   ): Promise<UserTokens> {
-    console.log("$$$$$$$$$$$$$$");
-    console.log(this.usersTokens);
+    const { refresh_token: token } = JSON.parse(refresh_token);
     const userToken = this.usersTokens.find(
       (userToken) =>
-        userToken.user_id === user_id &&
-        userToken.refresh_token === refresh_token
+        userToken.user_id === user_id && userToken.refresh_token === token
     );
     return userToken;
   }

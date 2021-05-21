@@ -1,12 +1,14 @@
 import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
+import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
+import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
 import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
 import { AppError } from "@shared/errors/AppError";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
-let usersRepositoryInMemory: UsersRepositoryInMemory;
+let usersRepositoryInMemory: IUsersRepository;
 let createUserService: CreateUserClientService;
-let hashProviderInMemory: HashProviderInMemory;
+let hashProviderInMemory: IHashProvider;
 
 describe("Create users clients service", () => {
   const usersFactory = new UsersFactory();

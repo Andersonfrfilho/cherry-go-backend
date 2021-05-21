@@ -1,19 +1,23 @@
 import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
 import { UsersTokensRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersTokensRepositoryInMemory";
+import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { AuthenticateUserService } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.service";
 import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
+import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { DateFnsProvider } from "@shared/container/providers/DateProvider/implementations/DateFnsProvider";
+import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
 import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
 import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let authenticateUserService: AuthenticateUserService;
-let usersRepositoryInMemory: UsersRepositoryInMemory;
-let usersTokensRepositoryInMemory: UsersTokensRepositoryInMemory;
+let usersRepositoryInMemory: IUsersRepository;
+let usersTokensRepositoryInMemory: IUsersTokensRepository;
 let createUserService: CreateUserClientService;
-let hashProviderInMemory: HashProviderInMemory;
-let dateProviderInMemory: DateFnsProvider;
+let hashProviderInMemory: IHashProvider;
+let dateProviderInMemory: IDateProvider;
 
 describe("Authenticate user service", () => {
   const usersFactory = new UsersFactory();

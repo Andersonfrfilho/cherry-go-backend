@@ -1,3 +1,5 @@
+import { datatype } from "faker";
+
 import {
   ICreateUserAddressClientDTO,
   ICreateUserClientDTO,
@@ -27,6 +29,7 @@ class UsersRepositoryInMemory implements IUsersRepository {
     }
 
     Object.assign(user, {
+      id: datatype.uuid(),
       name: name.toLowerCase(),
       last_name: last_name.toLowerCase(),
       email: email.toLowerCase(),
