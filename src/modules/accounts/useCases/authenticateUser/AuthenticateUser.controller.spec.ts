@@ -1,12 +1,12 @@
 import request from "supertest";
 import { Connection, createConnection } from "typeorm";
 
-import { HttpErrorCodes } from "@shared/enums/statusCode";
+import { HttpErrorCodes, HttpSuccessCode } from "@shared/enums/statusCode";
 import { app } from "@shared/infra/http/app";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
-describe("Create Category Controller", () => {
+describe("Create authenticated controller", () => {
   const usersFactory = new UsersFactory();
   const paths = {
     users_sessions: "/users/sessions",
@@ -29,7 +29,7 @@ describe("Create Category Controller", () => {
     await connection.dropDatabase();
     await connection.close();
   });
-  it("should be able to create a new category", async () => {
+  it("should be able to create a new token", async () => {
     // arrange
     const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
       quantity: 1,
@@ -56,7 +56,7 @@ describe("Create Category Controller", () => {
     });
 
     // assert
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(HttpSuccessCode.OK);
     expect(response.body).toEqual(
       expect.objectContaining({
         refresh_token: expect.any(String),
@@ -83,8 +83,7 @@ describe("Create Category Controller", () => {
       .post(paths.users_sessions)
       .send({ email, password: "invalid_password" });
 
-    expect(response.status).toBe(400);
-    // expect(JSON.parse(response.text)).toBe(400);
+    expect(response.status).toBe(HttpErrorCodes.BAD_REQUEST);
   });
 
   it("should not be able authenticated if incorrect password", async () => {

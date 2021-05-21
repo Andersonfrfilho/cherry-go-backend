@@ -1,35 +1,33 @@
-import { sign, verify } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
+import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
 import { AppError } from "@shared/errors/AppError";
-
-interface IPayload {
-  sub: string;
-  email: string;
-}
 
 interface ITokenResponse {
   token: string;
   refresh_token: string;
 }
 @injectable()
-class RefreshTokenUseCase {
+class RefreshTokenService {
   constructor(
     @inject("UsersTokensRepository")
     private usersTokensRepository: IUsersTokensRepository,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+    @inject("JwtProvider")
+    private jwtProvider: IJwtProvider
   ) {}
   async execute(token: string): Promise<ITokenResponse> {
-    const { email, sub } = verify(token, auth.secret.refresh) as IPayload;
-
-    const user_id = JSON.parse(sub);
+    const { email, sub } = this.jwtProvider.verifyJwt({
+      auth_secret: auth.secret.refresh,
+      token,
+    });
 
     const userToken = await this.usersTokensRepository.findByUserIdAndRefreshToken(
-      user_id,
+      sub.user.id,
       token
     );
 
@@ -39,9 +37,13 @@ class RefreshTokenUseCase {
 
     await this.usersTokensRepository.deleteById(userToken.id);
 
-    const refresh_token = sign({ email }, auth.secret.refresh, {
-      subject: sub,
-      expiresIn: auth.expires_in.refresh,
+    const refresh_token = this.jwtProvider.assign({
+      payload: { email },
+      secretOrPrivateKey: auth.secret.refresh,
+      options: {
+        expiresIn: auth.expires_in.refresh,
+        subject: sub,
+      },
     });
 
     const expires_date = this.dateProvider.addDays(
@@ -51,19 +53,23 @@ class RefreshTokenUseCase {
     await this.usersTokensRepository.create({
       expires_date,
       refresh_token,
-      user_id,
+      user_id: sub.user.id,
     });
 
-    const newToken = sign({}, auth.secret.token, {
-      subject: user_id,
-      expiresIn: auth.expires_in.token,
+    const new_token = this.jwtProvider.assign({
+      payload: {},
+      secretOrPrivateKey: auth.secret.token,
+      options: {
+        expiresIn: auth.expires_in.token,
+        subject: sub.user.id,
+      },
     });
 
     return {
-      refresh_token: newToken,
+      refresh_token: new_token,
       token,
     };
   }
 }
 
-export { RefreshTokenUseCase };
+export { RefreshTokenService };

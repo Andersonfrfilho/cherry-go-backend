@@ -1,29 +1,29 @@
-import faker from "faker";
-
-import { ICreateUserClientDTO } from "@modules/accounts/dtos";
 import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
 import { UsersTokensRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersTokensRepositoryInMemory";
-import { AuthenticateUserUseCase } from "@modules/accounts/useCases/authenticateUser/AuthenticateUserUseCase";
-import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.services";
+import { AuthenticateUserService } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.service";
+import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
 import { DateFnsProvider } from "@shared/container/providers/DateProvider/implementations/DateFnsProvider";
 import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
 import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
+import { UsersFactory } from "@shared/infra/typeorm/factories";
 
-let authenticateUserUseCase: AuthenticateUserUseCase;
+let authenticateUserService: AuthenticateUserService;
 let usersRepositoryInMemory: UsersRepositoryInMemory;
 let usersTokensRepositoryInMemory: UsersTokensRepositoryInMemory;
 let createUserService: CreateUserClientService;
 let hashProviderInMemory: HashProviderInMemory;
 let dateProviderInMemory: DateFnsProvider;
 
-describe("Authenticate User", () => {
+describe("Authenticate user service", () => {
+  const usersFactory = new UsersFactory();
+
   beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
     usersTokensRepositoryInMemory = new UsersTokensRepositoryInMemory();
     hashProviderInMemory = new HashProviderInMemory();
     dateProviderInMemory = new DateFnsProvider();
-    authenticateUserUseCase = new AuthenticateUserUseCase(
+    authenticateUserService = new AuthenticateUserService(
       usersRepositoryInMemory,
       usersTokensRepositoryInMemory,
       hashProviderInMemory,
@@ -36,21 +36,26 @@ describe("Authenticate User", () => {
   });
 
   it("should be able to authenticate an user", async () => {
-    const user: ICreateUserClientDTO = {
-      name: faker.name.firstName(),
-      last_name: faker.name.lastName(),
-      cpf: faker.random.alphaNumeric(11),
-      rg: faker.random.alphaNumeric(10),
-      email: faker.internet.email(),
-      password: faker.random.alphaNumeric(10),
-      birth_date: faker.date.past(),
-    };
+    const [
+      { name, last_name, cpf, rg, email, birth_date, password_hash },
+    ] = usersFactory.generate({
+      quantity: 1,
+      active: true,
+    });
 
-    await createUserService.execute(user);
+    await createUserService.execute({
+      name,
+      last_name,
+      cpf,
+      rg,
+      email,
+      birth_date,
+      password: password_hash,
+    });
 
-    const result = await authenticateUserUseCase.execute({
-      email: user.email,
-      password: user.password,
+    const result = await authenticateUserService.execute({
+      email,
+      password: password_hash,
     });
 
     expect(result).toEqual(
@@ -58,6 +63,7 @@ describe("Authenticate User", () => {
         refresh_token: expect.any(String),
         token: expect.any(String),
         user: expect.objectContaining({
+          id: expect.any(String),
           name: expect.any(String),
           last_name: expect.any(String),
           cpf: expect.any(String),
@@ -71,30 +77,40 @@ describe("Authenticate User", () => {
   });
 
   it("should not be able to authenticate an none existent user", async () => {
+    const [{ email, password_hash }] = usersFactory.generate({
+      quantity: 1,
+      active: true,
+    });
+
     await expect(
-      authenticateUserUseCase.execute({
-        email: "false@email.com",
-        password: "password",
+      authenticateUserService.execute({
+        email,
+        password: password_hash,
       })
     ).rejects.toEqual(new AppError({ message: "User not exist" }));
   });
 
   it("should not be able to authenticate with incorrect password", async () => {
-    const user: ICreateUserClientDTO = {
-      name: faker.name.firstName(),
-      last_name: faker.name.lastName(),
-      cpf: faker.random.alphaNumeric(11),
-      rg: faker.random.alphaNumeric(10),
-      email: faker.internet.email(),
-      password: faker.random.alphaNumeric(10),
-      birth_date: faker.date.past(),
-    };
+    const [
+      { name, last_name, cpf, rg, email, birth_date, password_hash },
+    ] = usersFactory.generate({
+      quantity: 1,
+      active: true,
+    });
 
-    await createUserService.execute(user);
+    await createUserService.execute({
+      name,
+      last_name,
+      cpf,
+      rg,
+      email,
+      birth_date,
+      password: password_hash,
+    });
 
     await expect(
-      authenticateUserUseCase.execute({
-        email: user.email,
+      authenticateUserService.execute({
+        email,
         password: "password",
       })
     ).rejects.toEqual(

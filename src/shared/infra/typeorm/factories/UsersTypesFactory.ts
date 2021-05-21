@@ -1,5 +1,3 @@
-import faker from "faker";
-
 import { UserTypes } from "@modules/accounts/enums/UserTypes";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 

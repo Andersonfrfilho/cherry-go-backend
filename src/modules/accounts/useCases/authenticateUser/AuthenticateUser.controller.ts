@@ -2,15 +2,15 @@ import { classToClass } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { AuthenticateUserUseCase } from "@modules/accounts/useCases/authenticateUser/AuthenticateUserUseCase";
+import { AuthenticateUserService } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.service";
 
 class AuthenticatedUserController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { password, email } = request.body;
 
-    const authenticateUserUseCase = container.resolve(AuthenticateUserUseCase);
+    const authenticateUserService = container.resolve(AuthenticateUserService);
 
-    const authenticateInfo = await authenticateUserUseCase.execute({
+    const authenticateInfo = await authenticateUserService.execute({
       email,
       password,
     });

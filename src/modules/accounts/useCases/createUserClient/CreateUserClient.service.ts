@@ -32,9 +32,7 @@ class CreateUserClientService {
     if (userAlreadyExists) {
       throw new AppError({ message: "User client already exist" });
     }
-
     const password_hash = await this.hashProvider.generateHash(password);
-
     const user = await this.usersRepository.create({
       name,
       last_name,

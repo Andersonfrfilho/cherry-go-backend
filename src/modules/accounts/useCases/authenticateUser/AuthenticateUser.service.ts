@@ -2,6 +2,7 @@ import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
@@ -10,9 +11,7 @@ import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
 
 interface IResponse {
-  user: {
-    email: string;
-  };
+  user: User;
   token: string;
   refresh_token: string;
 }
@@ -21,7 +20,7 @@ interface IRequest {
   password: string;
 }
 @injectable()
-class AuthenticateUserUseCase {
+class AuthenticateUserService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
@@ -80,4 +79,4 @@ class AuthenticateUserUseCase {
     };
   }
 }
-export { AuthenticateUserUseCase };
+export { AuthenticateUserService };

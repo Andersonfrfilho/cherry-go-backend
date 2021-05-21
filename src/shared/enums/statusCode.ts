@@ -7,4 +7,8 @@ enum HttpErrorCodes {
   INTERNAL_SERVER_ERROR = 500,
 }
 
-export { HttpErrorCodes };
+enum HttpSuccessCode {
+  OK = 200,
+}
+
+export { HttpErrorCodes, HttpSuccessCode };
