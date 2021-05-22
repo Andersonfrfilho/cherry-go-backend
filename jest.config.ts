@@ -141,4 +141,5 @@ export default {
 
   // The glob patterns Jest uses to detect test files
   testMatch: ["**/*.spec.ts"],
+  modulePathIgnorePatterns: ["dist", "node_modules", "coverage"],
 };

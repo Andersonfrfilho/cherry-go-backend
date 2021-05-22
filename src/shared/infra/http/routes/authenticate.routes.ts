@@ -12,6 +12,6 @@ authenticateUsersRoutes.post(
   "/users/sessions",
   createSpecificationController.handle
 );
-authenticateUsersRoutes.post("/refresh-token", refreshTokenController.handle);
+authenticateUsersRoutes.post("/refresh_token", refreshTokenController.handle);
 
 export { authenticateUsersRoutes };

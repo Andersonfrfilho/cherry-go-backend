@@ -1,88 +1,43 @@
 import request from "supertest";
-import { Connection, createConnection } from "typeorm";
+import {
+  Connection,
+  createConnection,
+  createConnections,
+  getRepository,
+} from "typeorm";
 
+import { UsersTokensRepository } from "@modules/tags/infra/typeorm/repositories/UsersTokensRepository";
 import { HttpErrorCodes, HttpSuccessCode } from "@shared/enums/statusCode";
 import { app } from "@shared/infra/http/app";
+import { typeormConfigTest } from "@shared/infra/typeorm/config/test";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
-describe("Create category controller", () => {
+describe("Create refresh token for authenticated user controller", () => {
   const usersFactory = new UsersFactory();
   const paths = {
     users_sessions: "/users/sessions",
     users_clients: "/users/clients",
+    refresh_token: "/refresh_token",
   };
   beforeAll(async () => {
-    connection = await createConnection("test");
+    [connection] = await createConnections(typeormConfigTest);
     await connection.runMigrations();
+    //   // const usersFactory = new UsersFactory();
+    //   // const [user] = usersFactory.generate({ quantity: 1 });
+    //   // await connection.getRepository(User).save(user);
+    //   //   const password = await hash("admin", 8);
+    //   //   await connection.query(`
+    //   //   INSERT INTO USERS(id,name, email, password, "isAdmin", created_at,driver_license)
+    //   //   values('${id}','admin','admin@rentx.com.br','${password}',true,'now()','XXXXX')
+    //   // `);
   });
 
   afterAll(async () => {
     await connection.dropDatabase();
     await connection.close();
   });
-  it("should be able to create a new user", async () => {
-    // arrange
-    const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
-      quantity: 1,
-      active: true,
-    });
-
-    // act
-    const response = await request(app)
-      .post(paths.users_clients)
-      .send({
-        name,
-        last_name,
-        cpf,
-        rg,
-        email,
-        password: "102030",
-        password_confirm: "102030",
-        birth_date: new Date(1995, 11, 17),
-      });
-
-    // assert
-    expect(response.status).toBe(HttpSuccessCode.OK);
-    expect(response.body).toEqual(
-      expect.objectContaining({
-        name: expect.any(String),
-        last_name: expect.any(String),
-        cpf: expect.any(String),
-        rg: expect.any(String),
-        email: expect.any(String),
-        active: expect.any(Boolean),
-      })
-    );
-  });
-
-  it("should not be create user minor", async () => {
-    // arrange
-    const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
-      quantity: 1,
-      active: true,
-    });
-
-    // act
-    const response = await request(app).post(paths.users_clients).send({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      password: "102030",
-      password_confirm: "102030",
-      birth_date: new Date(),
-    });
-
-    // assert
-    expect(response.status).toBe(HttpErrorCodes.BAD_REQUEST);
-    expect(response.body.validation.body.message).toBe(
-      "invalid date_birth, you are a minor"
-    );
-  });
-
-  it("should not be able to create a new user with same email", async () => {
+  it("should be able create refresh_token", async () => {
     // arrange
     const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
       quantity: 1,
@@ -103,21 +58,74 @@ describe("Create category controller", () => {
         birth_date: new Date(1995, 11, 17),
       });
 
-    const response = await request(app)
-      .post(paths.users_clients)
+    const {
+      body: { refresh_token },
+    } = await request(app).post(paths.users_sessions).send({
+      email,
+      password: "102030",
+    });
+
+    // act
+    const response_authenticated = await request(app)
+      .post(paths.refresh_token)
       .send({
-        name,
-        last_name,
-        cpf,
-        rg,
-        email,
-        password: "102030",
-        password_confirm: "102030",
-        birth_date: new Date(1995, 11, 17),
+        token: refresh_token,
       });
 
     // assert
-    expect(response.status).toBe(HttpErrorCodes.BAD_REQUEST);
-    expect(response.body.message).toBe("User client already exist");
+    expect(response_authenticated.status).toBe(HttpSuccessCode.OK);
+    expect(response_authenticated.body).toEqual(
+      expect.objectContaining({
+        refresh_token: expect.any(String),
+        token: expect.any(String),
+      })
+    );
   });
+
+  // it("should not be able create token inexistent token", async () => {
+  //   // arrange
+  //   const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+  //     quantity: 1,
+  //     active: true,
+  //   });
+
+  //   // act
+  //   await request(app)
+  //     .post(paths.users_clients)
+  //     .send({
+  //       name,
+  //       last_name,
+  //       cpf,
+  //       rg,
+  //       email,
+  //       password: "102030",
+  //       password_confirm: "102030",
+  //       birth_date: new Date(1995, 11, 17),
+  //     });
+
+  //   const {
+  //     body: { refresh_token },
+  //   } = await request(app).post(paths.users_sessions).send({
+  //     email,
+  //     password: "102030",
+  //   });
+  //   console.log(refresh_token);
+  //   const user_token = await connection
+  //     .getRepository("users_tokens")
+  //     .find({ where: { refresh_token } });
+  //   console.log(user_token);
+  //   await connection.getRepository("users_tokens").delete(user_token);
+  //   // act
+  //   await request(app).post(paths.refresh_token).send({
+  //     token: refresh_token,
+  //   });
+
+  //   const response = await request(app).post(paths.refresh_token).send({
+  //     token: refresh_token,
+  //   });
+
+  //   // assert
+  //   expect(response.status).toBe(HttpErrorCodes.BAD_REQUEST);
+  //   expect(response.body.message).toBe("Refresh Token does not exists!");
+  // });
 });

@@ -19,7 +19,7 @@ import { router } from "./routes";
 
 import "@shared/container";
 
-createConnection();
+createConnection(process.env.ENVIRONMENT);
 const app = express();
 
 if (process.env.ENVIRONMENT === "production") {

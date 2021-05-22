@@ -23,6 +23,7 @@
     "faker": "^5.5.3",
     "handlebars": "^4.7.7",
     "ioredis": "^4.27.1",
+    "jest-mock-extended": "^1.0.15",
     "jsonwebtoken": "^8.5.1",
     "mime": "^2.5.2",
     "mongodb": "^3.6.6",
@@ -48,7 +49,7 @@
     "start:prod": "node ./dist/shared/infra/http/server.js --experimental-modules",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",
     "seed:admin": "ts-node-dev -r tsconfig-paths/register src/shared/infra/typeorm/seed/admin.ts",
-    "test": "jest --runInBand --detectOpenHandles"
+    "test": "set ENVIRONMENT=test&&jest --runInBand --detectOpenHandles"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
