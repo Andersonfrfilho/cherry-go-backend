@@ -7,9 +7,9 @@ import {
 } from "typeorm";
 
 import { UsersTokensRepository } from "@modules/tags/infra/typeorm/repositories/UsersTokensRepository";
+import typeormConfigTest from "@root/ormconfig.test";
 import { HttpErrorCodes, HttpSuccessCode } from "@shared/enums/statusCode";
 import { app } from "@shared/infra/http/app";
-import { typeormConfigTest } from "@shared/infra/typeorm/config/test";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;

@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   {
     name: "default",
     type: "postgres",
@@ -7,15 +7,11 @@ module.exports = [
     username: process.env.POSTGRES_USER || "postgres",
     password: process.env.POSTGRES_PASSWORD || "102030",
     database: process.env.POSTGRES_DB || "cherry_go",
-    migrations: [
-      "./src/shared/infra/typeorm/migrations/*.ts"
-    ],
-    entities: [
-      "./src/modules/**/entities/*.ts"
-    ],
+    migrations: ["./src/shared/infra/typeorm/migrations/*.ts"],
+    entities: ["./src/modules/**/entities/*.ts"],
     cli: {
-      "migrationsDir": "./src/shared/infra/typeorm/migrations"
-    }
+      migrationsDir: "./src/shared/infra/typeorm/migrations",
+    },
   },
   {
     name: "seed",
@@ -25,15 +21,11 @@ module.exports = [
     username: process.env.POSTGRES_USER || "postgres",
     password: process.env.POSTGRES_PASSWORD || "102030",
     database: process.env.POSTGRES_DB || "cherry_go",
-    migrations: [
-      "./src/shared/infra/typeorm/seeds/*.ts"
-    ],
-    entities: [
-      "./src/modules/**/entities/*.ts"
-    ],
+    migrations: ["./src/shared/infra/typeorm/seeds/*.ts"],
+    entities: ["./src/modules/**/entities/*.ts"],
     cli: {
-      "migrationsDir": "./src/shared/infra/typeorm/seeds"
-    }
+      migrationsDir: "./src/shared/infra/typeorm/seeds",
+    },
   },
   {
     name: "mongo",
@@ -42,9 +34,7 @@ module.exports = [
     port: Number(process.env.MONGO_PORT) || 27017,
     database: process.env.MONGO_DATABASE || "cherry_go",
     useUnifiedTopology: true,
-    entities: [
-      "./src/modules/**/infra/typeorm/schemas/*.ts"
-    ]
+    entities: ["./src/modules/**/infra/typeorm/schemas/*.ts"],
   },
   // {
   //   name: "test",
@@ -64,4 +54,4 @@ module.exports = [
   //     "migrationsDir": "./src/shared/infra/typeorm/migrations"
   //   }
   // },
-]
+];

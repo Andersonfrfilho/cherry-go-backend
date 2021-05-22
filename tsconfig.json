@@ -22,6 +22,9 @@
       ],
       "@database/*": [
         "database/*"
+      ],
+      "@root/*": [
+        "../*"
       ]
     },
     "typeRoots": [
