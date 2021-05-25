@@ -7,7 +7,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
@@ -17,7 +17,7 @@ import { TransportType } from "@modules/transports/infra/typeorm/entities/Transp
 
 @Entity("transports")
 class Transport {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()

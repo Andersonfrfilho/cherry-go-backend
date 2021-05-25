@@ -1,19 +1,20 @@
 import request from "supertest";
-import { Connection, createConnection } from "typeorm";
+import { Connection, createConnections } from "typeorm";
 
+import typeormConfigTest from "@root/ormconfig.test";
 import { HttpErrorCodes, HttpSuccessCode } from "@shared/enums/statusCode";
 import { app } from "@shared/infra/http/app";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
-describe("Create authenticated controller", () => {
+describe("Create authenticate user controller", () => {
   const usersFactory = new UsersFactory();
   const paths = {
     users_sessions: "/users/sessions",
     users_clients: "/users/clients",
   };
   beforeAll(async () => {
-    connection = await createConnection("test");
+    [connection] = await createConnections(typeormConfigTest);
     await connection.runMigrations();
     //   // const usersFactory = new UsersFactory();
     //   // const [user] = usersFactory.generate({ quantity: 1 });
@@ -109,9 +110,25 @@ describe("Create authenticated controller", () => {
 
     const response = await request(app).post(paths.users_sessions).send({
       email,
-      password: "invalid_password",
+      password: "invalid_pswd",
     });
 
     expect(response.status).toBe(HttpErrorCodes.UNAUTHORIZED);
+  });
+
+  it("should not be able authenticated if incorrect account", async () => {
+    // arrange
+    const [{ email }] = usersFactory.generate({
+      quantity: 1,
+      active: true,
+    });
+
+    // act
+    const response = await request(app).post(paths.users_sessions).send({
+      email,
+      password: "invalid_pswd",
+    });
+
+    expect(response.status).toBe(HttpErrorCodes.BAD_REQUEST);
   });
 });

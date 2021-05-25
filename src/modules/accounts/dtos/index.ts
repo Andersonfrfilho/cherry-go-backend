@@ -3,6 +3,7 @@ import { ICreateUserAddressClientRequestDTO } from "@modules/accounts/dtos/ICrea
 import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
 import { ICreateUserTokenDTO } from "@modules/accounts/dtos/ICreateUserTokenDTO";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
+import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
 import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
 
 export {
@@ -12,4 +13,5 @@ export {
   IUserResponseDTO,
   ICreateUserAddressClientDTO,
   ICreateUserAddressClientRequestDTO,
+  IUpdatedUserClientDTO,
 };

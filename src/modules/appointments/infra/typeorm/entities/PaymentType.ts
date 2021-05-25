@@ -4,7 +4,7 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
@@ -12,7 +12,7 @@ import { Provider } from "@modules/accounts/infra/typeorm/entities/Providers";
 
 @Entity("payments_types")
 class PaymentType {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()

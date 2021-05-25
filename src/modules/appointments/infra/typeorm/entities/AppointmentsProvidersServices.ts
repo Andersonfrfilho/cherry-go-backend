@@ -5,18 +5,17 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Providers";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
-
-import { Appointment } from "./Appointments";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 
 @Entity("appointments_providers_services")
 class AppointmentProviderService {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()

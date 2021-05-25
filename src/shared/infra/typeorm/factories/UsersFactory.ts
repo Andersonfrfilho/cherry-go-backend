@@ -1,11 +1,10 @@
 import faker from "faker";
 
-import { ICreateUserClientDTO } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
 interface ICreateUserParametersFactory
-  extends Partial<ICreateUserClientDTO>,
+  extends Partial<User>,
     ParametersFactoryDTO {}
 
 class UsersFactory {
@@ -16,7 +15,7 @@ class UsersFactory {
     rg,
     cpf,
     birth_date,
-    password = process.env.PASSWORD_USER_SEED_HASH,
+    password_hash = process.env.PASSWORD_USER_SEED_HASH,
     active,
     quantity = 1,
   }: ICreateUserParametersFactory): Omit<User, "id">[] {
@@ -35,7 +34,7 @@ class UsersFactory {
         rg:
           cpf ||
           faker.datatype.number({ min: 10000000, max: 999999999 }).toString(),
-        password_hash: password || faker.internet.password(),
+        password_hash: password_hash || faker.internet.password(),
         active: active || faker.datatype.boolean(),
       })
     );

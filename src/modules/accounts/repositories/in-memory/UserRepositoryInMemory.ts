@@ -70,6 +70,7 @@ class UsersRepositoryInMemory implements IUsersRepository {
     const address = new Address();
 
     Object.assign(address, {
+      id: datatype.uuid(),
       city,
       country,
       district,

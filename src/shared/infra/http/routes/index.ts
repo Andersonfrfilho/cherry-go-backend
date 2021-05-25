@@ -7,7 +7,7 @@ import { clientsRoutes } from "@shared/infra/http/routes/users/clients.routes";
 const router = Router();
 
 router.use("/users/clients", clientsRoutes);
-// router.use("/password", passwordRoutes);
+router.use("/password", passwordRoutes);
 router.use(authenticateUsersRoutes);
 
 export { router };

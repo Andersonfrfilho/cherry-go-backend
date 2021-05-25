@@ -3,9 +3,8 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
   ManyToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
@@ -13,7 +12,7 @@ import { User } from "./User";
 
 @Entity("types_users")
 class TypeUser {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()
@@ -22,7 +21,7 @@ class TypeUser {
   @Column()
   active: boolean;
 
-  @ManyToMany((type) => User, (user) => user.types)
+  @ManyToMany(() => User, (user) => user.types)
   users?: User[];
 
   @CreateDateColumn()

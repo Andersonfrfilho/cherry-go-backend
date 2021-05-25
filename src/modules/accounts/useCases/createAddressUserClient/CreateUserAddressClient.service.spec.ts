@@ -1,17 +1,24 @@
 import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
 import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
 import { AppError } from "@shared/errors/AppError";
-import { UsersFactory } from "@shared/infra/typeorm/factories";
+import {
+  UsersFactory,
+  AddressesFactory,
+} from "@shared/infra/typeorm/factories";
+
+import { CreateUserClientService } from "../createUserClient/CreateUserClient.service";
+import { CreateUserAddressClientService } from "./CreateUserAddressClient.services";
 
 let usersRepositoryInMemory: IUsersRepository;
 let createUserService: CreateUserClientService;
+let createUserAddressService: CreateUserAddressClientService;
 let hashProviderInMemory: IHashProvider;
 
-describe("Create users clients service", () => {
+describe("Create address users clients service", () => {
   const usersFactory = new UsersFactory();
+  const addressesFactory = new AddressesFactory();
 
   beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
@@ -19,6 +26,9 @@ describe("Create users clients service", () => {
     createUserService = new CreateUserClientService(
       usersRepositoryInMemory,
       hashProviderInMemory
+    );
+    createUserAddressService = new CreateUserAddressClientService(
+      usersRepositoryInMemory
     );
   });
 
@@ -33,15 +43,25 @@ describe("Create users clients service", () => {
       "generateHash"
     );
     const usersRepositoryCreate = jest.spyOn(usersRepositoryInMemory, "create");
-
+    const usersRepositoryFindById = jest.spyOn(
+      usersRepositoryInMemory,
+      "findById"
+    );
+    const usersRepositoryCreateUserAddress = jest.spyOn(
+      usersRepositoryInMemory,
+      "createUserAddress"
+    );
     const [
       { name, last_name, cpf, rg, email, birth_date, password_hash },
     ] = usersFactory.generate({
       quantity: 1,
       active: true,
     });
+    const [address] = addressesFactory.generate({
+      quantity: 1,
+    });
     // act
-    const result = await createUserService.execute({
+    const { id } = await createUserService.execute({
       name,
       last_name,
       cpf,
@@ -49,6 +69,11 @@ describe("Create users clients service", () => {
       email,
       birth_date,
       password: password_hash,
+    });
+
+    const result = await createUserAddressService.execute({
+      user_id: id,
+      ...address,
     });
 
     // assert
@@ -67,6 +92,8 @@ describe("Create users clients service", () => {
       birth_date,
       password: password_hash,
     });
+    expect(usersRepositoryFindById).toHaveBeenCalledWith(id);
+    expect(usersRepositoryCreateUserAddress).toHaveBeenCalled();
     expect(result).toEqual(
       expect.objectContaining({
         id: expect.any(String),
@@ -77,71 +104,40 @@ describe("Create users clients service", () => {
         email: expect.any(String),
         password_hash: expect.any(String),
         birth_date: expect.any(Date),
+        addresses: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            street: expect.any(String),
+            number: expect.any(String),
+            zipcode: expect.any(String),
+            district: expect.any(String),
+            city: expect.any(String),
+            state: expect.any(String),
+            country: expect.any(String),
+          }),
+        ]),
       })
     );
   });
 
-  it("not should able to create user already email exist", async () => {
+  it("not should able to create user address if user is not exist", async () => {
     // arrange
-    const usersRepositoryFindUserByEmailCpfRg = jest.spyOn(
+    const usersRepositoryFindById = jest.spyOn(
       usersRepositoryInMemory,
-      "findUserByEmailCpfRg"
+      "findById"
     );
-    const hashProviderGenerateHash = jest.spyOn(
-      hashProviderInMemory,
-      "generateHash"
-    );
-    const usersRepositoryCreate = jest.spyOn(usersRepositoryInMemory, "create");
-    const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({
-      quantity: 1,
-      active: true,
-    });
 
-    // act
-    await createUserService.execute({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
+    const [address] = addressesFactory.generate({
+      quantity: 1,
     });
 
     // assert
-    expect(usersRepositoryFindUserByEmailCpfRg).toHaveBeenCalledWith({
-      cpf,
-      rg,
-      email,
-    });
-    expect(hashProviderGenerateHash).toHaveBeenCalledWith(password_hash);
-    expect(usersRepositoryCreate).toHaveBeenCalledWith({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
-
     await expect(
-      createUserService.execute({
-        name,
-        last_name,
-        cpf,
-        rg,
-        email,
-        birth_date,
-        password: password_hash,
+      createUserAddressService.execute({
+        user_id: "id_invalid",
+        ...address,
       })
-    ).rejects.toEqual(new AppError({ message: "User client already exist" }));
-    expect(usersRepositoryFindUserByEmailCpfRg).toHaveBeenCalledWith({
-      cpf,
-      rg,
-      email,
-    });
+    ).rejects.toEqual(new AppError({ message: "User client not exist" }));
+    expect(usersRepositoryFindById).toHaveBeenCalledWith("id_invalid");
   });
 });

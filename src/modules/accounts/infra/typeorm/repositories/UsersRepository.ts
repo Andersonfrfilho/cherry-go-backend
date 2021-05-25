@@ -3,6 +3,7 @@ import { getRepository, Repository } from "typeorm";
 import { ICreateUserAddressClientDTO } from "@modules/accounts/dtos";
 import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
+import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UserAddress } from "@modules/accounts/infra/typeorm/entities/UsersAddress";
@@ -16,7 +17,6 @@ class UsersRepository implements IUsersRepository {
   constructor() {
     this.repository = getRepository(User);
     this.repository_address = getRepository(Address);
-    this.repository_user_address = getRepository(UserAddress);
   }
   async createUserAddress({
     user,
@@ -36,16 +36,27 @@ class UsersRepository implements IUsersRepository {
       const user_addresses = user;
       user_addresses.addresses = [address_exist];
 
-      await this.repository.save(user_addresses);
+      const user_saved = await this.repository.save(user_addresses);
 
-      return user_addresses;
+      return user_saved;
     }
-    const user_addresses = user;
-    user_addresses.addresses = [address_exist];
+    const address = this.repository_address.create({
+      zipcode,
+      street,
+      state,
+      number,
+      district,
+      country,
+      city,
+    });
+    const user_address = this.repository.create({
+      ...user,
+      addresses: [address],
+    });
 
-    await this.repository.save(user_addresses);
+    const user_saved = await this.repository.save(user_address);
 
-    return user_addresses;
+    return user_saved;
   }
 
   async create({
@@ -94,6 +105,15 @@ class UsersRepository implements IUsersRepository {
     cpf,
   }: IFindUserEmailCpfRgDTO): Promise<User> {
     return this.repository.findOne({ where: [{ email }, { cpf }, { rg }] });
+  }
+  async updatePasswordUser({
+    id,
+    password_hash,
+  }: IUpdatedUserClientDTO): Promise<any> {
+    const user = await this.repository.update(id, {
+      password_hash,
+    });
+    return user;
   }
 }
 export { UsersRepository };

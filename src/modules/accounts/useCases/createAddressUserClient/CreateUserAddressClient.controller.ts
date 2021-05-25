@@ -20,7 +20,7 @@ class CreateUserAddressClientController {
       CreateUserAddressClientService
     );
 
-    const user = await createUserClientService.execute({
+    const user_address = await createUserClientService.execute({
       user_id: id,
       street,
       number,
@@ -31,7 +31,7 @@ class CreateUserAddressClientController {
       country,
     });
 
-    return response.json(classToClass(user));
+    return response.json(classToClass(user_address));
   }
 }
 export { CreateUserAddressClientController };

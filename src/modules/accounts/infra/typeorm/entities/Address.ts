@@ -6,7 +6,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
@@ -17,7 +17,7 @@ import { User } from "./User";
 
 @Entity("addresses")
 class Address {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column({ transformer: [lowercase] })

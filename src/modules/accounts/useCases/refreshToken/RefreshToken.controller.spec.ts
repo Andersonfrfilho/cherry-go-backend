@@ -1,12 +1,7 @@
 import request from "supertest";
-import {
-  Connection,
-  createConnection,
-  createConnections,
-  getRepository,
-} from "typeorm";
+import { Connection, createConnections } from "typeorm";
 
-import { UsersTokensRepository } from "@modules/tags/infra/typeorm/repositories/UsersTokensRepository";
+import { UserTokens } from "@modules/accounts/infra/typeorm/entities/UserTokens";
 import typeormConfigTest from "@root/ormconfig.test";
 import { HttpErrorCodes, HttpSuccessCode } from "@shared/enums/statusCode";
 import { app } from "@shared/infra/http/app";
@@ -82,50 +77,138 @@ describe("Create refresh token for authenticated user controller", () => {
     );
   });
 
-  // it("should not be able create token inexistent token", async () => {
-  //   // arrange
-  //   const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
-  //     quantity: 1,
-  //     active: true,
-  //   });
+  it("should be able create refresh_token send token by query string params", async () => {
+    // arrange
+    const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      quantity: 1,
+      active: true,
+    });
 
-  //   // act
-  //   await request(app)
-  //     .post(paths.users_clients)
-  //     .send({
-  //       name,
-  //       last_name,
-  //       cpf,
-  //       rg,
-  //       email,
-  //       password: "102030",
-  //       password_confirm: "102030",
-  //       birth_date: new Date(1995, 11, 17),
-  //     });
+    // act
+    await request(app)
+      .post(paths.users_clients)
+      .send({
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        password: "102030",
+        password_confirm: "102030",
+        birth_date: new Date(1995, 11, 17),
+      });
 
-  //   const {
-  //     body: { refresh_token },
-  //   } = await request(app).post(paths.users_sessions).send({
-  //     email,
-  //     password: "102030",
-  //   });
-  //   console.log(refresh_token);
-  //   const user_token = await connection
-  //     .getRepository("users_tokens")
-  //     .find({ where: { refresh_token } });
-  //   console.log(user_token);
-  //   await connection.getRepository("users_tokens").delete(user_token);
-  //   // act
-  //   await request(app).post(paths.refresh_token).send({
-  //     token: refresh_token,
-  //   });
+    const {
+      body: { refresh_token },
+    } = await request(app).post(paths.users_sessions).send({
+      email,
+      password: "102030",
+    });
 
-  //   const response = await request(app).post(paths.refresh_token).send({
-  //     token: refresh_token,
-  //   });
+    // act
+    const response_authenticated = await request(app)
+      .post(paths.refresh_token)
+      .query({
+        token: refresh_token,
+      });
 
-  //   // assert
-  //   expect(response.status).toBe(HttpErrorCodes.BAD_REQUEST);
-  //   expect(response.body.message).toBe("Refresh Token does not exists!");
-  // });
+    // assert
+    expect(response_authenticated.status).toBe(HttpSuccessCode.OK);
+    expect(response_authenticated.body).toEqual(
+      expect.objectContaining({
+        refresh_token: expect.any(String),
+        token: expect.any(String),
+      })
+    );
+  });
+
+  it("should be able create refresh_token send token by headers", async () => {
+    // arrange
+    const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      quantity: 1,
+      active: true,
+    });
+
+    // act
+    await request(app)
+      .post(paths.users_clients)
+      .send({
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        password: "102030",
+        password_confirm: "102030",
+        birth_date: new Date(1995, 11, 17),
+      });
+
+    const {
+      body: { refresh_token },
+    } = await request(app).post(paths.users_sessions).send({
+      email,
+      password: "102030",
+    });
+
+    // act
+    const response_authenticated = await request(app)
+      .post(paths.refresh_token)
+      .set({ "x-access-tokens": refresh_token });
+
+    // assert
+    expect(response_authenticated.status).toBe(HttpSuccessCode.OK);
+    expect(response_authenticated.body).toEqual(
+      expect.objectContaining({
+        refresh_token: expect.any(String),
+        token: expect.any(String),
+      })
+    );
+  });
+
+  it("should not be able create token inexistent token", async () => {
+    // arrange
+    const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      quantity: 1,
+      active: true,
+    });
+
+    // act
+    await request(app)
+      .post(paths.users_clients)
+      .send({
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        password: "102030",
+        password_confirm: "102030",
+        birth_date: new Date(1995, 11, 17),
+      });
+
+    const {
+      body: { refresh_token },
+    } = await request(app).post(paths.users_sessions).send({
+      email,
+      password: "102030",
+    });
+
+    const user_token = await connection
+      .getRepository(UserTokens)
+      .find({ where: { refresh_token } });
+
+    await connection.getRepository("users_tokens").delete(user_token);
+    // act
+    await request(app).post(paths.refresh_token).send({
+      token: refresh_token,
+    });
+
+    const response = await request(app).post(paths.refresh_token).send({
+      token: refresh_token,
+    });
+
+    // assert
+    expect(response.status).toBe(HttpErrorCodes.BAD_REQUEST);
+    expect(response.body.message).toBe("Refresh Token does not exists!");
+  });
 });

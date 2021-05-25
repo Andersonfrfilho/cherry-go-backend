@@ -6,7 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
@@ -15,7 +15,7 @@ import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transa
 
 @Entity("transactions_events")
 class TransactionEvent {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()

@@ -1,19 +1,20 @@
 import request from "supertest";
-import { Connection, createConnection } from "typeorm";
+import { Connection, createConnections } from "typeorm";
 
+import typeormConfigTest from "@root/ormconfig.test";
 import { HttpErrorCodes, HttpSuccessCode } from "@shared/enums/statusCode";
 import { app } from "@shared/infra/http/app";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
-describe("Create category controller", () => {
+describe("Create users clients controller", () => {
   const usersFactory = new UsersFactory();
   const paths = {
     users_sessions: "/users/sessions",
     users_clients: "/users/clients",
   };
   beforeAll(async () => {
-    connection = await createConnection("test");
+    [connection] = await createConnections(typeormConfigTest);
     await connection.runMigrations();
   });
 

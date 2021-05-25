@@ -1,6 +1,7 @@
 import {
   ICreateUserClientDTO,
   ICreateUserAddressClientDTO,
+  IUpdatedUserClientDTO,
 } from "@modules/accounts/dtos";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -17,6 +18,10 @@ interface IUsersRepository {
     rg,
     cpf,
   }: IFindUserEmailCpfRgDTO): Promise<User>;
+  updatePasswordUser({
+    id,
+    password_hash,
+  }: IUpdatedUserClientDTO): Promise<any>;
 }
 
 export { IUsersRepository };
