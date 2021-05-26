@@ -4,6 +4,7 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
+import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
 
 interface IRequest {
@@ -24,20 +25,24 @@ class ResetPasswordService {
     private hashProvider: IHashProvider
   ) {}
   async execute({ token, password }: IRequest): Promise<void> {
+    console.log(token, password);
     const userToken = await this.usersTokensRepository.findByRefreshToken(
       token
     );
-
+    console.log("chasdasd");
     if (!userToken) {
       throw new AppError({ message: "Token invalid!" });
     }
 
     if (this.dateProvider.compareIfBefore(userToken.expires_date, new Date())) {
-      throw new AppError({ message: "Token expired!" });
+      throw new AppError({
+        message: "Token expired!",
+        status_code: HttpErrorCodes.UNAUTHORIZED,
+      });
     }
 
     const password_hash = await this.hashProvider.generateHash(password);
-
+    console.log("chasdasd");
     await this.usersRepository.updatePasswordUser({
       id: userToken.user_id,
       password_hash,

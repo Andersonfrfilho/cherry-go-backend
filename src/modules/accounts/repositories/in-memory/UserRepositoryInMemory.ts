@@ -4,6 +4,7 @@ import {
   ICreateUserAddressClientDTO,
   ICreateUserClientDTO,
   IFindUserEmailCpfRgDTO,
+  IUpdatedUserClientDTO,
 } from "@modules/accounts/dtos";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -13,6 +14,16 @@ import { AppError } from "@shared/errors/AppError";
 class UsersRepositoryInMemory implements IUsersRepository {
   users: User[] = [];
   addresses: Address[] = [];
+
+  async updatePasswordUser({
+    id,
+    password_hash,
+  }: IUpdatedUserClientDTO): Promise<any> {
+    const index = this.users.findIndex((user) => user.id === id);
+    this.users[index].password_hash = password_hash;
+    return this.users[index];
+  }
+
   async create({
     name,
     last_name,

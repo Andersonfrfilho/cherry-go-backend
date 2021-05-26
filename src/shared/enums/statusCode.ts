@@ -9,6 +9,7 @@ enum HttpErrorCodes {
 
 enum HttpSuccessCode {
   OK = 200,
+  NO_CONTENT = 204,
 }
 
 export { HttpErrorCodes, HttpSuccessCode };

@@ -6,13 +6,11 @@ import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpf
 import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { UserAddress } from "@modules/accounts/infra/typeorm/entities/UsersAddress";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 
 class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
   private repository_address: Repository<Address>;
-  private repository_user_address: Repository<UserAddress>;
 
   constructor() {
     this.repository = getRepository(User);

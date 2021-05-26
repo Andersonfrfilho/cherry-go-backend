@@ -1,5 +1,7 @@
 import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { CreateUserAddressClientService } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.service";
+import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
 import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
 import { AppError } from "@shared/errors/AppError";
@@ -7,9 +9,6 @@ import {
   UsersFactory,
   AddressesFactory,
 } from "@shared/infra/typeorm/factories";
-
-import { CreateUserClientService } from "../createUserClient/CreateUserClient.service";
-import { CreateUserAddressClientService } from "./CreateUserAddressClient.services";
 
 let usersRepositoryInMemory: IUsersRepository;
 let createUserService: CreateUserClientService;

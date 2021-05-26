@@ -2,7 +2,7 @@ import { classToClass } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { CreateUserAddressClientService } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.services";
+import { CreateUserAddressClientService } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.service";
 
 class CreateUserAddressClientController {
   async handle(request: Request, response: Response): Promise<Response> {

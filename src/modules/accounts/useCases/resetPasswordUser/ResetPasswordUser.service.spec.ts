@@ -1,69 +1,220 @@
-import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
 import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
 import { UsersTokensRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersTokensRepositoryInMemory";
-import { AuthenticateUserUseCase } from "@modules/accounts/useCases/authenticateUser/AuthenticateUserUseCase";
-import { CreateUserUseCase } from "@modules/accounts/useCases/createUser/CreateUserUseCase";
-import { DayjsDateProvider } from "@shared/container/providers/DateProvider/implementations/DayjsDateProvider";
+import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
+import { AuthenticateUserService } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.service";
+import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
+import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
+import { DateFnsProvider } from "@shared/container/providers/DateProvider/implementations/DateFnsProvider";
+import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
+import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
+import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
+import { UsersFactory } from "@shared/infra/typeorm/factories";
 
-let authenticateUserUseCase: AuthenticateUserUseCase;
-let usersRepositoryInMemory: UsersRepositoryInMemory;
-let usersTokensRepositoryInMemory: UsersTokensRepositoryInMemory;
-let dateProvider: DayjsDateProvider;
+import { ResetPasswordService } from "./ResetPasswordUser.service";
 
-let createUserUseCase: CreateUserUseCase;
+let authenticateUserService: AuthenticateUserService;
+let usersRepositoryInMemory: IUsersRepository;
+let usersTokensRepositoryInMemory: IUsersTokensRepository;
+let createUserService: CreateUserClientService;
+let hashProviderInMemory: IHashProvider;
+let dateProvider: IDateProvider;
+let resetPasswordService: ResetPasswordService;
 
-describe("Authenticate User", () => {
+describe("Reset Password user service", () => {
+  const usersFactory = new UsersFactory();
+
   beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
+    hashProviderInMemory = new HashProviderInMemory();
+    dateProvider = new DateFnsProvider();
+    createUserService = new CreateUserClientService(
+      usersRepositoryInMemory,
+      hashProviderInMemory
+    );
     usersTokensRepositoryInMemory = new UsersTokensRepositoryInMemory();
-    dateProvider = new DayjsDateProvider();
-
-    authenticateUserUseCase = new AuthenticateUserUseCase(
+    authenticateUserService = new AuthenticateUserService(
       usersRepositoryInMemory,
       usersTokensRepositoryInMemory,
+      hashProviderInMemory,
       dateProvider
     );
-    createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
+    resetPasswordService = new ResetPasswordService(
+      usersTokensRepositoryInMemory,
+      dateProvider,
+      usersRepositoryInMemory,
+      hashProviderInMemory
+    );
   });
 
-  it("should be able to authenticate an user", async () => {
-    const user: ICreateUserDTO = {
-      driver_license: "000123",
-      email: "user@test.com",
-      password: "1234",
-      name: "User Test",
-    };
-    await createUserUseCase.execute(user);
-    const result = await authenticateUserUseCase.execute({
-      email: user.email,
-      password: user.password,
+  it("should be able to reset password an user", async () => {
+    const usersTokensRepositoryFindByRefreshToken = jest.spyOn(
+      usersTokensRepositoryInMemory,
+      "findByRefreshToken"
+    );
+    const dateProviderCompareIfBefore = jest.spyOn(
+      dateProvider,
+      "compareIfBefore"
+    );
+    const hashProviderGenerateHash = jest.spyOn(
+      hashProviderInMemory,
+      "generateHash"
+    );
+    const usersRepositoryUpdatePasswordUser = jest.spyOn(
+      usersRepositoryInMemory,
+      "updatePasswordUser"
+    );
+    const usersTokensRepositoryDeleteById = jest.spyOn(
+      usersRepositoryInMemory,
+      "updatePasswordUser"
+    );
+    // jest
+    //   .spyOn<any, any>(usersTokensRepositoryInMemory, "findByRefreshToken")
+    //   .mockImplementation(() => {
+    //     return "token_valid";
+    //   });
+
+    // jest
+    //   .spyOn<any, any>(dateProvider, "compareIfBefore")
+    //   .mockImplementation(() => {
+    //     return false;
+    //   });
+
+    // jest
+    //   .spyOn<any, any>(hashProviderInMemory, "generateHash")
+    //   .mockImplementation(() => {
+    //     return "password_hash";
+    //   });
+
+    // jest
+    //   .spyOn<any, any>(usersRepositoryInMemory, "updatePasswordUser")
+    //   .mockImplementation();
+
+    // const data = jest
+    //   .spyOn<any, any>(usersTokensRepositoryInMemory, "deleteById")
+    //   .mockImplementation();
+
+    const [
+      { name, last_name, cpf, rg, email, birth_date, password_hash },
+    ] = usersFactory.generate({
+      quantity: 1,
+      active: true,
     });
-    expect(result).toHaveProperty("token");
+
+    await createUserService.execute({
+      name,
+      last_name,
+      cpf,
+      rg,
+      email,
+      birth_date,
+      password: password_hash,
+    });
+
+    const { refresh_token } = await authenticateUserService.execute({
+      email,
+      password: password_hash,
+    });
+
+    await resetPasswordService.execute({
+      token: refresh_token,
+      password: "102030",
+    });
+    expect(usersTokensRepositoryFindByRefreshToken).toHaveBeenCalled();
+    expect(dateProviderCompareIfBefore).toHaveBeenCalled();
+    expect(hashProviderGenerateHash).toHaveBeenCalled();
+    expect(usersRepositoryUpdatePasswordUser).toHaveBeenCalled();
+    expect(usersTokensRepositoryDeleteById).toHaveBeenCalled();
   });
 
-  it("should not be able to authenticate an none existent user", async () => {
+  it("should not be able to reset password if token invalid", async () => {
+    const usersTokensRepositoryFindByRefreshToken = jest.spyOn(
+      usersTokensRepositoryInMemory,
+      "findByRefreshToken"
+    );
+
+    const [
+      { name, last_name, cpf, rg, email, birth_date, password_hash },
+    ] = usersFactory.generate({
+      quantity: 1,
+      active: true,
+    });
+
+    await createUserService.execute({
+      name,
+      last_name,
+      cpf,
+      rg,
+      email,
+      birth_date,
+      password: password_hash,
+    });
+
+    const { token } = await authenticateUserService.execute({
+      email,
+      password: password_hash,
+    });
+
     await expect(
-      authenticateUserUseCase.execute({
-        email: "false@email.com",
-        password: "password",
+      resetPasswordService.execute({
+        token,
+        password: "102030",
       })
-    ).rejects.toEqual(new AppError({ message: "User not exist" }));
+    ).rejects.toEqual(
+      new AppError({
+        message: "Token invalid!",
+        status_code: HttpErrorCodes.BAD_REQUEST,
+      })
+    );
+    expect(usersTokensRepositoryFindByRefreshToken).toHaveBeenCalled();
   });
 
-  it("should not be able to authenticate with incorrect password", async () => {
-    const user: ICreateUserDTO = {
-      driver_license: "000123",
-      email: "user@test.com",
-      password: "1234",
-      name: "User Test",
-    };
-    await createUserUseCase.execute(user);
+  it("should not be able to reset password if token invalid", async () => {
+    const usersTokensRepositoryFindByRefreshToken = jest.spyOn(
+      usersTokensRepositoryInMemory,
+      "findByRefreshToken"
+    );
+    const dateProviderCompareIfBefore = jest
+      .spyOn(dateProvider, "compareIfBefore")
+      .mockImplementation(() => {
+        return true;
+      });
+
+    const [
+      { name, last_name, cpf, rg, email, birth_date, password_hash },
+    ] = usersFactory.generate({
+      quantity: 1,
+      active: true,
+    });
+    await createUserService.execute({
+      name,
+      last_name,
+      cpf,
+      rg,
+      email,
+      birth_date,
+      password: password_hash,
+    });
+
+    const { refresh_token } = await authenticateUserService.execute({
+      email,
+      password: password_hash,
+    });
+
     await expect(
-      authenticateUserUseCase.execute({
-        email: user.email,
-        password: "password",
+      resetPasswordService.execute({
+        token: refresh_token,
+        password: "102030",
       })
-    ).rejects.toEqual(new AppError({ message: "User not exist" }));
+    ).rejects.toEqual(
+      new AppError({
+        message: "Token expired!",
+        status_code: HttpErrorCodes.UNAUTHORIZED,
+      })
+    );
+
+    expect(usersTokensRepositoryFindByRefreshToken).toHaveBeenCalled();
+    expect(dateProviderCompareIfBefore).toHaveBeenCalled();
   });
 });
