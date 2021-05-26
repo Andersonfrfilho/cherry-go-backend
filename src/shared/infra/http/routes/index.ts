@@ -1,13 +1,9 @@
 import { Router } from "express";
 
-import { authenticateUsersRoutes } from "@shared/infra/http/routes/authenticate.routes";
-import { passwordRoutes } from "@shared/infra/http/routes/password.routes";
-import { clientsRoutes } from "@shared/infra/http/routes/users/clients.routes";
+import { v1 } from "@shared/infra/http/routes/v1";
 
 const router = Router();
 
-router.use("/users/clients", clientsRoutes);
-router.use("/password", passwordRoutes);
-router.use(authenticateUsersRoutes);
+router.use("/v1", v1);
 
 export { router };

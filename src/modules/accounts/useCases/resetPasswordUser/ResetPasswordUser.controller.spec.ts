@@ -10,9 +10,9 @@ let connection: Connection;
 describe("Create reset password controller", () => {
   const usersFactory = new UsersFactory();
   const paths = {
-    users_sessions: "/users/sessions",
-    users_clients: "/users/clients",
-    password_reset: "/password/reset",
+    users_sessions: "/v1/users/sessions",
+    users_clients: "/v1/users/clients",
+    password_reset: "/v1/password/reset",
   };
   beforeAll(async () => {
     [connection] = await createConnections(typeormConfigTest);

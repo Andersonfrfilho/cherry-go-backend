@@ -10,8 +10,8 @@ let connection: Connection;
 describe("Create authenticate user controller", () => {
   const usersFactory = new UsersFactory();
   const paths = {
-    users_sessions: "/users/sessions",
-    users_clients: "/users/clients",
+    users_sessions: "/v1/users/sessions",
+    users_clients: "/v1/users/clients",
   };
   beforeAll(async () => {
     [connection] = await createConnections(typeormConfigTest);

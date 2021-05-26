@@ -14,9 +14,9 @@ describe("Create address users clients controller", () => {
   const usersFactory = new UsersFactory();
   const addressesFactory = new AddressesFactory();
   const paths = {
-    users_sessions: "/users/sessions",
-    users_clients: "/users/clients",
-    users_clients_addresses: "/users/clients/addresses",
+    users_sessions: "/v1/users/sessions",
+    users_clients: "/v1/users/clients",
+    users_clients_addresses: "/v1/users/clients/addresses",
   };
   beforeAll(async () => {
     [connection] = await createConnections(typeormConfigTest);

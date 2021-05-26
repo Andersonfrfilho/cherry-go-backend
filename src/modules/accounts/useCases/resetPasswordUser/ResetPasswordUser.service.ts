@@ -25,11 +25,9 @@ class ResetPasswordService {
     private hashProvider: IHashProvider
   ) {}
   async execute({ token, password }: IRequest): Promise<void> {
-    console.log(token, password);
     const userToken = await this.usersTokensRepository.findByRefreshToken(
       token
     );
-    console.log("chasdasd");
     if (!userToken) {
       throw new AppError({ message: "Token invalid!" });
     }
@@ -42,7 +40,7 @@ class ResetPasswordService {
     }
 
     const password_hash = await this.hashProvider.generateHash(password);
-    console.log("chasdasd");
+
     await this.usersRepository.updatePasswordUser({
       id: userToken.user_id,
       password_hash,

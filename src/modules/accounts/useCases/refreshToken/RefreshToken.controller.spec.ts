@@ -11,9 +11,9 @@ let connection: Connection;
 describe("Create refresh token for authenticated user controller", () => {
   const usersFactory = new UsersFactory();
   const paths = {
-    users_sessions: "/users/sessions",
-    users_clients: "/users/clients",
-    refresh_token: "/refresh_token",
+    users_sessions: "/v1/users/sessions",
+    users_clients: "/v1/users/clients",
+    refresh_token: "/v1/refresh_token",
   };
   beforeAll(async () => {
     [connection] = await createConnections(typeormConfigTest);
