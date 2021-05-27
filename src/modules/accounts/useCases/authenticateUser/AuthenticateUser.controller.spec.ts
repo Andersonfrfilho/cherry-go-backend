@@ -16,14 +16,6 @@ describe("Create authenticate user controller", () => {
   beforeAll(async () => {
     [connection] = await createConnections(typeormConfigTest);
     await connection.runMigrations();
-    //   // const usersFactory = new UsersFactory();
-    //   // const [user] = usersFactory.generate({ quantity: 1 });
-    //   // await connection.getRepository(User).save(user);
-    //   //   const password = await hash("admin", 8);
-    //   //   await connection.query(`
-    //   //   INSERT INTO USERS(id,name, email, password, "isAdmin", created_at,driver_license)
-    //   //   values('${id}','admin','admin@rentx.com.br','${password}',true,'now()','XXXXX')
-    //   // `);
   });
 
   afterAll(async () => {
