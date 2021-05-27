@@ -1,12 +1,12 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "RentX Documentation",
-    "description": "This is a API Rent",
+    "title": "Cherry-GO Documentation",
+    "description": "This is a API Cherry-go",
     "version": "1.0.0"
   },
   "paths": {
-    "/sessions": {
+    "/v1/users/sessions": {
       "post": {
         "tags": [
           "Sessions"
@@ -14,7 +14,6 @@
         "summary": "Authentication user",
         "description": "Authentication user",
         "requestBody": {
-          
           "content": {
             "application/json": {
               "schema": {
@@ -22,7 +21,7 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "default": "admin@rentx.com.br"
+                    "default": "admin@cherrygo.com.br"
                   },
                   "password": {
                     "type": "string",
@@ -35,26 +34,263 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user":{
+                      "type":"object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
+                        },
+                        "cpf": {
+                          "type": "string"
+                        },
+                        "rg": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "active": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string",
+                      "format": "token"
+                    },
+                    "refresh_token": {
+                      "type": "string",
+                      "format": "token"
+                    }
+                  },
+                  "example": {
+                    "user":{
+                    "id": "Name",
+                    "name": "Name",
+                    "last_name": "Lastname",
+                    "cpf": "12345678910",
+                    "rg": "123456789",
+                    "email": "e@mail.com",
+                    "active": true
+                    },
+                    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QSA",
+                    "refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QSA"
+                  }
+                }
+              }
+            }
           },
           "400": {
-            "description": "Email or password incorrect"
+            "description": "Email or password incorrect",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/categories": {
+    "/v1/users/sessions/refresh_token": {
       "post": {
         "tags": [
-          "Category"
+          "Sessions"
         ],
-        "summary": "Create a category",
-        "description": "Create a new category",
-        "security": [
-          {
-            "bearerAuth": []
+        "summary": "Refresh token user",
+        "description": "Refresh token user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "format": "token"
+                  }
+                },
+                "example":{
+                  "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QSA"
+                }
+              }
+            }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "refresh_token": {
+                      "type": "string",
+                      "format": "token"
+                    },
+                    "token": {
+                      "type": "string",
+                      "format": "token"
+                    }
+                  },
+                  "example": {
+                    "refresh_token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjE5MTQwMjEsImV4cCI6MTYyMTkxNDkyMSwic3ViIjoiXCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIiJ9.ddxG3TWAyHL89NFX6HPisRa70TOcv8rTNM-0uGS6i",
+                    "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelBVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QS"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/password/forgot": {
+      "post": {
+        "tags": [
+          "Users Password"
         ],
+        "summary": "Forgot password",
+        "description": "Forgot password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                },
+                "example": {
+                  "email": "e@mail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/password/reset": {
+      "post": {
+        "tags": [
+          "Users Password"
+        ],
+        "summary": "Password reset",
+        "description": "Password reset",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                },
+                "example": {
+                  "password": "*********"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/clients": {
+      "post": {
+        "tags": [
+          "Users Clients"
+        ],
+        "summary": "Create a new client user",
+        "description": "Create a new client user",
         "requestBody": {
           "content": {
             "application/json": {
@@ -64,198 +300,111 @@
                   "name": {
                     "type": "string"
                   },
-                  "description": {
+                  "last_name": {
                     "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "maximum": 11
+                  },
+                  "rg": {
+                    "type": "string",
+                    "maximum": 9,
+                    "minimum": 8
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "password_confirm": {
+                    "type": "string"
+                  },
+                  "birth_date": {
+                    "type": "string",
+                    "format": "date"
                   }
                 },
                 "example": {
-                  "name": "category name sample",
-                  "description": "category description sample"
+                  "name": "Name",
+                  "last_name": "Lastname",
+                  "cpf": "12345678910",
+                  "rg": "123456789",
+                  "email": "e@mail.com",
+                  "password": "password",
+                  "password_confirm": "password",
+                  "birth_date": "2021-05-27T04:10:42.732Z"
                 }
               }
             }
           }
         },
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "500": {
-            "description": "Category already exists"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Category"
-        ],
-        "summary": "List all categories",
-        "description": "List all categories",
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      },
-                      "description": {
-                        "type": "string"
-                      }
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "cpf": {
+                      "type": "string"
+                    },
+                    "rg": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "active": {
+                      "type": "boolean"
                     }
+                  },
+                  "example": {
+                    "id": "Name",
+                    "name": "Name",
+                    "last_name": "Lastname",
+                    "cpf": "12345678910",
+                    "rg": "123456789",
+                    "email": "e@mail.com",
+                    "active": true
                   }
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/categories/import": {
-      "post": {
-        "tags": [
-          "Category"
-        ],
-        "summary": "Upload a new category",
-        "description": "Upload a new category",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created"
-          }
-        }
-      }
-    },
-    "/specifications": {
-      "post": {
-        "tags": [
-          "Specification"
-        ],
-        "summary": "Create a specification",
-        "description": "Create a new specification",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Specification"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "500": {
-            "description": "Specification already exists"
-          }
-        }
-      }
-    },
-    "/cars": {
-      "post": {
-        "tags": [
-          "Cars"
-        ],
-        "summary": "Create a car",
-        "description": "Create a car",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Car"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created"
           },
           "400": {
-            "description": "Car already exists"
-          }
-        }
-      }
-    },
-    "/cars/images/{id}": {
-      "post": {
-        "tags": [
-          "Cars"
-        ],
-        "summary": "Upload images",
-        "description": "Upload images",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Car id",
-            "require": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "images": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  }
+            "description": "User client already exist",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created"
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -307,6 +456,20 @@
         "scheme": "bearer",
         "bearerFormat": "JWT"
       }
+    },
+    "schemas":{
+      "Error":{
+        "type":"object",
+        "properties":{
+          "status":{"type": "string"},
+          "message":{"type": "string"}
+        },
+        "example":{
+          "status":"error",
+          "message":"Description error"
+        }
+      }
     }
+
   }
 }
