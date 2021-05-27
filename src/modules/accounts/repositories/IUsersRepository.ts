@@ -21,7 +21,7 @@ interface IUsersRepository {
   updatePasswordUser({
     id,
     password_hash,
-  }: IUpdatedUserClientDTO): Promise<any>;
+  }: IUpdatedUserClientDTO): Promise<User>;
 }
 
 export { IUsersRepository };

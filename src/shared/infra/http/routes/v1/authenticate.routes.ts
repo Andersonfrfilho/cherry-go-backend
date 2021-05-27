@@ -1,9 +1,9 @@
 import { Router } from "express";
 
 import { AuthenticatedUserController } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.controller";
-import { schemaAuthenticate } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.schema";
+import { schemaAuthenticate } from "@modules/accounts/useCases/authenticateUser/authenticateUser.schema";
 import { RefreshTokenController } from "@modules/accounts/useCases/refreshToken/RefreshToken.controller";
-import { schemaRefreshToken } from "@modules/accounts/useCases/refreshToken/RefreshToken.schema";
+import { schemaRefreshToken } from "@modules/accounts/useCases/refreshToken/refreshToken.schema";
 
 const authenticateUsersRoutes = Router();
 

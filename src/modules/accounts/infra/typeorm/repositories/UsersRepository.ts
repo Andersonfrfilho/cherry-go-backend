@@ -107,10 +107,11 @@ class UsersRepository implements IUsersRepository {
   async updatePasswordUser({
     id,
     password_hash,
-  }: IUpdatedUserClientDTO): Promise<any> {
-    const user = await this.repository.update(id, {
+  }: IUpdatedUserClientDTO): Promise<User> {
+    await this.repository.update(id, {
       password_hash,
     });
+    const user = await this.repository.findOne(id);
     return user;
   }
 }

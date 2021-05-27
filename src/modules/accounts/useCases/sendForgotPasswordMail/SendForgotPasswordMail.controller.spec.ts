@@ -7,12 +7,12 @@ import { app } from "@shared/infra/http/app";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
-describe("Create reset password controller", () => {
+describe("Create send password reset controller", () => {
   const usersFactory = new UsersFactory();
   const paths = {
     users_sessions: "/v1/users/sessions",
     users_clients: "/v1/users/clients",
-    password_reset: "/v1/password/reset",
+    send_forgot_password: "/v1/password/forgot",
   };
   beforeAll(async () => {
     [connection] = await createConnections(typeormConfigTest);
@@ -23,7 +23,7 @@ describe("Create reset password controller", () => {
     await connection.dropDatabase();
     await connection.close();
   });
-  it("should be able to reset password", async () => {
+  it("should be able to send token for new password", async () => {
     // arrange
     const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
       quantity: 1,
@@ -44,59 +44,32 @@ describe("Create reset password controller", () => {
         birth_date: new Date(1995, 11, 17),
       });
 
-    const {
-      body: { refresh_token },
-    } = await request(app).post(paths.users_sessions).send({
+    const response = await request(app).post(paths.send_forgot_password).send({
       email,
-      password: "102030",
     });
-    const response = await request(app)
-      .post(paths.password_reset)
-      .query({ token: refresh_token })
-      .send({
-        password: "102030",
-      });
 
     // assert
     expect(response.status).toBe(HttpSuccessCode.NO_CONTENT);
   });
 
-  it("should be able to reset password", async () => {
-    // arrange
-    const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+  it("should not be able to send email for forgot password if send nobody schema", async () => {
+    const response = await request(app).post(paths.send_forgot_password).send();
+
+    expect(response.status).toBe(HttpErrorCodes.BAD_REQUEST);
+    expect(response.body.message).toBe("celebrate request validation failed");
+  });
+
+  it("should not be able to send token for new password", async () => {
+    const [{ email }] = usersFactory.generate({
       quantity: 1,
       active: true,
     });
 
-    // act
-    await request(app)
-      .post(paths.users_clients)
-      .send({
-        name,
-        last_name,
-        cpf,
-        rg,
-        email,
-        password: "102030",
-        password_confirm: "102030",
-        birth_date: new Date(1995, 11, 17),
-      });
-
-    const {
-      body: { token },
-    } = await request(app).post(paths.users_sessions).send({
+    const response = await request(app).post(paths.send_forgot_password).send({
       email,
-      password: "102030",
     });
-    const response = await request(app)
-      .post(paths.password_reset)
-      .query({ token })
-      .send({
-        password: "102030",
-      });
 
-    // assert
     expect(response.status).toBe(HttpErrorCodes.BAD_REQUEST);
-    expect(response.body.message).toBe("Token invalid!");
+    expect(response.body.message).toBe("User does not exists!");
   });
 });

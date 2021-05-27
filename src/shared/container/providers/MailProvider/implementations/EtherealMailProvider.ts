@@ -27,6 +27,7 @@ class EtherealMailProvider implements IMailProvider {
       })
       .catch((err) => console.error(err));
   }
+
   async sendMail({
     to,
     subject,
@@ -38,7 +39,7 @@ class EtherealMailProvider implements IMailProvider {
     const templateHTML = templateParse(variables);
     const message = await this.client.sendMail({
       to,
-      from: "Rentx <noreplay@rentx.com.br>",
+      from: "Cherry go <noreplay@cherrygo.com.br>",
       subject,
       html: templateHTML,
     });

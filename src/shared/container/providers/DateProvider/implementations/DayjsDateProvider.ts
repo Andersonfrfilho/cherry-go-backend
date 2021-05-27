@@ -5,6 +5,15 @@ import { IDateProvider } from "@shared/container/providers/DateProvider/IDatePro
 
 dayjs.extend(utc);
 class DayjsDateProvider implements IDateProvider {
+  compareIfBefore(start_date: Date, end_date: Date): boolean {
+    throw new Error("Method not implemented.");
+  }
+  addMinutes(minutes: number): Date {
+    throw new Error("Method not implemented.");
+  }
+  dateNow(): Date {
+    throw new Error("Method not implemented.");
+  }
   checkAdulthood(date: Date): boolean {
     throw new Error("Method not implemented.");
   }

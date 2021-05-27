@@ -18,7 +18,7 @@ class UsersRepositoryInMemory implements IUsersRepository {
   async updatePasswordUser({
     id,
     password_hash,
-  }: IUpdatedUserClientDTO): Promise<any> {
+  }: IUpdatedUserClientDTO): Promise<User> {
     const index = this.users.findIndex((user) => user.id === id);
     this.users[index].password_hash = password_hash;
     return this.users[index];
