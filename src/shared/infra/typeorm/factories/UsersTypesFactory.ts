@@ -5,7 +5,7 @@ class UsersTypesFactory {
   public generate(): Omit<TypeUser, "id">[] {
     return Array.from(
       { length: Object.keys(UserTypes).length },
-      (element, index): Omit<TypeUser, "id"> => ({
+      (_, index): Omit<TypeUser, "id"> => ({
         name: Object.values(UserTypes)[index],
         active: true,
       })
