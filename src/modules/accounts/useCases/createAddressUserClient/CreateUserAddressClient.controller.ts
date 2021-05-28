@@ -16,11 +16,11 @@ class CreateUserAddressClientController {
       state,
       country,
     } = request.body;
-    const createUserClientService = container.resolve(
+    const createUserAddressClientService = container.resolve(
       CreateUserAddressClientService
     );
 
-    const user_address = await createUserClientService.execute({
+    const user_address = await createUserAddressClientService.execute({
       user_id: id,
       street,
       number,

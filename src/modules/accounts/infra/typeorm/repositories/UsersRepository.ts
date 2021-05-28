@@ -1,6 +1,9 @@
 import { getRepository, Repository } from "typeorm";
 
-import { ICreateUserAddressClientDTO } from "@modules/accounts/dtos";
+import {
+  ICreateUserAddressClientDTO,
+  ICreateUserPhonesClientRequestDTO,
+} from "@modules/accounts/dtos";
 import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
@@ -9,18 +12,51 @@ import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 
+import { Phone } from "../entities/Phone";
 import { TypeUser } from "../entities/TypeUser";
 
 class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
   private repository_address: Repository<Address>;
   private repository_users_types: Repository<TypeUser>;
+  private repository_phones: Repository<Phone>;
 
   constructor() {
     this.repository = getRepository(User);
     this.repository_address = getRepository(Address);
     this.repository_users_types = getRepository(TypeUser);
+    this.repository_phones = getRepository(Phone);
   }
+  async createUserPhones({
+    country_code,
+    ddd,
+    number,
+    user_id,
+  }: ICreateUserPhonesClientRequestDTO): Promise<User> {
+    const user = await this.repository.findOne(user_id);
+
+    const phone_exist = await this.repository_phones.findOne({
+      where: { country_code, ddd, number },
+    });
+
+    if (phone_exist) {
+      const user_phone = user;
+      user_phone.phones = [phone_exist];
+
+      const user_saved = await this.repository.save(user_phone);
+
+      return user_saved;
+    }
+
+    const phone = this.repository_phones.create({ country_code, ddd, number });
+
+    user.phones = [phone];
+
+    const user_saved = await this.repository.save(user);
+
+    return user_saved;
+  }
+
   async createUserAddress({
     user,
     zipcode,
