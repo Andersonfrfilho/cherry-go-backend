@@ -28,6 +28,7 @@ class ResetPasswordService {
     const userToken = await this.usersTokensRepository.findByRefreshToken(
       token
     );
+
     if (!userToken) {
       throw new AppError({ message: "Token invalid!" });
     }

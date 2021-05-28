@@ -6,6 +6,7 @@ import { ICreateUserPhonesClientRequestDTO } from "@modules/accounts/dtos/ICreat
 import { ICreateUserTokenDTO } from "@modules/accounts/dtos/ICreateUserTokenDTO";
 import { IFindPhoneDTO } from "@modules/accounts/dtos/IFindPhone.dto";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
+import { IUpdateActiveUserDTO } from "@modules/accounts/dtos/IUpdateActiveUser.dto";
 import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
 import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
 
@@ -20,4 +21,5 @@ export {
   IUpdatedUserClientDTO,
   ICreateTypesUsersDTO,
   ICreateUserPhonesClientRequestDTO,
+  IUpdateActiveUserDTO,
 };

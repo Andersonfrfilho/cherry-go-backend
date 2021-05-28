@@ -11,10 +11,11 @@ const createSpecificationController = new AuthenticatedUserController();
 const refreshTokenController = new RefreshTokenController();
 
 authenticateUsersRoutes.post(
-  "/users/sessions",
+  "/sessions",
   schemaAuthenticate,
   createSpecificationController.handle
 );
+
 authenticateUsersRoutes.post(
   "/refresh_token",
   schemaRefreshToken,

@@ -24,6 +24,11 @@ export class CreateUsersPhones1617477675034 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: "active",
+            type: "boolean",
+            default: false,
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

@@ -3,6 +3,7 @@ import { getRepository, Repository } from "typeorm";
 import {
   ICreateUserAddressClientDTO,
   ICreateUserPhonesClientRequestDTO,
+  IUpdateActiveUserDTO,
 } from "@modules/accounts/dtos";
 import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
@@ -27,6 +28,13 @@ class UsersRepository implements IUsersRepository {
     this.repository_users_types = getRepository(TypeUser);
     this.repository_phones = getRepository(Phone);
   }
+
+  async updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void> {
+    await this.repository.update(id, {
+      active,
+    });
+  }
+
   async createUserPhones({
     country_code,
     ddd,
@@ -79,6 +87,7 @@ class UsersRepository implements IUsersRepository {
 
       return user_saved;
     }
+
     const address = this.repository_address.create({
       zipcode,
       street,
@@ -88,6 +97,7 @@ class UsersRepository implements IUsersRepository {
       country,
       city,
     });
+
     const user_address = this.repository.create({
       ...user,
       addresses: [address],

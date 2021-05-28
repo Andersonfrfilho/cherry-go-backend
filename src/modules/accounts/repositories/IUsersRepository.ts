@@ -3,11 +3,10 @@ import {
   ICreateUserAddressClientDTO,
   IUpdatedUserClientDTO,
   ICreateUserPhonesClientRequestDTO,
+  IUpdateActiveUserDTO,
 } from "@modules/accounts/dtos";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-
-import { Phone } from "../infra/typeorm/entities/Phone";
 
 interface IUsersRepository {
   create(data: ICreateUserClientDTO): Promise<User>;
@@ -27,6 +26,7 @@ interface IUsersRepository {
     password_hash,
   }: IUpdatedUserClientDTO): Promise<User>;
   createUserClientType(data: ICreateUserClientDTO): Promise<User>;
+  updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void>;
 }
 
 export { IUsersRepository };
