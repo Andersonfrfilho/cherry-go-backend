@@ -35,7 +35,7 @@ class CreateUserClientService {
 
     const password_hash = await this.hashProvider.generateHash(password);
 
-    const user = await this.usersRepository.create({
+    const user = await this.usersRepository.createUserClientType({
       name,
       last_name,
       cpf,

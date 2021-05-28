@@ -1,3 +1,5 @@
+import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
+
 interface ICreateUserClientDTO {
   name: string;
   last_name: string;

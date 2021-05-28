@@ -28,11 +28,16 @@ describe("Create users clients service", () => {
       usersRepositoryInMemory,
       "findUserByEmailCpfRg"
     );
+
     const hashProviderGenerateHash = jest.spyOn(
       hashProviderInMemory,
       "generateHash"
     );
-    const usersRepositoryCreate = jest.spyOn(usersRepositoryInMemory, "create");
+
+    const usersRepositoryCreate = jest.spyOn(
+      usersRepositoryInMemory,
+      "createUserClientType"
+    );
 
     const [
       { name, last_name, cpf, rg, email, birth_date, password_hash },
@@ -77,6 +82,13 @@ describe("Create users clients service", () => {
         email: expect.any(String),
         password_hash: expect.any(String),
         birth_date: expect.any(Date),
+        types: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: expect.any(String),
+            description: expect.any(String || null),
+          }),
+        ]),
       })
     );
   });

@@ -22,6 +22,7 @@ interface IUsersRepository {
     id,
     password_hash,
   }: IUpdatedUserClientDTO): Promise<User>;
+  createUserClientType(data: ICreateUserClientDTO): Promise<User>;
 }
 
 export { IUsersRepository };

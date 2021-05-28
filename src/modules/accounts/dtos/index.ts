@@ -1,3 +1,4 @@
+import { ICreateTypesUsersDTO } from "@modules/accounts/dtos/ICreateTypesUsers.dto";
 import { ICreateUserAddressClientDTO } from "@modules/accounts/dtos/ICreateUserAddressClientDTO";
 import { ICreateUserAddressClientRequestDTO } from "@modules/accounts/dtos/ICreateUserAddressClientRequestDTO";
 import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
@@ -14,4 +15,5 @@ export {
   ICreateUserAddressClientDTO,
   ICreateUserAddressClientRequestDTO,
   IUpdatedUserClientDTO,
+  ICreateTypesUsersDTO,
 };

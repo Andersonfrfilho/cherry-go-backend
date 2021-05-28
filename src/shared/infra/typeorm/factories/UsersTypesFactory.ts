@@ -1,4 +1,6 @@
-import { UserTypes } from "@modules/accounts/enums/UserTypes";
+import faker from "faker";
+
+import { UserTypes } from "@modules/accounts/enums/UserTypes.enum";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 
 class UsersTypesFactory {
@@ -8,6 +10,7 @@ class UsersTypesFactory {
       (_, index): Omit<TypeUser, "id"> => ({
         name: Object.values(UserTypes)[index],
         active: true,
+        description: faker.random.words(),
       })
     );
   }

@@ -6,7 +6,9 @@ import {
   IFindUserEmailCpfRgDTO,
   IUpdatedUserClientDTO,
 } from "@modules/accounts/dtos";
+import { UserTypes } from "@modules/accounts/enums/UserTypes.enum";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
+import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { AppError } from "@shared/errors/AppError";
@@ -14,6 +16,54 @@ import { AppError } from "@shared/errors/AppError";
 class UsersRepositoryInMemory implements IUsersRepository {
   users: User[] = [];
   addresses: Address[] = [];
+  types_users: TypeUser[] = [];
+
+  async createUserClientType({
+    birth_date,
+    cpf,
+    name,
+    password,
+    email,
+    last_name,
+    rg,
+  }: ICreateUserClientDTO): Promise<User> {
+    const user = new User();
+    const user_type = new TypeUser();
+    if (this.users.some((user) => user.email === email)) {
+      throw new AppError({ message: "User client already exist" });
+    }
+
+    Object.assign(user_type, {
+      id: datatype.uuid(),
+      name: UserTypes.CLIENT,
+      description: name.toLocaleLowerCase(),
+      active: true,
+    }) as TypeUser;
+
+    const type = this.types_users.find(
+      (user_type) => user_type.name === UserTypes.CLIENT
+    );
+
+    if (!type) {
+      throw new AppError({ message: "Type User not exist!" });
+    }
+
+    Object.assign(user, {
+      id: datatype.uuid(),
+      name: name.toLowerCase(),
+      last_name: last_name.toLowerCase(),
+      email: email.toLowerCase(),
+      cpf,
+      rg,
+      birth_date,
+      password_hash: password,
+      types: [type],
+    }) as User;
+
+    this.users.push(user);
+
+    return user;
+  }
 
   async updatePasswordUser({
     id,

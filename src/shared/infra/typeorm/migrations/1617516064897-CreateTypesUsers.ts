@@ -43,6 +43,12 @@ export class CreateTypesUsers1617516064897 implements MigrationInterface {
             isNullable: true,
           },
         ],
+        indices: [
+          {
+            columnNames: ["name"],
+            isUnique: true,
+          },
+        ],
       })
     );
   }
