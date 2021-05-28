@@ -7,7 +7,7 @@ import { ImagesFactory, TagsFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateTags1620955864666 implements MigrationInterface {
   public async up(): Promise<void> {
-    const services = (await getConnection("seed")
+    const services = (await getConnection("seeds")
       .getRepository("services")
       .find()) as Service[];
 
@@ -25,11 +25,11 @@ export class CreateTags1620955864666 implements MigrationInterface {
       quantity: tags_factory_list.length,
     });
 
-    const images = await getConnection("seed")
+    const images = await getConnection("seeds")
       .getRepository("images")
       .save(images_factory_list);
 
-    const images_list = (await getConnection("seed")
+    const images_list = (await getConnection("seeds")
       .getRepository("images")
       .find(images)) as Image[];
 
@@ -38,9 +38,9 @@ export class CreateTags1620955864666 implements MigrationInterface {
       image_id: images_list[index].id,
     }));
 
-    await getConnection("seed").getRepository("tags").save(images_tags);
+    await getConnection("seeds").getRepository("tags").save(images_tags);
 
-    const tags = await getConnection("seed").getRepository("tags").find();
+    const tags = await getConnection("seeds").getRepository("tags").find();
 
     const services_tags = services.map((service) => ({
       ...service,
@@ -52,11 +52,11 @@ export class CreateTags1620955864666 implements MigrationInterface {
       }).map((_, index) => tags[index]),
     }));
 
-    await getConnection("seed").getRepository("services").save(services_tags);
+    await getConnection("seeds").getRepository("services").save(services_tags);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed").getRepository("services_tags").delete({});
-    await getConnection("seed").getRepository("tags").delete({});
+    await getConnection("seeds").getRepository("services_tags").delete({});
+    await getConnection("seeds").getRepository("tags").delete({});
   }
 }

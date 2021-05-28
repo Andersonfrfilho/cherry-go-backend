@@ -103,7 +103,10 @@ describe("Create users clients service", () => {
       hashProviderInMemory,
       "generateHash"
     );
-    const usersRepositoryCreate = jest.spyOn(usersRepositoryInMemory, "create");
+    const usersRepositoryCreate = jest.spyOn(
+      usersRepositoryInMemory,
+      "createUserClientType"
+    );
     const [
       { name, last_name, cpf, rg, email, birth_date, password_hash },
     ] = usersFactory.generate({

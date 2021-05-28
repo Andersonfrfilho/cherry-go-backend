@@ -7,7 +7,7 @@ import { ImagesFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateUsersImages1620775418678 implements MigrationInterface {
   public async up(): Promise<void> {
-    const clients = (await getConnection("seed")
+    const clients = (await getConnection("seeds")
       .getRepository("users")
       .createQueryBuilder("users")
       .leftJoinAndSelect(
@@ -18,7 +18,7 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
       )
       .getMany()) as User[];
 
-    const providers = await getConnection("seed")
+    const providers = await getConnection("seeds")
       .getRepository(User)
       .createQueryBuilder("users")
       .leftJoinAndSelect(
@@ -42,9 +42,9 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
       }),
     });
 
-    await getConnection("seed").getRepository("images").save(clients_images);
+    await getConnection("seeds").getRepository("images").save(clients_images);
 
-    const clients_images_list = (await getConnection("seed")
+    const clients_images_list = (await getConnection("seeds")
       .getRepository("images")
       .find()) as Image[];
 
@@ -53,15 +53,15 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
       images: [clients_images_list[index]],
     }));
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository(User)
       .save(clients_images_list_content);
 
-    const provider_images_list_saved = (await getConnection("seed")
+    const provider_images_list_saved = (await getConnection("seeds")
       .getRepository("images")
       .save(providers_images)) as Image[];
 
-    const provider_images_list = (await getConnection("seed")
+    const provider_images_list = (await getConnection("seeds")
       .getRepository("images")
       .find(provider_images_list_saved)) as Image[];
 
@@ -84,13 +84,13 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
       })
     );
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("users")
       .save(relationship_providers_payments_types);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed").getRepository("users_images").delete({});
-    await getConnection("seed").getRepository("images").delete({});
+    await getConnection("seeds").getRepository("users_images").delete({});
+    await getConnection("seeds").getRepository("images").delete({});
   }
 }

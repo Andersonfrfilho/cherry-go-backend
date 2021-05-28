@@ -8,7 +8,7 @@ import { ImagesFactory } from "../factories";
 
 export class CreateDocumentsImages1620960362104 implements MigrationInterface {
   public async up(): Promise<void> {
-    const users = (await getConnection("seed")
+    const users = (await getConnection("seeds")
       .getRepository("users")
       .find()) as User[];
 
@@ -18,11 +18,11 @@ export class CreateDocumentsImages1620960362104 implements MigrationInterface {
       quantity: users.length,
     });
 
-    const images_saves = await getConnection("seed")
+    const images_saves = await getConnection("seeds")
       .getRepository("images")
       .save(images_factory_list);
 
-    const images_list = (await getConnection("seed")
+    const images_list = (await getConnection("seeds")
       .getRepository("images")
       .find(images_saves)) as Image[];
 
@@ -32,13 +32,13 @@ export class CreateDocumentsImages1620960362104 implements MigrationInterface {
       value: faker.datatype.number({ precision: 2 }).toString(),
     }));
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("documents_users_images")
       .save(document_user_images);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("documents_users_images")
       .delete({});
   }

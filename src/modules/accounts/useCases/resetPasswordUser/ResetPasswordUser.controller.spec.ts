@@ -7,6 +7,7 @@ import { app } from "@shared/infra/http/app";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
+let connection_seed: Connection;
 describe("Create reset password controller", () => {
   const usersFactory = new UsersFactory();
   const paths = {
@@ -15,13 +16,15 @@ describe("Create reset password controller", () => {
     password_reset: "/v1/password/reset",
   };
   beforeAll(async () => {
-    [connection] = await createConnections(typeormConfigTest);
+    [connection, connection_seed] = await createConnections(typeormConfigTest);
     await connection.runMigrations();
+    await connection_seed.runMigrations();
   });
 
   afterAll(async () => {
     await connection.dropDatabase();
     await connection.close();
+    await connection_seed.close();
   });
   it("should be able to reset password", async () => {
     // arrange

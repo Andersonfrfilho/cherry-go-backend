@@ -21,10 +21,7 @@ class SendForgotPasswordMailService {
     private mailProvider: IMailProvider
   ) {}
   async execute(email: string): Promise<void> {
-    console.log("$$$$$$$$$$$$$$$$");
     const user = await this.usersRepository.findByEmail(email);
-    console.log("$$$$$$$$$$$$$$$$");
-    console.log(email);
     if (!user) {
       throw new AppError({ message: "User does not exists!" });
     }

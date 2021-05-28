@@ -12,7 +12,7 @@ export class CreateTransports1621140701462 implements MigrationInterface {
   public async up(): Promise<void> {
     const transports_factory = new TransportsFactory();
 
-    const appointments = (await getConnection("seed")
+    const appointments = (await getConnection("seeds")
       .getRepository("appointments")
       .find()) as Appointment[];
 
@@ -20,7 +20,7 @@ export class CreateTransports1621140701462 implements MigrationInterface {
       quantity: appointments.length,
     });
 
-    const transports_types = (await getConnection("seed")
+    const transports_types = (await getConnection("seeds")
       .getRepository("transports_types")
       .find()) as TransportType[];
 
@@ -40,11 +40,11 @@ export class CreateTransports1621140701462 implements MigrationInterface {
       quantity: transports_transport_types_list.length,
     });
 
-    const addresses_origins_saved = await getConnection("seed")
+    const addresses_origins_saved = await getConnection("seeds")
       .getRepository("addresses")
       .save(addresses_origins_factory);
 
-    const addresses_origins_list = (await getConnection("seed")
+    const addresses_origins_list = (await getConnection("seeds")
       .getRepository("addresses")
       .find(addresses_origins_saved)) as Address[];
 
@@ -59,11 +59,11 @@ export class CreateTransports1621140701462 implements MigrationInterface {
       quantity: transports_address_origins_list.length,
     });
 
-    const addresses_destinations_saved = await getConnection("seed")
+    const addresses_destinations_saved = await getConnection("seeds")
       .getRepository("addresses")
       .save(addresses_destinations_factory);
 
-    const addresses_destinations_list = (await getConnection("seed")
+    const addresses_destinations_list = (await getConnection("seeds")
       .getRepository("addresses")
       .find(addresses_destinations_saved)) as Address[];
 
@@ -74,11 +74,11 @@ export class CreateTransports1621140701462 implements MigrationInterface {
       })
     );
 
-    const transports_saved = await getConnection("seed")
+    const transports_saved = await getConnection("seeds")
       .getRepository("transports")
       .save(transports_addresses_destinations_list);
 
-    const transports = await getConnection("seed")
+    const transports = await getConnection("seeds")
       .getRepository("transports")
       .find(transports_saved);
 
@@ -87,15 +87,15 @@ export class CreateTransports1621140701462 implements MigrationInterface {
       transports: [transports[index]],
     }));
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository(Appointment)
       .save(appointments_transports);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("appointments_transports")
       .delete({});
-    await getConnection("seed").getRepository("transports").delete({});
+    await getConnection("seeds").getRepository("transports").delete({});
   }
 }

@@ -11,11 +11,11 @@ export class CreateTransactionsEvents1621149382938
   public async up(): Promise<void> {
     const transaction_events_factory = new TransactionsEventsFactory();
 
-    const transactions = (await getConnection("seed")
+    const transactions = (await getConnection("seeds")
       .getRepository("transactions")
       .find()) as Transaction[];
 
-    const payments_types = (await getConnection("seed")
+    const payments_types = (await getConnection("seeds")
       .getRepository("payments_types")
       .find()) as PaymentType[];
     const transactions_events_factories_list = transaction_events_factory.generate(
@@ -35,12 +35,14 @@ export class CreateTransactionsEvents1621149382938
       })
     );
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("transactions_events")
       .save(transaction_event_transaction_payment_type);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed").getRepository("transactions_events").delete({});
+    await getConnection("seeds")
+      .getRepository("transactions_events")
+      .delete({});
   }
 }

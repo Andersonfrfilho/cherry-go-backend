@@ -10,15 +10,15 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
 
     const payment_types = payment_types_factory.generate();
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("payments_types")
       .save(payment_types);
 
-    const payments_types_list = await getConnection("seed")
+    const payments_types_list = await getConnection("seeds")
       .getRepository("payments_types")
       .find();
 
-    const providers = await getConnection("seed")
+    const providers = await getConnection("seeds")
       .getRepository(Provider)
       .createQueryBuilder("users")
       .leftJoinAndSelect(
@@ -39,15 +39,15 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
       }).map((_, index) => payments_types_list[index]),
     }));
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository(Provider)
       .save(relationship_providers_payments_types);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("providers_payments_types")
       .delete({});
-    await getConnection("seed").getRepository("payments_types").delete({});
+    await getConnection("seeds").getRepository("payments_types").delete({});
   }
 }

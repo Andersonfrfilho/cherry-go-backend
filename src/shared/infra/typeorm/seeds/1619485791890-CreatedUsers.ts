@@ -9,10 +9,10 @@ export class CreatedUsers1619485791890 implements MigrationInterface {
     const users = user_factory.generate({
       quantity: faker.datatype.number({ min: 3, max: 8 }),
     });
-    await getConnection("seed").getRepository("users").save(users);
+    await getConnection("seeds").getRepository("users").save(users);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed").getRepository("users").delete({});
+    await getConnection("seeds").getRepository("users").delete({});
   }
 }

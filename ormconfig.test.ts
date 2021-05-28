@@ -9,10 +9,28 @@ export default [
     username: process.env.POSTGRES_USER || "postgres",
     password: process.env.POSTGRES_PASSWORD || "102030",
     database: process.env.POSTGRES_DB_TEST || "cherry_go_test",
+    dropSchema: true,
+    logging: false,
+    synchroize: true,
+    migrationsRun: true,
     migrations: ["./src/shared/infra/typeorm/migrations/*.ts"],
     entities: ["./src/modules/**/entities/*.ts"],
     cli: {
       migrationsDir: "./src/shared/infra/typeorm/migrations",
+    },
+  },
+  {
+    name: "seed",
+    type: "postgres",
+    port: Number(process.env.POSTGRES_PORT_TEST) || 5434,
+    host: process.env.POSTGRES_HOST || "localhost",
+    username: process.env.POSTGRES_USER || "postgres",
+    password: process.env.POSTGRES_PASSWORD || "102030",
+    database: process.env.POSTGRES_DB_TEST || "cherry_go_test",
+    migrations: ["./src/shared/infra/typeorm/seed/*.ts"],
+    entities: ["./src/modules/**/entities/*.ts"],
+    cli: {
+      migrationsDir: "./src/shared/infra/typeorm/seed",
     },
   },
   {

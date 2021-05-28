@@ -7,7 +7,7 @@ import { AppointmentProviderService } from "@modules/appointments/infra/typeorm/
 export class CreateAppointmentServices1621058145504
   implements MigrationInterface {
   public async up(): Promise<void> {
-    const appointments = (await getConnection("seed")
+    const appointments = (await getConnection("seeds")
       .getRepository(Appointment)
       .find({
         relations: ["providers", "providers.services"],
@@ -35,13 +35,13 @@ export class CreateAppointmentServices1621058145504
       )
       .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository(AppointmentProviderService)
       .save(services_appointments);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("appointments_providers_services")
       .delete({});
   }

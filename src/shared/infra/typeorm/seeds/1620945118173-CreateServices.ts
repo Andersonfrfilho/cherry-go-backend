@@ -7,7 +7,7 @@ import { ServicesFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateServices1620945118173 implements MigrationInterface {
   public async up(): Promise<void> {
-    const providers = await getConnection("seed")
+    const providers = await getConnection("seeds")
       .getRepository(Provider)
       .createQueryBuilder("users")
       .leftJoinAndSelect(
@@ -27,11 +27,11 @@ export class CreateServices1620945118173 implements MigrationInterface {
       }),
     });
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("services")
       .save(services_factoryList);
 
-    const services = (await getConnection("seed")
+    const services = (await getConnection("seeds")
       .getRepository("services")
       .find()) as Service[];
 
@@ -45,13 +45,13 @@ export class CreateServices1620945118173 implements MigrationInterface {
       }).map((_, index) => services[index]),
     }));
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository(Provider)
       .save(providers_services);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed").getRepository("providers_services").delete({});
-    await getConnection("seed").getRepository("services").delete({});
+    await getConnection("seeds").getRepository("providers_services").delete({});
+    await getConnection("seeds").getRepository("services").delete({});
   }
 }

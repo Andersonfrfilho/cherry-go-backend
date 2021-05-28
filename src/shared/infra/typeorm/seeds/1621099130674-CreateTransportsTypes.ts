@@ -11,15 +11,15 @@ export class CreateTransportsTypes1621099130674 implements MigrationInterface {
 
     const transport_type_factory_list = transport_types_factory.generate();
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("transports_types")
       .save(transport_type_factory_list);
 
-    const transports_types_list = (await getConnection("seed")
+    const transports_types_list = (await getConnection("seeds")
       .getRepository("transports_types")
       .find()) as TransportType[];
 
-    const payment_type_list = (await getConnection("seed")
+    const payment_type_list = (await getConnection("seeds")
       .getRepository(PaymentType)
       .find()) as PaymentType[];
 
@@ -38,12 +38,12 @@ export class CreateTransportsTypes1621099130674 implements MigrationInterface {
       )
       .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("transports_types_payments_types")
       .save(transport_type);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed").getRepository("transports_types").delete({});
+    await getConnection("seeds").getRepository("transports_types").delete({});
   }
 }

@@ -29,6 +29,7 @@ class UsersRepositoryInMemory implements IUsersRepository {
   }: ICreateUserClientDTO): Promise<User> {
     const user = new User();
     const user_type = new TypeUser();
+
     if (this.users.some((user) => user.email === email)) {
       throw new AppError({ message: "User client already exist" });
     }
@@ -39,6 +40,8 @@ class UsersRepositoryInMemory implements IUsersRepository {
       description: name.toLocaleLowerCase(),
       active: true,
     }) as TypeUser;
+
+    this.types_users.push(user_type);
 
     const type = this.types_users.find(
       (user_type) => user_type.name === UserTypes.CLIENT

@@ -44,13 +44,19 @@
   "scripts": {
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "dev": "ts-node-dev -r tsconfig-paths/register --files --inspect --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
+    "migration:create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create -n",
+    "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run && ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -c seed",
+    "migration:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert",
     "seed:create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create -c seed -n",
     "seed:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -c seed",
     "seed:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -c seed",
+    "seeds:create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create -c seeds -n",
+    "seeds:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -c seeds",
+    "seeds:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -c seeds",
     "start:prod": "node ./dist/shared/infra/http/server.js --experimental-modules",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "seed:admin": "ts-node-dev -r tsconfig-paths/register src/shared/infra/typeorm/seed/admin.ts",
-    "test": "set ENVIRONMENT=test&&jest --runInBand --detectOpenHandles"
+    "seed:data": "ts-node-dev -r tsconfig-paths/register src/shared/infra/typeorm/seed/seeds.ts",
+    "test": "set ENVIRONMENT=test&&jest --config ./jest.config.unit.ts --runInBand --detectOpenHandles"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",

@@ -8,7 +8,7 @@ import { AppointmentsFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateAppointment1620963956718 implements MigrationInterface {
   public async up(): Promise<void> {
-    const clients = (await getConnection("seed")
+    const clients = (await getConnection("seeds")
       .getRepository(User)
       .createQueryBuilder("users")
       .leftJoinAndSelect(
@@ -19,7 +19,7 @@ export class CreateAppointment1620963956718 implements MigrationInterface {
       )
       .getMany()) as User[];
 
-    const providers = (await getConnection("seed")
+    const providers = (await getConnection("seeds")
       .getRepository(Provider)
       .createQueryBuilder("users")
       .leftJoinAndSelect(
@@ -39,11 +39,11 @@ export class CreateAppointment1620963956718 implements MigrationInterface {
       }),
     });
 
-    const appointments_factories_saves = await getConnection("seed")
+    const appointments_factories_saves = await getConnection("seeds")
       .getRepository("appointments")
       .save(appointments_factory_list);
 
-    const appointments_list = (await getConnection("seed")
+    const appointments_list = (await getConnection("seeds")
       .getRepository("appointments")
       .find(appointments_factories_saves)) as Appointment[];
 
@@ -57,7 +57,7 @@ export class CreateAppointment1620963956718 implements MigrationInterface {
       }).map((_, index) => appointments_list[index]),
     }));
 
-    await getConnection("seed").getRepository(User).save(users_appointments);
+    await getConnection("seeds").getRepository(User).save(users_appointments);
 
     const providers_appointments = providers.map((user) => ({
       ...user,
@@ -69,16 +69,16 @@ export class CreateAppointment1620963956718 implements MigrationInterface {
       }).map((_, index) => appointments_list[index]),
     }));
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository(Provider)
       .save(providers_appointments);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("appointments_providers")
       .delete({});
-    await getConnection("seed").getRepository("appointments_users").delete({});
-    await getConnection("seed").getRepository("appointments").delete({});
+    await getConnection("seeds").getRepository("appointments_users").delete({});
+    await getConnection("seeds").getRepository("appointments").delete({});
   }
 }

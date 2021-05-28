@@ -8,7 +8,7 @@ export class CreateTransactions1621147024941 implements MigrationInterface {
   public async up(): Promise<void> {
     const transaction_factory = new TransactionsFactory();
 
-    const appointments = (await getConnection("seed")
+    const appointments = (await getConnection("seeds")
       .getRepository("appointments")
       .find()) as Appointment[];
 
@@ -16,11 +16,11 @@ export class CreateTransactions1621147024941 implements MigrationInterface {
       quantity: appointments.length,
     });
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("transactions")
       .save(transactions_factory_list);
 
-    const transactions = await getConnection("seed")
+    const transactions = await getConnection("seeds")
       .getRepository("transactions")
       .find();
 
@@ -29,15 +29,15 @@ export class CreateTransactions1621147024941 implements MigrationInterface {
       transactions: [transactions[index]],
     }));
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository(Appointment)
       .save(appointment_transactions);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository("appointments_transactions")
       .delete({});
-    await getConnection("seed").getRepository("transactions").delete({});
+    await getConnection("seeds").getRepository("transactions").delete({});
   }
 }

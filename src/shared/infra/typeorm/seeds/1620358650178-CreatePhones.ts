@@ -6,7 +6,7 @@ import { PhonesFactory } from "@shared/infra/typeorm/factories";
 
 export class CreatePhones1620358650178 implements MigrationInterface {
   public async up(): Promise<void> {
-    const users = (await getConnection("seed")
+    const users = (await getConnection("seeds")
       .getRepository("users")
       .find()) as User[];
 
@@ -16,9 +16,9 @@ export class CreatePhones1620358650178 implements MigrationInterface {
       quantity: users.length,
     });
 
-    await getConnection("seed").getRepository("phones").save(phones);
+    await getConnection("seeds").getRepository("phones").save(phones);
 
-    const phones_list = (await getConnection("seed")
+    const phones_list = (await getConnection("seeds")
       .getRepository("phones")
       .find()) as Phone[];
 
@@ -27,13 +27,13 @@ export class CreatePhones1620358650178 implements MigrationInterface {
       phones: [phones_list[index]],
     }));
 
-    await getConnection("seed")
+    await getConnection("seeds")
       .getRepository(User)
       .save(relationship_users_phones);
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed").getRepository("users_phones").delete({});
-    await getConnection("seed").getRepository("phones").delete({});
+    await getConnection("seeds").getRepository("users_phones").delete({});
+    await getConnection("seeds").getRepository("phones").delete({});
   }
 }

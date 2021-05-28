@@ -41,7 +41,10 @@ describe("Create address users clients service", () => {
       hashProviderInMemory,
       "generateHash"
     );
-    const usersRepositoryCreate = jest.spyOn(usersRepositoryInMemory, "create");
+    const usersRepositoryCreate = jest.spyOn(
+      usersRepositoryInMemory,
+      "createUserClientType"
+    );
     const usersRepositoryFindById = jest.spyOn(
       usersRepositoryInMemory,
       "findById"
