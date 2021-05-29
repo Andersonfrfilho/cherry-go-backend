@@ -1,10 +1,15 @@
-import nodemailer, { Transporter } from 'nodemailer';
-import handlebars from 'handlebars';
-import { SES } from 'aws-sdk';
-import fs from 'fs';
+import { SES } from "aws-sdk";
+import fs from "fs";
+import handlebars from "handlebars";
+import nodemailer, { Transporter } from "nodemailer";
+import { resolve } from "path";
 
-import { ISendMailDTO } from '@shared/container/providers/MailProvider/dtos/ISendMailDTO';
-import { IMailProvider } from '@shared/container/providers/MailProvider/IMailProvider';
+import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import {
+  MailSubject,
+  MailType,
+} from "@shared/container/providers/MailProvider/enums/MailType.enum";
+import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
 
 class SESMailProvider implements IMailProvider {
   private client: Transporter;
@@ -17,7 +22,7 @@ class SESMailProvider implements IMailProvider {
     try {
       this.client = nodemailer.createTransport({
         SES: new SES({
-          apiVersion: '2010-12-01',
+          apiVersion: "2010-12-01",
           region: process.env.AWS_DEFAULT_REGION,
         }),
       });
@@ -26,13 +31,18 @@ class SESMailProvider implements IMailProvider {
     }
   }
 
-  async sendMail({
-    to,
-    subject,
-    variables,
-    path,
-  }: ISendMailDTO): Promise<void> {
-    const templateFileContent = fs.readFileSync(path, 'utf-8');
+  async sendMail({ to, variables, email_type }: ISendMailDTO): Promise<void> {
+    const templatePath = resolve(
+      __dirname,
+      "..",
+      "..",
+      "MailProvider",
+      "views",
+      "emails",
+      `${MailType[email_type]}.hbs`
+    );
+
+    const templateFileContent = fs.readFileSync(templatePath, "utf-8");
 
     const templateParse = handlebars.compile(templateFileContent);
 
@@ -40,8 +50,8 @@ class SESMailProvider implements IMailProvider {
 
     await this.client.sendMail({
       to,
-      from: 'AdA <admin@adatechnology.dev>',
-      subject,
+      from: "Cherry go <noreplay@cherrygo.com.br>",
+      subject: MailSubject[email_type],
       html: templateHTML,
     });
   }

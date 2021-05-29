@@ -4,29 +4,32 @@ import {
   ICreateUserAddressClientDTO,
   ICreateUserPhonesClientRequestDTO,
   IUpdateActiveUserDTO,
+  UpdateActivePhoneUserDTO,
 } from "@modules/accounts/dtos";
 import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
 import { UserTypes } from "@modules/accounts/enums/UserTypes.enum";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
+import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
+import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { UserPhone } from "@modules/accounts/infra/typeorm/entities/UserPhone";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-
-import { Phone } from "../entities/Phone";
-import { TypeUser } from "../entities/TypeUser";
 
 class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
   private repository_address: Repository<Address>;
   private repository_users_types: Repository<TypeUser>;
   private repository_phones: Repository<Phone>;
+  private repository_users_phones: Repository<UserPhone>;
 
   constructor() {
     this.repository = getRepository(User);
     this.repository_address = getRepository(Address);
     this.repository_users_types = getRepository(TypeUser);
     this.repository_phones = getRepository(Phone);
+    this.repository_users_phones = getRepository(UserPhone);
   }
 
   async updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void> {
@@ -35,34 +38,53 @@ class UsersRepository implements IUsersRepository {
     });
   }
 
+  async updateActivePhoneUser({
+    user_id,
+    active,
+  }: UpdateActivePhoneUserDTO): Promise<void> {
+    const {
+      phones: [{ id }],
+    } = await this.repository.findOne(user_id, {
+      relations: ["phones"],
+    });
+
+    await this.repository_users_phones.update(
+      { phone_id: id, user_id },
+      { active }
+    );
+  }
+
   async createUserPhones({
     country_code,
     ddd,
     number,
     user_id,
   }: ICreateUserPhonesClientRequestDTO): Promise<User> {
-    const user = await this.repository.findOne(user_id);
-
     const phone_exist = await this.repository_phones.findOne({
       where: { country_code, ddd, number },
     });
 
+    const user = await this.repository.findOne(user_id);
+
     if (phone_exist) {
-      const user_phone = user;
-      user_phone.phones = [phone_exist];
+      user.phones = [phone_exist];
 
-      const user_saved = await this.repository.save(user_phone);
+      const user_phone = await this.repository.save(user);
 
-      return user_saved;
+      return user_phone;
     }
 
-    const phone = this.repository_phones.create({ country_code, ddd, number });
+    const phone = this.repository_phones.create({
+      country_code,
+      ddd,
+      number,
+    });
 
     user.phones = [phone];
 
-    const user_saved = await this.repository.save(user);
+    await this.repository.save(user);
 
-    return user_saved;
+    return user;
   }
 
   async createUserAddress({
@@ -116,6 +138,7 @@ class UsersRepository implements IUsersRepository {
     rg,
     birth_date,
     password,
+    active,
   }: ICreateUserClientDTO): Promise<User> {
     const type = await this.repository_users_types.findOne({
       where: { name: UserTypes.CLIENT },
@@ -130,6 +153,7 @@ class UsersRepository implements IUsersRepository {
       birth_date,
       password_hash: password,
       types: [type],
+      active,
     });
 
     await this.repository.save(user);
@@ -185,6 +209,7 @@ class UsersRepository implements IUsersRepository {
   }: IFindUserEmailCpfRgDTO): Promise<User> {
     return this.repository.findOne({ where: [{ email }, { cpf }, { rg }] });
   }
+
   async updatePasswordUser({
     id,
     password_hash,

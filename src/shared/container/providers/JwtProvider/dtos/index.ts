@@ -4,6 +4,7 @@ import { IJwtVerifyParametersDTO } from "@shared/container/providers/JwtProvider
 
 export interface Sub {
   user: Partial<User>;
+  code_hash: string;
 }
 
 interface IJwtProviderResponsePayload {

@@ -1,3 +1,4 @@
+import { ConfirmAccountPhoneUserDTO } from "@modules/accounts/dtos/ConfirmAccountPhoneUser.dto";
 import { ICreateTypesUsersDTO } from "@modules/accounts/dtos/ICreateTypesUsers.dto";
 import { ICreateUserAddressClientDTO } from "@modules/accounts/dtos/ICreateUserAddressClientDTO";
 import { ICreateUserAddressClientRequestDTO } from "@modules/accounts/dtos/ICreateUserAddressClientRequestDTO";
@@ -9,8 +10,11 @@ import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpf
 import { IUpdateActiveUserDTO } from "@modules/accounts/dtos/IUpdateActiveUser.dto";
 import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
 import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
+import { UpdateActivePhoneUserDTO } from "@modules/accounts/dtos/UpdateActivePhoneUser.dto";
 
 export {
+  UpdateActivePhoneUserDTO,
+  ConfirmAccountPhoneUserDTO,
   IFindPhoneDTO,
   ICreateUserClientDTO,
   ICreateUserTokenDTO,

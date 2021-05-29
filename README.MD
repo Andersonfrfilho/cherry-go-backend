@@ -93,6 +93,13 @@ https://dbdiagram.io/d/604a358bfcdcb6230b23b25c
   "tabnine.experimentalAutoImports": true,
 }
 ```
+## Run Container
+  - windows
+    ```.\MakeFile.bat all```
+
+  - linux
+    ```make all```
+
 ## Typeorm Migrations
 
 run migration:
@@ -103,3 +110,8 @@ create migration:
 create seeders migration
 
   yarn seed:generate create "name"
+
+
+# Docker
+ - docker-compose -f .\apache-kafka\docker-compose.yaml up -d
+ - docker-compose up -d

@@ -11,5 +11,7 @@ const configs: InterfaceConfig = {
   production,
   staging,
 };
+
 const config: interface_config = configs[process.env.ENVIRONMENT];
+
 export { config };

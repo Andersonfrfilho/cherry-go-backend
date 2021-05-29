@@ -50,22 +50,4 @@ export default [
     useUnifiedTopology: true,
     entities: ["./src/modules/**/infra/typeorm/schemas/*.ts"],
   },
-  // {
-  //   name: "test",
-  //   type: "postgres",
-  //   port: Number(process.env.POSTGRES_PORT) || 5432,
-  //   host: process.env.POSTGRES_HOST || "localhost",
-  //   username: process.env.POSTGRES_USER || "postgres",
-  //   password: process.env.POSTGRES_PASSWORD || "102030",
-  //   database: process.env.POSTGRES_TEST_DB || "cherry_go_test",
-  //   migrations: [
-  //     "./src/shared/infra/typeorm/migrations/*.ts"
-  //   ],
-  //   entities: [
-  //     "./src/modules/**/entities/*.ts"
-  //   ],
-  //   cli: {
-  //     "migrationsDir": "./src/shared/infra/typeorm/migrations"
-  //   }
-  // },
 ];

@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
@@ -15,26 +16,28 @@ import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
-import { lowercase } from "@utils/lowercaseTypeorm";
 
 @Entity("users")
 class User {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
-  @Column({ transformer: [lowercase] })
+  @Column()
   name: string;
 
-  @Column({ transformer: [lowercase] })
+  @Column()
   last_name: string;
 
   @Column({ unique: true })
+  @Index()
   cpf: string;
 
   @Column({ unique: true })
+  @Index()
   rg: string;
 
-  @Column({ transformer: [lowercase] })
+  @Column()
+  @Index()
   email: string;
 
   @Column()
@@ -45,7 +48,7 @@ class User {
   @Exclude()
   birth_date: Date;
 
-  @Column("boolean", { default: true })
+  @Column("boolean", { default: false })
   active?: boolean;
 
   @ManyToMany(() => Phone, { cascade: true })
