@@ -5,7 +5,11 @@ import { v4 as uuidV4 } from "uuid";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
+import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
 import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
+import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
+import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 import { AppError } from "@shared/errors/AppError";
 
 @injectable()
@@ -17,8 +21,8 @@ class SendForgotPasswordMailService {
     private usersTokensRepository: IUsersTokensRepository,
     @inject("DateProvider")
     private dateProvider: IDateProvider,
-    @inject("MailProvider")
-    private mailProvider: IMailProvider
+    @inject("QueueProvider")
+    private queueProvider: QueueProviderInterface
   ) {}
   async execute(email: string): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
@@ -35,25 +39,23 @@ class SendForgotPasswordMailService {
       expires_date,
     });
 
-    const templatePath = resolve(
-      __dirname,
-      "..",
-      "..",
-      "views",
-      "emails",
-      "forgotPassword.hbs"
-    );
-
     const variables = {
       name: user.name,
       link: `${process.env.FORGOT_MAIL_URL}${refresh_token}`,
     };
 
-    await this.mailProvider.sendMail({
-      to: email,
-      subject: "Recuperação de senha",
+    const message: ISendMailDTO = {
+      to: user.email,
+      email_type: MailContent.FORGOT_PASSWORD,
       variables,
-      path: templatePath,
+    };
+    const messages = [];
+
+    messages.push({ value: JSON.stringify(message) });
+
+    await this.queueProvider.sendMessage({
+      topic: TopicsQueueEnum.SEND_MAIL,
+      messages,
     });
   }
 }

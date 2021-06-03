@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
@@ -9,7 +8,10 @@ import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTok
 import { User } from "@sentry/node";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
+import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
+import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
+import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 import { AppError } from "@shared/errors/AppError";
 
 @injectable()
@@ -19,12 +21,12 @@ class CreateUserClientService {
     private usersRepository: IUsersRepository,
     @inject("HashProvider")
     private hashProvider: IHashProvider,
-    @inject("MailProvider")
-    private mailProvider: IMailProvider,
     @inject("UsersTokensRepository")
     private usersTokensRepository: IUsersTokensRepository,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+    @inject("QueueProvider")
+    private queueProvider: QueueProviderInterface
   ) {}
   async execute({
     name,
@@ -75,20 +77,18 @@ class CreateUserClientService {
       link: `${process.env.CONFIRM_MAIL_URL}${refresh_token}`,
     };
 
-    const templatePath = resolve(
-      __dirname,
-      "..",
-      "..",
-      "views",
-      "emails",
-      "confirmEmailUser.hbs"
-    );
-
-    await this.mailProvider.sendMail({
-      to: email,
-      subject: "Confirmação de cadastro",
+    const message: ISendMailDTO = {
+      to: user.email,
+      email_type: MailContent.USER_CONFIRMATION_EMAIL,
       variables,
-      path: templatePath,
+    };
+    const messages = [];
+
+    messages.push({ value: JSON.stringify(message) });
+
+    await this.queueProvider.sendMessage({
+      topic: config.mail.queue.topic,
+      messages,
     });
 
     return user;

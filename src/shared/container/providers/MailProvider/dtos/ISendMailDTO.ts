@@ -1,7 +1,7 @@
-interface ISendMailDTO {
+import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
+
+export interface ISendMailDTO {
   to: string;
-  subject: string;
   variables: any;
-  path: string;
+  email_type: MailContent;
 }
-export { ISendMailDTO };

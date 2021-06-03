@@ -73,6 +73,7 @@ export default class CreateUsers1617465827102 implements MigrationInterface {
             isNullable: true,
           },
         ],
+        indices: [{ columnNames: ["cpf", "rg", "email"] }],
       })
     );
   }

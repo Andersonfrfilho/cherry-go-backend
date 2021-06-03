@@ -11,7 +11,6 @@ export default [
     database: process.env.POSTGRES_DB_TEST || "cherry_go_test",
     dropSchema: true,
     logging: false,
-    synchroize: true,
     migrationsRun: true,
     migrations: ["./src/shared/infra/typeorm/migrations/*.ts"],
     entities: ["./src/modules/**/entities/*.ts"],

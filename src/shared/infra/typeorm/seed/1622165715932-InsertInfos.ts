@@ -1,4 +1,4 @@
-import { getConnection, MigrationInterface, QueryRunner } from "typeorm";
+import { getConnection, MigrationInterface } from "typeorm";
 
 import { UsersTypesFactory } from "@shared/infra/typeorm/factories";
 

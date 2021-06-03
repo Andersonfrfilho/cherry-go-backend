@@ -2,9 +2,9 @@ import { classToClass } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { CreateUserPhonesClientService } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserAddressClient.service";
+import { CreateUserPhonesClientService } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhonesClient.service";
 
-class CreateUserAddressClientController {
+class CreateUserPhoneClientController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
     const { country_code, ddd, number } = request.body;
@@ -22,4 +22,4 @@ class CreateUserAddressClientController {
     return response.json(classToClass(user_address));
   }
 }
-export { CreateUserAddressClientController };
+export { CreateUserPhoneClientController };

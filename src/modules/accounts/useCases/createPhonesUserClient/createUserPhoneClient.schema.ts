@@ -2,8 +2,8 @@ import { celebrate, Joi, Segments } from "celebrate";
 
 const schemaCreateUserPhoneClient = celebrate({
   [Segments.BODY]: {
-    country_code: Joi.string().max(3).min(3).required(),
-    ddd: Joi.string().max(3).min(3).required(),
+    country_code: Joi.string().max(4).min(3).required(),
+    ddd: Joi.string().max(2).min(2).required(),
     number: Joi.string().min(8).max(9).required(),
   },
 });

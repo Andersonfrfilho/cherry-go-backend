@@ -1,8 +1,10 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
@@ -12,6 +14,7 @@ import {
 import { User } from "./User";
 
 @Entity("phones")
+@Index(["country_code", "ddd", "number"])
 class Phone {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
@@ -34,12 +37,15 @@ class Phone {
   users?: User[];
 
   @CreateDateColumn()
+  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at?: Date;
 }
 

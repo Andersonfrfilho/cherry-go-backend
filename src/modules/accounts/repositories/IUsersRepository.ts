@@ -4,6 +4,7 @@ import {
   IUpdatedUserClientDTO,
   ICreateUserPhonesClientRequestDTO,
   IUpdateActiveUserDTO,
+  UpdateActivePhoneUserDTO,
 } from "@modules/accounts/dtos";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -27,6 +28,10 @@ interface IUsersRepository {
   }: IUpdatedUserClientDTO): Promise<User>;
   createUserClientType(data: ICreateUserClientDTO): Promise<User>;
   updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void>;
+  updateActivePhoneUser({
+    user_id,
+    active,
+  }: UpdateActivePhoneUserDTO): Promise<void>;
 }
 
 export { IUsersRepository };

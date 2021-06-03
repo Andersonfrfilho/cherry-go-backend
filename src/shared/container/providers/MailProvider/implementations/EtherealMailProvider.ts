@@ -1,9 +1,14 @@
 import fs from "fs";
 import handlebars from "handlebars";
 import nodemailer, { Transporter } from "nodemailer";
+import { resolve } from "path";
 import { injectable } from "tsyringe";
 
 import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import {
+  MailSubject,
+  MailType,
+} from "@shared/container/providers/MailProvider/enums/MailType.enum";
 import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
 
 @injectable()
@@ -28,19 +33,23 @@ class EtherealMailProvider implements IMailProvider {
       .catch((err) => console.error(err));
   }
 
-  async sendMail({
-    to,
-    subject,
-    path,
-    variables,
-  }: ISendMailDTO): Promise<void> {
-    const templateFileContent = fs.readFileSync(path).toString("utf-8");
+  async sendMail({ to, variables, email_type }: ISendMailDTO): Promise<void> {
+    const templatePath = resolve(
+      __dirname,
+      "..",
+      "..",
+      "MailProvider",
+      "views",
+      "emails",
+      `${MailType[email_type]}.hbs`
+    );
+    const templateFileContent = fs.readFileSync(templatePath).toString("utf-8");
     const templateParse = handlebars.compile(templateFileContent);
     const templateHTML = templateParse(variables);
     const message = await this.client.sendMail({
       to,
       from: "Cherry go <noreplay@cherrygo.com.br>",
-      subject,
+      subject: MailSubject[email_type],
       html: templateHTML,
     });
 
