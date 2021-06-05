@@ -51,7 +51,7 @@ class User {
   @Column("boolean", { default: false })
   active?: boolean;
 
-  @ManyToMany(() => Phone, { cascade: true })
+  @ManyToMany(() => Phone, { cascade: true, eager: true })
   @JoinTable({
     name: "users_phones",
     joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
@@ -59,7 +59,7 @@ class User {
   })
   phones?: Phone[];
 
-  @ManyToMany(() => Address, { cascade: true })
+  @ManyToMany(() => Address, { cascade: true, eager: true })
   @JoinTable({
     name: "users_addresses",
     joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
@@ -77,6 +77,7 @@ class User {
 
   @ManyToMany(() => TypeUser, (type_user) => type_user.users, {
     cascade: true,
+    eager: true,
   })
   @JoinTable({
     name: "users_types_users",

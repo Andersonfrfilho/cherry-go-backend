@@ -18,11 +18,11 @@ import {
 } from "@shared/infra/typeorm/factories";
 
 let createUserService: CreateUserClientService;
-const mockedDate = new Date("2020-09-01T09:33:37");
+const mocked_date = new Date("2020-09-01T09:33:37");
 jest.mock("uuid");
-jest.useFakeTimers("modern").setSystemTime(mockedDate.getTime());
+jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 
-describe("Create users clients service", () => {
+describe("CreateUserClientService", () => {
   const usersFactory = new UsersFactory();
   const usersTypesFactory = new UsersTypesFactory();
 
@@ -36,16 +36,26 @@ describe("Create users clients service", () => {
     );
   });
 
-  it("should be able to create an user", async () => {
+  it("Should be able to create an user", async () => {
     // arrange
     const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({ quantity: 1 });
-    const types = usersTypesFactory.generate();
-    const uuidFake = faker.datatype.uuid();
+      {
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        birth_date,
+        password_hash,
+        active,
+        id,
+      },
+    ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
+    const [type] = usersTypesFactory.generate("with_id");
+    const uuid_fake = faker.datatype.uuid();
     const variables = {
       name,
-      link: `${process.env.CONFIRM_MAIL_URL}${uuidFake}`,
+      link: `${process.env.CONFIRM_MAIL_URL}${uuid_fake}`,
     };
     const message: ISendMailDTO = {
       to: email,
@@ -58,7 +68,7 @@ describe("Create users clients service", () => {
     usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue(undefined);
     hashProviderMock.generateHash.mockResolvedValue(password_hash);
     usersRepositoryMock.createUserClientType.mockResolvedValue({
-      id: uuidFake,
+      id,
       name,
       last_name,
       cpf,
@@ -66,10 +76,12 @@ describe("Create users clients service", () => {
       email,
       birth_date,
       password_hash,
-      types: [{ ...types[0], id: uuidFake }],
+      types: [type],
+      phones: [],
+      addresses: [],
     });
-    dateProviderMock.addMinutes.mockReturnValue(mockedDate);
-    jest.spyOn(uuid, "v4").mockReturnValue(uuidFake);
+    dateProviderMock.addMinutes.mockReturnValue(mocked_date);
+    jest.spyOn(uuid, "v4").mockReturnValue(uuid_fake);
     usersTokensRepositoryMock.create.mockResolvedValue({});
     queueProviderMock.sendMessage.mockResolvedValue({});
 
@@ -85,6 +97,7 @@ describe("Create users clients service", () => {
     });
 
     // assert
+    expect.assertions(7);
     expect(usersRepositoryMock.findUserByEmailCpfRg).toHaveBeenCalledWith({
       cpf,
       rg,
@@ -99,15 +112,15 @@ describe("Create users clients service", () => {
       email,
       birth_date,
       password: password_hash,
-      active: false,
+      active,
     });
     expect(dateProviderMock.addMinutes).toHaveBeenCalledWith(
       config.mail.token.expiration_time
     );
     expect(usersTokensRepositoryMock.create).toHaveBeenCalledWith({
-      refresh_token: uuidFake,
-      user_id: uuidFake,
-      expires_date: mockedDate,
+      refresh_token: uuid_fake,
+      user_id: id,
+      expires_date: mocked_date,
     });
 
     expect(queueProviderMock.sendMessage).toHaveBeenCalledWith({
@@ -116,7 +129,7 @@ describe("Create users clients service", () => {
     });
     expect(result).toEqual(
       expect.objectContaining({
-        id: expect.any(String) && uuidFake,
+        id: expect.any(String) && id,
         name: expect.any(String) && name,
         last_name: expect.any(String) && last_name,
         cpf: expect.any(String) && cpf,
@@ -124,26 +137,39 @@ describe("Create users clients service", () => {
         email: expect.any(String) && email,
         password_hash: expect.any(String) && password_hash,
         birth_date: expect.any(Date) && birth_date,
+        active: expect.any(Boolean) && active,
         types: expect.arrayContaining([
           expect.objectContaining({
-            id: expect.any(String) && uuidFake,
-            name: expect.any(String) && types[0].name,
-            description: expect.any(String || null) && types[0].description,
+            id: expect.any(String) && type.id,
+            name: expect.any(String) && type.name,
+            description: expect.any(String) && type.description,
           }),
         ]),
+        addresses: expect.arrayContaining([]),
+        phones: expect.arrayContaining([]),
       })
     );
   });
 
-  it("not should able to create user already email exist", async () => {
+  it("Not should able to create user already email exist", async () => {
     // arrange
+    const [type] = usersTypesFactory.generate("with_id");
     const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({ quantity: 1 });
-    const uuidFake = faker.datatype.uuid();
+      {
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        birth_date,
+        password_hash,
+        id,
+        active,
+      },
+    ] = usersFactory.generate({ quantity: 1, id: "true", active: false });
 
     usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue({
-      id: uuidFake,
+      id,
       name,
       last_name,
       cpf,
@@ -151,10 +177,15 @@ describe("Create users clients service", () => {
       email,
       birth_date,
       password_hash,
+      active,
+      types: [type],
+      phones: [],
+      addresses: [],
     });
 
     // act
     // assert
+    expect.assertions(2);
     await expect(
       createUserService.execute({
         name,

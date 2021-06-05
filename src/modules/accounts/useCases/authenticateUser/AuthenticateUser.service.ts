@@ -7,6 +7,7 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
+import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
 import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
 
@@ -29,7 +30,9 @@ class AuthenticateUserService {
     @inject("HashProvider")
     private hashProvider: IHashProvider,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: IDateProvider,
+    @inject("JwtProvider")
+    private jwtProvider: IJwtProvider
   ) {}
   async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
@@ -52,14 +55,22 @@ class AuthenticateUserService {
       });
     }
 
-    const token = sign({}, secret.token, {
-      subject: JSON.stringify({ user: { id: user.id, active: user.active } }),
-      expiresIn: expires_in.token,
+    const token = this.jwtProvider.assign({
+      payload: {},
+      secretOrPrivateKey: secret.token,
+      options: {
+        subject: { user: { id: user.id, active: user.active } },
+        expiresIn: expires_in.token,
+      },
     });
 
-    const refresh_token = sign({ email }, secret.refresh, {
-      subject: JSON.stringify({ user: { id: user.id, active: user.active } }),
-      expiresIn: expires_in.refresh,
+    const refresh_token = this.jwtProvider.assign({
+      payload: { email },
+      secretOrPrivateKey: secret.refresh,
+      options: {
+        subject: { user: { id: user.id, active: user.active } },
+        expiresIn: expires_in.refresh,
+      },
     });
 
     const refresh_token_expires_date = this.dateProvider.addDays(

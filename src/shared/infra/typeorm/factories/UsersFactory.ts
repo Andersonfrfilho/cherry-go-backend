@@ -18,10 +18,12 @@ class UsersFactory {
     password_hash = process.env.PASSWORD_USER_SEED_HASH,
     active,
     quantity = 1,
-  }: ICreateUserParametersFactory): Omit<User, "id">[] {
+    id,
+  }: ICreateUserParametersFactory): Partial<User>[] {
     const arrayUsers = Array.from(
       { length: quantity },
-      (): Omit<User, "id"> => ({
+      (): Partial<User> => ({
+        id: id ? faker.datatype.uuid() : undefined,
         name: name || faker.name.firstName(),
         last_name: last_name || faker.name.lastName(),
         email: email || faker.internet.email(),

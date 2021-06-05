@@ -17,10 +17,12 @@ class AddressesFactory {
     street,
     zipcode,
     district,
-  }: ICreateUserParametersFactory): Omit<Address, "id" | "id_user">[] {
+    id,
+  }: ICreateUserParametersFactory): Partial<Address>[] {
     return Array.from(
       { length: quantity },
-      (): Omit<Address, "id" | "id_user"> => ({
+      (): Partial<Address> => ({
+        id: id ? faker.datatype.uuid() : undefined,
         city: city || faker.address.city(),
         country: country || faker.address.country(),
         district: district || faker.address.secondaryAddress(),

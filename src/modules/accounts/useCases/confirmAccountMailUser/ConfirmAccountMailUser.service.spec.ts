@@ -1,162 +1,105 @@
-import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
+import "reflect-metadata";
+import faker from "faker";
+
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UserRepository.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
+import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
-import { UsersFactory } from "@shared/infra/typeorm/factories";
 
-let usersRepositoryInMemory: IUsersRepository;
-let createUserService: CreateUserClientService;
-let hashProviderInMemory: IHashProvider;
+import { ConfirmAccountMailUserService } from "./ConfirmAccountMailUser.service";
 
-describe("Create users clients service", () => {
-  const usersFactory = new UsersFactory();
+let confirmAccountMailUserService: ConfirmAccountMailUserService;
+const mocked_date = new Date("2020-09-01T09:33:37");
+jest.mock("uuid");
+jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 
+describe("ConfirmAccountMailUserService", () => {
   beforeEach(() => {
-    usersRepositoryInMemory = new UsersRepositoryInMemory();
-    hashProviderInMemory = new HashProviderInMemory();
-    createUserService = new CreateUserClientService(
-      usersRepositoryInMemory,
-      hashProviderInMemory
+    confirmAccountMailUserService = new ConfirmAccountMailUserService(
+      usersRepositoryMock,
+      usersTokensRepositoryMock,
+      dateProviderMock
     );
   });
 
-  it("should be able to create an user", async () => {
+  it("Should be confirm user, for status true", async () => {
     // arrange
-    const usersRepositoryFindUserByEmailCpfRg = jest.spyOn(
-      usersRepositoryInMemory,
-      "findUserByEmailCpfRg"
-    );
+    const user_id_faker = faker.datatype.uuid();
+    const token_faker = faker.datatype.uuid();
 
-    const hashProviderGenerateHash = jest.spyOn(
-      hashProviderInMemory,
-      "generateHash"
-    );
-
-    const usersRepositoryCreate = jest.spyOn(
-      usersRepositoryInMemory,
-      "createUserClientType"
-    );
-
-    const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({
-      quantity: 1,
-      active: true,
+    usersTokensRepositoryMock.findByRefreshToken.mockResolvedValue({
+      expires_date: mocked_date,
+      user_id: user_id_faker,
     });
+    dateProviderMock.compareIfBefore.mockReturnValue(false);
+    usersRepositoryMock.updateActiveUser.mockResolvedValue({});
+
     // act
-    const result = await createUserService.execute({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
+    await confirmAccountMailUserService.execute(token_faker);
 
     // assert
-    expect(usersRepositoryFindUserByEmailCpfRg).toHaveBeenCalledWith({
-      cpf,
-      rg,
-      email,
-    });
-    expect(hashProviderGenerateHash).toHaveBeenCalledWith(password_hash);
-    expect(usersRepositoryCreate).toHaveBeenCalledWith({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
-    expect(result).toEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        name: expect.any(String),
-        last_name: expect.any(String),
-        cpf: expect.any(String),
-        rg: expect.any(String),
-        email: expect.any(String),
-        password_hash: expect.any(String),
-        birth_date: expect.any(Date),
-        types: expect.arrayContaining([
-          expect.objectContaining({
-            id: expect.any(String),
-            name: expect.any(String),
-            description: expect.any(String || null),
-          }),
-        ]),
-      })
+    expect.assertions(3);
+    expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
+      token_faker
     );
+    expect(dateProviderMock.compareIfBefore).toHaveBeenCalledWith(
+      mocked_date,
+      mocked_date
+    );
+    expect(usersRepositoryMock.updateActiveUser).toHaveBeenCalledWith({
+      id: user_id_faker,
+      active: true,
+    });
   });
 
-  it("not should able to create user already email exist", async () => {
+  it("should not be able to confirm user mail, if token invalid", async () => {
     // arrange
-    const usersRepositoryFindUserByEmailCpfRg = jest.spyOn(
-      usersRepositoryInMemory,
-      "findUserByEmailCpfRg"
-    );
-    const hashProviderGenerateHash = jest.spyOn(
-      hashProviderInMemory,
-      "generateHash"
-    );
-    const usersRepositoryCreate = jest.spyOn(
-      usersRepositoryInMemory,
-      "createUserClientType"
-    );
-    const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({
-      quantity: 1,
-      active: true,
-    });
+    usersTokensRepositoryMock.findByRefreshToken.mockResolvedValue(undefined);
+    const token_faker = faker.datatype.uuid();
 
     // act
-    await createUserService.execute({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
-
     // assert
-    expect(usersRepositoryFindUserByEmailCpfRg).toHaveBeenCalledWith({
-      cpf,
-      rg,
-      email,
-    });
-    expect(hashProviderGenerateHash).toHaveBeenCalledWith(password_hash);
-    expect(usersRepositoryCreate).toHaveBeenCalledWith({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
-
+    expect.assertions(2);
     await expect(
-      createUserService.execute({
-        name,
-        last_name,
-        cpf,
-        rg,
-        email,
-        birth_date,
-        password: password_hash,
-      })
-    ).rejects.toEqual(new AppError({ message: "User client already exist" }));
-    expect(usersRepositoryFindUserByEmailCpfRg).toHaveBeenCalledWith({
-      cpf,
-      rg,
-      email,
+      confirmAccountMailUserService.execute(token_faker)
+    ).rejects.toEqual(new AppError({ message: "Token invalid!" }));
+
+    expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
+      token_faker
+    );
+  });
+
+  it("should not be able to confirm user mail, if token expired", async () => {
+    // arrange
+    const user_id_faker = faker.datatype.uuid();
+    const token_faker = faker.datatype.uuid();
+
+    usersTokensRepositoryMock.findByRefreshToken.mockResolvedValue({
+      expires_date: mocked_date,
+      user_id: user_id_faker,
     });
+    dateProviderMock.compareIfBefore.mockReturnValue(true);
+    usersRepositoryMock.updateActiveUser.mockResolvedValue({});
+
+    // act
+    // assert
+    expect.assertions(3);
+    await expect(
+      confirmAccountMailUserService.execute(token_faker)
+    ).rejects.toEqual(
+      new AppError({
+        message: "Token expired!",
+        status_code: HttpErrorCodes.UNAUTHORIZED,
+      })
+    );
+
+    expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
+      token_faker
+    );
+    expect(dateProviderMock.compareIfBefore).toHaveBeenCalledWith(
+      mocked_date,
+      mocked_date
+    );
   });
 });
