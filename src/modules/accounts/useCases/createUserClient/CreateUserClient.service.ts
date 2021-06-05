@@ -11,7 +11,6 @@ import { IHashProvider } from "@shared/container/providers/HashProvider/IHashPro
 import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
-import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 import { AppError } from "@shared/errors/AppError";
 
 @injectable()

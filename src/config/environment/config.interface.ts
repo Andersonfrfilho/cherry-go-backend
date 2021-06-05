@@ -39,4 +39,5 @@ export interface InterfaceConfig {
   development: interface_config;
   staging: interface_config;
   production: interface_config;
+  test: interface_config;
 }
