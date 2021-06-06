@@ -32,16 +32,18 @@ class ConfirmAccountPhoneUserService {
     const user_token = await this.usersTokensRepository.findByRefreshToken(
       token
     );
-    const { email, sub } = this.jwtProvider.verifyJwt({
+    const { sub } = this.jwtProvider.verifyJwt({
       auth_secret: auth.secret.refresh,
       token: user_token.refresh_token,
     });
+
     if (!(user_id === sub.user.id)) {
       throw new AppError({
         message: "Not authorized!",
         status_code: HttpErrorCodes.CONFLICT,
       });
     }
+
     if (
       this.dateProvider.compareIfBefore(user_token.expires_date, new Date())
     ) {
@@ -50,14 +52,18 @@ class ConfirmAccountPhoneUserService {
         status_code: HttpErrorCodes.UNAUTHORIZED,
       });
     }
+
     await this.usersTokensRepository.deleteById(user_token.id);
+
     const passed = await this.hashProvider.compareHash(code, sub.code_hash);
+
     if (!passed) {
       throw new AppError({
         message: "Code incorrect!",
         status_code: HttpErrorCodes.CONFLICT,
       });
     }
+
     await this.usersRepository.updateActivePhoneUser({
       user_id: sub.user.id,
       active: passed,

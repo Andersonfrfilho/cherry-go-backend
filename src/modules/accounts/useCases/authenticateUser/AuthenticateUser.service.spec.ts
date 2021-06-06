@@ -18,7 +18,9 @@ import {
 } from "@shared/infra/typeorm/factories";
 
 let authenticateUserService: AuthenticateUserService;
+
 const mockedDate = new Date("2020-09-01T09:33:37");
+
 jest.mock("uuid");
 jest.useFakeTimers("modern").setSystemTime(mockedDate.getTime());
 

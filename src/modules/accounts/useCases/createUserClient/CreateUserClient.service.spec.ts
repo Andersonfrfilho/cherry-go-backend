@@ -75,6 +75,7 @@ describe("CreateUserClientService", () => {
       rg,
       email,
       birth_date,
+      active,
       password_hash,
       types: [type],
       phones: [],
