@@ -61,7 +61,7 @@ class RefreshTokenService {
       secretOrPrivateKey: auth.secret.token,
       options: {
         expiresIn: auth.expires_in.token,
-        subject: sub.user.id,
+        subject: sub,
       },
     });
 

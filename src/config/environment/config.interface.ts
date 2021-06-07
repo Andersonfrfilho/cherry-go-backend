@@ -1,5 +1,3 @@
-import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-
 interface expiration_token {
   expiration_time: number;
 }
@@ -29,11 +27,15 @@ interface queue {
 interface app {
   name: string;
 }
+interface password {
+  time_token_expires: number;
+}
 export interface interface_config {
   application: app;
   mail: mail;
   sms: sms;
   queue: queue;
+  password: password;
 }
 export interface InterfaceConfig {
   development: interface_config;

@@ -5,6 +5,9 @@ export const staging: interface_config = {
   application: {
     name: "Cherry-go",
   },
+  password: {
+    time_token_expires: 30,
+  },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,
     token: {

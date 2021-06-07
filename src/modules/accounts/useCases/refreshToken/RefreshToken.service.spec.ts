@@ -1,203 +1,148 @@
+import "reflect-metadata";
+import faker from "faker";
+import * as uuid from "uuid";
+
 import auth from "@config/auth";
-import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
-import { UsersTokensRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersTokensRepositoryInMemory";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
-import { AuthenticateUserService } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.service";
+import { config } from "@config/environment";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UserRepository.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
 import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
-import { RefreshTokenService } from "@modules/accounts/useCases/refreshToken/RefreshToken.service";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { DateFnsProvider } from "@shared/container/providers/DateProvider/implementations/DateFnsProvider";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
-import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
-import { JwtProviderInMemory } from "@shared/container/providers/JwtProvider/in-memory/JwtProviderInMemory";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
+import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
+import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/jwtProvider.mock";
+import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
+import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
 import { AppError } from "@shared/errors/AppError";
-import { UsersFactory } from "@shared/infra/typeorm/factories";
+import {
+  UsersFactory,
+  UsersTypesFactory,
+} from "@shared/infra/typeorm/factories";
 
-let usersTokensRepositoryInMemory: IUsersTokensRepository;
-let usersRepositoryInMemory: IUsersRepository;
-let createUserService: CreateUserClientService;
-let hashProviderInMemory: IHashProvider;
-let dateProviderInMemory: IDateProvider;
-let authenticateUserService: AuthenticateUserService;
-let jwtProviderInMemory: IJwtProvider;
+import { RefreshTokenService } from "./RefreshToken.service";
+
 let refreshTokenService: RefreshTokenService;
+const mocked_date = new Date("2020-09-01T09:33:37");
+jest.mock("uuid");
+jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 
-describe("Refresh token service", () => {
+describe("RefreshTokenService", () => {
   const usersFactory = new UsersFactory();
+  const usersTypesFactory = new UsersTypesFactory();
 
   beforeEach(() => {
-    usersRepositoryInMemory = new UsersRepositoryInMemory();
-    hashProviderInMemory = new HashProviderInMemory();
-    createUserService = new CreateUserClientService(
-      usersRepositoryInMemory,
-      hashProviderInMemory
-    );
-    usersTokensRepositoryInMemory = new UsersTokensRepositoryInMemory();
-    dateProviderInMemory = new DateFnsProvider();
-    authenticateUserService = new AuthenticateUserService(
-      usersRepositoryInMemory,
-      usersTokensRepositoryInMemory,
-      hashProviderInMemory,
-      dateProviderInMemory
-    );
-    jwtProviderInMemory = new JwtProviderInMemory();
     refreshTokenService = new RefreshTokenService(
-      usersTokensRepositoryInMemory,
-      dateProviderInMemory,
-      jwtProviderInMemory
+      usersTokensRepositoryMock,
+      dateProviderMock,
+      jwtProviderMock
     );
   });
 
-  it("should be able to create an new token", async () => {
+  it("Should be able to create an user", async () => {
     // arrange
-    const { expires_in } = auth;
-
-    const jwtProviderVerifyJwt = jest.spyOn(jwtProviderInMemory, "verifyJwt");
-    const usersTokensRepositoryFindByUserIdAndRefreshToken = jest.spyOn(
-      usersTokensRepositoryInMemory,
-      "findByUserIdAndRefreshToken"
-    );
-    const usersTokensRepositoryDeleteById = jest.spyOn(
-      usersTokensRepositoryInMemory,
-      "deleteById"
-    );
-    const dateProviderAddDays = jest.spyOn(dateProviderInMemory, "addDays");
-    const jwtProviderInMemoryAssign = jest.spyOn(jwtProviderInMemory, "assign");
-    const usersTokensRepositoryCreate = jest.spyOn(
-      usersTokensRepositoryInMemory,
-      "create"
-    );
-
-    const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({
+    const [{ email, id }] = usersFactory.generate({
       quantity: 1,
-      active: true,
+      active: false,
+      id: "true",
     });
+    const token = faker.datatype.uuid();
+    const id_token_faker = faker.datatype.uuid();
+    const refresh_token_faker = faker.datatype.uuid();
+    const new_refresh_token_faker = faker.datatype.uuid();
+
+    jwtProviderMock.verifyJwt.mockReturnValue({
+      email,
+      sub: { user: { id } },
+    });
+    usersTokensRepositoryMock.findByUserIdAndRefreshToken.mockResolvedValue({
+      id: id_token_faker,
+    });
+    usersTokensRepositoryMock.deleteById.mockResolvedValue({});
+    jwtProviderMock.assign
+      .mockReturnValueOnce(refresh_token_faker)
+      .mockReturnValueOnce(new_refresh_token_faker);
+    dateProviderMock.addDays.mockReturnValue(mocked_date);
+    usersTokensRepositoryMock.create.mockResolvedValue({});
 
     // act
-    await createUserService.execute({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
+    const result = await refreshTokenService.execute(token);
 
     // assert
-    const {
-      refresh_token,
-      user: { id },
-    } = await authenticateUserService.execute({
-      email,
-      password: password_hash,
-    });
-
-    const response = await refreshTokenService.execute(
-      JSON.stringify({
-        refresh_token,
-        email,
-        id,
-      })
-    );
-
-    expect(jwtProviderVerifyJwt).toHaveBeenCalledWith({
+    // expect.assertions(8);
+    expect(jwtProviderMock.verifyJwt).toHaveBeenCalledWith({
       auth_secret: auth.secret.refresh,
-      token: JSON.stringify({
-        refresh_token,
-        email,
-        id,
-      }),
+      token,
     });
     expect(
-      usersTokensRepositoryFindByUserIdAndRefreshToken
-    ).toHaveBeenCalledWith(
-      id,
-      JSON.stringify({
-        refresh_token,
-        email,
-        id,
-      })
+      usersTokensRepositoryMock.findByUserIdAndRefreshToken
+    ).toHaveBeenCalledWith(id, token);
+    expect(usersTokensRepositoryMock.deleteById).toHaveBeenCalledWith(
+      id_token_faker
     );
-    expect(usersTokensRepositoryDeleteById).toHaveBeenCalled();
-    expect(jwtProviderInMemoryAssign).toHaveBeenCalled();
-    expect(dateProviderAddDays).toHaveBeenCalledWith(expires_in.refresh_days);
-    expect(usersTokensRepositoryCreate).toHaveBeenCalled();
-    expect(jwtProviderInMemoryAssign).toHaveBeenCalled();
-    expect(response).toEqual(
+    expect(jwtProviderMock.assign).toHaveBeenNthCalledWith(1, {
+      payload: { email },
+      secretOrPrivateKey: auth.secret.refresh,
+      options: {
+        expiresIn: auth.expires_in.refresh,
+        subject: { user: { id } },
+      },
+    });
+    expect(dateProviderMock.addDays).toHaveBeenCalledWith(
+      auth.expires_in.refresh_days
+    );
+    expect(usersTokensRepositoryMock.create).toHaveBeenCalledWith({
+      expires_date: mocked_date,
+      refresh_token: refresh_token_faker,
+      user_id: id,
+    });
+    expect(jwtProviderMock.assign).toHaveBeenNthCalledWith(2, {
+      payload: {},
+      secretOrPrivateKey: auth.secret.token,
+      options: {
+        expiresIn: auth.expires_in.token,
+        subject: { user: { id } },
+      },
+    });
+    expect(result).toEqual(
       expect.objectContaining({
-        refresh_token: expect.any(String),
-        token: expect.any(String),
+        token: expect.any(String) && token,
+        refresh_token: expect.any(String) && new_refresh_token_faker,
       })
     );
   });
-  it("should not be able to create token, if token not exist", async () => {
+
+  it("Should be able to create an user", async () => {
     // arrange
-    const jwtProviderVerifyJwt = jest.spyOn(jwtProviderInMemory, "verifyJwt");
-    const usersTokensRepositoryFindByUserIdAndRefreshToken = jest.spyOn(
-      usersTokensRepositoryInMemory,
-      "findByUserIdAndRefreshToken"
+    const [{ email, id }] = usersFactory.generate({
+      quantity: 1,
+      active: false,
+      id: "true",
+    });
+    const token = faker.datatype.uuid();
+    const id_token_faker = faker.datatype.uuid();
+    const refresh_token_faker = faker.datatype.uuid();
+    const new_refresh_token_faker = faker.datatype.uuid();
+
+    jwtProviderMock.verifyJwt.mockReturnValue({
+      email,
+      sub: { user: { id } },
+    });
+    usersTokensRepositoryMock.findByUserIdAndRefreshToken.mockResolvedValue(
+      undefined
     );
 
-    const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({
-      quantity: 1,
-      active: true,
-    });
-
     // act
-    await createUserService.execute({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
-
-    // assert
-    const {
-      token,
-      user: { id },
-    } = await authenticateUserService.execute({
-      email,
-      password: password_hash,
-    });
-
-    await expect(
-      refreshTokenService.execute(
-        JSON.stringify({
-          refresh_token: token,
-          email,
-          id,
-        })
-      )
-    ).rejects.toEqual(
+    expect.assertions(3);
+    await expect(refreshTokenService.execute(token)).rejects.toEqual(
       new AppError({ message: "Refresh Token does not exists!" })
     );
-    expect(jwtProviderVerifyJwt).toHaveBeenCalledWith({
+    // assert
+    expect(jwtProviderMock.verifyJwt).toHaveBeenCalledWith({
       auth_secret: auth.secret.refresh,
-      token: JSON.stringify({
-        refresh_token: token,
-        email,
-        id,
-      }),
+      token,
     });
     expect(
-      usersTokensRepositoryFindByUserIdAndRefreshToken
-    ).toHaveBeenCalledWith(
-      id,
-      JSON.stringify({
-        refresh_token: token,
-        email,
-        id,
-      })
-    );
+      usersTokensRepositoryMock.findByUserIdAndRefreshToken
+    ).toHaveBeenCalledWith(id, token);
   });
 });

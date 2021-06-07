@@ -4,7 +4,7 @@ interface payload {
   email?: string;
 }
 interface options {
-  subject: Sub | string;
+  subject: Partial<Sub> | string;
   expiresIn: string;
 }
 export interface IJwtAssignParametersDTO {

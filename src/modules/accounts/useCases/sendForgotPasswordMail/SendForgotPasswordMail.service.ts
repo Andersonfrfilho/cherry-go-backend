@@ -2,6 +2,7 @@ import { resolve } from "path";
 import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
+import { config } from "@config/environment";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
@@ -26,12 +27,15 @@ class SendForgotPasswordMailService {
   ) {}
   async execute(email: string): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
+
     if (!user) {
       throw new AppError({ message: "User does not exists!" });
     }
 
     const refresh_token = uuidV4();
-    const expires_date = this.dateProvider.addMinutes(30);
+    const expires_date = this.dateProvider.addMinutes(
+      config.password.time_token_expires
+    );
 
     await this.usersTokensRepository.create({
       refresh_token,
