@@ -1,211 +1,133 @@
-import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
-import { UsersTokensRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersTokensRepositoryInMemory";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
-import { AuthenticateUserService } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.service";
+import "reflect-metadata";
+import faker from "faker";
+import * as uuid from "uuid";
+
+import { config } from "@config/environment";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UserRepository.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
 import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { DateFnsProvider } from "@shared/container/providers/DateProvider/implementations/DateFnsProvider";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
+import { ResetPasswordService } from "@modules/accounts/useCases/resetPasswordUser/ResetPasswordUser.service";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
+import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
+import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
+import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
 import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
-import { UsersFactory } from "@shared/infra/typeorm/factories";
+import {
+  UsersFactory,
+  UsersTypesFactory,
+} from "@shared/infra/typeorm/factories";
 
-import { ResetPasswordService } from "./ResetPasswordUser.service";
-
-let authenticateUserService: AuthenticateUserService;
-let usersRepositoryInMemory: IUsersRepository;
-let usersTokensRepositoryInMemory: IUsersTokensRepository;
-let createUserService: CreateUserClientService;
-let hashProviderInMemory: IHashProvider;
-let dateProvider: IDateProvider;
 let resetPasswordService: ResetPasswordService;
+const mocked_date = new Date("2020-09-01T09:33:37");
+jest.mock("uuid");
+jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 
-describe("Reset Password user service", () => {
+describe("ResetPasswordUser", () => {
   const usersFactory = new UsersFactory();
 
   beforeEach(() => {
-    usersRepositoryInMemory = new UsersRepositoryInMemory();
-    hashProviderInMemory = new HashProviderInMemory();
-    dateProvider = new DateFnsProvider();
-    createUserService = new CreateUserClientService(
-      usersRepositoryInMemory,
-      hashProviderInMemory
-    );
-    usersTokensRepositoryInMemory = new UsersTokensRepositoryInMemory();
-    authenticateUserService = new AuthenticateUserService(
-      usersRepositoryInMemory,
-      usersTokensRepositoryInMemory,
-      hashProviderInMemory,
-      dateProvider
-    );
     resetPasswordService = new ResetPasswordService(
-      usersTokensRepositoryInMemory,
-      dateProvider,
-      usersRepositoryInMemory,
-      hashProviderInMemory
+      usersTokensRepositoryMock,
+      dateProviderMock,
+      usersRepositoryMock,
+      hashProviderMock
     );
   });
 
-  it("should be able to reset password an user", async () => {
-    const usersTokensRepositoryFindByRefreshToken = jest.spyOn(
-      usersTokensRepositoryInMemory,
-      "findByRefreshToken"
-    );
-    const dateProviderCompareIfBefore = jest.spyOn(
-      dateProvider,
-      "compareIfBefore"
-    );
-    const hashProviderGenerateHash = jest.spyOn(
-      hashProviderInMemory,
-      "generateHash"
-    );
-    const usersRepositoryUpdatePasswordUser = jest.spyOn(
-      usersRepositoryInMemory,
-      "updatePasswordUser"
-    );
-    const usersTokensRepositoryDeleteById = jest.spyOn(
-      usersRepositoryInMemory,
-      "updatePasswordUser"
-    );
-    // jest
-    //   .spyOn<any, any>(usersTokensRepositoryInMemory, "findByRefreshToken")
-    //   .mockImplementation(() => {
-    //     return "token_valid";
-    //   });
-
-    // jest
-    //   .spyOn<any, any>(dateProvider, "compareIfBefore")
-    //   .mockImplementation(() => {
-    //     return false;
-    //   });
-
-    // jest
-    //   .spyOn<any, any>(hashProviderInMemory, "generateHash")
-    //   .mockImplementation(() => {
-    //     return "password_hash";
-    //   });
-
-    // jest
-    //   .spyOn<any, any>(usersRepositoryInMemory, "updatePasswordUser")
-    //   .mockImplementation();
-
-    // const data = jest
-    //   .spyOn<any, any>(usersTokensRepositoryInMemory, "deleteById")
-    //   .mockImplementation();
-
-    const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({
+  it("Should be able to reset password user", async () => {
+    // arrange
+    const [{ password_hash, id }] = usersFactory.generate({
       quantity: 1,
-      active: true,
+      active: false,
+      id: "true",
     });
+    const token_faker = faker.datatype.uuid();
+    const id_token_fake = faker.datatype.uuid();
 
-    await createUserService.execute({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
+    usersTokensRepositoryMock.findByRefreshToken.mockResolvedValue({
+      expires_date: mocked_date,
+      user_id: id,
+      id: id_token_fake,
     });
+    dateProviderMock.compareIfBefore.mockReturnValue(false);
+    hashProviderMock.generateHash.mockResolvedValue(password_hash);
+    usersRepositoryMock.updatePasswordUser.mockReturnValue({});
+    usersTokensRepositoryMock.deleteById.mockResolvedValue({});
 
-    const { refresh_token } = await authenticateUserService.execute({
-      email,
-      password: password_hash,
-    });
-
+    // act
     await resetPasswordService.execute({
-      token: refresh_token,
-      password: "102030",
+      token: token_faker,
+      password: password_hash,
     });
-    expect(usersTokensRepositoryFindByRefreshToken).toHaveBeenCalled();
-    expect(dateProviderCompareIfBefore).toHaveBeenCalled();
-    expect(hashProviderGenerateHash).toHaveBeenCalled();
-    expect(usersRepositoryUpdatePasswordUser).toHaveBeenCalled();
-    expect(usersTokensRepositoryDeleteById).toHaveBeenCalled();
+
+    // assert
+    expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
+      token_faker
+    );
+    expect(dateProviderMock.compareIfBefore).toHaveBeenCalledWith(
+      mocked_date,
+      mocked_date
+    );
+    expect(hashProviderMock.generateHash).toHaveBeenCalledWith(password_hash);
+    expect(usersRepositoryMock.updatePasswordUser).toHaveBeenCalledWith({
+      id,
+      password_hash,
+    });
+    expect(usersTokensRepositoryMock.deleteById).toHaveBeenCalledWith(
+      id_token_fake
+    );
   });
 
-  it("should not be able to reset password if token invalid", async () => {
-    const usersTokensRepositoryFindByRefreshToken = jest.spyOn(
-      usersTokensRepositoryInMemory,
-      "findByRefreshToken"
-    );
-
-    const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({
+  it("Should not be with invalid token", async () => {
+    // arrange
+    const [{ password_hash }] = usersFactory.generate({
       quantity: 1,
-      active: true,
+      active: false,
+      id: "true",
     });
+    const token_faker = faker.datatype.uuid();
 
-    await createUserService.execute({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
+    usersTokensRepositoryMock.findByRefreshToken.mockResolvedValue(undefined);
 
-    const { token } = await authenticateUserService.execute({
-      email,
-      password: password_hash,
-    });
-
+    // act
+    expect.assertions(2);
     await expect(
       resetPasswordService.execute({
-        token,
-        password: "102030",
+        token: token_faker,
+        password: password_hash,
       })
-    ).rejects.toEqual(
-      new AppError({
-        message: "Token invalid!",
-        status_code: HttpErrorCodes.BAD_REQUEST,
-      })
+    ).rejects.toEqual(new AppError({ message: "Token invalid!" }));
+    // assert
+    expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
+      token_faker
     );
-    expect(usersTokensRepositoryFindByRefreshToken).toHaveBeenCalled();
   });
 
-  it("should not be able to reset password if token invalid", async () => {
-    const usersTokensRepositoryFindByRefreshToken = jest.spyOn(
-      usersTokensRepositoryInMemory,
-      "findByRefreshToken"
-    );
-    const dateProviderCompareIfBefore = jest
-      .spyOn(dateProvider, "compareIfBefore")
-      .mockImplementation(() => {
-        return true;
-      });
-
-    const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({
+  it("Should not be able to reset password user if token expire in date", async () => {
+    // arrange
+    const [{ password_hash, id }] = usersFactory.generate({
       quantity: 1,
-      active: true,
+      active: false,
+      id: "true",
     });
-    await createUserService.execute({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
+    const token_faker = faker.datatype.uuid();
+    const id_token_fake = faker.datatype.uuid();
 
-    const { refresh_token } = await authenticateUserService.execute({
-      email,
-      password: password_hash,
+    usersTokensRepositoryMock.findByRefreshToken.mockResolvedValue({
+      expires_date: mocked_date,
+      user_id: id,
+      id: id_token_fake,
     });
+    dateProviderMock.compareIfBefore.mockReturnValue(true);
 
+    // act
+    expect.assertions(3);
     await expect(
       resetPasswordService.execute({
-        token: refresh_token,
-        password: "102030",
+        token: token_faker,
+        password: password_hash,
       })
     ).rejects.toEqual(
       new AppError({
@@ -213,8 +135,66 @@ describe("Reset Password user service", () => {
         status_code: HttpErrorCodes.UNAUTHORIZED,
       })
     );
-
-    expect(usersTokensRepositoryFindByRefreshToken).toHaveBeenCalled();
-    expect(dateProviderCompareIfBefore).toHaveBeenCalled();
+    // assert
+    expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
+      token_faker
+    );
+    expect(dateProviderMock.compareIfBefore).toHaveBeenCalledWith(
+      mocked_date,
+      mocked_date
+    );
   });
+  // it("Not should able to create user already email exist", async () => {
+  //   // arrange
+  //   const [type] = usersTypesFactory.generate("with_id");
+  //   const [
+  //     {
+  //       name,
+  //       last_name,
+  //       cpf,
+  //       rg,
+  //       email,
+  //       birth_date,
+  //       password_hash,
+  //       id,
+  //       active,
+  //     },
+  //   ] = usersFactory.generate({ quantity: 1, id: "true", active: false });
+
+  //   usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue({
+  //     id,
+  //     name,
+  //     last_name,
+  //     cpf,
+  //     rg,
+  //     email,
+  //     birth_date,
+  //     password_hash,
+  //     active,
+  //     types: [type],
+  //     phones: [],
+  //     addresses: [],
+  //   });
+
+  //   // act
+  //   // assert
+  //   expect.assertions(2);
+  //   await expect(
+  //     createUserService.execute({
+  //       name,
+  //       last_name,
+  //       cpf,
+  //       rg,
+  //       email,
+  //       birth_date,
+  //       password: password_hash,
+  //     })
+  //   ).rejects.toEqual(new AppError({ message: "User client already exist" }));
+
+  //   expect(usersRepositoryMock.findUserByEmailCpfRg).toHaveBeenCalledWith({
+  //     cpf,
+  //     rg,
+  //     email,
+  //   });
+  // });
 });

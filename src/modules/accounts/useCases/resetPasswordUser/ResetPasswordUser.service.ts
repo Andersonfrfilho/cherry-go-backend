@@ -25,15 +25,17 @@ class ResetPasswordService {
     private hashProvider: IHashProvider
   ) {}
   async execute({ token, password }: IRequest): Promise<void> {
-    const userToken = await this.usersTokensRepository.findByRefreshToken(
+    const user_token = await this.usersTokensRepository.findByRefreshToken(
       token
     );
 
-    if (!userToken) {
+    if (!user_token) {
       throw new AppError({ message: "Token invalid!" });
     }
 
-    if (this.dateProvider.compareIfBefore(userToken.expires_date, new Date())) {
+    if (
+      this.dateProvider.compareIfBefore(user_token.expires_date, new Date())
+    ) {
       throw new AppError({
         message: "Token expired!",
         status_code: HttpErrorCodes.UNAUTHORIZED,
@@ -43,11 +45,11 @@ class ResetPasswordService {
     const password_hash = await this.hashProvider.generateHash(password);
 
     await this.usersRepository.updatePasswordUser({
-      id: userToken.user_id,
+      id: user_token.user_id,
       password_hash,
     });
 
-    await this.usersTokensRepository.deleteById(userToken.id);
+    await this.usersTokensRepository.deleteById(user_token.id);
   }
 }
 export { ResetPasswordService };

@@ -51,11 +51,6 @@ class CreateUserPhonesClientService {
       });
     }
 
-    // await this.smsProvider.sendSms({ from, to, text });
-    // const from = "Vonage APIs";
-    // const to_from = "5516993056772";
-    // const text = "A text message sent using the Vonage SMS API";
-
     const user = await this.usersRepository.createUserPhones({
       user_id,
       country_code,
