@@ -1,23 +1,14 @@
 import "reflect-metadata";
 import faker from "faker";
-import * as uuid from "uuid";
 
-import { config } from "@config/environment";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UserRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
-import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
 import { ResetPasswordService } from "@modules/accounts/useCases/resetPasswordUser/ResetPasswordUser.service";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
 import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
-import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
 import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
-import {
-  UsersFactory,
-  UsersTypesFactory,
-} from "@shared/infra/typeorm/factories";
+import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let resetPasswordService: ResetPasswordService;
 const mocked_date = new Date("2020-09-01T09:33:37");
@@ -144,57 +135,4 @@ describe("ResetPasswordUser", () => {
       mocked_date
     );
   });
-  // it("Not should able to create user already email exist", async () => {
-  //   // arrange
-  //   const [type] = usersTypesFactory.generate("with_id");
-  //   const [
-  //     {
-  //       name,
-  //       last_name,
-  //       cpf,
-  //       rg,
-  //       email,
-  //       birth_date,
-  //       password_hash,
-  //       id,
-  //       active,
-  //     },
-  //   ] = usersFactory.generate({ quantity: 1, id: "true", active: false });
-
-  //   usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue({
-  //     id,
-  //     name,
-  //     last_name,
-  //     cpf,
-  //     rg,
-  //     email,
-  //     birth_date,
-  //     password_hash,
-  //     active,
-  //     types: [type],
-  //     phones: [],
-  //     addresses: [],
-  //   });
-
-  //   // act
-  //   // assert
-  //   expect.assertions(2);
-  //   await expect(
-  //     createUserService.execute({
-  //       name,
-  //       last_name,
-  //       cpf,
-  //       rg,
-  //       email,
-  //       birth_date,
-  //       password: password_hash,
-  //     })
-  //   ).rejects.toEqual(new AppError({ message: "User client already exist" }));
-
-  //   expect(usersRepositoryMock.findUserByEmailCpfRg).toHaveBeenCalledWith({
-  //     cpf,
-  //     rg,
-  //     email,
-  //   });
-  // });
 });

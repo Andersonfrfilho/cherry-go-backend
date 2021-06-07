@@ -3,7 +3,7 @@ import faker from "faker";
 import * as uuid from "uuid";
 
 import { config } from "@config/environment";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UserRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
 import { SendForgotPasswordMailService } from "@modules/accounts/useCases/sendForgotPasswordMail/SendForgotPasswordMail.service";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
@@ -94,7 +94,6 @@ describe("SendForgotPasswordMailService", () => {
     await sendForgotPasswordMailService.execute(email);
 
     // assert
-    expect.assertions(4);
     expect(usersRepositoryMock.findByEmail).toHaveBeenCalledWith(email);
     expect(dateProviderMock.addMinutes).toHaveBeenCalledWith(
       config.password.time_token_expires

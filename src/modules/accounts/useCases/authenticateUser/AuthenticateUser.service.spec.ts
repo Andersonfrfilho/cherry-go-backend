@@ -2,7 +2,7 @@ import "reflect-metadata";
 import faker from "faker";
 
 import auth from "@config/auth";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UserRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
 import { AuthenticateUserService } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.service";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";

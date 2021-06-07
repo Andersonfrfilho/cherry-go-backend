@@ -26,6 +26,10 @@ export const development: interface_config = {
     queue: {
       topic: TopicsQueueEnum.SEND_SMS || "",
     },
+    token: {
+      expiration_time:
+        Number(process.env.TOKEN_EXPIRATION_TIME_SMS_CONFIRMATION) || 30,
+    },
   },
   queue: {
     broker: {

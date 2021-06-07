@@ -3,7 +3,7 @@ import faker from "faker";
 import * as uuid from "uuid";
 
 import { config } from "@config/environment";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UserRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
 import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
@@ -39,17 +39,7 @@ describe("CreateUserClientService", () => {
   it("Should be able to create an user", async () => {
     // arrange
     const [
-      {
-        name,
-        last_name,
-        cpf,
-        rg,
-        email,
-        birth_date,
-        password_hash,
-        active,
-        id,
-      },
+      { name, last_name, cpf, rg, email, birth_date, password_hash, id },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
     const [type] = usersTypesFactory.generate("with_id");
     const uuid_fake = faker.datatype.uuid();
@@ -75,7 +65,7 @@ describe("CreateUserClientService", () => {
       rg,
       email,
       birth_date,
-      active,
+      active: false,
       password_hash,
       types: [type],
       phones: [],
@@ -98,7 +88,6 @@ describe("CreateUserClientService", () => {
     });
 
     // assert
-    expect.assertions(7);
     expect(usersRepositoryMock.findUserByEmailCpfRg).toHaveBeenCalledWith({
       cpf,
       rg,
@@ -113,7 +102,7 @@ describe("CreateUserClientService", () => {
       email,
       birth_date,
       password: password_hash,
-      active,
+      active: false,
     });
     expect(dateProviderMock.addMinutes).toHaveBeenCalledWith(
       config.mail.token.expiration_time
@@ -138,7 +127,7 @@ describe("CreateUserClientService", () => {
         email: expect.any(String) && email,
         password_hash: expect.any(String) && password_hash,
         birth_date: expect.any(Date) && birth_date,
-        active: expect.any(Boolean) && active,
+        active: expect.any(Boolean) && false,
         types: expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String) && type.id,
@@ -156,17 +145,7 @@ describe("CreateUserClientService", () => {
     // arrange
     const [type] = usersTypesFactory.generate("with_id");
     const [
-      {
-        name,
-        last_name,
-        cpf,
-        rg,
-        email,
-        birth_date,
-        password_hash,
-        id,
-        active,
-      },
+      { name, last_name, cpf, rg, email, birth_date, password_hash, id },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: false });
 
     usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue({
@@ -178,7 +157,7 @@ describe("CreateUserClientService", () => {
       email,
       birth_date,
       password_hash,
-      active,
+      active: false,
       types: [type],
       phones: [],
       addresses: [],

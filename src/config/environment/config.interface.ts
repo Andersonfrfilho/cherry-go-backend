@@ -10,6 +10,7 @@ interface sms {
   api_key: string;
   api_secret: string;
   queue: topic;
+  token: expiration_token;
 }
 
 interface mail {

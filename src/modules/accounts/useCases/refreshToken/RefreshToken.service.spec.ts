@@ -1,23 +1,12 @@
 import "reflect-metadata";
 import faker from "faker";
-import * as uuid from "uuid";
 
 import auth from "@config/auth";
-import { config } from "@config/environment";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UserRepository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
-import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
-import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
 import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/jwtProvider.mock";
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
-import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
 import { AppError } from "@shared/errors/AppError";
-import {
-  UsersFactory,
-  UsersTypesFactory,
-} from "@shared/infra/typeorm/factories";
+import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 import { RefreshTokenService } from "./RefreshToken.service";
 
@@ -28,7 +17,6 @@ jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 
 describe("RefreshTokenService", () => {
   const usersFactory = new UsersFactory();
-  const usersTypesFactory = new UsersTypesFactory();
 
   beforeEach(() => {
     refreshTokenService = new RefreshTokenService(
@@ -68,7 +56,6 @@ describe("RefreshTokenService", () => {
     const result = await refreshTokenService.execute(token);
 
     // assert
-    // expect.assertions(8);
     expect(jwtProviderMock.verifyJwt).toHaveBeenCalledWith({
       auth_secret: auth.secret.refresh,
       token,
@@ -119,9 +106,6 @@ describe("RefreshTokenService", () => {
       id: "true",
     });
     const token = faker.datatype.uuid();
-    const id_token_faker = faker.datatype.uuid();
-    const refresh_token_faker = faker.datatype.uuid();
-    const new_refresh_token_faker = faker.datatype.uuid();
 
     jwtProviderMock.verifyJwt.mockReturnValue({
       email,

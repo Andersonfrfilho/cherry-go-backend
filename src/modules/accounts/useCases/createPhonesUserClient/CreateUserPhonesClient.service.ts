@@ -71,7 +71,9 @@ class CreateUserPhonesClientService {
       },
     });
 
-    const expires_date = this.dateProvider.addMinutes(30);
+    const expires_date = this.dateProvider.addMinutes(
+      config.sms.token.expiration_time
+    );
 
     await this.usersTokensRepository.create({
       refresh_token,

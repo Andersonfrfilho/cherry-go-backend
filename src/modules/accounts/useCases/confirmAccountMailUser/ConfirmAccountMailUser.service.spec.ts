@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import faker from "faker";
 
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UserRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
 import { HttpErrorCodes } from "@shared/enums/statusCode";
@@ -39,7 +39,6 @@ describe("ConfirmAccountMailUserService", () => {
     await confirmAccountMailUserService.execute(token_faker);
 
     // assert
-    expect.assertions(3);
     expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
       token_faker
     );

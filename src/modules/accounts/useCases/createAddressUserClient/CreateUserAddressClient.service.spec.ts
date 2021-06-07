@@ -1,145 +1,209 @@
-import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UserRepositoryInMemory";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import "reflect-metadata";
+
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
 import { CreateUserAddressClientService } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.service";
-import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { HashProviderInMemory } from "@shared/container/providers/HashProvider/in-memory/HashProviderInMemory";
 import { AppError } from "@shared/errors/AppError";
 import {
-  UsersFactory,
   AddressesFactory,
+  PhonesFactory,
+  UsersFactory,
+  UsersTypesFactory,
 } from "@shared/infra/typeorm/factories";
 
-let usersRepositoryInMemory: IUsersRepository;
-let createUserService: CreateUserClientService;
-let createUserAddressService: CreateUserAddressClientService;
-let hashProviderInMemory: IHashProvider;
+let createUserAddressClientService: CreateUserAddressClientService;
+const mocked_date = new Date("2020-09-01T09:33:37");
+jest.mock("uuid");
+jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 
-describe("Create address users clients service", () => {
+describe("CreateUserAddressClientService", () => {
   const usersFactory = new UsersFactory();
+  const usersTypesFactory = new UsersTypesFactory();
+  const phonesFactory = new PhonesFactory();
   const addressesFactory = new AddressesFactory();
 
   beforeEach(() => {
-    usersRepositoryInMemory = new UsersRepositoryInMemory();
-    hashProviderInMemory = new HashProviderInMemory();
-    createUserService = new CreateUserClientService(
-      usersRepositoryInMemory,
-      hashProviderInMemory
-    );
-    createUserAddressService = new CreateUserAddressClientService(
-      usersRepositoryInMemory
+    createUserAddressClientService = new CreateUserAddressClientService(
+      usersRepositoryMock
     );
   });
 
-  it("should be able to create an user", async () => {
+  it("Should be able to create an address for user", async () => {
     // arrange
-    const usersRepositoryFindUserByEmailCpfRg = jest.spyOn(
-      usersRepositoryInMemory,
-      "findUserByEmailCpfRg"
-    );
-    const hashProviderGenerateHash = jest.spyOn(
-      hashProviderInMemory,
-      "generateHash"
-    );
-    const usersRepositoryCreate = jest.spyOn(
-      usersRepositoryInMemory,
-      "createUserClientType"
-    );
-    const usersRepositoryFindById = jest.spyOn(
-      usersRepositoryInMemory,
-      "findById"
-    );
-    const usersRepositoryCreateUserAddress = jest.spyOn(
-      usersRepositoryInMemory,
-      "createUserAddress"
-    );
     const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash },
-    ] = usersFactory.generate({
-      quantity: 1,
-      active: true,
-    });
-    const [address] = addressesFactory.generate({
-      quantity: 1,
-    });
-    // act
-    const { id } = await createUserService.execute({
+      {
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        birth_date,
+        password_hash,
+        active,
+        id,
+      },
+    ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
+    const [type] = usersTypesFactory.generate("with_id");
+    const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
+    const [
+      {
+        id: address_id,
+        city,
+        country,
+        district,
+        number,
+        state,
+        street,
+        zipcode,
+      },
+    ] = addressesFactory.generate({ quantity: 1, id: "true" });
+
+    usersRepositoryMock.findById.mockResolvedValue({
+      id,
       name,
       last_name,
       cpf,
       rg,
       email,
       birth_date,
-      password: password_hash,
+      password_hash,
+      active,
+      types: [type],
+      phones: [phone],
+    });
+    usersRepositoryMock.createUserAddress.mockResolvedValue({
+      id,
+      name,
+      last_name,
+      cpf,
+      rg,
+      email,
+      birth_date,
+      password_hash,
+      active,
+      types: [type],
+      phones: [phone],
+      addresses: [
+        {
+          id: address_id,
+          city,
+          country,
+          district,
+          number,
+          state,
+          street,
+          zipcode,
+        },
+      ],
     });
 
-    const result = await createUserAddressService.execute({
+    // act
+    const result = await createUserAddressClientService.execute({
       user_id: id,
-      ...address,
+      city,
+      country,
+      district,
+      number,
+      state,
+      street,
+      zipcode,
     });
 
     // assert
-    expect(usersRepositoryFindUserByEmailCpfRg).toHaveBeenCalledWith({
-      cpf,
-      rg,
-      email,
+    expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
+    expect(usersRepositoryMock.createUserAddress).toHaveBeenCalledWith({
+      user: {
+        id,
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        birth_date,
+        password_hash,
+        active,
+        types: [type],
+        phones: [phone],
+      },
+      city,
+      country,
+      district,
+      number,
+      state,
+      street,
+      zipcode,
     });
-    expect(hashProviderGenerateHash).toHaveBeenCalledWith(password_hash);
-    expect(usersRepositoryCreate).toHaveBeenCalledWith({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
-    expect(usersRepositoryFindById).toHaveBeenCalledWith(id);
-    expect(usersRepositoryCreateUserAddress).toHaveBeenCalled();
+
     expect(result).toEqual(
       expect.objectContaining({
-        id: expect.any(String),
-        name: expect.any(String),
-        last_name: expect.any(String),
-        cpf: expect.any(String),
-        rg: expect.any(String),
-        email: expect.any(String),
-        password_hash: expect.any(String),
-        birth_date: expect.any(Date),
+        id: expect.any(String) && id,
+        name: expect.any(String) && name,
+        last_name: expect.any(String) && last_name,
+        cpf: expect.any(String) && cpf,
+        rg: expect.any(String) && rg,
+        email: expect.any(String) && email,
+        password_hash: expect.any(String) && password_hash,
+        birth_date: expect.any(Date) && birth_date,
+        active: expect.any(Boolean) && active,
+        types: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String) && type.id,
+            name: expect.any(String) && type.name,
+            description: expect.any(String || null) && type.description,
+          }),
+        ]),
+        phones: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String) && phone.id,
+            country_code: expect.any(String) && phone.country_code,
+            ddd: expect.any(String) && phone.ddd,
+            number: expect.any(String) && phone.number,
+          }),
+        ]),
         addresses: expect.arrayContaining([
           expect.objectContaining({
-            id: expect.any(String),
-            street: expect.any(String),
-            number: expect.any(String),
-            zipcode: expect.any(String),
-            district: expect.any(String),
-            city: expect.any(String),
-            state: expect.any(String),
-            country: expect.any(String),
+            id: expect.any(String) && address_id,
+            city: expect.any(String) && city,
+            country: expect.any(String) && country,
+            district: expect.any(String) && district,
+            number: expect.any(String) && number,
+            state: expect.any(String) && state,
+            street: expect.any(String) && street,
+            zipcode: expect.any(String) && zipcode,
           }),
         ]),
       })
     );
   });
 
-  it("not should able to create user address if user is not exist", async () => {
+  it("Not should able to create user already email exist", async () => {
     // arrange
-    const usersRepositoryFindById = jest.spyOn(
-      usersRepositoryInMemory,
-      "findById"
-    );
-
-    const [address] = addressesFactory.generate({
+    const [{ id }] = usersFactory.generate({
       quantity: 1,
+      active: false,
+      id: "true",
     });
+    const [
+      { city, country, district, number, state, street, zipcode },
+    ] = addressesFactory.generate({ quantity: 1 });
 
+    usersRepositoryMock.findById.mockResolvedValue(undefined);
+
+    // act
     // assert
+    expect.assertions(2);
     await expect(
-      createUserAddressService.execute({
-        user_id: "id_invalid",
-        ...address,
+      createUserAddressClientService.execute({
+        user_id: id,
+        city,
+        country,
+        district,
+        number,
+        state,
+        street,
+        zipcode,
       })
     ).rejects.toEqual(new AppError({ message: "User client not exist" }));
-    expect(usersRepositoryFindById).toHaveBeenCalledWith("id_invalid");
+
+    expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
   });
 });
