@@ -39,7 +39,17 @@ describe("CreateUserClientService", () => {
   it("Should be able to create an user", async () => {
     // arrange
     const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash, id },
+      {
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        birth_date,
+        password_hash,
+        id,
+        active,
+      },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
     const [type] = usersTypesFactory.generate("with_id");
     const uuid_fake = faker.datatype.uuid();
@@ -65,7 +75,7 @@ describe("CreateUserClientService", () => {
       rg,
       email,
       birth_date,
-      active: false,
+      active,
       password_hash,
       types: [type],
       phones: [],
@@ -102,7 +112,7 @@ describe("CreateUserClientService", () => {
       email,
       birth_date,
       password: password_hash,
-      active: false,
+      active,
     });
     expect(dateProviderMock.addMinutes).toHaveBeenCalledWith(
       config.mail.token.expiration_time
@@ -127,7 +137,7 @@ describe("CreateUserClientService", () => {
         email: expect.any(String) && email,
         password_hash: expect.any(String) && password_hash,
         birth_date: expect.any(Date) && birth_date,
-        active: expect.any(Boolean) && false,
+        active: expect.any(Boolean) && active,
         types: expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String) && type.id,

@@ -28,16 +28,14 @@ class UsersFactory {
         last_name: last_name || faker.name.lastName(),
         email: email || faker.internet.email(),
         birth_date: birth_date || faker.date.past(),
-        cpf:
-          rg ||
-          faker.datatype
-            .number({ min: 10000000000, max: 99999999999 })
-            .toString(),
+        cpf: rg || faker.phone.phoneNumber("###########"),
         rg:
           cpf ||
-          faker.datatype.number({ min: 10000000, max: 999999999 }).toString(),
+          faker.phone.phoneNumber(
+            faker.datatype.boolean() ? "########" : "#########"
+          ),
         password_hash: password_hash || faker.internet.password(),
-        active: active || faker.datatype.boolean(),
+        active,
       })
     );
     return arrayUsers;

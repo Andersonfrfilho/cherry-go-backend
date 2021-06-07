@@ -44,17 +44,7 @@ describe("CreateUserPhonesClientService", () => {
   it("Should be able to create an user", async () => {
     // arrange
     const [
-      {
-        name,
-        last_name,
-        cpf,
-        rg,
-        email,
-        birth_date,
-        password_hash,
-        active,
-        id,
-      },
+      { name, last_name, cpf, rg, email, birth_date, password_hash, id },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
     const [type] = usersTypesFactory.generate("with_id");
     const [
