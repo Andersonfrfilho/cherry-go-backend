@@ -20,6 +20,7 @@ import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
+import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 import { UserTermsAccept } from "./UserTermsAccept";
 
@@ -102,8 +103,14 @@ class User {
 
   @OneToMany(() => UserTermsAccept, (term) => term.user, { eager: true })
   term: UserTermsAccept[];
-  // @OneToOne(() => UserTermsAccept, (term) => term.user_id, { eager: true }) // specify inverse side as a second parameter
-  // term: UserTermsAccept;
+
+  @ManyToMany(() => Tag)
+  @JoinTable({
+    name: "users_tags",
+    joinColumns: [{ name: "user_id" }],
+    inverseJoinColumns: [{ name: "tag_id" }],
+  })
+  tags?: Tag[];
 
   @CreateDateColumn()
   @Exclude()

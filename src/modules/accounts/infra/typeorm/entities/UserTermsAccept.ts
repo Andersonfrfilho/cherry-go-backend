@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -18,6 +19,7 @@ class UserTermsAccept {
   id?: string;
 
   @Column()
+  @Exclude()
   user_id: string;
 
   @Column()
@@ -28,12 +30,15 @@ class UserTermsAccept {
   user: User;
 
   @CreateDateColumn()
+  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at?: Date;
 }
 

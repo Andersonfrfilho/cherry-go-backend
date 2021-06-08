@@ -5,6 +5,7 @@ import {
   ICreateUserPhonesClientRequestDTO,
   IUpdateActiveUserDTO,
   UpdateActivePhoneUserDTO,
+  CreateTagsUsersRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -35,6 +36,10 @@ interface IUsersRepository {
     active,
   }: UpdateActivePhoneUserDTO): Promise<void>;
   acceptTerms({ user_id, accept }: TermsAcceptUserRepositoryDTO): Promise<void>;
+  createTagsUsers({
+    user_id,
+    tags,
+  }: CreateTagsUsersRepositoryDTO): Promise<void>;
 }
 
 export { IUsersRepository };

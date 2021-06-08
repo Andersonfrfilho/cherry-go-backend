@@ -1,6 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import {
+  CreateTagsUsersRepositoryDTO,
   ICreateUserAddressClientDTO,
   ICreateUserPhonesClientRequestDTO,
   IUpdateActiveUserDTO,
@@ -18,6 +19,7 @@ import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UserPhone } from "@modules/accounts/infra/typeorm/entities/UserPhone";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
@@ -26,6 +28,7 @@ class UsersRepository implements IUsersRepository {
   private repository_phones: Repository<Phone>;
   private repository_users_phones: Repository<UserPhone>;
   private repository_users_terms_accepts: Repository<UserTermsAccept>;
+  private repository_tag: Repository<Tag>;
 
   constructor() {
     this.repository = getRepository(User);
@@ -34,6 +37,7 @@ class UsersRepository implements IUsersRepository {
     this.repository_phones = getRepository(Phone);
     this.repository_users_phones = getRepository(UserPhone);
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
+    this.repository_tag = getRepository(Tag);
   }
 
   async updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void> {
@@ -190,9 +194,8 @@ class UsersRepository implements IUsersRepository {
   }
 
   async findByEmail(email: string): Promise<User> {
-    console.log(email);
     const user = await this.repository.findOne({ email });
-    console.log(user);
+
     return user;
   }
 
@@ -236,6 +239,16 @@ class UsersRepository implements IUsersRepository {
       user_id,
     });
     await this.repository_users_terms_accepts.save(term);
+  }
+
+  async createTagsUsers({
+    user_id,
+    tags,
+  }: CreateTagsUsersRepositoryDTO): Promise<void> {
+    const tags_founds = await this.repository_tag.findByIds(tags);
+    await this.repository.update(user_id, {
+      tags: tags_founds,
+    });
   }
 }
 export { UsersRepository };

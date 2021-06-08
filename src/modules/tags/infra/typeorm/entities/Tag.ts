@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -23,6 +24,9 @@ class Tag {
   description: string;
 
   @Column()
+  active: boolean;
+
+  @Column()
   image_id?: string;
 
   @ManyToMany(() => Service)
@@ -34,12 +38,15 @@ class Tag {
   services?: Service[];
 
   @CreateDateColumn()
+  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at?: Date;
 }
 

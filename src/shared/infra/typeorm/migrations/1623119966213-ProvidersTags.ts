@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateTags1617669642956 implements MigrationInterface {
+export class ProvidersTags1623119966213 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "tags",
+        name: "providers_tags",
         columns: [
           {
             name: "id",
@@ -14,20 +14,12 @@ export class CreateTags1617669642956 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "name",
-            type: "varchar",
-          },
-          {
-            name: "description",
-            type: "varchar",
-          },
-          {
-            name: "image_id",
+            name: "tag_id",
             type: "uuid",
           },
           {
-            name: "active",
-            type: "boolean",
+            name: "provider_id",
+            type: "uuid",
           },
           {
             name: "created_at",
@@ -47,10 +39,18 @@ export class CreateTags1617669642956 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKTagsImages",
-            referencedTableName: "images",
+            name: "FKTagsServices",
+            referencedTableName: "tags",
             referencedColumnNames: ["id"],
-            columnNames: ["image_id"],
+            columnNames: ["tag_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKProvidersTags",
+            referencedTableName: "users",
+            referencedColumnNames: ["id"],
+            columnNames: ["provider_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -60,6 +60,6 @@ export class CreateTags1617669642956 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("tags");
+    await queryRunner.dropTable("providers_tags");
   }
 }

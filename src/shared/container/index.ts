@@ -12,6 +12,8 @@ import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTok
 import { ITypesUsersRepository } from "@modules/accounts/repositories/IUsersTypesRepository";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
 import { INotificationsRepository } from "@modules/notifications/repositories/INotificationsRepository";
+import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/TagsRepository";
+import { TagsRepositoryInterface } from "@modules/tags/repositories/TagsRepository.interface";
 
 container.registerSingleton<IUsersRepository>(
   "UsersRepository",
@@ -31,6 +33,11 @@ container.registerSingleton<IPhonesRepository>(
 container.registerSingleton<IUsersTokensRepository>(
   "UsersTokensRepository",
   UsersTokensRepository
+);
+
+container.registerSingleton<TagsRepositoryInterface>(
+  "TagsRepository",
+  TagsRepository
 );
 
 container.registerSingleton<INotificationsRepository>(
