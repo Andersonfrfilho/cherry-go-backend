@@ -16,6 +16,8 @@ import { TermsAcceptUserRepositoryDTO } from "@modules/accounts/dtos/TermsAccept
 import { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/TermsAcceptUserService.dto";
 import { UpdateActivePhoneUserDTO } from "@modules/accounts/dtos/UpdateActivePhoneUser.dto";
 
+export { CreateDocumentsUsersServiceDTO } from "@modules/accounts/dtos/services/CreateDocumentsUsersService.dto";
+
 export {
   UpdateActivePhoneUserDTO,
   ConfirmAccountPhoneUserDTO,

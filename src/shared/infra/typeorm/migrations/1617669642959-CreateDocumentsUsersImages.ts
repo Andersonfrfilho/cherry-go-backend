@@ -27,6 +27,10 @@ export class CreateDocumentsUsersImages1617669642959
             type: "varchar",
           },
           {
+            name: "description",
+            type: "varchar",
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

@@ -35,6 +35,9 @@ class DocumentUserImage {
   @Column()
   value: string;
 
+  @Column()
+  description: string;
+
   @CreateDateColumn()
   created_at?: Date;
 

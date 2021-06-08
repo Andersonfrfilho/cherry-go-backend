@@ -22,6 +22,7 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
+import { DocumentUserImage } from "./DocumentUserImage";
 import { UserTermsAccept } from "./UserTermsAccept";
 
 @Entity("users")
@@ -111,6 +112,14 @@ class User {
     inverseJoinColumns: [{ name: "tag_id" }],
   })
   tags?: Tag[];
+
+  @ManyToMany(() => DocumentUserImage)
+  @JoinTable({
+    name: "documents_users_images",
+    joinColumns: [{ name: "user_id" }],
+    inverseJoinColumns: [{ name: "image_id" }],
+  })
+  documents?: DocumentUserImage[];
 
   @CreateDateColumn()
   @Exclude()

@@ -20,6 +20,7 @@ interface IUsersRepository {
   findByRg(rg: string): Promise<User>;
   findByCpf(cpf: string): Promise<User>;
   findById(id: string): Promise<User>;
+  findByIdWithDocument(id: string): Promise<User>;
   findUserByEmailCpfRg({
     email,
     rg,

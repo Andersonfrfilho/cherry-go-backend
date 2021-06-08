@@ -203,6 +203,10 @@ class UsersRepository implements IUsersRepository {
     return this.repository.findOne(id);
   }
 
+  async findByIdWithDocument(id: string): Promise<User> {
+    return this.repository.findOne(id, { relations: ["documents"] });
+  }
+
   async findByRg(rg: string): Promise<User> {
     return this.repository.findOne({ rg });
   }

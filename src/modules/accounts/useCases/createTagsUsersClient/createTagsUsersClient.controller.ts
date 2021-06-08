@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { CreateTagsUsersService } from "@modules/accounts/useCases/createTagsUsersClient/createTagsUsersClient.service";
+import { CreateTagsUsersService } from "@modules/accounts/useCases/createTagsUsersClient/CreateTagsUsersClient.service";
 
 class CreateTagsUsersController {
   async handle(request: Request, response: Response): Promise<Response> {

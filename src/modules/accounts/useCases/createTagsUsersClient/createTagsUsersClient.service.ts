@@ -5,7 +5,7 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { AppError } from "@shared/errors/AppError";
 
 @injectable()
-class CreateTagsUsersService {
+class CreateDocumentsUsersClientService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: IUsersRepository
@@ -20,4 +20,4 @@ class CreateTagsUsersService {
     await this.usersRepository.createTagsUsers({ tags, user_id });
   }
 }
-export { CreateTagsUsersService };
+export { CreateDocumentsUsersClientService };
