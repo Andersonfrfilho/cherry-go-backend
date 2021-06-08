@@ -8,7 +8,7 @@ class ImagesFactory {
     return Array.from(
       { length: quantity },
       (): Omit<Image, "id"> => ({
-        link: faker.internet.avatar(),
+        name: faker.internet.avatar(),
       })
     );
   }

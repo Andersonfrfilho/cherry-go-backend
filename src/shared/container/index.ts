@@ -10,6 +10,8 @@ import { IPhonesRepository } from "@modules/accounts/repositories/IPhonesReposit
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { ITypesUsersRepository } from "@modules/accounts/repositories/IUsersTypesRepository";
+import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/ImagesRepository";
+import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
 import { INotificationsRepository } from "@modules/notifications/repositories/INotificationsRepository";
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/TagsRepository";
@@ -38,6 +40,11 @@ container.registerSingleton<IUsersTokensRepository>(
 container.registerSingleton<TagsRepositoryInterface>(
   "TagsRepository",
   TagsRepository
+);
+
+container.registerSingleton<ImagesRepositoryInterface>(
+  "ImagesRepository",
+  ImagesRepository
 );
 
 container.registerSingleton<INotificationsRepository>(

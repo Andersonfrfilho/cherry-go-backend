@@ -28,7 +28,7 @@ class DocumentUserImage {
   @Column()
   image_id: string;
 
-  @ManyToOne(() => Image)
+  @ManyToOne(() => Image, { eager: true })
   @JoinColumn({ name: "image_id" })
   image: Image;
 

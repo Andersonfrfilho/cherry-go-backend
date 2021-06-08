@@ -8,6 +8,10 @@ export const development: interface_config = {
   password: {
     time_token_expires: 30,
   },
+  storage: {
+    base_url:
+      process.env.STORAGE_URL || `localhost:${process.env.PORT || 3333}`,
+  },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,
     token: {

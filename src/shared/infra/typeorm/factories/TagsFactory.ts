@@ -10,6 +10,7 @@ class TagsFactory {
       (): Omit<Tag, "id"> => ({
         name: faker.name.jobTitle(),
         description: faker.random.words(),
+        active: true,
       })
     );
   }

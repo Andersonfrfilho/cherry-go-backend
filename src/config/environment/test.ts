@@ -5,6 +5,10 @@ export const test: interface_config = {
   application: {
     name: "Cherry-go",
   },
+  storage: {
+    base_url:
+      process.env.STORAGE_URL || `localhost:${process.env.PORT || 3333}`,
+  },
   password: {
     time_token_expires: 30,
   },

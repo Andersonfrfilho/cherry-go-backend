@@ -2,13 +2,9 @@ import { inject, injectable } from "tsyringe";
 
 import { CreateDocumentsUsersServiceDTO } from "@modules/accounts/dtos";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
 import { AppError } from "@shared/errors/AppError";
-
-interface IRequest {
-  user_id: string;
-  avatar_file: string;
-}
 
 @injectable()
 class CreateDocumentsUsersService {
@@ -16,7 +12,9 @@ class CreateDocumentsUsersService {
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
     @inject("StorageProvider")
-    private storageProvider: IStorageProvider
+    private storageProvider: IStorageProvider,
+    @inject("ImagesRepository")
+    private imagesRepository: ImagesRepositoryInterface
   ) {}
   async execute({
     document_file,
@@ -25,15 +23,22 @@ class CreateDocumentsUsersService {
   }: CreateDocumentsUsersServiceDTO): Promise<void> {
     // pegar o id usuário
     const user = await this.usersRepository.findByIdWithDocument(user_id);
-    console.log(user);
+
+    const [document_front, document_verse] = user.documents;
+
     // fazer o upload
-    // if (user.avatar) {
-    //   await this.storageProvider.delete(user.avatar, "documents");
-    // }
-    // await this.storageProvider.save(avatar_file, "avatar");
+    if (document_front) {
+      const document_image = await this.imagesRepository.findById(
+        document_front.image_id
+      );
 
-    // user.avatar = avatar_file;
+      await this.storageProvider.delete(document_image.name, "documents");
+    }
 
+    const name = await this.storageProvider.save(document_file, "documents");
+
+    const image = await this.imagesRepository.create({ name });
+    console.log(image);
     // await this.usersRepository.create(user);
     // salvar imagem
     // salvar id_imagem, id_usuario, value

@@ -31,12 +31,16 @@ interface app {
 interface password {
   time_token_expires: number;
 }
+interface storage {
+  base_url: string;
+}
 export interface interface_config {
   application: app;
   mail: mail;
   sms: sms;
   queue: queue;
   password: password;
+  storage: storage;
 }
 export interface InterfaceConfig {
   development: interface_config;
