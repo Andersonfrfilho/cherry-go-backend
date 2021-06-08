@@ -1,8 +1,10 @@
 node_modules/
 !tmp/avatar/.gitkeep
 !tmp/cars/.gitkeep
+!tmp/.gitkeep
 .env
 covarage/
 dist/
 ormconfig.json
 *.pem
+.history/

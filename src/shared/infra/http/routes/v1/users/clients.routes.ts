@@ -1,5 +1,7 @@
 import { Router } from "express";
 
+import { ActiveUserClientController } from "@modules/accounts/useCases/activeAccount/ActiveAccount.controller";
+import { schemaActiveUserClient } from "@modules/accounts/useCases/activeAccount/activeAccount.schema";
 import { CreateUserAddressClientController } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.controller";
 import { schemaCreateUserAddressClient } from "@modules/accounts/useCases/createAddressUserClient/createUserAddressClient.schema";
 import { schemaCreateUserPhoneClient } from "@modules/accounts/useCases/createPhonesUserClient/createUserPhoneClient.schema";
@@ -15,6 +17,7 @@ const createUserClientController = new CreateUserClientController();
 const createUserAddressClientController = new CreateUserAddressClientController();
 const createUserPhoneClientController = new CreateUserPhoneClientController();
 const createTagsUsersController = new CreateTagsUsersController();
+const activeUserClientController = new ActiveUserClientController();
 
 clientsRoutes.post(
   "/",
@@ -40,6 +43,11 @@ clientsRoutes.patch(
   ensureAuthenticated,
   schemaCreateTagsUsersClient,
   createTagsUsersController.handle
+);
+clientsRoutes.patch(
+  "/ative",
+  schemaActiveUserClient,
+  activeUserClientController.handle
 );
 
 export { clientsRoutes };
