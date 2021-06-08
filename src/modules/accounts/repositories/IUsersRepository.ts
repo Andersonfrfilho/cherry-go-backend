@@ -9,6 +9,8 @@ import {
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
+import { TermsAcceptUserRepositoryDTO } from "../dtos/TermsAcceptUserRepository.dto";
+
 interface IUsersRepository {
   create(data: ICreateUserClientDTO): Promise<User>;
   createUserAddress(data: ICreateUserAddressClientDTO): Promise<User>;
@@ -32,6 +34,7 @@ interface IUsersRepository {
     user_id,
     active,
   }: UpdateActivePhoneUserDTO): Promise<void>;
+  acceptTerms({ user_id, accept }: TermsAcceptUserRepositoryDTO): Promise<void>;
 }
 
 export { IUsersRepository };

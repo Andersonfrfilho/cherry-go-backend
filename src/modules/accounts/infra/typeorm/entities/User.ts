@@ -5,8 +5,12 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
+  JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -16,6 +20,8 @@ import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
+
+import { UserTermsAccept } from "./UserTermsAccept";
 
 @Entity("users")
 class User {
@@ -93,6 +99,11 @@ class User {
     inverseJoinColumns: [{ name: "appointment_id" }],
   })
   appointments?: Appointment[];
+
+  @OneToMany(() => UserTermsAccept, (term) => term.user, { eager: true })
+  term: UserTermsAccept[];
+  // @OneToOne(() => UserTermsAccept, (term) => term.user_id, { eager: true }) // specify inverse side as a second parameter
+  // term: UserTermsAccept;
 
   @CreateDateColumn()
   @Exclude()

@@ -9,12 +9,14 @@ import {
 import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
+import { TermsAcceptUserRepositoryDTO } from "@modules/accounts/dtos/TermsAcceptUserRepository.dto";
 import { UserTypes } from "@modules/accounts/enums/UserTypes.enum";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UserPhone } from "@modules/accounts/infra/typeorm/entities/UserPhone";
+import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 
 class UsersRepository implements IUsersRepository {
@@ -23,6 +25,7 @@ class UsersRepository implements IUsersRepository {
   private repository_users_types: Repository<TypeUser>;
   private repository_phones: Repository<Phone>;
   private repository_users_phones: Repository<UserPhone>;
+  private repository_users_terms_accepts: Repository<UserTermsAccept>;
 
   constructor() {
     this.repository = getRepository(User);
@@ -30,6 +33,7 @@ class UsersRepository implements IUsersRepository {
     this.repository_users_types = getRepository(TypeUser);
     this.repository_phones = getRepository(Phone);
     this.repository_users_phones = getRepository(UserPhone);
+    this.repository_users_terms_accepts = getRepository(UserTermsAccept);
   }
 
   async updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void> {
@@ -186,7 +190,9 @@ class UsersRepository implements IUsersRepository {
   }
 
   async findByEmail(email: string): Promise<User> {
+    console.log(email);
     const user = await this.repository.findOne({ email });
+    console.log(user);
     return user;
   }
 
@@ -219,6 +225,17 @@ class UsersRepository implements IUsersRepository {
     });
     const user = await this.repository.findOne(id);
     return user;
+  }
+
+  async acceptTerms({
+    user_id,
+    accept,
+  }: TermsAcceptUserRepositoryDTO): Promise<void> {
+    const term = this.repository_users_terms_accepts.create({
+      accept,
+      user_id,
+    });
+    await this.repository_users_terms_accepts.save(term);
   }
 }
 export { UsersRepository };

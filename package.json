@@ -61,7 +61,8 @@
     "seeds:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -c seeds",
     "start:prod": "node ./dist/shared/infra/http/server.js --experimental-modules",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "test": "set ENVIRONMENT=test&&jest --config ./jest.config.unit.ts --runInBand --detectOpenHandles"
+    "test:unit": "set ENVIRONMENT=test&&jest --config ./jest.config.unit.ts --runInBand --detectOpenHandles",
+    "test:integration": "set ENVIRONMENT=test&&jest --config ./jest.config.integration.ts --runInBand --detectOpenHandles"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",

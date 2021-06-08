@@ -13,4 +13,5 @@ export const usersRepositoryMock = {
   updatePasswordUser: jest.fn(),
   updateActiveUser: jest.fn(),
   updateActivePhoneUser: jest.fn(),
+  acceptTerms: jest.fn(),
 };

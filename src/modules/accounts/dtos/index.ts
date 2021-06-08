@@ -10,6 +10,7 @@ import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpf
 import { IUpdateActiveUserDTO } from "@modules/accounts/dtos/IUpdateActiveUser.dto";
 import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
 import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
+import { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/TermsAcceptUserService.dto";
 import { UpdateActivePhoneUserDTO } from "@modules/accounts/dtos/UpdateActivePhoneUser.dto";
 
 export {
@@ -26,4 +27,5 @@ export {
   ICreateTypesUsersDTO,
   ICreateUserPhonesClientRequestDTO,
   IUpdateActiveUserDTO,
+  TermsAcceptUserServiceDTO,
 };

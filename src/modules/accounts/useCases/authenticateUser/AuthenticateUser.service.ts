@@ -36,13 +36,11 @@ class AuthenticateUserService {
   ) {}
   async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
-
     const { expires_in, secret } = auth;
 
     if (!user) {
       throw new AppError({ message: "User not exist" });
     }
-
     const passwordHash = await this.hashProvider.compareHash(
       password,
       user.password_hash
@@ -63,7 +61,6 @@ class AuthenticateUserService {
         expiresIn: expires_in.token,
       },
     });
-
     const refresh_token = this.jwtProvider.assign({
       payload: { email },
       secretOrPrivateKey: secret.refresh,
@@ -72,11 +69,9 @@ class AuthenticateUserService {
         expiresIn: expires_in.refresh,
       },
     });
-
     const refresh_token_expires_date = this.dateProvider.addDays(
       expires_in.refresh_days
     );
-
     await this.usersTokensRepository.create({
       user_id: user.id,
       expires_date: refresh_token_expires_date,
