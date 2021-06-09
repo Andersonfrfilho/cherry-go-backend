@@ -1,4 +1,6 @@
 node_modules/
+tmp/
+!tmp/.gitkeep
 !tmp/documents/.gitkeep
 !tmp/cars/.gitkeep
 .env
