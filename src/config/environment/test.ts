@@ -7,7 +7,7 @@ export const test: interface_config = {
   },
   storage: {
     base_url:
-      process.env.STORAGE_URL || `localhost:${process.env.PORT || 3333}`,
+      process.env.STORAGE_URL || `http://localhost:${process.env.PORT || 3333}`,
   },
   password: {
     time_token_expires: 30,

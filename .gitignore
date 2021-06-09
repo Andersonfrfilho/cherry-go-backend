@@ -1,7 +1,6 @@
 node_modules/
-!tmp/avatar/.gitkeep
+!tmp/documents/.gitkeep
 !tmp/cars/.gitkeep
-!tmp/.gitkeep
 .env
 covarage/
 dist/

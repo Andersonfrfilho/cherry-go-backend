@@ -15,9 +15,13 @@ class ImagesRepository implements ImagesRepositoryInterface {
   }
 
   async create({ name }: CreateUserRepositoryDTO): Promise<Image> {
-    const image = this.repository.create({ name });
-    await this.repository.save({ name });
-    return image;
+    const image_saved = await this.repository.save({ name });
+
+    return image_saved;
+  }
+
+  async deleteById(id: string): Promise<void> {
+    await this.repository.delete(id);
   }
 }
 export { ImagesRepository };

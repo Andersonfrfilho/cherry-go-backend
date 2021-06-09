@@ -10,7 +10,6 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -18,12 +17,12 @@ import {
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
+import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 import { DocumentUserImage } from "./DocumentUserImage";
-import { UserTermsAccept } from "./UserTermsAccept";
 
 @Entity("users")
 class User {
@@ -113,12 +112,7 @@ class User {
   })
   tags?: Tag[];
 
-  @ManyToMany(() => DocumentUserImage)
-  @JoinTable({
-    name: "documents_users_images",
-    joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "image_id" }],
-  })
+  @OneToMany(() => DocumentUserImage, (document) => document.user)
   documents?: DocumentUserImage[];
 
   @CreateDateColumn()

@@ -28,7 +28,7 @@ class CreateUserClientController {
       birth_date,
     });
 
-    return response.json(classToClass(user));
+    return response.json(user);
   }
 }
 export { CreateUserClientController };

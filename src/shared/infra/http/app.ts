@@ -5,7 +5,6 @@ import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 
-import upload from "@config/upload";
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 import { HttpErrorCodes } from "@shared/enums/statusCode";
@@ -35,9 +34,6 @@ if (process.env.ENVIRONMENT === "production") {
 }
 
 app.use(express.json());
-
-app.use("/avatar", express.static(`${upload.tmpFolder}/avatar`));
-app.use("/cars", express.static(`${upload.tmpFolder}/cars`));
 
 app.use(cors());
 app.use(router);

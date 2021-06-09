@@ -64,6 +64,9 @@ export class CreateDocumentsUsersImages1617669642959
             onUpdate: "SET NULL",
           },
         ],
+        indices: [
+          { columnNames: ["user_id", "value", "description"], isUnique: true },
+        ],
       })
     );
   }

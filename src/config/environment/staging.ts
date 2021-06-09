@@ -10,7 +10,7 @@ export const staging: interface_config = {
   },
   storage: {
     base_url:
-      process.env.STORAGE_URL || `localhost:${process.env.PORT || 3333}`,
+      process.env.STORAGE_URL || `http://localhost:${process.env.PORT || 3333}`,
   },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,

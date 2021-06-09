@@ -1,6 +1,9 @@
+import { classToClass } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { CreateDocumentsUsersServiceDTO } from "@modules/accounts/dtos";
+import { UserDocumentValue } from "@modules/accounts/enums/UserDocumentValue.enum";
+import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
@@ -11,6 +14,8 @@ class CreateDocumentsUsersService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
+    @inject("DocumentsUsersImageRepository")
+    private usersDocumentsRepository: DocumentsUserImageRepositoryInterface,
     @inject("StorageProvider")
     private storageProvider: IStorageProvider,
     @inject("ImagesRepository")
@@ -21,35 +26,40 @@ class CreateDocumentsUsersService {
     user_id,
     description,
   }: CreateDocumentsUsersServiceDTO): Promise<void> {
-    // pegar o id usuário
     const user = await this.usersRepository.findByIdWithDocument(user_id);
 
-    const [document_front, document_verse] = user.documents;
+    const [front, back] = user.documents;
 
-    // fazer o upload
-    if (document_front) {
-      const document_image = await this.imagesRepository.findById(
-        document_front.image_id
+    const document_side = {
+      FRONT: front,
+      BACK: back,
+    };
+
+    if (document_side[description]) {
+      const image_found = await this.imagesRepository.findById(
+        document_side[description].image_id
+      );
+      await this.usersDocumentsRepository.deleteById(
+        document_side[description].id
       );
 
-      await this.storageProvider.delete(document_image.name, "documents");
+      await this.storageProvider.delete(image_found.name, "documents");
+
+      await this.imagesRepository.deleteById(
+        document_side[description].image_id
+      );
     }
 
     const name = await this.storageProvider.save(document_file, "documents");
 
     const image = await this.imagesRepository.create({ name });
-    console.log(image);
-    // await this.usersRepository.create(user);
-    // salvar imagem
-    // salvar id_imagem, id_usuario, value
 
-    // const user = await this.usersRepository.findById(user_id);
-
-    // if (!user) {
-    //   throw new AppError({ message: "User not exist!" });
-    // }
-
-    // await this.usersRepository.createTagsUsers({ tags, user_id });
+    await this.usersDocumentsRepository.create({
+      image_id: image.id,
+      user_id,
+      value: user.rg,
+      description: UserDocumentValue[description],
+    });
   }
 }
 export { CreateDocumentsUsersService };

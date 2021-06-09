@@ -1,3 +1,4 @@
+import { classToClass } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
@@ -90,7 +91,7 @@ class CreateUserClientService {
       messages,
     });
 
-    return user;
+    return classToClass(user);
   }
 }
 export { CreateUserClientService };

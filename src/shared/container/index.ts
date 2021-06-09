@@ -2,10 +2,12 @@ import { container } from "tsyringe";
 
 import "@shared/container/providers";
 
+import { DocumentsUsersImageRepository } from "@modules/accounts/infra/typeorm/repositories/DocumentUserImageRepository";
 import { PhonesRepository } from "@modules/accounts/infra/typeorm/repositories/PhonesRepository";
 import { TypesUsersRepository } from "@modules/accounts/infra/typeorm/repositories/TypesUsersRepository";
 import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
 import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositories/UsersTokensRepository";
+import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
 import { IPhonesRepository } from "@modules/accounts/repositories/IPhonesRepository";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
@@ -45,6 +47,11 @@ container.registerSingleton<TagsRepositoryInterface>(
 container.registerSingleton<ImagesRepositoryInterface>(
   "ImagesRepository",
   ImagesRepository
+);
+
+container.registerSingleton<DocumentsUserImageRepositoryInterface>(
+  "DocumentsUsersImageRepository",
+  DocumentsUsersImageRepository
 );
 
 container.registerSingleton<INotificationsRepository>(

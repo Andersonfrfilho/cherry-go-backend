@@ -8,7 +8,6 @@ class CreateDocumentsUsersController {
     const { id } = request.user;
     const { description } = request.body;
     const document_file = request.file.filename;
-    console.log(id, description);
     const createDocumentsUsersClientService = container.resolve(
       CreateDocumentsUsersService
     );
