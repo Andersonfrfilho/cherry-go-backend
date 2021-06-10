@@ -1,7 +1,6 @@
 import { getRepository, Repository } from "typeorm";
 
 import {
-  CreateImageProfileByUserProviderDTO,
   CreateTagsUsersRepositoryDTO,
   ICreateUserAddressClientDTO,
   ICreateUserPhonesClientRequestDTO,
