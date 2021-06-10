@@ -23,6 +23,7 @@ import { Image } from "@modules/images/infra/typeorm/entities/Image";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 import { DocumentUserImage } from "./DocumentUserImage";
+import { UserProfileImage } from "./UserProfileImage";
 
 @Entity("users")
 class User {
@@ -74,13 +75,12 @@ class User {
   })
   addresses?: Address[];
 
-  @ManyToMany(() => Image)
-  @JoinTable({
-    name: "users_images",
-    joinColumns: [{ name: "user_id" }],
-    inverseJoinColumns: [{ name: "image_id" }],
-  })
-  images?: Image[];
+  @OneToMany(
+    () => UserProfileImage,
+    (user_profile_image) => user_profile_image.user,
+    { eager: true }
+  )
+  image_profile?: UserProfileImage[];
 
   @ManyToMany(() => TypeUser, (type_user) => type_user.users, {
     cascade: true,

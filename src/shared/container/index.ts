@@ -5,6 +5,7 @@ import "@shared/container/providers";
 import { DocumentsUsersImageRepository } from "@modules/accounts/infra/typeorm/repositories/DocumentUserImageRepository";
 import { PhonesRepository } from "@modules/accounts/infra/typeorm/repositories/PhonesRepository";
 import { TypesUsersRepository } from "@modules/accounts/infra/typeorm/repositories/TypesUsersRepository";
+import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImageRepository";
 import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
 import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositories/UsersTokensRepository";
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
@@ -12,6 +13,7 @@ import { IPhonesRepository } from "@modules/accounts/repositories/IPhonesReposit
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { ITypesUsersRepository } from "@modules/accounts/repositories/IUsersTypesRepository";
+import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
 import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/ImagesRepository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
@@ -52,6 +54,11 @@ container.registerSingleton<ImagesRepositoryInterface>(
 container.registerSingleton<DocumentsUserImageRepositoryInterface>(
   "DocumentsUsersImageRepository",
   DocumentsUsersImageRepository
+);
+
+container.registerSingleton<UserProfileImageRepositoryInterface>(
+  "UserProfileImageRepository",
+  UserProfileImageRepository
 );
 
 container.registerSingleton<INotificationsRepository>(

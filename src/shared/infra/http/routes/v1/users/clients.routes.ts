@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { ActiveUserClientController } from "@modules/accounts/useCases/activeAccount/ActiveAccount.controller";
-import { schemaActiveUserClient } from "@modules/accounts/useCases/activeAccount/activeAccount.schema";
+import { schemaActiveUser } from "@modules/accounts/useCases/activeAccount/ActiveAccount.schema";
 import { CreateUserAddressClientController } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.controller";
 import { schemaCreateUserAddressClient } from "@modules/accounts/useCases/createAddressUserClient/createUserAddressClient.schema";
 import { schemaCreateUserPhoneClient } from "@modules/accounts/useCases/createPhonesUserClient/createUserPhoneClient.schema";
@@ -46,7 +46,7 @@ clientsRoutes.patch(
 );
 clientsRoutes.patch(
   "/ative",
-  schemaActiveUserClient,
+  schemaActiveUser,
   activeUserClientController.handle
 );
 

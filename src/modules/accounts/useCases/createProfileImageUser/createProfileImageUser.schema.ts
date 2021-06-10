@@ -1,7 +1,7 @@
 import { celebrate, Joi, Segments } from "celebrate";
 import { differenceInYears } from "date-fns";
 
-const createProfilePhotoUser = celebrate({
+const schemaCreateProfilePhotoUser = celebrate({
   [Segments.BODY]: {
     name: Joi.string().lowercase().required(),
     last_name: Joi.string().lowercase().required(),
@@ -28,4 +28,4 @@ const createProfilePhotoUser = celebrate({
   },
 });
 
-export { createProfilePhotoUser };
+export { schemaCreateProfilePhotoUser };

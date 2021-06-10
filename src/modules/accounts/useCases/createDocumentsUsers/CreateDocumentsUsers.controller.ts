@@ -8,11 +8,11 @@ class CreateDocumentsUsersController {
     const { id } = request.user;
     const { description } = request.body;
     const document_file = request.file.filename;
-    const createDocumentsUsersClientService = container.resolve(
+    const createDocumentsUsersService = container.resolve(
       CreateDocumentsUsersService
     );
 
-    await createDocumentsUsersClientService.execute({
+    await createDocumentsUsersService.execute({
       document_file,
       user_id: id,
       description,

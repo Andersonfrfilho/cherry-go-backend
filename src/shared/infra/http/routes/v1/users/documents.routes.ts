@@ -11,12 +11,12 @@ const createDocumentsUsersController = new CreateDocumentsUsersController();
 const uploadDocument = multer(uploadConfig);
 // "route_path", "file_path"
 documentsRoutes.use(
-  "/files",
+  "/image/view",
   express.static(`${uploadConfig.tmpFolder}/documents`)
 );
 
 documentsRoutes.post(
-  "/",
+  "/image",
   uploadDocument.single("document"),
   ensureAuthenticated,
   createDocumentsUsersController.handle

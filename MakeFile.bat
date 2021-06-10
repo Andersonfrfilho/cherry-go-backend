@@ -16,8 +16,16 @@ goto :eof
 docker-compose up -d database_redis
 goto :eof
 
-:database-kafka
-docker-compose up -d database_kafka
+:kafka
+docker-compose -f .\apache-kafka\docker-compose.yaml up -d
+goto :eof
+
+:databases
+docker-compose up -d
+goto :eof
+
+:databases:migrations
+docker-compose up -d && yarn migration:run
 goto :eof
 
 :all

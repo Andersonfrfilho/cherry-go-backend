@@ -1,6 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import {
+  CreateImageProfileByUserProviderDTO,
   CreateTagsUsersRepositoryDTO,
   ICreateUserAddressClientDTO,
   ICreateUserPhonesClientRequestDTO,
@@ -253,6 +254,10 @@ class UsersRepository implements IUsersRepository {
     await this.repository.update(user_id, {
       tags: tags_founds,
     });
+  }
+
+  async findByIdWithProfileImage(id: string): Promise<User> {
+    return this.repository.findOne(id, { relations: ["image_profile"] });
   }
 }
 export { UsersRepository };

@@ -13,8 +13,8 @@ import { Image } from "@modules/images/infra/typeorm/entities/Image";
 
 import { User } from "./User";
 
-@Entity("documents_users_images")
-class DocumentUserImage {
+@Entity("users_profiles_images")
+class UserProfileImage {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
@@ -32,12 +32,6 @@ class DocumentUserImage {
   @JoinColumn({ name: "image_id", referencedColumnName: "id" })
   image: Image;
 
-  @Column()
-  value: string;
-
-  @Column()
-  description: string;
-
   @CreateDateColumn()
   created_at?: Date;
 
@@ -48,4 +42,4 @@ class DocumentUserImage {
   deleted_at?: Date;
 }
 
-export { DocumentUserImage };
+export { UserProfileImage };

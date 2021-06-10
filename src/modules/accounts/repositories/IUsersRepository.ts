@@ -41,6 +41,7 @@ interface IUsersRepository {
     user_id,
     tags,
   }: CreateTagsUsersRepositoryDTO): Promise<void>;
+  findByIdWithProfileImage(id: string): Promise<User>;
 }
 
 export { IUsersRepository };
