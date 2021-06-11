@@ -26,7 +26,7 @@ container.registerSingleton<IUsersRepository>(
   UsersRepository
 );
 
-container.registerSingleton<ITypesUsersRepository>(
+container.register<ITypesUsersRepository>(
   "UsersTypeRepository",
   TypesUsersRepository
 );
