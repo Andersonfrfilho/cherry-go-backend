@@ -1,8 +1,6 @@
 const findUserByEmailCpfRgMock = jest.fn();
 
 export const usersRepositoryMock = {
-  findUserByEmailCpfRg: findUserByEmailCpfRgMock,
-  createUserClientType: jest.fn(),
   create: jest.fn(),
   createUserAddress: jest.fn(),
   createUserPhones: jest.fn(),
@@ -10,8 +8,13 @@ export const usersRepositoryMock = {
   findByRg: jest.fn(),
   findByCpf: jest.fn(),
   findById: jest.fn(),
+  findByIdWithDocument: jest.fn(),
+  findUserByEmailCpfRg: findUserByEmailCpfRgMock,
+  createUserClientType: jest.fn(),
   updatePasswordUser: jest.fn(),
   updateActiveUser: jest.fn(),
   updateActivePhoneUser: jest.fn(),
   acceptTerms: jest.fn(),
+  createTagsUsers: jest.fn(),
+  findByIdWithProfileImage: jest.fn(),
 };

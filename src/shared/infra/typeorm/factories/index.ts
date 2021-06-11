@@ -8,6 +8,7 @@ import { TagsFactory } from "@shared/infra/typeorm/factories/TagsFactory";
 import { UsersFactory } from "@shared/infra/typeorm/factories/UsersFactory";
 import { UsersTypesFactory } from "@shared/infra/typeorm/factories/UsersTypesFactory";
 
+export { UserTermFactory } from "@shared/infra/typeorm/factories/Term.factory";
 export {
   UsersFactory,
   PhonesFactory,

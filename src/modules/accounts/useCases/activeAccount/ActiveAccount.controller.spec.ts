@@ -2,7 +2,7 @@ import request from "supertest";
 import { Connection, createConnections } from "typeorm";
 
 import typeormConfigTest from "@root/ormconfig.test";
-import { HttpErrorCodes, HttpSuccessCode } from "@shared/enums/statusCode";
+import { HttpErrorCodes, HttpSuccessCode } from "@shared/errors/constants";
 import { app } from "@shared/infra/http/app";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 

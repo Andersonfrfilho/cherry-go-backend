@@ -7,8 +7,12 @@ import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTok
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
 import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
-import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
+import {
+  METHOD_NOT_ALLOWED,
+  UNAUTHORIZED,
+  UNPROCESSABLE_ENTITY,
+} from "@shared/errors/constants";
 
 @injectable()
 class ConfirmAccountPhoneUserService {
@@ -38,19 +42,13 @@ class ConfirmAccountPhoneUserService {
     });
 
     if (!(user_id === sub.user.id)) {
-      throw new AppError({
-        message: "Not authorized!",
-        status_code: HttpErrorCodes.CONFLICT,
-      });
+      throw new AppError(METHOD_NOT_ALLOWED.NOT_ALLOWED);
     }
 
     if (
       this.dateProvider.compareIfBefore(user_token.expires_date, new Date())
     ) {
-      throw new AppError({
-        message: "Token expired!",
-        status_code: HttpErrorCodes.UNAUTHORIZED,
-      });
+      throw new AppError(UNAUTHORIZED.TOKEN_EXPIRED);
     }
 
     await this.usersTokensRepository.deleteById(user_token.id);
@@ -58,10 +56,7 @@ class ConfirmAccountPhoneUserService {
     const passed = await this.hashProvider.compareHash(code, sub.code_hash);
 
     if (!passed) {
-      throw new AppError({
-        message: "Code incorrect!",
-        status_code: HttpErrorCodes.CONFLICT,
-      });
+      throw new AppError(UNPROCESSABLE_ENTITY.CODE_INCORRECT);
     }
 
     await this.usersRepository.updateActivePhoneUser({

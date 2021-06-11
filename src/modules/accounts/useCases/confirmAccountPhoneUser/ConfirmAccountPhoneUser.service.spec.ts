@@ -8,8 +8,12 @@ import { ConfirmAccountPhoneUserService } from "@modules/accounts/useCases/confi
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
 import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
 import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/jwtProvider.mock";
-import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
+import {
+  METHOD_NOT_ALLOWED,
+  UNAUTHORIZED,
+  UNPROCESSABLE_ENTITY,
+} from "@shared/errors/constants";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let confirmAccountPhoneUserService: ConfirmAccountPhoneUserService;
@@ -119,12 +123,7 @@ describe("ConfirmAccountPhoneUserService", () => {
         token,
         user_id: id,
       })
-    ).rejects.toEqual(
-      new AppError({
-        message: "Not authorized!",
-        status_code: HttpErrorCodes.CONFLICT,
-      })
-    );
+    ).rejects.toEqual(new AppError(METHOD_NOT_ALLOWED.NOT_ALLOWED));
     expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
       token
     );
@@ -165,12 +164,7 @@ describe("ConfirmAccountPhoneUserService", () => {
         token,
         user_id: id,
       })
-    ).rejects.toEqual(
-      new AppError({
-        message: "Token expired!",
-        status_code: HttpErrorCodes.UNAUTHORIZED,
-      })
-    );
+    ).rejects.toEqual(new AppError(UNAUTHORIZED.TOKEN_EXPIRED));
 
     expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
       token
@@ -218,12 +212,7 @@ describe("ConfirmAccountPhoneUserService", () => {
         token,
         user_id: id,
       })
-    ).rejects.toEqual(
-      new AppError({
-        message: "Code incorrect!",
-        status_code: HttpErrorCodes.CONFLICT,
-      })
-    );
+    ).rejects.toEqual(new AppError(UNPROCESSABLE_ENTITY.CODE_INCORRECT));
     expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
       token
     );

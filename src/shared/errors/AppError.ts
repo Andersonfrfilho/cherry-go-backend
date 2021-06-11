@@ -1,10 +1,6 @@
-import { HttpErrorCodes } from "@shared/enums/statusCode";
+import { ErrorParametersDTO } from "@shared/errors/dtos";
+import { HttpErrorCodesEnum } from "@shared/errors/enums";
 
-interface IErrorParameters {
-  message: string;
-  status_code?: number;
-  code?: string;
-}
 export class AppError {
   public readonly message: string;
   public readonly status_code: number;
@@ -12,9 +8,9 @@ export class AppError {
 
   constructor({
     message,
-    status_code = HttpErrorCodes.BAD_REQUEST,
+    status_code = HttpErrorCodesEnum.BAD_REQUEST,
     code = "",
-  }: IErrorParameters) {
+  }: ErrorParametersDTO) {
     this.message = message;
     this.status_code = status_code;
     this.code = code;

@@ -1,4 +1,3 @@
-import { classToClass } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { CreateDocumentsUsersServiceDTO } from "@modules/accounts/dtos";
@@ -6,6 +5,7 @@ import { UserDocumentValue } from "@modules/accounts/enums/UserDocumentValue.enu
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
+import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
 import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
 import { AppError } from "@shared/errors/AppError";
 
@@ -43,14 +43,20 @@ class CreateDocumentsUsersService {
         document_side[description].id
       );
 
-      await this.storageProvider.delete(image_found.name, "documents");
+      await this.storageProvider.delete(
+        image_found.name,
+        StorageTypeFolderEnum.DOCUMENTS
+      );
 
       await this.imagesRepository.deleteById(
         document_side[description].image_id
       );
     }
 
-    const name = await this.storageProvider.save(document_file, "documents");
+    const name = await this.storageProvider.save(
+      document_file,
+      StorageTypeFolderEnum.DOCUMENTS
+    );
 
     const image = await this.imagesRepository.create({ name });
 

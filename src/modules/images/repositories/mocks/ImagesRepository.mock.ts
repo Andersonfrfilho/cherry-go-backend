@@ -1,3 +1,5 @@
-export const phonesRepositoryMock = {
-  findPhoneUser: jest.fn(),
+export const imagesRepositoryMock = {
+  findById: jest.fn(),
+  create: jest.fn(),
+  deleteById: jest.fn(),
 };

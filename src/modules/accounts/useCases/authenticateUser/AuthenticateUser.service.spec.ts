@@ -8,13 +8,15 @@ import { AuthenticateUserService } from "@modules/accounts/useCases/authenticate
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
 import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
 import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/jwtProvider.mock";
-import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
+import { BAD_REQUEST, UNAUTHORIZED } from "@shared/errors/constants";
 import {
   AddressesFactory,
+  ImagesFactory,
   PhonesFactory,
   UsersFactory,
   UsersTypesFactory,
+  UserTermFactory,
 } from "@shared/infra/typeorm/factories";
 
 let authenticateUserService: AuthenticateUserService;
@@ -29,6 +31,8 @@ describe("AuthenticateUserService", () => {
   const usersTypesFactory = new UsersTypesFactory();
   const addressesFactory = new AddressesFactory();
   const phonesFactory = new PhonesFactory();
+  const imageProfileFactory = new ImagesFactory();
+  const userTermFactory = new UserTermFactory();
 
   beforeEach(() => {
     authenticateUserService = new AuthenticateUserService(
@@ -59,7 +63,11 @@ describe("AuthenticateUserService", () => {
     const [type] = usersTypesFactory.generate("uuid");
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
-
+    const [image_profile] = imageProfileFactory.generate({
+      quantity: 1,
+      id: "true",
+    });
+    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
     const token_faker = faker.datatype.uuid();
     const refresh_token_faker = faker.datatype.uuid();
 
@@ -76,6 +84,8 @@ describe("AuthenticateUserService", () => {
       phones: [phone],
       addresses: [address],
       types: [type],
+      image_profile: [{ image: image_profile }],
+      term: [term],
     });
     hashProviderMock.compareHash.mockResolvedValue(true);
     jwtProviderMock.assign
@@ -161,6 +171,20 @@ describe("AuthenticateUserService", () => {
               zipcode: expect.any(String) && address.zipcode,
             }),
           ]),
+          image_profile: expect.arrayContaining([
+            expect.objectContaining({
+              image: expect.objectContaining({
+                id: expect.any(String) && image_profile.id,
+                name: expect.any(String) && image_profile.name,
+              }),
+            }),
+          ]),
+          term: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String) && term.id,
+              accept: expect.any(Boolean) && term.accept,
+            }),
+          ]),
         }),
         token: expect.any(String) && token_faker,
         refresh_token: expect.any(String) && refresh_token_faker,
@@ -170,7 +194,7 @@ describe("AuthenticateUserService", () => {
 
   it("Not should able to authenticated user not exist", async () => {
     // arrange
-    const [{ cpf, rg, email, password_hash }] = usersFactory.generate({
+    const [{ email, password_hash }] = usersFactory.generate({
       quantity: 1,
       id: "true",
     });
@@ -185,7 +209,7 @@ describe("AuthenticateUserService", () => {
         email,
         password: password_hash,
       })
-    ).rejects.toEqual(new AppError({ message: "User not exist" }));
+    ).rejects.toEqual(new AppError(BAD_REQUEST.USER_NOT_EXIST));
 
     expect(usersRepositoryMock.findByEmail).toHaveBeenCalledWith(email);
   });
@@ -208,6 +232,11 @@ describe("AuthenticateUserService", () => {
     const [type] = usersTypesFactory.generate("uuid");
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
+    const [image_profile] = imageProfileFactory.generate({
+      quantity: 1,
+      id: "true",
+    });
+    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
 
     usersRepositoryMock.findByEmail.mockResolvedValue({
       id,
@@ -222,6 +251,8 @@ describe("AuthenticateUserService", () => {
       phones: [phone],
       addresses: [address],
       types: [type],
+      image_profile: [{ image: image_profile }],
+      term: [term],
     });
     hashProviderMock.compareHash.mockResolvedValue(false);
 
@@ -234,12 +265,7 @@ describe("AuthenticateUserService", () => {
         email,
         password: password_hash,
       })
-    ).rejects.toEqual(
-      new AppError({
-        message: "User password does match",
-        status_code: HttpErrorCodes.UNAUTHORIZED,
-      })
-    );
+    ).rejects.toEqual(new AppError(UNAUTHORIZED.USER_PASSWORD_DOES_MATCH));
     expect(usersRepositoryMock.findByEmail).toHaveBeenCalledWith(email);
     expect(hashProviderMock.compareHash).toHaveBeenCalledWith(
       password_hash,

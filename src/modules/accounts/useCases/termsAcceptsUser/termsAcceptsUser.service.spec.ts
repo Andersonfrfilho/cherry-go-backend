@@ -24,7 +24,7 @@ const mockedDate = new Date("2020-09-01T09:33:37");
 jest.mock("uuid");
 jest.useFakeTimers("modern").setSystemTime(mockedDate.getTime());
 
-describe("AuthenticateUserService", () => {
+describe("TermsAcceptUserService", () => {
   const usersFactory = new UsersFactory();
   const usersTypesFactory = new UsersTypesFactory();
   const addressesFactory = new AddressesFactory();

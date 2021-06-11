@@ -3,11 +3,13 @@ import "reflect-metadata";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
 import { CreateUserAddressClientService } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.service";
 import { AppError } from "@shared/errors/AppError";
+import { BAD_REQUEST } from "@shared/errors/constants";
 import {
   AddressesFactory,
   PhonesFactory,
   UsersFactory,
   UsersTypesFactory,
+  UserTermFactory,
 } from "@shared/infra/typeorm/factories";
 
 let createUserAddressClientService: CreateUserAddressClientService;
@@ -20,6 +22,8 @@ describe("CreateUserAddressClientService", () => {
   const usersTypesFactory = new UsersTypesFactory();
   const phonesFactory = new PhonesFactory();
   const addressesFactory = new AddressesFactory();
+
+  const userTermFactory = new UserTermFactory();
 
   beforeEach(() => {
     createUserAddressClientService = new CreateUserAddressClientService(
@@ -38,12 +42,13 @@ describe("CreateUserAddressClientService", () => {
         email,
         birth_date,
         password_hash,
-        active,
         id,
+        active,
       },
-    ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
-    const [type] = usersTypesFactory.generate("with_id");
+    ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
+    const [type] = usersTypesFactory.generate("uuid");
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
+    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
     const [
       {
         id: address_id,
@@ -56,7 +61,6 @@ describe("CreateUserAddressClientService", () => {
         zipcode,
       },
     ] = addressesFactory.generate({ quantity: 1, id: "true" });
-
     usersRepositoryMock.findById.mockResolvedValue({
       id,
       name,
@@ -67,9 +71,13 @@ describe("CreateUserAddressClientService", () => {
       birth_date,
       password_hash,
       active,
-      types: [type],
       phones: [phone],
+      addresses: [],
+      types: [type],
+      image_profile: [],
+      term: [term],
     });
+
     usersRepositoryMock.createUserAddress.mockResolvedValue({
       id,
       name,
@@ -82,6 +90,8 @@ describe("CreateUserAddressClientService", () => {
       active,
       types: [type],
       phones: [phone],
+      image_profile: [],
+      term: [term],
       addresses: [
         {
           id: address_id,
@@ -121,8 +131,11 @@ describe("CreateUserAddressClientService", () => {
         birth_date,
         password_hash,
         active,
-        types: [type],
         phones: [phone],
+        addresses: [],
+        types: [type],
+        image_profile: [],
+        term: [term],
       },
       city,
       country,
@@ -171,6 +184,13 @@ describe("CreateUserAddressClientService", () => {
             zipcode: expect.any(String) && zipcode,
           }),
         ]),
+        image_profile: expect.arrayContaining([]),
+        term: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String) && term.id,
+            accept: expect.any(Boolean) && term.accept,
+          }),
+        ]),
       })
     );
   });
@@ -202,7 +222,7 @@ describe("CreateUserAddressClientService", () => {
         street,
         zipcode,
       })
-    ).rejects.toEqual(new AppError({ message: "User client not exist" }));
+    ).rejects.toEqual(new AppError(BAD_REQUEST.USER_NOT_EXIST));
 
     expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
   });

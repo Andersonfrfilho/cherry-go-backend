@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { container } from "tsyringe";
 
 import { CreateDocumentsUsersService } from "@modules/accounts/useCases/createDocumentsUsers/CreateDocumentsUsers.service";
+import { HttpSuccessCodeEnum } from "@shared/infra/http/enums";
 
 class CreateDocumentsUsersController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -18,7 +19,7 @@ class CreateDocumentsUsersController {
       description,
     });
 
-    return response.status(204).send();
+    return response.status(HttpSuccessCodeEnum.NO_CONTENT).send();
   }
 }
 export { CreateDocumentsUsersController };

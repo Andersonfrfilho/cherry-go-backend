@@ -1,4 +1,3 @@
-import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
@@ -8,8 +7,8 @@ import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTok
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
 import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
-import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
+import { BAD_REQUEST, UNAUTHORIZED } from "@shared/errors/constants";
 
 interface IResponse {
   user: User;
@@ -39,7 +38,7 @@ class AuthenticateUserService {
     const { expires_in, secret } = auth;
 
     if (!user) {
-      throw new AppError({ message: "User not exist" });
+      throw new AppError(BAD_REQUEST.USER_NOT_EXIST);
     }
     const passwordHash = await this.hashProvider.compareHash(
       password,
@@ -47,10 +46,7 @@ class AuthenticateUserService {
     );
 
     if (!passwordHash) {
-      throw new AppError({
-        message: "User password does match",
-        status_code: HttpErrorCodes.UNAUTHORIZED,
-      });
+      throw new AppError(UNAUTHORIZED.USER_PASSWORD_DOES_MATCH);
     }
 
     const token = this.jwtProvider.assign({

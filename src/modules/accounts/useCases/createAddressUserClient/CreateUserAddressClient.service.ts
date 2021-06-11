@@ -4,6 +4,7 @@ import { ICreateUserAddressClientRequestDTO } from "@modules/accounts/dtos";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { User } from "@sentry/node";
 import { AppError } from "@shared/errors/AppError";
+import { BAD_REQUEST } from "@shared/errors/constants";
 
 @injectable()
 class CreateUserAddressClientService {
@@ -24,9 +25,7 @@ class CreateUserAddressClientService {
     const user_exist = await this.usersRepository.findById(user_id);
 
     if (!user_exist) {
-      throw new AppError({
-        message: "User client not exist",
-      });
+      throw new AppError(BAD_REQUEST.USER_NOT_EXIST);
     }
 
     const user = await this.usersRepository.createUserAddress({
