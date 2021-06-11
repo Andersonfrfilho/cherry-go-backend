@@ -1,42 +1,50 @@
 import "reflect-metadata";
 import faker from "faker";
-import * as uuid from "uuid";
 
-import { config } from "@config/environment";
+import { UserDocumentValue } from "@modules/accounts/enums/UserDocumentValue.enum";
+import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImageRepository";
+import { userProfileImageRepositoryMock } from "@modules/accounts/repositories/mocks/UserProfileImageRepository.mock";
+import { usersDocumentsRepositoryMock } from "@modules/accounts/repositories/mocks/UsersDocumentsRepository.mock";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
-import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
-import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
-import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
-import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
+import { CreateDocumentsUsersService } from "@modules/accounts/useCases/createDocumentsUsers/CreateDocumentsUsers.service";
+import { CreateProfileImageUserService } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.service";
+import { imagesRepositoryMock } from "@modules/images/repositories/mocks/ImagesRepository.mock";
+import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
+import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/StorageProvider.mock";
 import { AppError } from "@shared/errors/AppError";
+import { BAD_REQUEST } from "@shared/errors/constants";
 import {
+  AddressesFactory,
+  ImagesFactory,
+  PhonesFactory,
   UsersFactory,
   UsersTypesFactory,
+  UserTermFactory,
 } from "@shared/infra/typeorm/factories";
 
-let createUserService: CreateUserClientService;
+let createProfileImageUserService: CreateProfileImageUserService;
 const mocked_date = new Date("2020-09-01T09:33:37");
 jest.mock("uuid");
 jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 
-describe("CreateUserClientService", () => {
+describe("CreateProfileImageUserService", () => {
   const usersFactory = new UsersFactory();
   const usersTypesFactory = new UsersTypesFactory();
+  const phonesFactory = new PhonesFactory();
+  const addressesFactory = new AddressesFactory();
+  const imageProfileFactory = new ImagesFactory();
+  const userTermFactory = new UserTermFactory();
 
   beforeEach(() => {
-    createUserService = new CreateUserClientService(
+    createProfileImageUserService = new CreateProfileImageUserService(
       usersRepositoryMock,
-      hashProviderMock,
-      usersTokensRepositoryMock,
-      dateProviderMock,
-      queueProviderMock
+      storageProviderMock,
+      imagesRepositoryMock,
+      userProfileImageRepositoryMock
     );
   });
 
-  it("Should be able to create an user", async () => {
+  it("Should be able to create a document image user front", async () => {
     // arrange
     const [
       {
@@ -50,24 +58,18 @@ describe("CreateUserClientService", () => {
         id,
         active,
       },
-    ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
-    const [type] = usersTypesFactory.generate("with_id");
-    const uuid_fake = faker.datatype.uuid();
-    const variables = {
-      name,
-      link: `${process.env.CONFIRM_MAIL_URL}${uuid_fake}`,
-    };
-    const message: ISendMailDTO = {
-      to: email,
-      email_type: MailContent.USER_CONFIRMATION_EMAIL,
-      variables,
-    };
-    const messages = [];
-    messages.push({ value: JSON.stringify(message) });
+    ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
+    const [type] = usersTypesFactory.generate("uuid");
+    const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
+    const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
+    const [image_profile] = imageProfileFactory.generate({
+      quantity: 1,
+      id: "true",
+    });
+    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const name_file = faker.name.firstName();
 
-    usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue(undefined);
-    hashProviderMock.generateHash.mockResolvedValue(password_hash);
-    usersRepositoryMock.createUserClientType.mockResolvedValue({
+    usersRepositoryMock.findByIdWithProfileImage.mockResolvedValue({
       id,
       name,
       last_name,
@@ -75,123 +77,140 @@ describe("CreateUserClientService", () => {
       rg,
       email,
       birth_date,
-      active,
       password_hash,
+      active,
+      phones: [phone],
+      addresses: [address],
       types: [type],
-      phones: [],
-      addresses: [],
+      image_profile: [],
+      term: [term],
+      documents: [],
     });
-    dateProviderMock.addMinutes.mockReturnValue(mocked_date);
-    jest.spyOn(uuid, "v4").mockReturnValue(uuid_fake);
-    usersTokensRepositoryMock.create.mockResolvedValue({});
-    queueProviderMock.sendMessage.mockResolvedValue({});
+    storageProviderMock.save.mockResolvedValue(name_file);
+    imagesRepositoryMock.create.mockResolvedValue(image_profile);
+    userProfileImageRepositoryMock.create.mockResolvedValue({});
 
     // act
-    const result = await createUserService.execute({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-    });
-
-    // assert
-    expect(usersRepositoryMock.findUserByEmailCpfRg).toHaveBeenCalledWith({
-      cpf,
-      rg,
-      email,
-    });
-    expect(hashProviderMock.generateHash).toHaveBeenCalledWith(password_hash);
-    expect(usersRepositoryMock.createUserClientType).toHaveBeenCalledWith({
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password: password_hash,
-      active,
-    });
-    expect(dateProviderMock.addMinutes).toHaveBeenCalledWith(
-      config.mail.token.expiration_time
-    );
-    expect(usersTokensRepositoryMock.create).toHaveBeenCalledWith({
-      refresh_token: uuid_fake,
+    await createProfileImageUserService.execute({
       user_id: id,
-      expires_date: mocked_date,
+      image_profile_name: name_file,
     });
 
-    expect(queueProviderMock.sendMessage).toHaveBeenCalledWith({
-      topic: config.mail.queue.topic,
-      messages,
-    });
-    expect(result).toEqual(
-      expect.objectContaining({
-        id: expect.any(String) && id,
-        name: expect.any(String) && name,
-        last_name: expect.any(String) && last_name,
-        cpf: expect.any(String) && cpf,
-        rg: expect.any(String) && rg,
-        email: expect.any(String) && email,
-        password_hash: expect.any(String) && password_hash,
-        birth_date: expect.any(Date) && birth_date,
-        active: expect.any(Boolean) && active,
-        types: expect.arrayContaining([
-          expect.objectContaining({
-            id: expect.any(String) && type.id,
-            name: expect.any(String) && type.name,
-            description: expect.any(String) && type.description,
-          }),
-        ]),
-        addresses: expect.arrayContaining([]),
-        phones: expect.arrayContaining([]),
-      })
-    );
-  });
-
-  it("Not should able to create user already email exist", async () => {
-    // arrange
-    const [type] = usersTypesFactory.generate("with_id");
-    const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash, id },
-    ] = usersFactory.generate({ quantity: 1, id: "true", active: false });
-
-    usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue({
-      id,
-      name,
-      last_name,
-      cpf,
-      rg,
-      email,
-      birth_date,
-      password_hash,
-      active: false,
-      types: [type],
-      phones: [],
-      addresses: [],
-    });
-
-    // act
     // assert
-    expect.assertions(2);
-    await expect(
-      createUserService.execute({
+    expect(usersRepositoryMock.findByIdWithProfileImage).toHaveBeenCalledWith(
+      id
+    );
+    expect(storageProviderMock.save).toHaveBeenCalledWith(
+      name_file,
+      StorageTypeFolderEnum.PROFILES
+    );
+    expect(imagesRepositoryMock.create).toHaveBeenCalledWith({
+      name: name_file,
+    });
+    expect(userProfileImageRepositoryMock.create).toHaveBeenCalledWith({
+      image_id: image_profile.id,
+      user_id: id,
+    });
+  });
+  it("Should be able to substituted a document image user front", async () => {
+    // arrange
+    const [
+      {
         name,
         last_name,
         cpf,
         rg,
         email,
         birth_date,
-        password: password_hash,
-      })
-    ).rejects.toEqual(new AppError({ message: "User client already exist" }));
-
-    expect(usersRepositoryMock.findUserByEmailCpfRg).toHaveBeenCalledWith({
+        password_hash,
+        id,
+        active,
+      },
+    ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
+    const [type] = usersTypesFactory.generate("uuid");
+    const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
+    const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
+    const [image_profile] = imageProfileFactory.generate({
+      quantity: 1,
+      id: "true",
+    });
+    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const name_file = faker.name.firstName();
+    const [image_document_front] = imageProfileFactory.generate({
+      quantity: 1,
+      id: "true",
+    });
+    const [new_image_profile] = imageProfileFactory.generate({
+      quantity: 1,
+      id: "true",
+    });
+    const image_profile_id = faker.datatype.uuid();
+    usersRepositoryMock.findByIdWithProfileImage.mockResolvedValue({
+      id,
+      name,
+      last_name,
       cpf,
       rg,
       email,
+      birth_date,
+      password_hash,
+      active,
+      phones: [phone],
+      addresses: [address],
+      types: [type],
+      image_profile: [
+        {
+          id: image_profile_id,
+          image_id: image_profile.id,
+          image: image_profile,
+        },
+      ],
+      term: [term],
+      documents: [
+        {
+          image_id: image_document_front.id,
+          image: image_document_front,
+        },
+      ],
+    });
+    imagesRepositoryMock.findById.mockResolvedValue(new_image_profile);
+    userProfileImageRepositoryMock.deleteById.mockResolvedValue({});
+    storageProviderMock.delete.mockResolvedValue({});
+    imagesRepositoryMock.deleteById.mockResolvedValue({});
+    storageProviderMock.save.mockResolvedValue(new_image_profile.name);
+    imagesRepositoryMock.create.mockResolvedValue(new_image_profile);
+    userProfileImageRepositoryMock.create.mockResolvedValue({});
+
+    // act
+    await createProfileImageUserService.execute({
+      user_id: id,
+      image_profile_name: new_image_profile.name,
+    });
+
+    // assert
+    expect(usersRepositoryMock.findByIdWithProfileImage).toHaveBeenCalledWith(
+      id
+    );
+    expect(userProfileImageRepositoryMock.deleteById).toHaveBeenCalledWith(
+      image_profile_id
+    );
+    expect(storageProviderMock.delete).toHaveBeenCalledWith(
+      image_profile.name,
+      StorageTypeFolderEnum.PROFILES
+    );
+    expect(imagesRepositoryMock.deleteById).toHaveBeenCalledWith(
+      image_profile.id
+    );
+    expect(storageProviderMock.save).toHaveBeenCalledWith(
+      new_image_profile.name,
+      StorageTypeFolderEnum.PROFILES
+    );
+    expect(imagesRepositoryMock.create).toHaveBeenCalledWith({
+      name: new_image_profile.name,
+    });
+    expect(userProfileImageRepositoryMock.create).toHaveBeenCalledWith({
+      image_id: new_image_profile.id,
+      user_id: id,
     });
   });
 });

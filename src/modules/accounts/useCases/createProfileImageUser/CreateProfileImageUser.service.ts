@@ -41,14 +41,14 @@ class CreateProfileImageUserService {
     if (image_profile) {
       await this.userProfileImageRepository.deleteById(image_profile.id);
 
-      await this.storageProvider.delete(image_profile.image.name, "documents");
+      await this.storageProvider.delete(image_profile.image.name, "profiles");
 
       await this.imagesRepository.deleteById(image_profile.image_id);
     }
 
     const name = await this.storageProvider.save(
       image_profile_name,
-      "documents"
+      "profiles"
     );
 
     const image = await this.imagesRepository.create({ name });
