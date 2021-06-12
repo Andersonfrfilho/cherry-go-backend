@@ -1,18 +1,12 @@
 import "reflect-metadata";
 import faker from "faker";
 
-import { UserDocumentValue } from "@modules/accounts/enums/UserDocumentValue.enum";
-import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImageRepository";
 import { userProfileImageRepositoryMock } from "@modules/accounts/repositories/mocks/UserProfileImageRepository.mock";
-import { usersDocumentsRepositoryMock } from "@modules/accounts/repositories/mocks/UsersDocumentsRepository.mock";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { CreateDocumentsUsersService } from "@modules/accounts/useCases/createDocumentsUsers/CreateDocumentsUsers.service";
 import { CreateProfileImageUserService } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.service";
 import { imagesRepositoryMock } from "@modules/images/repositories/mocks/ImagesRepository.mock";
 import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
 import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/StorageProvider.mock";
-import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST } from "@shared/errors/constants";
 import {
   AddressesFactory,
   ImagesFactory,
