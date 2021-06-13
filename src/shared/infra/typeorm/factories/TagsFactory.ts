@@ -9,13 +9,15 @@ class TagsFactory {
     quantity = 1,
     id,
     active,
+    name,
+    description,
   }: CreateTagsFactoryDTO): Partial<Tag>[] {
     return Array.from(
       { length: quantity },
       (): Partial<Tag> => ({
         id: id ? faker.datatype.uuid() : undefined,
-        name: faker.name.jobTitle(),
-        description: faker.random.words(),
+        name: name || faker.name.jobTitle(),
+        description: description || faker.random.words(),
         active: active || true,
       })
     );

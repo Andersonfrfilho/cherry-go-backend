@@ -4,8 +4,8 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
+import { FORBIDDEN } from "@shared/errors/constants";
 
 interface IRequest {
   token: string;
@@ -30,16 +30,13 @@ class ResetPasswordService {
     );
 
     if (!user_token) {
-      throw new AppError({ message: "Token invalid!" });
+      throw new AppError(FORBIDDEN.TOKEN_INVALID);
     }
 
     if (
       this.dateProvider.compareIfBefore(user_token.expires_date, new Date())
     ) {
-      throw new AppError({
-        message: "Token expired!",
-        status_code: HttpErrorCodes.UNAUTHORIZED,
-      });
+      throw new AppError(FORBIDDEN.TOKEN_INVALID);
     }
 
     const password_hash = await this.hashProvider.generateHash(password);

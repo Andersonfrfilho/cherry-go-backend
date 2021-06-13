@@ -7,4 +7,8 @@ export const FORBIDDEN = {
     message: "Token invalid!",
     status_code,
   },
+  REFRESH_TOKEN_DOES_NOT_EXIST: {
+    message: "Refresh Token does not exists!",
+    status_code,
+  },
 };

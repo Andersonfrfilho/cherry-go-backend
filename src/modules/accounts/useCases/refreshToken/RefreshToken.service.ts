@@ -5,6 +5,7 @@ import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTok
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
 import { AppError } from "@shared/errors/AppError";
+import { FORBIDDEN } from "@shared/errors/constants";
 
 interface ITokenResponse {
   token: string;
@@ -32,7 +33,7 @@ class RefreshTokenService {
     );
 
     if (!userToken) {
-      throw new AppError({ message: "Refresh Token does not exists!" });
+      throw new AppError(FORBIDDEN.REFRESH_TOKEN_DOES_NOT_EXIST);
     }
 
     await this.usersTokensRepository.deleteById(userToken.id);

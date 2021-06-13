@@ -12,6 +12,7 @@ import { MailContent } from "@shared/container/providers/MailProvider/enums/Mail
 import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 import { AppError } from "@shared/errors/AppError";
+import { NOT_FOUND } from "@shared/errors/constants";
 import {
   AddressesFactory,
   PhonesFactory,
@@ -120,7 +121,7 @@ describe("SendForgotPasswordMailService", () => {
     // assert
     expect.assertions(2);
     await expect(sendForgotPasswordMailService.execute(email)).rejects.toEqual(
-      new AppError({ message: "User does not exists!" })
+      new AppError(NOT_FOUND.USER_DOES_NOT_EXIST)
     );
     expect(usersRepositoryMock.findByEmail).toHaveBeenCalledWith(email);
   });

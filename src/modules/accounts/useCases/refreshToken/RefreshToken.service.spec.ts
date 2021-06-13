@@ -6,6 +6,7 @@ import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
 import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/jwtProvider.mock";
 import { AppError } from "@shared/errors/AppError";
+import { FORBIDDEN } from "@shared/errors/constants";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 import { RefreshTokenService } from "./RefreshToken.service";
@@ -118,7 +119,7 @@ describe("RefreshTokenService", () => {
     // act
     expect.assertions(3);
     await expect(refreshTokenService.execute(token)).rejects.toEqual(
-      new AppError({ message: "Refresh Token does not exists!" })
+      new AppError(FORBIDDEN.REFRESH_TOKEN_DOES_NOT_EXIST)
     );
     // assert
     expect(jwtProviderMock.verifyJwt).toHaveBeenCalledWith({

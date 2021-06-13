@@ -1,18 +1,11 @@
 import "reflect-metadata";
-import faker from "faker";
 
-import { UserDocumentValue } from "@modules/accounts/enums/UserDocumentValue.enum";
-import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImageRepository";
-import { userProfileImageRepositoryMock } from "@modules/accounts/repositories/mocks/UserProfileImageRepository.mock";
-import { usersDocumentsRepositoryMock } from "@modules/accounts/repositories/mocks/UsersDocumentsRepository.mock";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { CreateDocumentsUsersService } from "@modules/accounts/useCases/createDocumentsUsers/CreateDocumentsUsers.service";
-import { CreateProfileImageUserService } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.service";
-import { imagesRepositoryMock } from "@modules/images/repositories/mocks/ImagesRepository.mock";
-import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
-import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/StorageProvider.mock";
+import { CreateTagsUsersClientService } from "@modules/accounts/useCases/createTagsUsersClient/CreateTagsUsersClient.service";
+import { tagsRepositoryMock } from "@modules/tags/repositories/mocks/TagsRepository.mock";
+import { CreateTagsService } from "@modules/tags/useCases/createTags/CreateTags.service";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST } from "@shared/errors/constants";
+import { BAD_REQUEST, CONFLICT, NOT_FOUND } from "@shared/errors/constants";
 import {
   AddressesFactory,
   ImagesFactory,
@@ -22,8 +15,6 @@ import {
   UsersTypesFactory,
   UserTermFactory,
 } from "@shared/infra/typeorm/factories";
-
-import { CreateTagsUsersClientService } from "./CreateTagsUsersClient.service";
 
 let createTagsUsersClientService: CreateTagsUsersClientService;
 const mocked_date = new Date("2020-09-01T09:33:37");
@@ -45,7 +36,7 @@ describe("CreateTagsUsersClientService", () => {
     );
   });
 
-  it("Should be able to create a document image user front", async () => {
+  it("Should be able to create a tag user front", async () => {
     // arrange
     const [
       {
@@ -68,7 +59,7 @@ describe("CreateTagsUsersClientService", () => {
       id: "true",
     });
     const [term] = userTermFactory.generate({ quantity: 1, accept: true });
-    const tags = tagsFactory.generate({
+    const [tag] = tagsFactory.generate({
       quantity: 3,
       id: "true",
       active: true,
@@ -93,43 +84,51 @@ describe("CreateTagsUsersClientService", () => {
     usersRepositoryMock.createTagsUsers.mockResolvedValue({});
 
     // act
-    await createTagsUsersClientService.execute({
-      user_id: id,
-      tags,
-    });
+    await createTagsUsersClientService.execute({ tags: [tag], user_id: id });
 
     // assert
     expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
     expect(usersRepositoryMock.createTagsUsers).toHaveBeenCalledWith({
-      tags,
+      tags: [tag],
       user_id: id,
     });
   });
   it("Should be able to substituted a document image user front", async () => {
     // arrange
-    const [{ id }] = usersFactory.generate({
+    const [
+      {
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        birth_date,
+        password_hash,
+        id,
+        active,
+      },
+    ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
+    const [type] = usersTypesFactory.generate("uuid");
+    const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
+    const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
+    const [image_profile] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",
-      active: true,
     });
-
-    const tags = tagsFactory.generate({
+    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const [tag] = tagsFactory.generate({
       quantity: 3,
       id: "true",
       active: true,
     });
 
     usersRepositoryMock.findById.mockResolvedValue(undefined);
-
     // act
     // assert
     expect.assertions(2);
     await expect(
-      createTagsUsersClientService.execute({
-        user_id: id,
-        tags,
-      })
-    ).rejects.toEqual(new AppError(BAD_REQUEST.USER_NOT_EXIST));
+      createTagsUsersClientService.execute({ tags: [tag], user_id: id })
+    ).rejects.toEqual(new AppError(NOT_FOUND.USER_DOES_NOT_EXIST));
     expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
   });
 });

@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
@@ -8,10 +7,10 @@ import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTok
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 import { AppError } from "@shared/errors/AppError";
+import { NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
 class SendForgotPasswordMailService {
@@ -29,7 +28,7 @@ class SendForgotPasswordMailService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError({ message: "User does not exists!" });
+      throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
     const refresh_token = uuidV4();

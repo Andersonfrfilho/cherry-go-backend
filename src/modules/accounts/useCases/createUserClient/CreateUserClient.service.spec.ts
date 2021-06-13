@@ -12,9 +12,11 @@ import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISen
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
 import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
 import { AppError } from "@shared/errors/AppError";
+import { CONFLICT } from "@shared/errors/constants";
 import {
   UsersFactory,
   UsersTypesFactory,
+  UserTermFactory,
 } from "@shared/infra/typeorm/factories";
 
 let createUserService: CreateUserClientService;
@@ -25,6 +27,7 @@ jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 describe("CreateUserClientService", () => {
   const usersFactory = new UsersFactory();
   const usersTypesFactory = new UsersTypesFactory();
+  const userTermFactory = new UserTermFactory();
 
   beforeEach(() => {
     createUserService = new CreateUserClientService(
@@ -52,6 +55,7 @@ describe("CreateUserClientService", () => {
       },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
     const [type] = usersTypesFactory.generate("with_id");
+    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
     const uuid_fake = faker.datatype.uuid();
     const variables = {
       name,
@@ -80,6 +84,8 @@ describe("CreateUserClientService", () => {
       types: [type],
       phones: [],
       addresses: [],
+      image_profile: [],
+      term: [term],
     });
     dateProviderMock.addMinutes.mockReturnValue(mocked_date);
     jest.spyOn(uuid, "v4").mockReturnValue(uuid_fake);
@@ -147,6 +153,13 @@ describe("CreateUserClientService", () => {
         ]),
         addresses: expect.arrayContaining([]),
         phones: expect.arrayContaining([]),
+        image_profile: expect.arrayContaining([]),
+        term: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String) && term.id,
+            accept: expect.any(String) && term.accept,
+          }),
+        ]),
       })
     );
   });
@@ -157,6 +170,7 @@ describe("CreateUserClientService", () => {
     const [
       { name, last_name, cpf, rg, email, birth_date, password_hash, id },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: false });
+    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
 
     usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue({
       id,
@@ -171,6 +185,8 @@ describe("CreateUserClientService", () => {
       types: [type],
       phones: [],
       addresses: [],
+      image_profile: [],
+      term: [term],
     });
 
     // act
@@ -186,7 +202,7 @@ describe("CreateUserClientService", () => {
         birth_date,
         password: password_hash,
       })
-    ).rejects.toEqual(new AppError({ message: "User client already exist" }));
+    ).rejects.toEqual(new AppError(CONFLICT.USER_CLIENT_ALREADY_EXIST));
 
     expect(usersRepositoryMock.findUserByEmailCpfRg).toHaveBeenCalledWith({
       cpf,

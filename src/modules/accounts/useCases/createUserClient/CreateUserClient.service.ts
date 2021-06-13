@@ -13,6 +13,7 @@ import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISen
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
 import { AppError } from "@shared/errors/AppError";
+import { CONFLICT } from "@shared/errors/constants";
 
 @injectable()
 class CreateUserClientService {
@@ -44,7 +45,7 @@ class CreateUserClientService {
     });
 
     if (userAlreadyExists) {
-      throw new AppError({ message: "User client already exist" });
+      throw new AppError(CONFLICT.USER_CLIENT_ALREADY_EXIST);
     }
 
     const password_hash = await this.hashProvider.generateHash(password);

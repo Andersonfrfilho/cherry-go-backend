@@ -6,8 +6,8 @@ import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/
 import { ResetPasswordService } from "@modules/accounts/useCases/resetPasswordUser/ResetPasswordUser.service";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
 import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
-import { HttpErrorCodes } from "@shared/enums/statusCode";
 import { AppError } from "@shared/errors/AppError";
+import { FORBIDDEN } from "@shared/errors/constants";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let resetPasswordService: ResetPasswordService;
@@ -89,7 +89,7 @@ describe("ResetPasswordUser", () => {
         token: token_faker,
         password: password_hash,
       })
-    ).rejects.toEqual(new AppError({ message: "Token invalid!" }));
+    ).rejects.toEqual(new AppError(FORBIDDEN.TOKEN_INVALID));
     // assert
     expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
       token_faker
@@ -120,12 +120,7 @@ describe("ResetPasswordUser", () => {
         token: token_faker,
         password: password_hash,
       })
-    ).rejects.toEqual(
-      new AppError({
-        message: "Token expired!",
-        status_code: HttpErrorCodes.UNAUTHORIZED,
-      })
-    );
+    ).rejects.toEqual(new AppError(FORBIDDEN.TOKEN_INVALID));
     // assert
     expect(usersTokensRepositoryMock.findByRefreshToken).toHaveBeenCalledWith(
       token_faker
