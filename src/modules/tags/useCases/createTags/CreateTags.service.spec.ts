@@ -1,11 +1,9 @@
 import "reflect-metadata";
 
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { CreateTagsUsersClientService } from "@modules/accounts/useCases/createTagsUsersClient/CreateTagsUsersClient.service";
 import { tagsRepositoryMock } from "@modules/tags/repositories/mocks/TagsRepository.mock";
 import { CreateTagsService } from "@modules/tags/useCases/createTags/CreateTags.service";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST, CONFLICT } from "@shared/errors/constants";
+import { CONFLICT } from "@shared/errors/constants";
 import {
   AddressesFactory,
   ImagesFactory,
@@ -22,12 +20,7 @@ jest.mock("uuid");
 jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 
 describe("CreateTagsService", () => {
-  const usersFactory = new UsersFactory();
-  const usersTypesFactory = new UsersTypesFactory();
-  const phonesFactory = new PhonesFactory();
-  const addressesFactory = new AddressesFactory();
   const imageProfileFactory = new ImagesFactory();
-  const userTermFactory = new UserTermFactory();
   const tagsFactory = new TagsFactory();
 
   beforeEach(() => {

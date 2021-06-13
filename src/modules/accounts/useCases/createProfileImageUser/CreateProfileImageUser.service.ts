@@ -1,22 +1,10 @@
-import { classToClass } from "class-transformer";
 import { inject, injectable } from "tsyringe";
-import { v4 as uuidV4 } from "uuid";
 
-import { config } from "@config/environment";
 import { CreateImageProfileUserServiceDTO } from "@modules/accounts/dtos";
-import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImageRepository";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
-import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
-import { User } from "@sentry/node";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
-import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
 import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
-import { AppError } from "@shared/errors/AppError";
 
 @injectable()
 class CreateProfileImageUserService {

@@ -8,8 +8,6 @@ import { CreateDocumentsUsersService } from "@modules/accounts/useCases/createDo
 import { imagesRepositoryMock } from "@modules/images/repositories/mocks/ImagesRepository.mock";
 import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
 import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/StorageProvider.mock";
-import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST } from "@shared/errors/constants";
 import {
   AddressesFactory,
   ImagesFactory,

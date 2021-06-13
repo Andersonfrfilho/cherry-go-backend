@@ -7,7 +7,6 @@ import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepositor
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
 import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
-import { AppError } from "@shared/errors/AppError";
 
 @injectable()
 class CreateDocumentsUsersService {

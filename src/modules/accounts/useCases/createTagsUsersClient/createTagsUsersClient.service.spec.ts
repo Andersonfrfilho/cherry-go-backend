@@ -2,10 +2,8 @@ import "reflect-metadata";
 
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
 import { CreateTagsUsersClientService } from "@modules/accounts/useCases/createTagsUsersClient/CreateTagsUsersClient.service";
-import { tagsRepositoryMock } from "@modules/tags/repositories/mocks/TagsRepository.mock";
-import { CreateTagsService } from "@modules/tags/useCases/createTags/CreateTags.service";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST, CONFLICT, NOT_FOUND } from "@shared/errors/constants";
+import { NOT_FOUND } from "@shared/errors/constants";
 import {
   AddressesFactory,
   ImagesFactory,
@@ -95,27 +93,12 @@ describe("CreateTagsUsersClientService", () => {
   });
   it("Should be able to substituted a document image user front", async () => {
     // arrange
-    const [
-      {
-        name,
-        last_name,
-        cpf,
-        rg,
-        email,
-        birth_date,
-        password_hash,
-        id,
-        active,
-      },
-    ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
-    const [type] = usersTypesFactory.generate("uuid");
-    const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
-    const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
-    const [image_profile] = imageProfileFactory.generate({
+    const [{ id }] = usersFactory.generate({
       quantity: 1,
       id: "true",
+      active: true,
     });
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+
     const [tag] = tagsFactory.generate({
       quantity: 3,
       id: "true",
