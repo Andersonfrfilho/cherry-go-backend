@@ -51,13 +51,11 @@ class UsersRepository implements IUsersRepository {
       where: { name: UserTypesEnum.PROVIDER },
     });
 
-    const users_types_users = this.repository_users_types_users.create({
+    await this.repository_users_types_users.save({
       user_id,
       user_type_id: provider_type.id,
       active,
     });
-
-    await this.repository_users_types_users.save(users_types_users);
   }
 
   async updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void> {

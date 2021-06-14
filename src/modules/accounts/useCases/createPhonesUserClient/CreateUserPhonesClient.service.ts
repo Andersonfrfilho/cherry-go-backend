@@ -67,7 +67,10 @@ class CreateUserPhonesClientService {
       secretOrPrivateKey: auth.secret.refresh,
       options: {
         expiresIn: auth.expires_in.refresh,
-        subject: { user: { id: user.id }, code_hash },
+        subject: {
+          user: { id: user.id, active: user.active, types: user.types },
+          code_hash,
+        },
       },
     });
 

@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 
-import { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/TermsAcceptUserService.dto";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
@@ -18,7 +17,7 @@ class CreateUsersTypeProviders {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    await this.usersRepository.addProviderTypeForUser(user_id);
+    await this.usersRepository.providerTypeForUser({ active: true, user_id });
   }
 }
 export { CreateUsersTypeProviders };

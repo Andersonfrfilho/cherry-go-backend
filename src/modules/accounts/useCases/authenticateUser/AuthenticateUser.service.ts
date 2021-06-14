@@ -53,7 +53,9 @@ class AuthenticateUserService {
       payload: {},
       secretOrPrivateKey: secret.token,
       options: {
-        subject: { user: { id: user.id, active: user.active } },
+        subject: {
+          user: { id: user.id, active: user.active, types: user.types },
+        },
         expiresIn: expires_in.token,
       },
     });
@@ -61,7 +63,9 @@ class AuthenticateUserService {
       payload: { email },
       secretOrPrivateKey: secret.refresh,
       options: {
-        subject: { user: { id: user.id, active: user.active } },
+        subject: {
+          user: { id: user.id, active: user.active, types: user.types },
+        },
         expiresIn: expires_in.refresh,
       },
     });
