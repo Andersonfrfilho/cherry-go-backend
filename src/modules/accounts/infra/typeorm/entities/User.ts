@@ -4,12 +4,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Generated,
   Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -27,7 +29,8 @@ import { UserProfileImage } from "./UserProfileImage";
 
 @Entity("users")
 class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryColumn()
+  @Generated("uuid")
   id?: string;
 
   @Column()

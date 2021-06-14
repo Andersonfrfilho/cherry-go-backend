@@ -5,3 +5,4 @@ export { METHOD_NOT_ALLOWED } from "@shared/errors/constants/MethodNotAllowed.co
 export { UNPROCESSABLE_ENTITY } from "@shared/errors/constants/UnprocessableEntity.const";
 export { CONFLICT } from "@shared/errors/constants/Conflict.const";
 export { NOT_FOUND } from "@shared/errors/constants/NotFound.const";
+export { TOO_MANY_REQUESTS } from "@shared/errors/constants/TooManyRequest.const";

@@ -11,4 +11,8 @@ export const UNAUTHORIZED = {
     message: "Token expired!",
     status_code,
   },
+  TOKEN_IS_MISSING: {
+    message: "Token is missing!",
+    status_code,
+  },
 };

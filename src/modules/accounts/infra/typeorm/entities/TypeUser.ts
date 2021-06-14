@@ -9,18 +9,17 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { UserTypes } from "@modules/accounts/enums/UserTypes.enum";
+import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { lowercase } from "@utils/lowercaseTypeorm";
-
-import { User } from "./User";
 
 @Entity("types_users")
 class TypeUser {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
-  @Column({ type: "enum", enum: UserTypes, transformer: [lowercase] })
-  name: UserTypes;
+  @Column({ type: "enum", enum: UserTypesEnum, transformer: [lowercase] })
+  name: UserTypesEnum;
 
   @Column()
   description: string;

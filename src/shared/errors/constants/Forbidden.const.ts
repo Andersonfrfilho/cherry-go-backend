@@ -11,4 +11,8 @@ export const FORBIDDEN = {
     message: "Refresh Token does not exists!",
     status_code,
   },
+  USER_IS_NOT_ACTIVE: {
+    message: "User is not active!",
+    status_code,
+  },
 };

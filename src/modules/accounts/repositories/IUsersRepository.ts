@@ -10,6 +10,7 @@ import {
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
+import { ProviderTypeForUserDTO } from "../dtos/repositories/ProviderTypeForUser.dto";
 import { TermsAcceptUserRepositoryDTO } from "../dtos/TermsAcceptUserRepository.dto";
 
 interface IUsersRepository {
@@ -42,6 +43,7 @@ interface IUsersRepository {
     tags,
   }: CreateTagsUsersRepositoryDTO): Promise<void>;
   findByIdWithProfileImage(id: string): Promise<User>;
+  providerTypeForUser(data: ProviderTypeForUserDTO): Promise<void>;
 }
 
 export { IUsersRepository };

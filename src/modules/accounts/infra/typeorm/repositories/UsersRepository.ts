@@ -10,14 +10,16 @@ import {
 import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
 import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
+import { ProviderTypeForUserDTO } from "@modules/accounts/dtos/repositories/ProviderTypeForUser.dto";
 import { TermsAcceptUserRepositoryDTO } from "@modules/accounts/dtos/TermsAcceptUserRepository.dto";
-import { UserTypes } from "@modules/accounts/enums/UserTypes.enum";
+import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UserPhone } from "@modules/accounts/infra/typeorm/entities/UserPhone";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
+import { UserTypeUser } from "@modules/accounts/infra/typeorm/entities/UserTypeUser";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
@@ -25,6 +27,7 @@ class UsersRepository implements IUsersRepository {
   private repository: Repository<User>;
   private repository_address: Repository<Address>;
   private repository_users_types: Repository<TypeUser>;
+  private repository_users_types_users: Repository<UserTypeUser>;
   private repository_phones: Repository<Phone>;
   private repository_users_phones: Repository<UserPhone>;
   private repository_users_terms_accepts: Repository<UserTermsAccept>;
@@ -34,10 +37,27 @@ class UsersRepository implements IUsersRepository {
     this.repository = getRepository(User);
     this.repository_address = getRepository(Address);
     this.repository_users_types = getRepository(TypeUser);
+    this.repository_users_types_users = getRepository(UserTypeUser);
     this.repository_phones = getRepository(Phone);
     this.repository_users_phones = getRepository(UserPhone);
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
     this.repository_tag = getRepository(Tag);
+  }
+  async providerTypeForUser({
+    user_id,
+    active,
+  }: ProviderTypeForUserDTO): Promise<void> {
+    const provider_type = await this.repository_users_types.findOne({
+      where: { name: UserTypesEnum.PROVIDER },
+    });
+
+    const users_types_users = this.repository_users_types_users.create({
+      user_id,
+      user_type_id: provider_type.id,
+      active,
+    });
+
+    await this.repository_users_types_users.save(users_types_users);
   }
 
   async updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void> {
@@ -149,10 +169,9 @@ class UsersRepository implements IUsersRepository {
     active,
   }: ICreateUserClientDTO): Promise<User> {
     const type = await this.repository_users_types.findOne({
-      where: { name: UserTypes.CLIENT },
+      where: { name: UserTypesEnum.CLIENT },
     });
-
-    const user = this.repository.create({
+    const user = await this.repository.save({
       name,
       last_name,
       email,
@@ -160,11 +179,16 @@ class UsersRepository implements IUsersRepository {
       rg,
       birth_date,
       password_hash: password,
-      types: [type],
       active,
     });
 
-    await this.repository.save(user);
+    const users_types = this.repository_users_types_users.create({
+      user_id: user.id,
+      user_type_id: type.id,
+      active: true,
+    });
+
+    await this.repository_users_types_users.save(users_types);
 
     return user;
   }
