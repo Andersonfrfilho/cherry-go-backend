@@ -1,8 +1,8 @@
 import { inject, injectable } from "tsyringe";
 
 import { CreateImageProfileUserServiceDTO } from "@modules/accounts/dtos";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
 
@@ -10,7 +10,7 @@ import { IStorageProvider } from "@shared/container/providers/StorageProvider/IS
 class CreateProfileImageUserService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepositoryInterface,
     @inject("StorageProvider")
     private storageProvider: IStorageProvider,
     @inject("ImagesRepository")

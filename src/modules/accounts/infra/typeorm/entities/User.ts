@@ -25,6 +25,7 @@ import { Image } from "@modules/images/infra/typeorm/entities/Image";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 import { DocumentUserImage } from "./DocumentUserImage";
+import { ProviderAvailabilityDay } from "./ProviderAvailabilityDay";
 import { UserProfileImage } from "./UserProfileImage";
 
 @Entity("users")

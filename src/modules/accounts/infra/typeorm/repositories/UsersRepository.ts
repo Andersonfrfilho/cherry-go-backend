@@ -20,10 +20,10 @@ import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UserPhone } from "@modules/accounts/infra/typeorm/entities/UserPhone";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { UserTypeUser } from "@modules/accounts/infra/typeorm/entities/UserTypeUser";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
-class UsersRepository implements IUsersRepository {
+class UsersRepository implements UsersRepositoryInterface {
   private repository: Repository<User>;
   private repository_address: Repository<Address>;
   private repository_users_types: Repository<TypeUser>;

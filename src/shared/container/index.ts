@@ -10,10 +10,10 @@ import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/Us
 import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositories/UsersTokensRepository";
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
 import { IPhonesRepository } from "@modules/accounts/repositories/IPhonesRepository";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { ITypesUsersRepository } from "@modules/accounts/repositories/IUsersTypesRepository";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/ImagesRepository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
@@ -21,7 +21,7 @@ import { INotificationsRepository } from "@modules/notifications/repositories/IN
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/TagsRepository";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/TagsRepository.interface";
 
-container.registerSingleton<IUsersRepository>(
+container.registerSingleton<UsersRepositoryInterface>(
   "UsersRepository",
   UsersRepository
 );

@@ -5,8 +5,8 @@ import auth from "@config/auth";
 import { config } from "@config/environment";
 import { ICreateUserPhonesClientRequestDTO } from "@modules/accounts/dtos";
 import { IPhonesRepository } from "@modules/accounts/repositories/IPhonesRepository";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { CreateUserPhoneClientDTO } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhoneClient.dto";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
@@ -19,7 +19,7 @@ import { AppError } from "@shared/errors/AppError";
 class CreateUserPhonesClientService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepositoryInterface,
     @inject("PhonesRepository")
     private phonesRepository: IPhonesRepository,
     @inject("UsersTokensRepository")

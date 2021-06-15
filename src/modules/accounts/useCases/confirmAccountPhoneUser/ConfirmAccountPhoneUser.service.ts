@@ -2,8 +2,8 @@ import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
 import { ConfirmAccountPhoneUserDTO } from "@modules/accounts/dtos";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
 import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
@@ -18,7 +18,7 @@ import {
 class ConfirmAccountPhoneUserService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepositoryInterface,
     @inject("UsersTokensRepository")
     private usersTokensRepository: IUsersTokensRepository,
     @inject("DateProvider")

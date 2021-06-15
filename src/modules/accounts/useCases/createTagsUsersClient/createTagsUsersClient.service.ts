@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { CreateTagUsersServiceDTO } from "@modules/accounts/dtos";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
@@ -9,7 +9,7 @@ import { NOT_FOUND } from "@shared/errors/constants";
 class CreateTagsUsersClientService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: UsersRepositoryInterface
   ) {}
   async execute({ tags, user_id }: CreateTagUsersServiceDTO): Promise<void> {
     const user = await this.usersRepository.findById(user_id);

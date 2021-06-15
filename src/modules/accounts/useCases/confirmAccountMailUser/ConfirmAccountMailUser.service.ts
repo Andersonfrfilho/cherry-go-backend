@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
@@ -10,7 +10,7 @@ import { FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
 class ConfirmAccountMailUserService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepositoryInterface,
     @inject("UsersTokensRepository")
     private usersTokensRepository: IUsersTokensRepository,
     @inject("DateProvider")

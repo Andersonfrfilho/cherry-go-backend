@@ -13,7 +13,7 @@ import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { ProviderTypeForUserDTO } from "../dtos/repositories/ProviderTypeForUser.dto";
 import { TermsAcceptUserRepositoryDTO } from "../dtos/TermsAcceptUserRepository.dto";
 
-interface IUsersRepository {
+interface UsersRepositoryInterface {
   create(data: ICreateUserClientDTO): Promise<User>;
   createUserAddress(data: ICreateUserAddressClientDTO): Promise<User>;
   createUserPhones(data: ICreateUserPhonesClientRequestDTO): Promise<User>;
@@ -46,4 +46,4 @@ interface IUsersRepository {
   providerTypeForUser(data: ProviderTypeForUserDTO): Promise<void>;
 }
 
-export { IUsersRepository };
+export { UsersRepositoryInterface };

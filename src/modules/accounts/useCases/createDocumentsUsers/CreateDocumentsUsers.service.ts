@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { CreateDocumentsUsersServiceDTO } from "@modules/accounts/dtos";
 import { UserDocumentValue } from "@modules/accounts/enums/UserDocumentValue.enum";
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
 import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
@@ -12,7 +12,7 @@ import { IStorageProvider } from "@shared/container/providers/StorageProvider/IS
 class CreateDocumentsUsersService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepositoryInterface,
     @inject("DocumentsUsersImageRepository")
     private usersDocumentsRepository: DocumentsUserImageRepositoryInterface,
     @inject("StorageProvider")

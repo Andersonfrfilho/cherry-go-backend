@@ -4,8 +4,8 @@ import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
 import { ICreateUserClientDTO } from "@modules/accounts/dtos";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { User } from "@sentry/node";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
@@ -19,7 +19,7 @@ import { CONFLICT } from "@shared/errors/constants";
 class CreateUserClientService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepositoryInterface,
     @inject("HashProvider")
     private hashProvider: IHashProvider,
     @inject("UsersTokensRepository")

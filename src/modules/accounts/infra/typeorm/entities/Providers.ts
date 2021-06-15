@@ -16,6 +16,8 @@ import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 
+import { ProviderAvailabilityDay } from "./ProviderAvailabilityDay";
+import { ProviderAvailabilityTime } from "./ProviderAvailabilityTime";
 import { Service } from "./Services";
 
 @Entity("users")
@@ -90,6 +92,16 @@ class Provider {
     inverseJoinColumns: [{ name: "service_id", referencedColumnName: "id" }],
   })
   services: Service[];
+
+  @OneToMany(() => ProviderAvailabilityDay, (day) => day.provider, {
+    eager: true,
+  })
+  days?: ProviderAvailabilityDay[];
+
+  @OneToMany(() => ProviderAvailabilityTime, (time) => time.provider, {
+    eager: true,
+  })
+  hours?: ProviderAvailabilityTime[];
 
   @CreateDateColumn()
   created_at?: Date;

@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
 import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
 import { AppError } from "@shared/errors/AppError";
@@ -20,7 +20,7 @@ class ResetPasswordService {
     @inject("DateProvider")
     private dateProvider: IDateProvider,
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository,
+    private usersRepository: UsersRepositoryInterface,
     @inject("HashProvider")
     private hashProvider: IHashProvider
   ) {}

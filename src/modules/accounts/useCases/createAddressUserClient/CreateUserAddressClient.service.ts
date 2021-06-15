@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { ICreateUserAddressClientRequestDTO } from "@modules/accounts/dtos";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { User } from "@sentry/node";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST } from "@shared/errors/constants";
@@ -10,7 +10,7 @@ import { BAD_REQUEST } from "@shared/errors/constants";
 class CreateUserAddressClientService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: UsersRepositoryInterface
   ) {}
   async execute({
     user_id,

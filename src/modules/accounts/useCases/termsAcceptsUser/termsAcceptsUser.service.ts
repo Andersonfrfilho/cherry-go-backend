@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/TermsAcceptUserService.dto";
-import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
@@ -9,7 +9,7 @@ import { NOT_FOUND } from "@shared/errors/constants";
 class TermsAcceptUserService {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: UsersRepositoryInterface
   ) {}
   async execute({ accept, user_id }: TermsAcceptUserServiceDTO): Promise<void> {
     const user = await this.usersRepository.findById(user_id);
