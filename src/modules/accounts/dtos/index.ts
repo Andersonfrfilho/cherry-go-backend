@@ -16,6 +16,8 @@ import { TermsAcceptUserRepositoryDTO } from "@modules/accounts/dtos/TermsAccept
 import { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/TermsAcceptUserService.dto";
 import { UpdateActivePhoneUserDTO } from "@modules/accounts/dtos/UpdateActivePhoneUser.dto";
 
+export { CreateProviderDaysAvailabilityServiceDTO } from "modules/accounts/dtos/services/CreateProviderDaysAvailabilityService.dto copy";
+export { CreateProviderTimesAvailabilityServiceDTO } from "modules/accounts/dtos/services/CreateProviderTimesAvailabilityService.dto";
 export { CreateUserProfileImageRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProfileImageRepository.dto";
 export { CreateImageProfileByUserProviderDTO } from "@modules/accounts/dtos/repositories/CreateImageProfileByUserProvider.dto";
 export { CreateDocumentsUserImageRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateDocumentsUserImageRepository.dto";

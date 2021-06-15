@@ -12,7 +12,7 @@ import {
 } from "typeorm";
 
 import { DAYS_WEEK } from "@modules/accounts/enums/DaysProviders.enum";
-import { Provider } from "@modules/accounts/infra/typeorm/entities/Providers";
+import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 
 @Entity("providers_availabilities_days")
 class ProviderAvailabilityDay {

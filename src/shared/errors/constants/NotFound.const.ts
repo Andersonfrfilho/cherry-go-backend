@@ -7,4 +7,8 @@ export const NOT_FOUND = {
     message: "User does not exists!",
     status_code,
   },
+  PROVIDER_DOES_NOT_EXIST: {
+    message: "Provider does not exists!",
+    status_code,
+  },
 };

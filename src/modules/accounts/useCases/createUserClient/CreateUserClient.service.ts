@@ -4,8 +4,8 @@ import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
 import { ICreateUserClientDTO } from "@modules/accounts/dtos";
-import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
 import { User } from "@sentry/node";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
@@ -23,7 +23,7 @@ class CreateUserClientService {
     @inject("HashProvider")
     private hashProvider: IHashProvider,
     @inject("UsersTokensRepository")
-    private usersTokensRepository: IUsersTokensRepository,
+    private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("DateProvider")
     private dateProvider: IDateProvider,
     @inject("QueueProvider")

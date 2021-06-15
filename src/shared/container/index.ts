@@ -4,16 +4,18 @@ import "@shared/container/providers";
 
 import { DocumentsUsersImageRepository } from "@modules/accounts/infra/typeorm/repositories/DocumentUserImageRepository";
 import { PhonesRepository } from "@modules/accounts/infra/typeorm/repositories/PhonesRepository";
+import { ProvidersRepository } from "@modules/accounts/infra/typeorm/repositories/ProvidersRepository";
 import { TypesUsersRepository } from "@modules/accounts/infra/typeorm/repositories/TypesUsersRepository";
 import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImageRepository";
 import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
 import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositories/UsersTokensRepository";
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
-import { IPhonesRepository } from "@modules/accounts/repositories/IPhonesRepository";
-import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
-import { ITypesUsersRepository } from "@modules/accounts/repositories/IUsersTypesRepository";
+import { PhonesRepositoryInterface } from "@modules/accounts/repositories/PhonesRepository.interface";
+import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
+import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/UsersTypesRepository.interface";
 import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/ImagesRepository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
@@ -21,22 +23,27 @@ import { INotificationsRepository } from "@modules/notifications/repositories/IN
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/TagsRepository";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/TagsRepository.interface";
 
+container.registerSingleton<ProvidersRepositoryInterface>(
+  "ProvidersRepository",
+  ProvidersRepository
+);
+
 container.registerSingleton<UsersRepositoryInterface>(
   "UsersRepository",
   UsersRepository
 );
 
-container.registerSingleton<ITypesUsersRepository>(
+container.registerSingleton<TypesUsersRepositoryInterface>(
   "UsersTypeRepository",
   TypesUsersRepository
 );
 
-container.registerSingleton<IPhonesRepository>(
+container.registerSingleton<PhonesRepositoryInterface>(
   "PhonesRepository",
   PhonesRepository
 );
 
-container.registerSingleton<IUsersTokensRepository>(
+container.registerSingleton<UsersTokensRepositoryInterface>(
   "UsersTokensRepository",
   UsersTokensRepository
 );
