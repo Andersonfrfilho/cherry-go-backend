@@ -4,9 +4,9 @@ import { inject, injectable } from "tsyringe";
 import auth from "@config/auth";
 import { config } from "@config/environment";
 import { ICreateUserPhonesClientRequestDTO } from "@modules/accounts/dtos";
-import { IPhonesRepository } from "@modules/accounts/repositories/IPhonesRepository";
-import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
+import { PhonesRepositoryInterface } from "@modules/accounts/repositories/PhonesRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
 import { CreateUserPhoneClientDTO } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhoneClient.dto";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
@@ -21,9 +21,9 @@ class CreateUserPhonesClientService {
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
     @inject("PhonesRepository")
-    private phonesRepository: IPhonesRepository,
+    private phonesRepository: PhonesRepositoryInterface,
     @inject("UsersTokensRepository")
-    private usersTokensRepository: IUsersTokensRepository,
+    private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("QueueProvider")
     private queueProvider: QueueProviderInterface,
     @inject("HashProvider")

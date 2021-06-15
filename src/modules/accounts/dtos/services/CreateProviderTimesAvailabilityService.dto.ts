@@ -1,6 +1,8 @@
-import { ProviderAvailabilityTime } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityTime";
-
+interface Hour {
+  start_date: string;
+  end_date: string;
+}
 export interface CreateProviderTimesAvailabilityServiceDTO {
   provider_id: string;
-  times: ProviderAvailabilityTime[];
+  times: Hour[];
 }

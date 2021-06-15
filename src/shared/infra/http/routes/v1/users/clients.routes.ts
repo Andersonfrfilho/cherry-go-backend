@@ -45,7 +45,7 @@ clientsRoutes.patch(
   createTagsUsersController.handle
 );
 clientsRoutes.patch(
-  "/ative",
+  "/active",
   schemaActiveUser,
   activeUserClientController.handle
 );

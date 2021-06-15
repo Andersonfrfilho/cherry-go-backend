@@ -20,11 +20,11 @@ export class CreateProvidersAvailabilityTime1623717297782
           },
           {
             name: "start_time",
-            type: "timestamp",
+            type: "varchar",
           },
           {
             name: "end_time",
-            type: "timestamp",
+            type: "varchar",
           },
           {
             name: "created_at",

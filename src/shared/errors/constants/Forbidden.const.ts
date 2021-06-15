@@ -15,4 +15,8 @@ export const FORBIDDEN = {
     message: "User is not active!",
     status_code,
   },
+  PROVIDER_IS_NOT_ACTIVE: {
+    message: "Provider is not active!",
+    status_code,
+  },
 };

@@ -6,12 +6,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
-import { User } from "./User";
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
 @Entity("users_terms_accepts")
 class UserTermsAccept {

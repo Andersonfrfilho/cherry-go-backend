@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { Provider } from "./Providers";
+import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 
 @Entity("providers_availabilities_times")
 class ProviderAvailabilityTime {
@@ -20,10 +20,10 @@ class ProviderAvailabilityTime {
   id?: string;
 
   @Column()
-  start_time: Date;
+  start_time: string;
 
   @Column()
-  end_time: Date;
+  end_time: string;
 
   @Column()
   provider_id: string;

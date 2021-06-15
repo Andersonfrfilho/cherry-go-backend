@@ -2,8 +2,8 @@ import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
-import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
 import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";

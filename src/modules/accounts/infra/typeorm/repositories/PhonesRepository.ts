@@ -2,7 +2,7 @@ import { getRepository, Repository } from "typeorm";
 
 import { IFindPhoneDTO } from "@modules/accounts/dtos";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
-import { IPhonesRepository } from "@modules/accounts/repositories/IPhonesRepository";
+import { PhonesRepositoryInterface } from "@modules/accounts/repositories/PhonesRepository.interface";
 
 class PhonesRepository implements IPhonesRepository {
   private repository: Repository<Phone>;

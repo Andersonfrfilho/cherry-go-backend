@@ -1,7 +1,7 @@
 import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
-import { Provider } from "@modules/accounts/infra/typeorm/entities/Providers";
+import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { ServicesFactory } from "@shared/infra/typeorm/factories";
 

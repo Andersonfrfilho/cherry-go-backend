@@ -7,4 +7,8 @@ export const BAD_REQUEST = {
     message: "User does not exist!",
     status_code,
   },
+  PROVIDER_NOT_EXIST: {
+    message: "Provider does not exist!",
+    status_code,
+  },
 };

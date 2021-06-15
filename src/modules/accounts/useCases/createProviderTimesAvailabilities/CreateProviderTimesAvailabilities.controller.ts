@@ -1,19 +1,20 @@
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { CreateProviderDaysAvailabilitiesService } from "@modules/accounts/useCases/createProviderDaysAvailabilities/CreateProviderDaysAvailabilities.service";
+import { CreateProviderTimesAvailabilitiesService } from "@modules/accounts/useCases/createProviderTimesAvailabilities/CreateProviderTimesAvailabilities.service";
 
 class CreateProviderTimesAvailabilitiesController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const { days } = request.body;
-    const createProviderDaysAvailabilityService = container.resolve(
-      CreateProviderDaysAvailabilitiesService
+    const { times } = request.body;
+
+    const createProviderTimesAvailabilityService = container.resolve(
+      CreateProviderTimesAvailabilitiesService
     );
 
-    await createProviderDaysAvailabilityService.execute({
+    await createProviderTimesAvailabilityService.execute({
       provider_id: id,
-      days,
+      times,
     });
 
     return response.status(204).send();

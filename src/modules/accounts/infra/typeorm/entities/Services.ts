@@ -9,9 +9,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
-
-import { Provider } from "./Providers";
 
 @Entity("services")
 class Service {

@@ -9,9 +9,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
-
-import { User } from "./User";
 
 @Entity("documents_users_images")
 class DocumentUserImage {

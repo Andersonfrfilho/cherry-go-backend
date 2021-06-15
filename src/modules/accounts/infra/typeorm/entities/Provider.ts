@@ -19,6 +19,7 @@ import { PaymentType } from "@modules/appointments/infra/typeorm/entities/Paymen
 import { ProviderAvailabilityDay } from "./ProviderAvailabilityDay";
 import { ProviderAvailabilityTime } from "./ProviderAvailabilityTime";
 import { Service } from "./Services";
+import { UserTermsAccept } from "./UserTermsAccept";
 
 @Entity("users")
 class Provider {
@@ -55,7 +56,7 @@ class Provider {
   @OneToMany(() => Address, (address) => address)
   addresses?: Address[];
 
-  @ManyToMany(() => TypeUser, { cascade: true })
+  @ManyToMany(() => TypeUser, { cascade: true, eager: true })
   @JoinTable({
     name: "users_types_users",
     joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
@@ -102,6 +103,9 @@ class Provider {
     eager: true,
   })
   hours?: ProviderAvailabilityTime[];
+
+  @OneToMany(() => UserTermsAccept, (term) => term.user, { eager: true })
+  term: UserTermsAccept[];
 
   @CreateDateColumn()
   created_at?: Date;
