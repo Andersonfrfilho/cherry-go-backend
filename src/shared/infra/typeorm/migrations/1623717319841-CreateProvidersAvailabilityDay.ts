@@ -46,7 +46,7 @@ export class CreateProvidersAvailabilityWeek1623717319841
         ],
         foreignKeys: [
           {
-            name: "FKProviderAvailabilityTime",
+            name: "FKProviderAvailabilityDay",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
             columnNames: ["provider_id"],

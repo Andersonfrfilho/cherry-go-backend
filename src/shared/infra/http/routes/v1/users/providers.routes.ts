@@ -4,6 +4,8 @@ import { AuthenticateUserProviderController } from "@modules/accounts/useCases/a
 import { schemaAuthenticateProvider } from "@modules/accounts/useCases/authenticateUserProvider/authenticateUserProvider.schema";
 import { CreateProviderDaysAvailabilitiesController } from "@modules/accounts/useCases/createProviderDaysAvailabilities/CreateProviderDaysAvailabilities.controller";
 import { CreateProviderTimesAvailabilitiesController } from "@modules/accounts/useCases/createProviderTimesAvailabilities/CreateProviderTimesAvailabilities.controller";
+import { CreateServiceProviderController } from "@modules/accounts/useCases/createServiceProvider/CreateServiceProvider.controller";
+import { schemaCreateServiceProvider } from "@modules/accounts/useCases/createServiceProvider/createServiceProvider.schema";
 import { CreateUsersTypeProvidersController } from "@modules/accounts/useCases/createUsersTypeProviders/CreateUsersTypeProviders.controller";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 import { ensureAuthenticatedProvider } from "@shared/infra/http/middlewares/ensureAuthenticatedProvider";
@@ -13,6 +15,7 @@ const createUsersTypeProvidersController = new CreateUsersTypeProvidersControlle
 const authenticateUserProviderController = new AuthenticateUserProviderController();
 const createProviderTimesAvailabilitiesController = new CreateProviderTimesAvailabilitiesController();
 const createProviderDaysAvailabilitiesController = new CreateProviderDaysAvailabilitiesController();
+const createServiceProviderController = new CreateServiceProviderController();
 
 providersRoutes.patch(
   "/",
@@ -28,16 +31,21 @@ providersRoutes.post(
 
 providersRoutes.patch(
   "/days",
-  ensureAuthenticated,
   ensureAuthenticatedProvider,
   createProviderDaysAvailabilitiesController.handle
 );
 
 providersRoutes.patch(
   "/hours",
-  ensureAuthenticated,
   ensureAuthenticatedProvider,
   createProviderTimesAvailabilitiesController.handle
+);
+
+providersRoutes.patch(
+  "/services",
+  ensureAuthenticatedProvider,
+  schemaCreateServiceProvider,
+  createServiceProviderController.handle
 );
 
 export { providersRoutes };

@@ -11,8 +11,8 @@ class ServicesFactory {
       { length: quantity },
       (): Omit<Service, "id" | "id_user"> => ({
         name: faker.name.jobTitle(),
-        amount: faker.datatype.number({ precision: 2 }).toString(),
-        duration: faker.datatype.number({ min: 10000, max: 99999 }).toString(),
+        amount: faker.datatype.number(),
+        duration: faker.datatype.number({ min: 10000, max: 99999 }),
       })
     );
   }

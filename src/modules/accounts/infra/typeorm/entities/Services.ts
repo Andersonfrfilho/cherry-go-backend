@@ -21,10 +21,10 @@ class Service {
   name: string;
 
   @Column()
-  amount: string;
+  amount: number;
 
   @Column()
-  duration: string;
+  duration: number;
 
   @ManyToMany(() => Provider)
   @JoinTable({

@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
+import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
@@ -8,7 +9,7 @@ import { IDateProvider } from "@shared/container/providers/DateProvider/IDatePro
 import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
 import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST, UNAUTHORIZED } from "@shared/errors/constants";
+import { BAD_REQUEST, FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
 
 interface IResponse {
   user: Provider;
@@ -40,6 +41,11 @@ class AuthenticateUserProviderService {
     if (!provider) {
       throw new AppError(BAD_REQUEST.PROVIDER_NOT_EXIST);
     }
+
+    if (!provider.types.some((type) => type.name === UserTypesEnum.PROVIDER)) {
+      throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);
+    }
+
     const passwordHash = await this.hashProvider.compareHash(
       password,
       provider.password_hash

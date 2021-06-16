@@ -23,6 +23,10 @@ export class CreateProvidersServices1617669642958
             type: "uuid",
           },
           {
+            name: "active",
+            type: "boolean",
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

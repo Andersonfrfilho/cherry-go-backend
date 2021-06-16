@@ -19,11 +19,11 @@ export class CreateServices1617669642955 implements MigrationInterface {
           },
           {
             name: "amount",
-            type: "varchar",
+            type: "bigint",
           },
           {
             name: "duration",
-            type: "varchar",
+            type: "bigint",
           },
           {
             name: "created_at",
