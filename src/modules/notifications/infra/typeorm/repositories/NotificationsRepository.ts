@@ -1,17 +1,20 @@
 import { getMongoRepository, MongoRepository } from "typeorm";
 
-import { ICreateNotificationDTO } from "@modules/notifications/dtos/ICreateNotificationDTO";
+import { CreateNotificationRepositoryDTO } from "@modules/notifications/dtos";
 import { Notification } from "@modules/notifications/infra/typeorm/schemas/Notification";
-import { INotificationsRepository } from "@modules/notifications/repositories/INotificationsRepository";
+import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/NotificationsRepository.interface";
 
-class NotificationsRepository implements INotificationsRepository {
+class NotificationsRepository implements NotificationsRepositoryInterface {
   private repository: MongoRepository<Notification>;
 
   constructor() {
     this.repository = getMongoRepository(Notification, "mongo");
   }
-  async create({ content,receipt_id }: ICreateNotificationDTO): Promise<Notification> {
-    const notification = this.repository.create({ content,receipt_id });
+  async create({
+    content,
+    receipt_id,
+  }: CreateNotificationRepositoryDTO): Promise<Notification> {
+    const notification = this.repository.create({ content, receipt_id });
 
     await this.repository.save(notification);
 

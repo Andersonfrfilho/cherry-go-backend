@@ -1,6 +1,6 @@
-import { ProviderAvailabilityTime } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityTime";
+import { Hour } from "@modules/accounts/dtos/services/CreateProviderTimesAvailabilityService.dto";
 
 export interface CreateProviderTimesAvailabilityProviderDTO {
   provider_id: string;
-  times: Partial<ProviderAvailabilityTime>[];
+  times: Hour[];
 }

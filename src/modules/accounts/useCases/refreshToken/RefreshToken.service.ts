@@ -2,8 +2,8 @@ import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN } from "@shared/errors/constants";
 
@@ -15,11 +15,11 @@ interface ITokenResponse {
 class RefreshTokenService {
   constructor(
     @inject("UsersTokensRepository")
-    private usersTokensRepository: IUsersTokensRepository,
+    private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("DateProvider")
-    private dateProvider: IDateProvider,
+    private dateProvider: DateProviderInterface,
     @inject("JwtProvider")
-    private jwtProvider: IJwtProvider
+    private jwtProvider: JwtProviderInterface
   ) {}
   async execute(token: string): Promise<ITokenResponse> {
     const { email, sub } = this.jwtProvider.verifyJwt({
@@ -28,8 +28,7 @@ class RefreshTokenService {
     });
 
     const userToken = await this.usersTokensRepository.findByUserIdAndRefreshToken(
-      sub.user.id,
-      token
+      { user_id: sub.user.id, refresh_token: token }
     );
 
     if (!userToken) {

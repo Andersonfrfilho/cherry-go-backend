@@ -1,10 +1,10 @@
 import { getRepository, Repository } from "typeorm";
 
-import { ICreateTypesUsersDTO } from "@modules/accounts/dtos";
+import { CreateTypesUsersRepositoryDTO } from "@modules/accounts/dtos";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
-import { ITypesUsersRepository } from "@modules/accounts/repositories/IUsersTypesRepository";
+import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/TypesUsersRepository.interface";
 
-class TypesUsersRepository implements ITypesUsersRepository {
+class TypesUsersRepository implements TypesUsersRepositoryInterface {
   private repository: Repository<TypeUser>;
 
   constructor() {
@@ -14,10 +14,8 @@ class TypesUsersRepository implements ITypesUsersRepository {
     active,
     description,
     name,
-  }: ICreateTypesUsersDTO): Promise<TypeUser> {
-    const user_type = this.repository.create({ active, description, name });
-    await this.repository.save(user_type);
-    return user_type;
+  }: CreateTypesUsersRepositoryDTO): Promise<TypeUser> {
+    return this.repository.save({ active, description, name });
   }
   async findByName(name: string): Promise<TypeUser> {
     return this.repository.findOne({ where: { name } });

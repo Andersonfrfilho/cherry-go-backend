@@ -1,6 +1,9 @@
 import { container } from "tsyringe";
 
-import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
 import { JsonWebTokenProvider } from "@shared/container/providers/JwtProvider/implementations/JsonWebTokenProvider";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
 
-container.registerSingleton<IJwtProvider>("JwtProvider", JsonWebTokenProvider);
+container.registerSingleton<JwtProviderInterface>(
+  "JwtProvider",
+  JsonWebTokenProvider
+);

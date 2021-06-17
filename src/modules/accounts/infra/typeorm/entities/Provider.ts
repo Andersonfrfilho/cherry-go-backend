@@ -13,11 +13,12 @@ import {
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
-import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 
 import { ProviderAvailabilityDay } from "./ProviderAvailabilityDay";
 import { ProviderAvailabilityTime } from "./ProviderAvailabilityTime";
+import { ProviderPaymentType } from "./ProviderPaymentType";
 import { Service } from "./Services";
 import { UserTermsAccept } from "./UserTermsAccept";
 
@@ -106,6 +107,15 @@ class Provider {
 
   @OneToMany(() => UserTermsAccept, (term) => term.user, { eager: true })
   term: UserTermsAccept[];
+
+  @OneToMany(
+    () => ProviderPaymentType,
+    (payment_type) => payment_type.provider,
+    {
+      eager: true,
+    }
+  )
+  payment_type: ProviderPaymentType[];
 
   @CreateDateColumn()
   created_at?: Date;

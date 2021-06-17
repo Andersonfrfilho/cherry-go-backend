@@ -1,8 +1,6 @@
-import { ICreateUserAddressClientDTO } from "@modules/accounts/dtos";
+import { CreateUserAddressClientRepositoryDTO } from "@modules/accounts/dtos";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 
-interface AddressesRepositoryInterface {
-  create(data: ICreateUserAddressClientDTO): Promise<Address>;
+export interface AddressesRepositoryInterface {
+  create(data: CreateUserAddressClientRepositoryDTO): Promise<Address>;
 }
-
-export { AddressesRepositoryInterface };

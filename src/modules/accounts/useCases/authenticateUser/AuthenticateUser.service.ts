@@ -2,11 +2,11 @@ import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { HashProviderInterface } from "@shared/container/providers/HashProvider/HashProvider.interface";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST, UNAUTHORIZED } from "@shared/errors/constants";
 
@@ -25,13 +25,13 @@ class AuthenticateUserService {
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
     @inject("UsersTokensRepository")
-    private usersTokensRepository: IUsersTokensRepository,
+    private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("HashProvider")
-    private hashProvider: IHashProvider,
+    private hashProvider: HashProviderInterface,
     @inject("DateProvider")
-    private dateProvider: IDateProvider,
+    private dateProvider: DateProviderInterface,
     @inject("JwtProvider")
-    private jwtProvider: IJwtProvider
+    private jwtProvider: JwtProviderInterface
   ) {}
   async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);

@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
 @Entity("transactions")
 class Transaction {

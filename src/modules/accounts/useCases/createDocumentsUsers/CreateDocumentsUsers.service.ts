@@ -6,7 +6,7 @@ import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/reposit
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
-import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
+import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/StorageProvider.interface";
 
 @injectable()
 class CreateDocumentsUsersService {
@@ -16,7 +16,7 @@ class CreateDocumentsUsersService {
     @inject("DocumentsUsersImageRepository")
     private usersDocumentsRepository: DocumentsUserImageRepositoryInterface,
     @inject("StorageProvider")
-    private storageProvider: IStorageProvider,
+    private storageProvider: StorageProviderInterface,
     @inject("ImagesRepository")
     private imagesRepository: ImagesRepositoryInterface
   ) {}

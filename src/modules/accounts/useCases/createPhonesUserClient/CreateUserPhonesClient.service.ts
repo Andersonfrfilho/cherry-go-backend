@@ -3,14 +3,14 @@ import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
 import { config } from "@config/environment";
-import { ICreateUserPhonesClientRequestDTO } from "@modules/accounts/dtos";
+import { CreateUserPhonesClientServiceDTO } from "@modules/accounts/dtos";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/PhonesRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
 import { CreateUserPhoneClientDTO } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhoneClient.dto";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { HashProviderInterface } from "@shared/container/providers/HashProvider/HashProvider.interface";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
 import { SendSmsDTO } from "@shared/container/providers/SmsProvider/dtos/SendSms.dto";
 import { AppError } from "@shared/errors/AppError";
@@ -27,18 +27,18 @@ class CreateUserPhonesClientService {
     @inject("QueueProvider")
     private queueProvider: QueueProviderInterface,
     @inject("HashProvider")
-    private hashProvider: IHashProvider,
+    private hashProvider: HashProviderInterface,
     @inject("JwtProvider")
-    private jwtProvider: IJwtProvider,
+    private jwtProvider: JwtProviderInterface,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: DateProviderInterface
   ) {}
   async execute({
     user_id,
     country_code,
     number,
     ddd,
-  }: ICreateUserPhonesClientRequestDTO): Promise<CreateUserPhoneClientDTO> {
+  }: CreateUserPhonesClientServiceDTO): Promise<CreateUserPhoneClientDTO> {
     const phone = await this.phonesRepository.findPhoneUser({
       ddd,
       country_code,
@@ -52,7 +52,7 @@ class CreateUserPhonesClientService {
     }
 
     const user = await this.usersRepository.createUserPhones({
-      user_id,
+      id: user_id,
       country_code,
       number,
       ddd,

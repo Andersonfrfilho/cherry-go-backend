@@ -11,7 +11,7 @@ import {
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
-import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
 @Entity("appointments_providers_services")
 class AppointmentProviderService {

@@ -1,11 +1,12 @@
 import {
+  CreatePaymentTypesAvailableRepositoryDTO,
   CreateProviderDaysAvailabilityServiceDTO,
   CreateProviderTimesAvailabilityProviderDTO,
   CreateServiceProviderRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 
-interface ProvidersRepositoryInterface {
+export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
   findByEmail(email: string): Promise<Provider>;
   createDaysAvailable(
@@ -17,6 +18,7 @@ interface ProvidersRepositoryInterface {
   createServiceProvider(
     data: CreateServiceProviderRepositoryDTO
   ): Promise<void>;
+  createPaymentTypesAvailable(
+    data: CreatePaymentTypesAvailableRepositoryDTO
+  ): Promise<void>;
 }
-
-export { ProvidersRepositoryInterface };

@@ -3,6 +3,8 @@ import { Router } from "express";
 import { AuthenticateUserProviderController } from "@modules/accounts/useCases/authenticateUserProvider/AuthenticateUserProvider.controller";
 import { schemaAuthenticateProvider } from "@modules/accounts/useCases/authenticateUserProvider/authenticateUserProvider.schema";
 import { CreateProviderDaysAvailabilitiesController } from "@modules/accounts/useCases/createProviderDaysAvailabilities/CreateProviderDaysAvailabilities.controller";
+import { CreateProvidersPaymentsTypesController } from "@modules/accounts/useCases/createProvidersPaymentsTypes/CreateProvidersPaymentsTypes.controller";
+import { schemaCreateProvidersPaymentsTypes } from "@modules/accounts/useCases/createProvidersPaymentsTypes/createProvidersPaymentsTypes.schema";
 import { CreateProviderTimesAvailabilitiesController } from "@modules/accounts/useCases/createProviderTimesAvailabilities/CreateProviderTimesAvailabilities.controller";
 import { CreateServiceProviderController } from "@modules/accounts/useCases/createServiceProvider/CreateServiceProvider.controller";
 import { schemaCreateServiceProvider } from "@modules/accounts/useCases/createServiceProvider/createServiceProvider.schema";
@@ -16,6 +18,7 @@ const authenticateUserProviderController = new AuthenticateUserProviderControlle
 const createProviderTimesAvailabilitiesController = new CreateProviderTimesAvailabilitiesController();
 const createProviderDaysAvailabilitiesController = new CreateProviderDaysAvailabilitiesController();
 const createServiceProviderController = new CreateServiceProviderController();
+const createProvidersPaymentsTypesController = new CreateProvidersPaymentsTypesController();
 
 providersRoutes.patch(
   "/",
@@ -46,6 +49,13 @@ providersRoutes.patch(
   ensureAuthenticatedProvider,
   schemaCreateServiceProvider,
   createServiceProviderController.handle
+);
+
+providersRoutes.patch(
+  "/payments_types",
+  ensureAuthenticatedProvider,
+  schemaCreateProvidersPaymentsTypes,
+  createProvidersPaymentsTypesController.handle
 );
 
 export { providersRoutes };

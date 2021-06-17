@@ -1,4 +1,4 @@
-interface Hour {
+export interface Hour {
   start_date: string;
   end_date: string;
 }

@@ -1,9 +1,12 @@
 import { container } from "tsyringe";
 
-import { ICacheProvider } from "@shared/container/providers/CacheProvider/ICacheProvider";
+import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/CacheProvider.interface";
 import { RedisCacheProvider } from "@shared/container/providers/CacheProvider/implementations/RedisCacheProviders";
 
 const providers = {
   redis: RedisCacheProvider,
 };
-container.registerSingleton<ICacheProvider>("CacheProvider", providers.redis);
+container.registerSingleton<CacheProviderInterface>(
+  "CacheProvider",
+  providers.redis
+);

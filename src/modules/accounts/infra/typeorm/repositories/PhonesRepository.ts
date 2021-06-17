@@ -1,10 +1,10 @@
 import { getRepository, Repository } from "typeorm";
 
-import { IFindPhoneDTO } from "@modules/accounts/dtos";
+import { FindPhoneRepositoryDTO } from "@modules/accounts/dtos";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/PhonesRepository.interface";
 
-class PhonesRepository implements IPhonesRepository {
+class PhonesRepository implements PhonesRepositoryInterface {
   private repository: Repository<Phone>;
 
   constructor() {
@@ -14,7 +14,7 @@ class PhonesRepository implements IPhonesRepository {
     country_code,
     ddd,
     number,
-  }: IFindPhoneDTO): Promise<Phone> {
+  }: FindPhoneRepositoryDTO): Promise<Phone> {
     const phone = await this.repository.findOne({
       where: { country_code, ddd, number },
       relations: ["users"],

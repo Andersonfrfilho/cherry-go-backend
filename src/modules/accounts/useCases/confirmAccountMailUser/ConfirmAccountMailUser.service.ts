@@ -1,8 +1,8 @@
 import { inject, injectable } from "tsyringe";
 
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
 
@@ -12,9 +12,9 @@ class ConfirmAccountMailUserService {
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
     @inject("UsersTokensRepository")
-    private usersTokensRepository: IUsersTokensRepository,
+    private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("DateProvider")
-    private dateProvider: IDateProvider
+    private dateProvider: DateProviderInterface
   ) {}
   async execute(token: string): Promise<void> {
     const user_token = await this.usersTokensRepository.findByRefreshToken(

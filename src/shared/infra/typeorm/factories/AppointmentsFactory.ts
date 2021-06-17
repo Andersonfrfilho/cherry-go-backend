@@ -1,6 +1,6 @@
 import faker from "faker";
 
-import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
 class AppointmentsFactory {

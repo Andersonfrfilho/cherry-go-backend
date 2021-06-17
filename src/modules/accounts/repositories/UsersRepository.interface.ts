@@ -1,22 +1,20 @@
 import {
-  ICreateUserClientDTO,
-  ICreateUserAddressClientDTO,
-  IUpdatedUserClientDTO,
-  ICreateUserPhonesClientRequestDTO,
-  IUpdateActiveUserDTO,
-  UpdateActivePhoneUserDTO,
+  CreateUserClientRepositoryDTO,
+  CreateUserAddressClientRepositoryDTO,
+  CreateUserPhonesClientRepositoryDTO,
+  UpdateActiveUserRepositoryDTO,
   CreateTagsUsersRepositoryDTO,
+  TermsAcceptUserRepositoryDTO,
+  ProviderTypeForUserRepositoryDTO,
+  FindUserEmailCpfRgRepositoryDTO,
+  UpdatePasswordUserRepositorySTO,
 } from "@modules/accounts/dtos";
-import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
-import { ProviderTypeForUserDTO } from "../dtos/repositories/ProviderTypeForUser.dto";
-import { TermsAcceptUserRepositoryDTO } from "../dtos/TermsAcceptUserRepository.dto";
-
-interface UsersRepositoryInterface {
-  create(data: ICreateUserClientDTO): Promise<User>;
-  createUserAddress(data: ICreateUserAddressClientDTO): Promise<User>;
-  createUserPhones(data: ICreateUserPhonesClientRequestDTO): Promise<User>;
+export interface UsersRepositoryInterface {
+  create(data: CreateUserClientRepositoryDTO): Promise<User>;
+  createUserAddress(data: CreateUserAddressClientRepositoryDTO): Promise<User>;
+  createUserPhones(data: CreateUserPhonesClientRepositoryDTO): Promise<User>;
   findByEmail(email: string): Promise<User>;
   findByRg(rg: string): Promise<User>;
   findByCpf(cpf: string): Promise<User>;
@@ -26,24 +24,25 @@ interface UsersRepositoryInterface {
     email,
     rg,
     cpf,
-  }: IFindUserEmailCpfRgDTO): Promise<User>;
+  }: FindUserEmailCpfRgRepositoryDTO): Promise<User>;
   updatePasswordUser({
     id,
     password_hash,
-  }: IUpdatedUserClientDTO): Promise<User>;
-  createUserClientType(data: ICreateUserClientDTO): Promise<User>;
-  updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void>;
-  updateActivePhoneUser({
-    user_id,
+  }: UpdatePasswordUserRepositorySTO): Promise<User>;
+  createUserClientType(data: CreateUserClientRepositoryDTO): Promise<User>;
+  updateActiveUser({
+    id,
     active,
-  }: UpdateActivePhoneUserDTO): Promise<void>;
+  }: UpdateActiveUserRepositoryDTO): Promise<void>;
+  updateActivePhoneUser({
+    id,
+    active,
+  }: UpdateActiveUserRepositoryDTO): Promise<void>;
   acceptTerms({ user_id, accept }: TermsAcceptUserRepositoryDTO): Promise<void>;
   createTagsUsers({
     user_id,
     tags,
   }: CreateTagsUsersRepositoryDTO): Promise<void>;
   findByIdWithProfileImage(id: string): Promise<User>;
-  providerTypeForUser(data: ProviderTypeForUserDTO): Promise<void>;
+  providerTypeForUser(data: ProviderTypeForUserRepositoryDTO): Promise<void>;
 }
-
-export { UsersRepositoryInterface };

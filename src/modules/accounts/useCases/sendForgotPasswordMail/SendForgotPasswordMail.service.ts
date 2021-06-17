@@ -4,8 +4,8 @@ import { v4 as uuidV4 } from "uuid";
 import { config } from "@config/environment";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
@@ -18,9 +18,9 @@ class SendForgotPasswordMailService {
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
     @inject("UsersTokensRepository")
-    private usersTokensRepository: IUsersTokensRepository,
+    private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("DateProvider")
-    private dateProvider: IDateProvider,
+    private dateProvider: DateProviderInterface,
     @inject("QueueProvider")
     private queueProvider: QueueProviderInterface
   ) {}
@@ -47,7 +47,7 @@ class SendForgotPasswordMailService {
       link: `${process.env.FORGOT_MAIL_URL}${refresh_token}`,
     };
 
-    const message: ISendMailDTO = {
+    const message: SendMailDTO = {
       to: user.email,
       email_type: MailContent.FORGOT_PASSWORD,
       variables,

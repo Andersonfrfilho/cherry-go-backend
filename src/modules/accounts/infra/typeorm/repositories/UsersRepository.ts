@@ -2,16 +2,15 @@ import { getRepository, Repository } from "typeorm";
 
 import {
   CreateTagsUsersRepositoryDTO,
-  ICreateUserAddressClientDTO,
-  ICreateUserPhonesClientRequestDTO,
-  IUpdateActiveUserDTO,
-  UpdateActivePhoneUserDTO,
+  CreateUserAddressClientRepositoryDTO,
+  CreateUserClientRepositoryDTO,
+  CreateUserPhonesClientRepositoryDTO,
+  FindUserEmailCpfRgRepositoryDTO,
+  ProviderTypeForUserRepositoryDTO,
+  TermsAcceptUserRepositoryDTO,
+  UpdateActiveUserRepositoryDTO,
+  UpdatedUserClientRepositoryDTO,
 } from "@modules/accounts/dtos";
-import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
-import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
-import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
-import { ProviderTypeForUserDTO } from "@modules/accounts/dtos/repositories/ProviderTypeForUser.dto";
-import { TermsAcceptUserRepositoryDTO } from "@modules/accounts/dtos/TermsAcceptUserRepository.dto";
 import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
@@ -46,7 +45,7 @@ class UsersRepository implements UsersRepositoryInterface {
   async providerTypeForUser({
     user_id,
     active,
-  }: ProviderTypeForUserDTO): Promise<void> {
+  }: ProviderTypeForUserRepositoryDTO): Promise<void> {
     const provider_type = await this.repository_users_types.findOne({
       where: { name: UserTypesEnum.PROVIDER },
     });
@@ -58,39 +57,39 @@ class UsersRepository implements UsersRepositoryInterface {
     });
   }
 
-  async updateActiveUser({ id, active }: IUpdateActiveUserDTO): Promise<void> {
+  async updateActiveUser({
+    id,
+    active,
+  }: UpdateActiveUserRepositoryDTO): Promise<void> {
     await this.repository.update(id, {
       active,
     });
   }
 
   async updateActivePhoneUser({
-    user_id,
+    id,
     active,
-  }: UpdateActivePhoneUserDTO): Promise<void> {
+  }: UpdateActiveUserRepositoryDTO): Promise<void> {
     const {
-      phones: [{ id }],
-    } = await this.repository.findOne(user_id, {
+      phones: [{ id: phone_id }],
+    } = await this.repository.findOne(id, {
       relations: ["phones"],
     });
 
-    await this.repository_users_phones.update(
-      { phone_id: id, user_id },
-      { active }
-    );
+    await this.repository_users_phones.update({ phone_id }, { active });
   }
 
   async createUserPhones({
     country_code,
     ddd,
     number,
-    user_id,
-  }: ICreateUserPhonesClientRequestDTO): Promise<User> {
+    id,
+  }: CreateUserPhonesClientRepositoryDTO): Promise<User> {
     const phone_exist = await this.repository_phones.findOne({
       where: { country_code, ddd, number },
     });
 
-    const user = await this.repository.findOne(user_id);
+    const user = await this.repository.findOne(id);
 
     if (phone_exist) {
       user.phones = [phone_exist];
@@ -122,7 +121,7 @@ class UsersRepository implements UsersRepositoryInterface {
     district,
     country,
     city,
-  }: ICreateUserAddressClientDTO): Promise<User> {
+  }: CreateUserAddressClientRepositoryDTO): Promise<User> {
     const address_exist = await this.repository_address.findOne({
       where: { street, number, zipcode, city },
     });
@@ -165,7 +164,7 @@ class UsersRepository implements UsersRepositoryInterface {
     birth_date,
     password,
     active,
-  }: ICreateUserClientDTO): Promise<User> {
+  }: CreateUserClientRepositoryDTO): Promise<User> {
     const type = await this.repository_users_types.findOne({
       where: { name: UserTypesEnum.CLIENT },
     });
@@ -199,7 +198,7 @@ class UsersRepository implements UsersRepositoryInterface {
     rg,
     birth_date,
     password,
-  }: ICreateUserClientDTO): Promise<User> {
+  }: CreateUserClientRepositoryDTO): Promise<User> {
     const user = this.repository.create({
       name,
       last_name,
@@ -241,14 +240,14 @@ class UsersRepository implements UsersRepositoryInterface {
     email,
     rg,
     cpf,
-  }: IFindUserEmailCpfRgDTO): Promise<User> {
+  }: FindUserEmailCpfRgRepositoryDTO): Promise<User> {
     return this.repository.findOne({ where: [{ email }, { cpf }, { rg }] });
   }
 
   async updatePasswordUser({
     id,
     password_hash,
-  }: IUpdatedUserClientDTO): Promise<User> {
+  }: UpdatedUserClientRepositoryDTO): Promise<User> {
     await this.repository.update(id, {
       password_hash,
     });

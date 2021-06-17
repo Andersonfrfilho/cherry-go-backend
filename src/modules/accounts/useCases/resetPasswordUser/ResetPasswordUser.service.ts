@@ -2,8 +2,8 @@ import { inject, injectable } from "tsyringe";
 
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { HashProviderInterface } from "@shared/container/providers/HashProvider/HashProvider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN } from "@shared/errors/constants";
 
@@ -16,13 +16,13 @@ interface IRequest {
 class ResetPasswordService {
   constructor(
     @inject("UsersTokensRepository")
-    private usersTokensRepository: IUsersTokensRepository,
+    private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("DateProvider")
-    private dateProvider: IDateProvider,
+    private dateProvider: DateProviderInterface,
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
     @inject("HashProvider")
-    private hashProvider: IHashProvider
+    private hashProvider: HashProviderInterface
   ) {}
   async execute({ token, password }: IRequest): Promise<void> {
     const user_token = await this.usersTokensRepository.findByRefreshToken(

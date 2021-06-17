@@ -1,12 +1,12 @@
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
-import { ConfirmAccountPhoneUserDTO } from "@modules/accounts/dtos";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
+import { ConfirmAccountPhoneUserServiceDTO } from "@modules/accounts/dtos";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { HashProviderInterface } from "@shared/container/providers/HashProvider/HashProvider.interface";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
 import { AppError } from "@shared/errors/AppError";
 import {
   METHOD_NOT_ALLOWED,
@@ -20,19 +20,19 @@ class ConfirmAccountPhoneUserService {
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
     @inject("UsersTokensRepository")
-    private usersTokensRepository: IUsersTokensRepository,
+    private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("DateProvider")
-    private dateProvider: IDateProvider,
+    private dateProvider: DateProviderInterface,
     @inject("JwtProvider")
-    private jwtProvider: IJwtProvider,
+    private jwtProvider: JwtProviderInterface,
     @inject("HashProvider")
-    private hashProvider: IHashProvider
+    private hashProvider: HashProviderInterface
   ) {}
   async execute({
     code,
     token,
     user_id,
-  }: ConfirmAccountPhoneUserDTO): Promise<void> {
+  }: ConfirmAccountPhoneUserServiceDTO): Promise<void> {
     const user_token = await this.usersTokensRepository.findByRefreshToken(
       token
     );
@@ -60,7 +60,7 @@ class ConfirmAccountPhoneUserService {
     }
 
     await this.usersRepository.updateActivePhoneUser({
-      user_id: sub.user.id,
+      id: sub.user.id,
       active: passed,
     });
   }

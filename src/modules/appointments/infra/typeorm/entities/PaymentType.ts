@@ -9,13 +9,17 @@ import {
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
+import { PaymentTypesEnum } from "@modules/transactions/enums/PaymentTypes.enum";
 
 @Entity("payments_types")
 class PaymentType {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
-  @Column()
+  @Column({
+    type: "enum",
+    enum: PaymentTypesEnum,
+  })
   name: string;
 
   @Column()

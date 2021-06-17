@@ -1,19 +1,14 @@
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { IJwtAssignParametersDTO } from "@shared/container/providers/JwtProvider/dtos/IJwtAssingParameters.dto";
-import { IJwtVerifyParametersDTO } from "@shared/container/providers/JwtProvider/dtos/IJwtVerifyParameters.dto";
+
+export { JwtProviderAssignDTO } from "@shared/container/providers/JwtProvider/dtos/JwtProviderAssing.dto";
+export { JwtProviderVerifyDTO } from "@shared/container/providers/JwtProvider/dtos/JwtProviderVerify.dto";
 
 export interface Sub {
   user: Partial<User>;
   code_hash?: string;
 }
 
-interface IJwtProviderResponsePayload {
+export interface JwtProviderPayload {
   sub: Partial<Sub>;
   email: string;
 }
-
-export {
-  IJwtVerifyParametersDTO,
-  IJwtAssignParametersDTO,
-  IJwtProviderResponsePayload,
-};

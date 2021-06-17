@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/TermsAcceptUserService.dto";
+import { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";

@@ -1,16 +1,23 @@
-import {ObjectID, Entity, Column, CreateDateColumn, UpdateDateColumn, ObjectIdColumn} from "typeorm"
+import {
+  ObjectID,
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ObjectIdColumn,
+} from "typeorm";
 
 @Entity("notifications")
-class Notification{
+class Notification {
   @ObjectIdColumn()
   id: ObjectID;
-  
+
   @Column()
   content: string;
-  
-  @Column('uuid')
+
+  @Column("uuid")
   receipt_id: string;
-  
+
   @Column()
   read: boolean;
 
@@ -21,4 +28,4 @@ class Notification{
   updated_at: Date;
 }
 
-export {Notification}
+export { Notification };

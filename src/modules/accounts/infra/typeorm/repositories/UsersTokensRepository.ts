@@ -1,6 +1,9 @@
 import { getRepository, Repository } from "typeorm";
 
-import { ICreateUserTokenDTO } from "@modules/accounts/dtos/ICreateUserTokenDTO";
+import {
+  CreateUserTokenRepositoryDTO,
+  FindByUserIdAndRefreshTokenRepositoryDTO,
+} from "@modules/accounts/dtos";
 import { UserTokens } from "@modules/accounts/infra/typeorm/entities/UserTokens";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
 
@@ -20,10 +23,10 @@ class UsersTokensRepository implements UsersTokensRepositoryInterface {
     await this.repository.delete(user_token_id);
   }
 
-  async findByUserIdAndRefreshToken(
-    user_id: string,
-    refresh_token: string
-  ): Promise<UserTokens> {
+  async findByUserIdAndRefreshToken({
+    user_id,
+    refresh_token,
+  }: FindByUserIdAndRefreshTokenRepositoryDTO): Promise<UserTokens> {
     const users_tokens = await this.repository.findOne({
       where: { user_id, refresh_token },
     });
@@ -34,7 +37,7 @@ class UsersTokensRepository implements UsersTokensRepositoryInterface {
     expires_date,
     refresh_token,
     user_id,
-  }: ICreateUserTokenDTO): Promise<UserTokens> {
+  }: CreateUserTokenRepositoryDTO): Promise<UserTokens> {
     const user_token = this.repository.create({
       expires_date,
       refresh_token,

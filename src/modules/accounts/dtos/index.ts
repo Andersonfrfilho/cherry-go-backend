@@ -1,21 +1,17 @@
-import { ConfirmAccountPhoneUserDTO } from "@modules/accounts/dtos/ConfirmAccountPhoneUser.dto";
-import { CreateTagUsersServiceDTO } from "@modules/accounts/dtos/CreateTagUsersService.dto";
-import { ICreateTypesUsersDTO } from "@modules/accounts/dtos/ICreateTypesUsers.dto";
-import { ICreateUserAddressClientDTO } from "@modules/accounts/dtos/ICreateUserAddressClientDTO";
-import { ICreateUserAddressClientRequestDTO } from "@modules/accounts/dtos/ICreateUserAddressClientRequestDTO";
-import { ICreateUserClientDTO } from "@modules/accounts/dtos/ICreateUserClientDTO";
-import { ICreateUserPhonesClientRequestDTO } from "@modules/accounts/dtos/ICreateUserPhonesClientRequest.dto";
-import { ICreateUserTokenDTO } from "@modules/accounts/dtos/ICreateUserTokenDTO";
-import { IFindPhoneDTO } from "@modules/accounts/dtos/IFindPhone.dto";
-import { IFindUserEmailCpfRgDTO } from "@modules/accounts/dtos/IFindUserEmailCpfRgDTO";
-import { IUpdateActiveUserDTO } from "@modules/accounts/dtos/IUpdateActiveUser.dto";
-import { IUpdatedUserClientDTO } from "@modules/accounts/dtos/IUpdatedUserClient.dto";
-import { IUserResponseDTO } from "@modules/accounts/dtos/IUserResponseDTO";
-import { CreateTagsUsersRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTagsUsersRepository.dto";
-import { TermsAcceptUserRepositoryDTO } from "@modules/accounts/dtos/TermsAcceptUserRepository.dto";
-import { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/TermsAcceptUserService.dto";
-import { UpdateActivePhoneUserDTO } from "@modules/accounts/dtos/UpdateActivePhoneUser.dto";
-
+export { FindByUserIdAndRefreshTokenRepositoryDTO } from "@modules/accounts/dtos/repositories/FindByUserIdAndRefreshTokenRepository.dto";
+export { CreateUserTokenRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserTokenRepository.dto";
+export { TermsAcceptUserRepositoryDTO } from "@modules/accounts/dtos/repositories/TermsAcceptUserRepository.dto";
+export { UpdateActiveUserRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateActiveUserRepository.dto";
+export { FindUserEmailCpfRgRepositoryDTO } from "@modules/accounts/dtos/repositories/FindUserEmailCpfRgRepository.dto";
+export { CreateUserPhonesClientRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserPhonesClientRequest.dto";
+export { CreateUserAddressClientRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserAddressClient.dto";
+export { CreateUserClientRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserClientRepository.dto";
+export { CreateTypesUsersRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTypesUsersRepository.dto";
+export { FindPhoneRepositoryDTO } from "@modules/accounts/dtos/repositories/FindPhoneRepository.dto";
+export { CreateProviderDaysAvailabilityProviderDTO } from "modules/accounts/dtos/repositories/CreateProviderDaysAvailabilityProvider.dto";
+export { ProviderTypeForUserRepositoryDTO } from "@modules/accounts/dtos/repositories/ProviderTypeForUser.dto";
+export { CreatePaymentTypesAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/CreatePaymentTypesAvailableRepository.dto";
+export { CreateProvidersPaymentsTypesServiceDTO } from "@modules/accounts/dtos/services/CreateProvidersPaymentsTypesService.dto";
 export { CreateServiceProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateServiceProviderRepository.dto";
 export { CreateServiceProviderServiceDTO } from "@modules/accounts/dtos/services/CreateServiceProviderService.dto";
 export { CreateProviderTimesAvailabilityProviderDTO } from "@modules/accounts/dtos/repositories/CreateProviderTimesAvailabilityProvider.dto";
@@ -27,22 +23,14 @@ export { CreateDocumentsUserImageRepositoryDTO } from "@modules/accounts/dtos/re
 export { RequestActiveUserClientServiceDTO } from "@modules/accounts/dtos/services/RequestActiveUserClientService.dto";
 export { CreateDocumentsUsersServiceDTO } from "@modules/accounts/dtos/services/CreateDocumentsUsersService.dto";
 export { CreateImageProfileUserServiceDTO } from "@modules/accounts/dtos/services/CreatePhotoProfileUserService.dto";
-export {
-  UpdateActivePhoneUserDTO,
-  ConfirmAccountPhoneUserDTO,
-  IFindPhoneDTO,
-  ICreateUserClientDTO,
-  ICreateUserTokenDTO,
-  IFindUserEmailCpfRgDTO,
-  IUserResponseDTO,
-  ICreateUserAddressClientDTO,
-  ICreateUserAddressClientRequestDTO,
-  IUpdatedUserClientDTO,
-  ICreateTypesUsersDTO,
-  ICreateUserPhonesClientRequestDTO,
-  IUpdateActiveUserDTO,
-  TermsAcceptUserServiceDTO,
-  CreateTagUsersServiceDTO,
-  TermsAcceptUserRepositoryDTO,
-  CreateTagsUsersRepositoryDTO,
-};
+export { CreateTagsUsersRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTagsUsersRepository.dto";
+export { UpdatePasswordUserRepositorySTO } from "@modules/accounts/dtos/repositories/UpdatePasswordUserRepository.dto";
+export { AuthenticateUserProviderServiceDTO } from "@modules/accounts/dtos/services/AuthenticateUserProviderService.dto";
+export { AuthenticateUserProviderServiceResponseDTO } from "@modules/accounts/dtos/services/AuthenticateUserProviderServiceResponse.dto";
+export { ConfirmAccountPhoneUserServiceDTO } from "@modules/accounts/dtos/services/ConfirmAccountPhoneUserService.dto";
+export { UpdatedUserClientRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdatedUserClientRepository.dto";
+export { CreateUserAddressClientServiceDTO } from "@modules/accounts/dtos/services/CreateUserAddressClientService.dto";
+export { CreateUserPhonesClientServiceDTO } from "@modules/accounts/dtos/services/CreateUserPhonesClientService.dto";
+export { CreateTagUsersServiceDTO } from "@modules/accounts/dtos/services/CreateTagUsersService.dto";
+export { CreateUserClientServiceDTO } from "@modules/accounts/dtos/services/CreateUserClientService.dto";
+export { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/services/TermsAcceptUserService.dto";

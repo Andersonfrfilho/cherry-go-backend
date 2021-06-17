@@ -1,25 +1,19 @@
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
+import {
+  AuthenticateUserProviderServiceDTO,
+  AuthenticateUserProviderServiceResponseDTO,
+} from "@modules/accounts/dtos";
 import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
-import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { HashProviderInterface } from "@shared/container/providers/HashProvider/HashProvider.interface";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST, FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
 
-interface IResponse {
-  user: Provider;
-  token: string;
-  refresh_token: string;
-}
-interface IRequest {
-  email: string;
-  password: string;
-}
 @injectable()
 class AuthenticateUserProviderService {
   constructor(
@@ -28,13 +22,16 @@ class AuthenticateUserProviderService {
     @inject("UsersTokensRepository")
     private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("HashProvider")
-    private hashProvider: IHashProvider,
+    private hashProvider: HashProviderInterface,
     @inject("DateProvider")
-    private dateProvider: IDateProvider,
+    private dateProvider: DateProviderInterface,
     @inject("JwtProvider")
-    private jwtProvider: IJwtProvider
+    private jwtProvider: JwtProviderInterface
   ) {}
-  async execute({ email, password }: IRequest): Promise<IResponse> {
+  async execute({
+    email,
+    password,
+  }: AuthenticateUserProviderServiceDTO): Promise<AuthenticateUserProviderServiceResponseDTO> {
     const provider = await this.providersRepository.findByEmail(email);
     const { expires_in, secret } = auth;
 

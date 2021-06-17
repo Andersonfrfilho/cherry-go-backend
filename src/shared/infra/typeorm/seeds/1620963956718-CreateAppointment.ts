@@ -3,7 +3,7 @@ import { getConnection, MigrationInterface } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { AppointmentsFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateAppointment1620963956718 implements MigrationInterface {

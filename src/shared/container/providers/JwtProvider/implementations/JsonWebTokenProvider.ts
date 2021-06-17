@@ -1,22 +1,19 @@
 import { sign, verify } from "jsonwebtoken";
 
 import {
-  IJwtVerifyParametersDTO,
-  IJwtAssignParametersDTO,
-  IJwtProviderResponsePayload,
+  JwtProviderAssignDTO,
+  JwtProviderVerifyDTO,
+  JwtProviderPayload,
 } from "@shared/container/providers/JwtProvider/dtos";
-import { IJwtProvider } from "@shared/container/providers/JwtProvider/IJwtProvider";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
 
 interface IPayload {
   email: string;
   sub: string;
 }
 
-class JsonWebTokenProvider implements IJwtProvider {
-  verifyJwt({
-    token,
-    auth_secret,
-  }: IJwtVerifyParametersDTO): IJwtProviderResponsePayload {
+export class JsonWebTokenProvider implements JwtProviderInterface {
+  verifyJwt({ token, auth_secret }: JwtProviderVerifyDTO): JwtProviderPayload {
     const { email, sub } = verify(token, auth_secret) as IPayload;
     return { email, sub: JSON.parse(sub) };
   }
@@ -25,7 +22,7 @@ class JsonWebTokenProvider implements IJwtProvider {
     payload,
     secretOrPrivateKey,
     options,
-  }: IJwtAssignParametersDTO): string {
+  }: JwtProviderAssignDTO): string {
     const { email } = payload;
     const { subject, expiresIn } = options;
     return sign({ email }, secretOrPrivateKey, {
@@ -34,4 +31,3 @@ class JsonWebTokenProvider implements IJwtProvider {
     });
   }
 }
-export { JsonWebTokenProvider };

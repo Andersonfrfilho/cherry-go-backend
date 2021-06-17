@@ -3,13 +3,13 @@ import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
-import { ICreateUserClientDTO } from "@modules/accounts/dtos";
+import { CreateUserClientServiceDTO } from "@modules/accounts/dtos";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
 import { User } from "@sentry/node";
-import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
-import { IHashProvider } from "@shared/container/providers/HashProvider/IHashProvider";
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { HashProviderInterface } from "@shared/container/providers/HashProvider/HashProvider.interface";
+import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
 import { AppError } from "@shared/errors/AppError";
@@ -21,11 +21,11 @@ class CreateUserClientService {
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
     @inject("HashProvider")
-    private hashProvider: IHashProvider,
+    private hashProvider: HashProviderInterface,
     @inject("UsersTokensRepository")
     private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("DateProvider")
-    private dateProvider: IDateProvider,
+    private dateProvider: DateProviderInterface,
     @inject("QueueProvider")
     private queueProvider: QueueProviderInterface
   ) {}
@@ -37,7 +37,7 @@ class CreateUserClientService {
     email,
     password,
     birth_date,
-  }: ICreateUserClientDTO): Promise<User> {
+  }: CreateUserClientServiceDTO): Promise<User> {
     const userAlreadyExists = await this.usersRepository.findUserByEmailCpfRg({
       email,
       cpf,
@@ -78,7 +78,7 @@ class CreateUserClientService {
       link: `${process.env.CONFIRM_MAIL_URL}${refresh_token}`,
     };
 
-    const message: ISendMailDTO = {
+    const message: SendMailDTO = {
       to: user.email,
       email_type: MailContent.USER_CONFIRMATION_EMAIL,
       variables,

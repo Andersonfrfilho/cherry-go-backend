@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { ICreateUserAddressClientRequestDTO } from "@modules/accounts/dtos";
+import { CreateUserAddressClientServiceDTO } from "@modules/accounts/dtos";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { User } from "@sentry/node";
 import { AppError } from "@shared/errors/AppError";
@@ -21,7 +21,7 @@ class CreateUserAddressClientService {
     state,
     street,
     zipcode,
-  }: ICreateUserAddressClientRequestDTO): Promise<User> {
+  }: CreateUserAddressClientServiceDTO): Promise<User> {
     const user_exist = await this.usersRepository.findById(user_id);
 
     if (!user_exist) {

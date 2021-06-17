@@ -2,7 +2,7 @@ import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
-import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
 import { AddressesFactory } from "../factories";

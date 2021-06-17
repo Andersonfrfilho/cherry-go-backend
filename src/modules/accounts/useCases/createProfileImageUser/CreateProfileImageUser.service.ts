@@ -4,7 +4,7 @@ import { CreateImageProfileUserServiceDTO } from "@modules/accounts/dtos";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
-import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
+import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/StorageProvider.interface";
 
 @injectable()
 class CreateProfileImageUserService {
@@ -12,7 +12,7 @@ class CreateProfileImageUserService {
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
     @inject("StorageProvider")
-    private storageProvider: IStorageProvider,
+    private storageProvider: StorageProviderInterface,
     @inject("ImagesRepository")
     private imagesRepository: ImagesRepositoryInterface,
     @inject("UserProfileImageRepository")

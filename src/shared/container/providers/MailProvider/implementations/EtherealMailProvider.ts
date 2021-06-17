@@ -4,15 +4,15 @@ import nodemailer, { Transporter } from "nodemailer";
 import { resolve } from "path";
 import { injectable } from "tsyringe";
 
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos";
 import {
   MailSubject,
   MailType,
 } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
+import { MailProviderInterface } from "@shared/container/providers/MailProvider/MailProvider.interface";
 
 @injectable()
-class EtherealMailProvider implements IMailProvider {
+export class EtherealMailProvider implements MailProviderInterface {
   private client: Transporter;
   constructor() {
     nodemailer
@@ -33,7 +33,7 @@ class EtherealMailProvider implements IMailProvider {
       .catch((err) => console.error(err));
   }
 
-  async sendMail({ to, variables, email_type }: ISendMailDTO): Promise<void> {
+  async sendMail({ to, variables, email_type }: SendMailDTO): Promise<void> {
     const templatePath = resolve(
       __dirname,
       "..",
@@ -57,5 +57,3 @@ class EtherealMailProvider implements IMailProvider {
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(message));
   }
 }
-
-export { EtherealMailProvider };

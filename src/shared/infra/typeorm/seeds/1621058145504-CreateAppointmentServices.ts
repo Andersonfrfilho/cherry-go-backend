@@ -1,7 +1,7 @@
 import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
-import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { AppointmentProviderService } from "@modules/appointments/infra/typeorm/entities/AppointmentsProvidersServices";
 
 export class CreateAppointmentServices1621058145504

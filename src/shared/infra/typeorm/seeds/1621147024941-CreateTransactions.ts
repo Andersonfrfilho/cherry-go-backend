@@ -1,6 +1,6 @@
 import { getConnection, MigrationInterface } from "typeorm";
 
-import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointments";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
 import { TransactionsFactory } from "../factories/TransactionsFactory";
 

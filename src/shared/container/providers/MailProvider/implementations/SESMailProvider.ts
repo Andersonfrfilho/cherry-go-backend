@@ -4,14 +4,14 @@ import handlebars from "handlebars";
 import nodemailer, { Transporter } from "nodemailer";
 import { resolve } from "path";
 
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos";
 import {
   MailSubject,
   MailType,
 } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
+import { MailProviderInterface } from "@shared/container/providers/MailProvider/MailProvider.interface";
 
-class SESMailProvider implements IMailProvider {
+class SESMailProvider implements MailProviderInterface {
   private client: Transporter;
 
   constructor() {
@@ -31,7 +31,7 @@ class SESMailProvider implements IMailProvider {
     }
   }
 
-  async sendMail({ to, variables, email_type }: ISendMailDTO): Promise<void> {
+  async sendMail({ to, variables, email_type }: SendMailDTO): Promise<void> {
     const templatePath = resolve(
       __dirname,
       "..",
