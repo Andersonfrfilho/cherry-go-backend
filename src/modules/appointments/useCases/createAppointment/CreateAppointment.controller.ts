@@ -13,6 +13,7 @@ class CreateAppointmentController {
       users,
       providers,
       providers_services,
+      appointment,
     } = request.body;
 
     const createAppointmentService = container.resolve(
@@ -26,6 +27,7 @@ class CreateAppointmentController {
       users,
       providers,
       providers_services,
+      appointment,
     });
 
     return response.status(HttpSuccessCodeEnum.NO_CONTENT).send();

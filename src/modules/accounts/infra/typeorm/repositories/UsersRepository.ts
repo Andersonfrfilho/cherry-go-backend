@@ -42,6 +42,9 @@ class UsersRepository implements UsersRepositoryInterface {
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
     this.repository_tag = getRepository(Tag);
   }
+  async findByIdsActive(users: Partial<User>[]): Promise<User[]> {
+    return this.repository.find({ where: { id: users, active: true } });
+  }
   async providerTypeForUser({
     user_id,
     active,

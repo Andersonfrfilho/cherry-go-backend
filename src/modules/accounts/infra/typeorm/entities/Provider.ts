@@ -67,6 +67,7 @@ class Provider {
 
   @ManyToMany(() => PaymentType, (payment_type) => payment_type.providers, {
     cascade: true,
+    eager: true,
   })
   @JoinTable({
     name: "providers_payments_types",
@@ -77,7 +78,7 @@ class Provider {
   })
   payments_types: PaymentType[];
 
-  @ManyToMany(() => Appointment, { cascade: true })
+  @ManyToMany(() => Appointment, { cascade: true, eager: true })
   @JoinTable({
     name: "appointments_providers",
     joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
@@ -87,13 +88,10 @@ class Provider {
   })
   appointments: Appointment[];
 
-  @ManyToMany(() => Service, { cascade: true, eager: true })
-  @JoinTable({
-    name: "providers_services",
-    joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "service_id", referencedColumnName: "id" }],
+  @OneToMany(() => Service, (service) => service.provider, {
+    eager: true,
   })
-  services: Service[];
+  services?: Service[];
 
   @OneToMany(() => ProviderAvailabilityDay, (day) => day.provider, {
     eager: true,
@@ -111,9 +109,7 @@ class Provider {
   @OneToMany(
     () => ProviderPaymentType,
     (payment_type) => payment_type.provider,
-    {
-      eager: true,
-    }
+    { eager: true }
   )
   payment_type: ProviderPaymentType[];
 

@@ -3,4 +3,5 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 
 export interface AppointmentsRepositoryInterface {
   create(data: CreateAppointmentRepositoryDTO): Promise<Appointment>;
+  delete(id: string): Promise<void>;
 }

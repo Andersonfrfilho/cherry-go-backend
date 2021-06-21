@@ -4,11 +4,14 @@ import { CreateAppointmentRepositoryDTO } from "@modules/appointments/dtos";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsRepository.interface";
 
-class CarsRepository implements AppointmentsRepositoryInterface {
+export class AppointmentsRepository implements AppointmentsRepositoryInterface {
   private repository: Repository<Appointment>;
 
   constructor() {
     this.repository = getRepository(Appointment);
+  }
+  async delete(id: string): Promise<void> {
+    await this.repository.delete(id);
   }
 
   async create({
@@ -16,9 +19,6 @@ class CarsRepository implements AppointmentsRepositoryInterface {
     date,
   }: CreateAppointmentRepositoryDTO): Promise<Appointment> {
     const appointment = await this.repository.save({ confirm, date });
-
     return appointment;
   }
 }
-
-export { CarsRepository };

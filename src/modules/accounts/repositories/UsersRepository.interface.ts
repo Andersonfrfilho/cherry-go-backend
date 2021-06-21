@@ -45,4 +45,5 @@ export interface UsersRepositoryInterface {
   }: CreateTagsUsersRepositoryDTO): Promise<void>;
   findByIdWithProfileImage(id: string): Promise<User>;
   providerTypeForUser(data: ProviderTypeForUserRepositoryDTO): Promise<void>;
+  findByIdsActive(users: Partial<User>[]): Promise<User[]>;
 }

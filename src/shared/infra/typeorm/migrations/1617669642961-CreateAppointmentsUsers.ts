@@ -22,7 +22,10 @@ export class CreateAppointmentsUsers1617669642961
             name: "appointment_id",
             type: "uuid",
           },
-
+          {
+            name: "active",
+            type: "boolean",
+          },
           {
             name: "created_at",
             type: "timestamp",

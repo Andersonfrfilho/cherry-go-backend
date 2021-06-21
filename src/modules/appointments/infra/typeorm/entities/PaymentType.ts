@@ -12,7 +12,7 @@ import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { PaymentTypesEnum } from "@modules/transactions/enums/PaymentTypes.enum";
 
 @Entity("payments_types")
-class PaymentType {
+export class PaymentType {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
@@ -40,5 +40,3 @@ class PaymentType {
   @DeleteDateColumn()
   deleted_at?: Date;
 }
-
-export { PaymentType };

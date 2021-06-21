@@ -9,35 +9,30 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
-@Entity("appointments_providers_services")
-export class AppointmentProviderService {
+@Entity("appointments_users")
+export class AppointmentUser {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()
-  provider_id: string;
+  user_id: string;
 
-  @ManyToOne(() => Provider)
-  @JoinColumn({ name: "provider_id" })
-  provider: Provider;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
+  user: User;
 
   @Column()
   appointment_id: string;
 
   @ManyToOne(() => Appointment)
-  @JoinColumn({ name: "appointment_id" })
+  @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
   appointment: Appointment;
 
   @Column()
-  service_id: string;
-
-  @ManyToOne(() => Service)
-  @JoinColumn({ name: "service_id" })
-  service: Service;
+  active: boolean;
 
   @CreateDateColumn()
   created_at?: Date;

@@ -16,7 +16,7 @@ import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transa
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 @Entity("appointments")
-class Appointment {
+export class Appointment {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
@@ -60,17 +60,6 @@ class Appointment {
   })
   transports?: Transport[];
 
-  @ManyToMany(() => Service)
-  @JoinTable({
-    name: "appointments_providers_services",
-    joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [
-      { name: "service_id", referencedColumnName: "id" },
-      { name: "provider_id", referencedColumnName: "id" },
-    ],
-  })
-  services_providers?: Service[];
-
   @CreateDateColumn()
   created_at?: Date;
 
@@ -80,5 +69,3 @@ class Appointment {
   @DeleteDateColumn()
   deleted_at?: Date;
 }
-
-export { Appointment };

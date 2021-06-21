@@ -26,6 +26,10 @@ export class CreateServices1617669642955 implements MigrationInterface {
             type: "bigint",
           },
           {
+            name: "provider_id",
+            type: "uuid",
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",
@@ -39,6 +43,16 @@ export class CreateServices1617669642955 implements MigrationInterface {
             name: "deleted_at",
             type: "timestamp",
             isNullable: true,
+          },
+        ],
+        foreignKeys: [
+          {
+            name: "FKProvidersServices",
+            referencedTableName: "users",
+            referencedColumnNames: ["id"],
+            columnNames: ["provider_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
           },
         ],
       })

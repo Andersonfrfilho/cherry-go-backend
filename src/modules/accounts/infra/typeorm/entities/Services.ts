@@ -5,6 +5,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -26,13 +27,10 @@ class Service {
   @Column()
   duration: number;
 
-  @ManyToMany(() => Provider)
-  @JoinTable({
-    name: "providers_services",
-    joinColumns: [{ name: "service_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
+  @ManyToOne(() => Provider, (provider) => provider.services, {
+    eager: true,
   })
-  providers?: Provider[];
+  provider?: Provider;
 
   @ManyToMany(() => Tag, { cascade: true })
   @JoinTable({

@@ -1,23 +1,20 @@
-import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  Generated,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
-@Entity("providers_services")
-class ProviderService {
-  @PrimaryColumn()
-  @Generated("uuid")
+@Entity("appointments_providers")
+export class AppointmentProvider {
+  @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()
@@ -28,26 +25,21 @@ class ProviderService {
   provider: Provider;
 
   @Column()
-  service_id: string;
+  appointment_id: string;
 
-  @ManyToOne(() => Service, { eager: true })
-  @JoinColumn({ name: "service_id", referencedColumnName: "id" })
-  service: Service;
+  @ManyToOne(() => Appointment)
+  @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
+  appointment: Appointment;
 
   @Column()
   active: boolean;
 
   @CreateDateColumn()
-  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
-  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
-  @Exclude()
   deleted_at?: Date;
 }
-
-export { ProviderService };

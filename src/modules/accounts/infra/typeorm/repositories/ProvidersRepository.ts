@@ -32,6 +32,14 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_payment_type = getRepository(PaymentType);
     this.repository_provider_payment_type = getRepository(ProviderPaymentType);
   }
+  async findByIdsActiveAndServices(
+    providers_id: Partial<Provider>[]
+  ): Promise<Provider[]> {
+    return this.repository.find({
+      where: { id: In(providers_id), active: true },
+    });
+  }
+
   async createPaymentTypesAvailable({
     payments_types,
     provider_id,
@@ -48,6 +56,7 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       }))
     );
   }
+
   async createServiceProvider({
     provider_id,
     amount,
@@ -94,7 +103,5 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
   async findById(id: string): Promise<Provider> {
     return this.repository.findOne(id);
   }
-
-  createDay;
 }
 export { ProvidersRepository };
