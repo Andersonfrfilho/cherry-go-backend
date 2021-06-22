@@ -30,6 +30,10 @@ export class CreateServices1617669642955 implements MigrationInterface {
             type: "uuid",
           },
           {
+            name: "active",
+            type: "boolean",
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

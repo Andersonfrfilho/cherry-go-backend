@@ -28,6 +28,7 @@ class CreateServiceProviderService {
       amount,
       duration,
       name,
+      active: true,
     });
   }
 }

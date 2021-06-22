@@ -1,8 +1,10 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -27,9 +29,14 @@ class Service {
   @Column()
   duration: number;
 
-  @ManyToOne(() => Provider, (provider) => provider.services, {
-    eager: true,
-  })
+  @Column()
+  active: boolean;
+
+  @Column()
+  provider_id: string;
+
+  @ManyToOne(() => Provider, (provider) => provider.services)
+  @JoinColumn({ name: "provider_id", referencedColumnName: "id" })
   provider?: Provider;
 
   @ManyToMany(() => Tag, { cascade: true })
@@ -41,12 +48,15 @@ class Service {
   tags?: Tag[];
 
   @CreateDateColumn()
+  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at?: Date;
 }
 

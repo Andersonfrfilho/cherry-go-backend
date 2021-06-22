@@ -5,6 +5,7 @@ import "@shared/container/providers";
 import { DocumentsUsersImageRepository } from "@modules/accounts/infra/typeorm/repositories/DocumentUserImageRepository";
 import { PhonesRepository } from "@modules/accounts/infra/typeorm/repositories/PhonesRepository";
 import { ProvidersRepository } from "@modules/accounts/infra/typeorm/repositories/ProvidersRepository";
+import { ServicesProvidersRepository } from "@modules/accounts/infra/typeorm/repositories/ServicesProvidersRepository";
 import { TypesUsersRepository } from "@modules/accounts/infra/typeorm/repositories/TypesUsersRepository";
 import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImageRepository";
 import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
@@ -12,6 +13,7 @@ import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositor
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/PhonesRepository.interface";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
+import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProvidersRepository.interface";
 import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/TypesUsersRepository.interface";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
@@ -80,6 +82,11 @@ container.registerSingleton<AppointmentsUsersRepositoryInterface>(
 container.registerSingleton<AppointmentsProvidersRepositoryInterface>(
   "AppointmentsProvidersRepository",
   AppointmentsProvidersRepository
+);
+
+container.registerSingleton<ServicesProvidersRepositoryInterface>(
+  "ServicesRepository",
+  ServicesProvidersRepository
 );
 
 container.registerSingleton<NotificationsRepositoryInterface>(

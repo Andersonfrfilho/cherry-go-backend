@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
+import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProvidersRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { CreateAppointmentServiceDTO } from "@modules/appointments/dtos";
 import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
@@ -21,12 +22,17 @@ export class CreateAppointmentService {
     @inject("AppointmentsUsersRepository")
     private appointmentsUsersRepository: AppointmentsUsersRepositoryInterface,
     @inject("AppointmentsProvidersRepository")
-    private appointmentsProvidersRepository: AppointmentsProvidersRepositoryInterface
+    private appointmentsProvidersRepository: AppointmentsProvidersRepositoryInterface,
+    @inject("ServicesRepository")
+    private servicesProvidersRepository: ServicesProvidersRepositoryInterface,
+    @inject("TransportsRepository")
+    private transportsRepository: TransportsRepositoryInterface
   ) {}
   async execute({
     users,
     appointment,
     providers,
+    services,
     transports,
     transactions,
   }: CreateAppointmentServiceDTO): Promise<void> {
@@ -60,11 +66,14 @@ export class CreateAppointmentService {
       active: false,
     });
 
-    const services = await providers_founds.filter((provider_found,index)=>{
-      if(provider_found.services.filter((service,index_service)=>{
-        if(service.id===providers[index].services[index_service].id)
-      }))
-    })
-    // const transport = await this.transportProvider
+    const services_providers_found = await this.servicesProvidersRepository.findByIdsActive(
+      services
+    );
+
+    if (services_providers_found.length !== services.length) {
+      throw new AppError(NOT_FOUND.SERVICE_PROVIDER_DOES_NOT_EXIST);
+    }
+
+    const transports = await this.
   }
 }

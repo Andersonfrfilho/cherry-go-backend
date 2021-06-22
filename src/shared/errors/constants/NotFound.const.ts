@@ -11,4 +11,8 @@ export const NOT_FOUND = {
     message: "Provider does not exists!",
     status_code,
   },
+  SERVICE_PROVIDER_DOES_NOT_EXIST: {
+    message: "Service this provider does not exists!",
+    status_code,
+  },
 };

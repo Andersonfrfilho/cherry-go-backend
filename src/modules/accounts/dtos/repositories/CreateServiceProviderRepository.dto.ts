@@ -3,4 +3,5 @@ export interface CreateServiceProviderRepositoryDTO {
   name: string;
   amount: number;
   duration: number;
+  active: boolean;
 }
