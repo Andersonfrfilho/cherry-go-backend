@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAddresses1617513126627 implements MigrationInterface {
+export class ProvidersTransporteAcceptType1624409789268
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "addresses",
+        name: "providers_transports_types",
         columns: [
           {
             name: "id",
@@ -14,41 +15,20 @@ export class CreateAddresses1617513126627 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "street",
-            type: "varchar",
+            name: "provider_id",
+            type: "uuid",
           },
           {
-            name: "number",
-            type: "varchar",
+            name: "transport_type_id",
+            type: "uuid",
           },
           {
-            name: "zipcode",
-            type: "varchar",
+            name: "active",
+            type: "boolean",
           },
           {
-            name: "district",
-            type: "varchar",
-          },
-          {
-            name: "city",
-            type: "varchar",
-          },
-          {
-            name: "state",
-            type: "varchar",
-          },
-          {
-            name: "country",
-            type: "varchar",
-          },
-          {
-            name: "longitude",
-            type: "varchar",
-            isNullable: true,
-          },
-          {
-            name: "latitude",
-            type: "varchar",
+            name: "amount",
+            type: "bigint",
             isNullable: true,
           },
           {
@@ -67,10 +47,22 @@ export class CreateAddresses1617513126627 implements MigrationInterface {
             isNullable: true,
           },
         ],
-        indices: [
+        foreignKeys: [
           {
-            columnNames: ["street", "number", "zipcode", "city"],
-            isUnique: true,
+            name: "FKProviderTransportsTypes",
+            referencedTableName: "users",
+            referencedColumnNames: ["id"],
+            columnNames: ["provider_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKTransportsTypesProvider",
+            referencedTableName: "transports_types",
+            referencedColumnNames: ["id"],
+            columnNames: ["transport_type_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
           },
         ],
       })
@@ -78,6 +70,6 @@ export class CreateAddresses1617513126627 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("addresses");
+    await queryRunner.dropTable("providers_transports_types");
   }
 }

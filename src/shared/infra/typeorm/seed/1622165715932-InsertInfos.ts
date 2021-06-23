@@ -12,9 +12,18 @@ export class InsertInfos1622165715932 implements MigrationInterface {
     const users_transports_types_factory = new TransportsTypesFactory();
     const payments_types_factory = new PaymentsTypesFactory();
 
-    const users_types = users_types_factory.generate({});
-    const transports_types = users_transports_types_factory.generate({});
-    const payments_types = payments_types_factory.generate({});
+    const users_types = users_types_factory.generate({
+      active: true,
+      description: null,
+    });
+    const transports_types = users_transports_types_factory.generate({
+      active: true,
+      description: null,
+    });
+    const payments_types = payments_types_factory.generate({
+      active: true,
+      description: null,
+    });
 
     await getConnection("seed").getRepository("types_users").save(users_types);
     await getConnection("seed")

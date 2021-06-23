@@ -6,13 +6,16 @@ import {
   CreateServiceProviderRepositoryDTO,
   CreateProviderTimesAvailabilityProviderDTO,
 } from "@modules/accounts/dtos";
+import { CreateTransportTypesAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTransportTypesAvailableRepository.dto";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProviderAvailabilityDay } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityDay";
 import { ProviderAvailabilityTime } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityTime";
 import { ProviderPaymentType } from "@modules/accounts/infra/typeorm/entities/ProviderPaymentType";
+import { ProviderTransportType } from "@modules/accounts/infra/typeorm/entities/ProviderTransportTypes";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
+import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
 class ProvidersRepository implements ProvidersRepositoryInterface {
   private repository: Repository<Provider>;
@@ -21,6 +24,8 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
   private repository_service: Repository<Service>;
   private repository_payment_type: Repository<PaymentType>;
   private repository_provider_payment_type: Repository<ProviderPaymentType>;
+  private repository_provider_transport_type: Repository<ProviderTransportType>;
+  private repository_transport_type: Repository<TransportType>;
   constructor() {
     this.repository = getRepository(Provider);
     this.repository_available_days = getRepository(ProviderAvailabilityDay);
@@ -28,7 +33,29 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_service = getRepository(Service);
     this.repository_payment_type = getRepository(PaymentType);
     this.repository_provider_payment_type = getRepository(ProviderPaymentType);
+    this.repository_provider_transport_type = getRepository(
+      ProviderTransportType
+    );
+    this.repository_transport_type = getRepository(TransportType);
   }
+  async createTransportTypesAvailable({
+    provider_id,
+    transport_types,
+  }: CreateTransportTypesAvailableRepositoryDTO): Promise<void> {
+    const transport_types_found = await this.repository_transport_type.find({
+      where: { name: In(transport_types), active: true },
+    });
+
+    await this.repository_provider_transport_type.save(
+      transport_types_found.map((transport_type, index) => ({
+        provider_id,
+        transport_type_id: transport_type.id,
+        active: true,
+        amount: transport_types[index].amount,
+      }))
+    );
+  }
+
   async findByIdsActiveAndServices(
     providers_id: Partial<Provider>[]
   ): Promise<Provider[]> {

@@ -12,6 +12,7 @@ import {
 
 import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
+import { ProviderTransportType } from "@modules/accounts/infra/typeorm/entities/ProviderTransportTypes";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
@@ -87,6 +88,15 @@ class Provider {
     ],
   })
   appointments: Appointment[];
+
+  @OneToMany(
+    () => ProviderTransportType,
+    (transport_types) => transport_types.provider,
+    {
+      eager: true,
+    }
+  )
+  transport_types?: ProviderTransportType[];
 
   @OneToMany(() => Service, (service) => service.provider, {
     eager: true,

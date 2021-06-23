@@ -34,3 +34,4 @@ export { CreateUserPhonesClientServiceDTO } from "@modules/accounts/dtos/service
 export { CreateTagUsersServiceDTO } from "@modules/accounts/dtos/services/CreateTagUsersService.dto";
 export { CreateUserClientServiceDTO } from "@modules/accounts/dtos/services/CreateUserClientService.dto";
 export { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/services/TermsAcceptUserService.dto";
+export { CreateProviderTransportTypesAvailabilitiesServiceDTO } from "@modules/accounts/dtos/services/CreateProviderTransportTypesAvailabilitiesService.dto";

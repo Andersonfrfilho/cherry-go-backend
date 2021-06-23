@@ -6,6 +6,8 @@ import {
 } from "@modules/accounts/dtos";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 
+import { CreateTransportTypesAvailableRepositoryDTO } from "../dtos/repositories/CreateTransportTypesAvailableRepository.dto";
+
 export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
   findByIdsActiveAndServices(
@@ -23,5 +25,8 @@ export interface ProvidersRepositoryInterface {
   ): Promise<void>;
   createPaymentTypesAvailable(
     data: CreatePaymentTypesAvailableRepositoryDTO
+  ): Promise<void>;
+  createTransportTypesAvailable(
+    data: CreateTransportTypesAvailableRepositoryDTO
   ): Promise<void>;
 }
