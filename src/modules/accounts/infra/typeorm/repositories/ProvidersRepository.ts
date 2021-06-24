@@ -5,15 +5,18 @@ import {
   CreateProviderDaysAvailabilityProviderDTO,
   CreateServiceProviderRepositoryDTO,
   CreateProviderTimesAvailabilityProviderDTO,
+  CreateAddressUsersProvidersRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { CreateTransportTypesAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTransportTypesAvailableRepository.dto";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
+import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
 import { ProviderAvailabilityDay } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityDay";
 import { ProviderAvailabilityTime } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityTime";
 import { ProviderPaymentType } from "@modules/accounts/infra/typeorm/entities/ProviderPaymentType";
 import { ProviderTransportType } from "@modules/accounts/infra/typeorm/entities/ProviderTransportTypes";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
@@ -26,6 +29,8 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
   private repository_provider_payment_type: Repository<ProviderPaymentType>;
   private repository_provider_transport_type: Repository<ProviderTransportType>;
   private repository_transport_type: Repository<TransportType>;
+  private repository_addresses: Repository<Address>;
+  private repository_provider_addresses: Repository<ProviderAddress>;
   constructor() {
     this.repository = getRepository(Provider);
     this.repository_available_days = getRepository(ProviderAvailabilityDay);
@@ -37,13 +42,49 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       ProviderTransportType
     );
     this.repository_transport_type = getRepository(TransportType);
+    this.repository_addresses = getRepository(Address);
+    this.repository_provider_addresses = getRepository(ProviderAddress);
   }
+
+  async createAddressProviders({
+    zipcode,
+    street,
+    state,
+    number,
+    longitude,
+    latitude,
+    district,
+    country,
+    city,
+    provider_id,
+  }: CreateAddressUsersProvidersRepositoryDTO): Promise<void> {
+    const { id } = await this.repository_addresses.save({
+      zipcode,
+      street,
+      state,
+      number,
+      longitude,
+      latitude,
+      district,
+      country,
+      city,
+    });
+
+    await this.repository_provider_addresses.save({
+      address_id: id,
+      provider_id,
+    });
+  }
+
   async createTransportTypesAvailable({
     provider_id,
     transport_types,
   }: CreateTransportTypesAvailableRepositoryDTO): Promise<void> {
     const transport_types_found = await this.repository_transport_type.find({
-      where: { name: In(transport_types), active: true },
+      where: {
+        name: In(transport_types.map((transport_type) => transport_type.name)),
+        active: true,
+      },
     });
 
     await this.repository_provider_transport_type.save(

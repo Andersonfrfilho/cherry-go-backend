@@ -1,3 +1,4 @@
+import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -5,11 +6,16 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
+interface Providers {
+  provider: Provider;
+  services: Partial<Service>[];
+  transports: Partial<Transport>[];
+}
+
 export interface CreateAppointmentServiceDTO {
   appointment: Appointment;
-  services: Partial<Service>[];
   transactions: Partial<Transaction>[];
-  transports: Partial<Transport>[];
+  local: Address;
   users: Partial<User>[];
-  providers: Partial<Provider>[];
+  providers: Partial<Providers>[];
 }

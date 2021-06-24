@@ -1,10 +1,10 @@
 {
   "canvas": {
-    "version": "2.0.10",
+    "version": "2.1.0",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -117.3333333333332,
-    "scrollLeft": 0,
+    "scrollTop": -119.3333333333332,
+    "scrollLeft": -99,
     "zoomLevel": 0.9,
     "show": {
       "tableComment": true,
@@ -19,11 +19,12 @@
     },
     "database": "PostgreSQL",
     "databaseName": "cherrygo",
-    "canvasType": "ERD",
+    "canvasType": "Visualization",
     "language": "GraphQL",
     "tableCase": "pascalCase",
     "columnCase": "camelCase",
     "highlightTheme": "VS2015",
+    "bracketType": "none",
     "setting": {
       "relationshipDataTypeSync": true,
       "columnOrder": [
@@ -113,29 +114,6 @@
             "id": "d3887984-b651-47f0-ae8a-42324e043432"
           },
           {
-            "name": "password_hash",
-            "comment": "",
-            "dataType": "VARCHAR",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": true
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 93,
-              "widthComment": 60,
-              "widthDataType": 65,
-              "widthDefault": 60
-            },
-            "id": "06e69307-7881-4688-837e-7583c59c3c08"
-          },
-          {
             "name": "birth_date",
             "comment": "",
             "dataType": "DATETIME",
@@ -180,6 +158,29 @@
               "widthDefault": 60
             },
             "id": "9a423a99-a3f6-47c5-889f-9361722527a6"
+          },
+          {
+            "name": "password_hash",
+            "comment": "",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 93,
+              "widthComment": 60,
+              "widthDataType": 65,
+              "widthDefault": 60
+            },
+            "id": "06e69307-7881-4688-837e-7583c59c3c08"
           },
           {
             "name": "cpf",
@@ -298,10 +299,10 @@
           }
         ],
         "ui": {
-          "active": true,
+          "active": false,
           "left": 53.666666666666686,
           "top": 170.55555555555537,
-          "zIndex": 6,
+          "zIndex": 3,
           "widthName": 60,
           "widthComment": 102
         },
@@ -523,7 +524,7 @@
           "active": false,
           "left": 686,
           "top": 190.3333333333332,
-          "zIndex": 3,
+          "zIndex": 1,
           "widthName": 60,
           "widthComment": 112
         },
@@ -572,6 +573,7 @@
           "y": 317.0833333333332,
           "direction": "left"
         },
+        "constraintName": "",
         "id": "e4ef58e2-04b9-49fe-b31c-e9c17445f461"
       }
     ]

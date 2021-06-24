@@ -1,6 +1,5 @@
 import { Kafka } from "kafkajs";
 
-import { config } from "@config/environment";
 import { QueueSendMessageDTO } from "@shared/container/providers/QueueProvider/dtos";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
 

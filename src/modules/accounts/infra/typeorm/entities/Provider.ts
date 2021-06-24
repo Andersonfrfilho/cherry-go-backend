@@ -10,13 +10,14 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { ProviderTransportType } from "@modules/accounts/infra/typeorm/entities/ProviderTransportTypes";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 
+import { ProviderAddress } from "./ProviderAddress";
 import { ProviderAvailabilityDay } from "./ProviderAvailabilityDay";
 import { ProviderAvailabilityTime } from "./ProviderAvailabilityTime";
 import { ProviderPaymentType } from "./ProviderPaymentType";
@@ -112,6 +113,15 @@ class Provider {
     eager: true,
   })
   hours?: ProviderAvailabilityTime[];
+
+  @OneToMany(
+    () => ProviderAddress,
+    (provider_address) => provider_address.provider,
+    {
+      eager: true,
+    }
+  )
+  locals?: ProviderAddress[];
 
   @OneToMany(() => UserTermsAccept, (term) => term.user, { eager: true })
   term: UserTermsAccept[];

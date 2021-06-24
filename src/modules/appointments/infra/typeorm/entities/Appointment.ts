@@ -5,15 +5,17 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
+
+import { AppointmentAddress } from "./AppointmentAddress";
 
 @Entity("appointments")
 export class Appointment {
@@ -59,6 +61,13 @@ export class Appointment {
     inverseJoinColumns: [{ name: "transport_id", referencedColumnName: "id" }],
   })
   transports?: Transport[];
+
+  @OneToMany(
+    () => AppointmentAddress,
+    (appointment_address) => appointment_address.appointment,
+    { eager: true }
+  )
+  addresses: AppointmentAddress[];
 
   @CreateDateColumn()
   created_at?: Date;

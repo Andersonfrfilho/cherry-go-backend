@@ -3,23 +3,18 @@ import { inject, injectable } from "tsyringe";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
 import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProvidersRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { AddressesRepositoryInterface } from "@modules/addresses/repositories/AddressesRepository.interface";
 import { CreateAppointmentServiceDTO } from "@modules/appointments/dtos";
-import { AppointmentsProvidersServicesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentProviderServiceRepository";
 import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
 import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsRepository.interface";
 import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersRepository.interface";
-import { TransportsRepositoryInterface } from "@modules/transports/repositories/TransportsRepository.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-export class CreateAppointmentService {
+export class CreateTransportService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
-    @inject("AddressesRepository")
-    private addressesRepository: AddressesRepositoryInterface,
     @inject("ProvidersRepository")
     private providersRepository: ProvidersRepositoryInterface,
     @inject("AppointmentsRepository")
@@ -30,8 +25,6 @@ export class CreateAppointmentService {
     private appointmentsProvidersRepository: AppointmentsProvidersRepositoryInterface,
     @inject("ServicesRepository")
     private servicesProvidersRepository: ServicesProvidersRepositoryInterface,
-    @inject("AppointmentsProvidersServicesRepository")
-    private appointmentsProvidersServicesRepository: AppointmentsProvidersServicesRepository,
     @inject("TransportsRepository")
     private transportsRepository: TransportsRepositoryInterface
   ) {}
@@ -39,16 +32,13 @@ export class CreateAppointmentService {
     users,
     appointment,
     providers,
-    local,
+    services,
+    transports,
     transactions,
   }: CreateAppointmentServiceDTO): Promise<void> {
     const appointment_created = await this.appointmentsRepository.create(
       appointment
     );
-
-    const address = await this.addressesRepository.create(local);
-
-    const address = await this.addressesRepository.create(local);
 
     const users_founds = await this.usersRepository.findByIdsActive(users);
 
@@ -63,7 +53,7 @@ export class CreateAppointmentService {
     });
 
     const providers_founds = await this.providersRepository.findByIdsActiveAndServices(
-      providers.map((provider) => provider.provider)
+      providers
     );
 
     if (providers_founds.length !== providers.length) {
@@ -76,23 +66,14 @@ export class CreateAppointmentService {
       active: false,
     });
 
-    const services_select = providers
-      .map((provider_elements) =>
-        provider_elements.services.map((service) => service)
-      )
-      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
-
     const services_providers_found = await this.servicesProvidersRepository.findByIdsActive(
-      services_select
+      services
     );
 
-    if (services_providers_found.length !== services_select.length) {
+    if (services_providers_found.length !== services.length) {
       throw new AppError(NOT_FOUND.SERVICE_PROVIDER_DOES_NOT_EXIST);
     }
 
-    await this.appointmentsProvidersServicesRepository.create({
-      appointment_id: appointment_created.id,
-      services: services_providers_found,
-    });
+    const transports = await this.
   }
 }

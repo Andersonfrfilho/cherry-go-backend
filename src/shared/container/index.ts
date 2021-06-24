@@ -18,9 +18,11 @@ import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/Ty
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
+import { AppointmentsProvidersServicesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentProviderServiceRepository";
 import { AppointmentsProvidersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsProvidersRepository";
 import { AppointmentsUsersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsersRepository";
 import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
+import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServicesRepository.interface";
 import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersRepository.interface";
 import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/ImagesRepository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
@@ -87,6 +89,11 @@ container.registerSingleton<AppointmentsProvidersRepositoryInterface>(
 container.registerSingleton<ServicesProvidersRepositoryInterface>(
   "ServicesRepository",
   ServicesProvidersRepository
+);
+
+container.registerSingleton<AppointmentsProvidersServicesRepositoryInterface>(
+  "AppointmentsProvidersServicesRepository",
+  AppointmentsProvidersServicesRepository
 );
 
 container.registerSingleton<NotificationsRepositoryInterface>(

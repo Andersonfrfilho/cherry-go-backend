@@ -35,3 +35,5 @@ export { CreateTagUsersServiceDTO } from "@modules/accounts/dtos/services/Create
 export { CreateUserClientServiceDTO } from "@modules/accounts/dtos/services/CreateUserClientService.dto";
 export { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/services/TermsAcceptUserService.dto";
 export { CreateProviderTransportTypesAvailabilitiesServiceDTO } from "@modules/accounts/dtos/services/CreateProviderTransportTypesAvailabilitiesService.dto";
+export { CreateAddressUsersProvidersServiceDTO } from "@modules/accounts/dtos/services/CreateAddressUsersProvidersService.dto";
+export { CreateAddressUsersProvidersRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateAddressUsersProvidersRepository.dto";

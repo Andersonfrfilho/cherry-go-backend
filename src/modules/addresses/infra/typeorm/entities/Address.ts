@@ -6,14 +6,15 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { AppointmentAddress } from "@modules/appointments/infra/typeorm/entities/AppointmentAddress";
 import { initialUpperCase } from "@utils/initialUppercaseTypeorm";
 import { lowercase } from "@utils/lowercaseTypeorm";
-
-import { User } from "./User";
 
 @Entity("addresses")
 class Address {
@@ -28,6 +29,12 @@ class Address {
 
   @Column()
   zipcode: string;
+
+  @Column()
+  longitude: string;
+
+  @Column()
+  latitude: string;
 
   @Column({ transformer: [lowercase] })
   district: string;
@@ -48,6 +55,12 @@ class Address {
     inverseJoinColumns: [{ name: "user_id", referencedColumnName: "id" }],
   })
   users?: User[];
+
+  @OneToMany(
+    () => AppointmentAddress,
+    (appointment_address) => appointment_address.address
+  )
+  appointments: AppointmentAddress[];
 
   @CreateDateColumn()
   @Exclude()

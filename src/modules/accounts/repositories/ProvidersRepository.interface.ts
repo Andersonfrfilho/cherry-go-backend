@@ -1,4 +1,5 @@
 import {
+  CreateAddressUsersProvidersRepositoryDTO,
   CreatePaymentTypesAvailableRepositoryDTO,
   CreateProviderDaysAvailabilityServiceDTO,
   CreateProviderTimesAvailabilityProviderDTO,
@@ -10,6 +11,9 @@ import { CreateTransportTypesAvailableRepositoryDTO } from "../dtos/repositories
 
 export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
+  createAddressProviders(
+    data: CreateAddressUsersProvidersRepositoryDTO
+  ): Promise<void>;
   findByIdsActiveAndServices(
     providers_id: Partial<Provider>[]
   ): Promise<Provider[]>;
