@@ -6,7 +6,9 @@ import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRe
 import { AddressesRepositoryInterface } from "@modules/addresses/repositories/AddressesRepository.interface";
 import { CreateAppointmentServiceDTO } from "@modules/appointments/dtos";
 import { AppointmentsProvidersServicesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentProviderServiceRepository";
+import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddressesRepository.interface";
 import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
+import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServicesRepository.interface";
 import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsRepository.interface";
 import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersRepository.interface";
 import { TransportsRepositoryInterface } from "@modules/transports/repositories/TransportsRepository.interface";
@@ -31,7 +33,9 @@ export class CreateAppointmentService {
     @inject("ServicesRepository")
     private servicesProvidersRepository: ServicesProvidersRepositoryInterface,
     @inject("AppointmentsProvidersServicesRepository")
-    private appointmentsProvidersServicesRepository: AppointmentsProvidersServicesRepository,
+    private appointmentsProvidersServicesRepository: AppointmentsProvidersServicesRepositoryInterface,
+    @inject("AppointmentsAddressesRepository")
+    private appointmentsAddressesRepository: AppointmentsAddressesRepositoryInterface,
     @inject("TransportsRepository")
     private transportsRepository: TransportsRepositoryInterface
   ) {}
@@ -48,7 +52,10 @@ export class CreateAppointmentService {
 
     const address = await this.addressesRepository.create(local);
 
-    const address = await this.addressesRepository.create(local);
+    await this.appointmentsAddressesRepository.create({
+      addresses_id: address.id,
+      appointment_id: appointment_created.id,
+    });
 
     const users_founds = await this.usersRepository.findByIdsActive(users);
 
@@ -94,5 +101,7 @@ export class CreateAppointmentService {
       appointment_id: appointment_created.id,
       services: services_providers_found,
     });
+
+    // Criar transports
   }
 }

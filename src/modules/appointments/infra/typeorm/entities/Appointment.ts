@@ -64,10 +64,10 @@ export class Appointment {
 
   @OneToMany(
     () => AppointmentAddress,
-    (appointment_address) => appointment_address.appointment,
+    (appointment_address) => appointment_address.address,
     { eager: true }
   )
-  addresses: AppointmentAddress[];
+  addresses?: AppointmentAddress[];
 
   @CreateDateColumn()
   created_at?: Date;

@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 

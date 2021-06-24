@@ -13,12 +13,12 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
 import { DocumentUserImage } from "@modules/accounts/infra/typeorm/entities/DocumentUserImage";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { UserProfileImage } from "@modules/accounts/infra/typeorm/entities/UserProfileImage";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 

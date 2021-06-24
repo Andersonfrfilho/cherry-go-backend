@@ -1,6 +1,6 @@
 import { getConnection, MigrationInterface } from "typeorm";
 
-import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { AddressesFactory } from "@shared/infra/typeorm/factories";
 

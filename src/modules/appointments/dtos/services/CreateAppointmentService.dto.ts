@@ -1,4 +1,4 @@
-import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";

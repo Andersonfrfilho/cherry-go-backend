@@ -12,7 +12,7 @@ import {
   UpdatedUserClientRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
-import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";

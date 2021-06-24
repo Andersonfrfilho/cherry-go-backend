@@ -9,8 +9,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { Address } from "./Address";
-import { User } from "./User";
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 
 @Entity("users_addresses")
 class UserAddress {

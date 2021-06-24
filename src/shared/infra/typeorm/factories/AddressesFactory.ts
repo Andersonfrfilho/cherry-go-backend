@@ -1,6 +1,6 @@
 import faker from "faker";
 
-import { Address } from "@modules/accounts/infra/typeorm/entities/Address";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
 interface ICreateUserParametersFactory
