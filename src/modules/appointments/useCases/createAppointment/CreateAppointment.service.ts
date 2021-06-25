@@ -5,7 +5,6 @@ import { ServicesProvidersRepositoryInterface } from "@modules/accounts/reposito
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
 import { AddressesRepositoryInterface } from "@modules/addresses/repositories/AddressesRepository.interface";
 import { CreateAppointmentServiceDTO } from "@modules/appointments/dtos";
-import { AppointmentsProvidersServicesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentProviderServiceRepository";
 import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddressesRepository.interface";
 import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
 import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServicesRepository.interface";
@@ -102,6 +101,48 @@ export class CreateAppointmentService {
       services: services_providers_found,
     });
 
-    // Criar transports
+    await this.transportsRepository.createAppointmentsTransport({
+      providers,
+      appointment_id: appointment.id,
+      origin_address_id: address.id,
+    });
+
+    // Soma
+    const value_service_totals = providers
+      .map((element) => element.services.map((service) => service.amount))
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+    // pegar todas criações de services transport e adicionar o total aqui
+    const value_transport_totals = providers
+      .map((element) => element.transports.map((transport) => transport.amount))
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+    // pegar os descontos
+    const discount_service_totals = providers
+      .map((element) => element.services.map((service) => service.discount))
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+
+    const discount_transport_totals = providers
+      .map((element) =>
+        element.transports.map((transport) => transport.discount)
+      )
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+
+    const increment_service_totals = providers
+      .map((element) => element.services.map((service) => service.increment))
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+
+    const increment_transport_totals = providers
+      .map((element) =>
+        element.transports.map((transport) => transport.increment)
+      )
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+
+    const original_amount = value_service_totals + value_transport_totals;
+    const discount_amount = discount_service_totals + discount_transport_totals;
   }
 }

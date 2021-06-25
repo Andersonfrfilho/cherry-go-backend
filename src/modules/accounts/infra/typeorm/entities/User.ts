@@ -21,6 +21,7 @@ import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTe
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
+import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 
 @Entity("users")
 class User {
@@ -109,6 +110,11 @@ class User {
     inverseJoinColumns: [{ name: "tag_id" }],
   })
   tags?: Tag[];
+
+  @OneToMany(() => Transaction, (transaction) => transaction.user, {
+    eager: true,
+  })
+  transactions?: Transaction[];
 
   @OneToMany(() => DocumentUserImage, (document) => document.user)
   documents?: DocumentUserImage[];

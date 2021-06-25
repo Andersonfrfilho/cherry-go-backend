@@ -4,13 +4,12 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
+import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
@@ -21,7 +20,21 @@ class Transport {
   id?: string;
 
   @Column()
-  amount: string;
+  provider_id: string;
+
+  @ManyToOne(() => Provider)
+  @JoinColumn({ name: "provider_id" })
+  provider?: Provider;
+
+  @Column()
+  appointment_id: string;
+
+  @ManyToOne(() => Appointment)
+  @JoinColumn({ name: "appointment_id" })
+  appointment?: Appointment;
+
+  @Column()
+  amount: number;
 
   @Column()
   transport_type_id?: string;
@@ -61,16 +74,6 @@ class Transport {
 
   @Column()
   return_time: Date;
-
-  @ManyToMany(() => Appointment)
-  @JoinTable({
-    name: "appointments_transports",
-    joinColumns: [{ name: "transport_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [
-      { name: "appointment_id", referencedColumnName: "id" },
-    ],
-  })
-  appointments?: Appointment[];
 
   @CreateDateColumn()
   created_at?: Date;

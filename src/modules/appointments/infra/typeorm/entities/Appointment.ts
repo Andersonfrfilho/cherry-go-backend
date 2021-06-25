@@ -44,16 +44,6 @@ export class Appointment {
   })
   providers?: Provider[];
 
-  @ManyToMany(() => Transaction)
-  @JoinTable({
-    name: "appointments_transactions",
-    joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [
-      { name: "transaction_id", referencedColumnName: "id" },
-    ],
-  })
-  transactions?: Transaction[];
-
   @ManyToMany(() => Transport)
   @JoinTable({
     name: "appointments_transports",
@@ -68,6 +58,11 @@ export class Appointment {
     { eager: true }
   )
   addresses?: AppointmentAddress[];
+
+  @OneToMany(() => Transaction, (transaction) => transaction.user, {
+    eager: true,
+  })
+  transactions?: Transaction[];
 
   @CreateDateColumn()
   created_at?: Date;

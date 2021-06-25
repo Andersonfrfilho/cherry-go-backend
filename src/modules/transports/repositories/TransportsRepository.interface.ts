@@ -1,7 +1,13 @@
-import { CreateAppointmentProvidersRepositoryDTO } from "@modules/appointments/dtos";
-import { AppointmentUser } from "@modules/appointments/infra/typeorm/entities/AppointmentUser";
+import {
+  CreateAppointmentsTransportsRepositoryDTO,
+  CreateTransportsRepositoryDTO,
+} from "@modules/transports/dtos";
+import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 export interface TransportsRepositoryInterface {
-  create(data: CreateTransportsRepositoryDTO): Promise<AppointmentProvider[]>;
-  findById(id: string): Promise<void>;
+  create(data: CreateTransportsRepositoryDTO): Promise<Transport>;
+  createAppointmentsTransport(
+    data: CreateAppointmentsTransportsRepositoryDTO
+  ): Promise<void>;
+  findById(id: string): Promise<Transport>;
 }

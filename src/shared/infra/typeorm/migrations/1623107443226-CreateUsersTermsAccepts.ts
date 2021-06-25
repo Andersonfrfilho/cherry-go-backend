@@ -54,6 +54,6 @@ export class CreateUsersTermsAccepts1623107443226
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointments_transactions");
+    await queryRunner.dropTable("users_terms_accepts");
   }
 }

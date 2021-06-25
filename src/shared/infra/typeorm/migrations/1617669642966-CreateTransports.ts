@@ -14,12 +14,21 @@ export class CreateTransports1617669642966 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "transport_type_id",
+            name: "amount",
+            type: "bigint",
+          },
+
+          {
+            name: "provider_id",
             type: "uuid",
           },
           {
-            name: "amount",
-            type: "varchar",
+            name: "appointment_id",
+            type: "uuid",
+          },
+          {
+            name: "transport_type_id",
+            type: "uuid",
           },
           {
             name: "origin_address_id",
@@ -76,7 +85,23 @@ export class CreateTransports1617669642966 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKTypesTransports",
+            name: "FKTransportsAppointmentProviderTypes",
+            referencedTableName: "appointments",
+            referencedColumnNames: ["id"],
+            columnNames: ["appointment_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKTransportsProviderTypesAppointment",
+            referencedTableName: "users",
+            referencedColumnNames: ["id"],
+            columnNames: ["provider_id"],
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
+          },
+          {
+            name: "FKTransportsTypesProviderAppointment",
             referencedTableName: "transports_types",
             referencedColumnNames: ["id"],
             columnNames: ["transport_type_id"],

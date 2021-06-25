@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAppointmentsTransactions1617669642970
-  implements MigrationInterface {
+export class CreateTransactionItens1624658067863 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointments_transactions",
+        name: "transactions_itens",
         columns: [
           {
             name: "id",
@@ -15,12 +14,37 @@ export class CreateAppointmentsTransactions1617669642970
             default: "uuid_generate_v4()",
           },
           {
-            name: "appointment_id",
+            name: "transaction_id",
             type: "uuid",
           },
           {
-            name: "transaction_id",
+            name: "elements",
+            type: "jsonb",
+            isNullable: true,
+          },
+          {
+            name: "reference_key",
             type: "uuid",
+          },
+          {
+            name: "type",
+            type: "varchar",
+            isNullable: true,
+          },
+          {
+            name: "increment_amount",
+            type: "bigint",
+            isNullable: true,
+          },
+          {
+            name: "discount_amount",
+            type: "bigint",
+            isNullable: true,
+          },
+          {
+            name: "value",
+            type: "bigint",
+            isNullable: true,
           },
           {
             name: "created_at",
@@ -40,20 +64,12 @@ export class CreateAppointmentsTransactions1617669642970
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentPayment",
-            referencedTableName: "appointments",
-            referencedColumnNames: ["id"],
-            columnNames: ["appointment_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
-          },
-          {
-            name: "FKPaymentAppointment",
+            name: "FKTransactionsItens",
             referencedTableName: "transactions",
             referencedColumnNames: ["id"],
             columnNames: ["transaction_id"],
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
+            onDelete: "SET NULL",
+            onUpdate: "SET NULL",
           },
         ],
       })
@@ -61,6 +77,6 @@ export class CreateAppointmentsTransactions1617669642970
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointments_transactions");
+    await queryRunner.dropTable("transactions_itens");
   }
 }

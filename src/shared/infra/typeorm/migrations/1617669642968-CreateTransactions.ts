@@ -15,19 +15,31 @@ export class CreateTransactions1617669642968 implements MigrationInterface {
           },
           {
             name: "current_amount",
-            type: "varchar",
+            type: "bigint",
+            default: 0,
           },
           {
             name: "original_amount",
-            type: "varchar",
+            type: "bigint",
+            default: 0,
           },
           {
             name: "increment_amount",
-            type: "varchar",
+            type: "bigint",
+            default: 0,
           },
           {
             name: "discount_amount",
-            type: "varchar",
+            type: "bigint",
+            default: 0,
+          },
+          {
+            name: "appointment_id",
+            type: "uuid",
+          },
+          {
+            name: "user_id",
+            type: "uuid",
           },
           {
             name: "status",
@@ -47,6 +59,24 @@ export class CreateTransactions1617669642968 implements MigrationInterface {
             name: "deleted_at",
             type: "timestamp",
             isNullable: true,
+          },
+        ],
+        foreignKeys: [
+          {
+            name: "FKAppointmentUsersTransactions",
+            referencedTableName: "appointments",
+            referencedColumnNames: ["id"],
+            columnNames: ["appointment_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+          },
+          {
+            name: "FKUsersTransactionsAppointment",
+            referencedTableName: "transactions",
+            referencedColumnNames: ["id"],
+            columnNames: ["user_id"],
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
           },
         ],
       })

@@ -32,6 +32,8 @@ import { NotificationsRepository } from "@modules/notifications/infra/typeorm/re
 import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/NotificationsRepository.interface";
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/TagsRepository";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/TagsRepository.interface";
+import { TransportsRepository } from "@modules/transports/infra/typeorm/repositories/TransportsRepository";
+import { TransportsRepositoryInterface } from "@modules/transports/repositories/TransportsRepository.interface";
 
 container.registerSingleton<ProvidersRepositoryInterface>(
   "ProvidersRepository",
@@ -96,6 +98,11 @@ container.registerSingleton<AppointmentsAddressesRepositoryInterface>(
 container.registerSingleton<ServicesProvidersRepositoryInterface>(
   "ServicesRepository",
   ServicesProvidersRepository
+);
+
+container.registerSingleton<TransportsRepositoryInterface>(
+  "TransportsRepository",
+  TransportsRepository
 );
 
 container.registerSingleton<AppointmentsProvidersServicesRepositoryInterface>(
