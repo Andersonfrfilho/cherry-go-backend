@@ -51,7 +51,6 @@ export class CreateAppointmentService {
     appointment,
     providers,
     local,
-    transactions,
   }: CreateAppointmentServiceDTO): Promise<void> {
     const appointment_created = await this.appointmentsRepository.create(
       appointment
@@ -215,6 +214,5 @@ export class CreateAppointmentService {
         transaction_id: transaction.id,
       }
     );
-    await this.
   }
 }
