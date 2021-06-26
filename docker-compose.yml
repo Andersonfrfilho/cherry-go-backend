@@ -16,21 +16,6 @@ services:
     volumes:
       - pgdata:/data/postgres
 
-  database_postgres_test:
-    image: postgres
-    container_name: database_pg_test
-    restart: always
-    ports:
-      - 5434:5432
-    env_file:
-      - .env
-    environment:
-      # - POSTGRES_USER==${POSTGRES_USER}
-      # - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB_TEST}
-    volumes:
-      - pgdata:/data/postgres
-
   database-mongo:
     image: mongo
     container_name: database_mongo
@@ -39,7 +24,7 @@ services:
     volumes:
       - pgmongo:/data/mongo
 
-  database-redis:
+  database_redis:
     image: redis:alpine
     container_name: database_redis
     ports:

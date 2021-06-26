@@ -9,7 +9,10 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
+import { ItensTypesTransactions } from "@modules/transactions/enums/ItensTypesTransactions.enum";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
+import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 @Entity("transactions_itens")
 export class TransactionItem {
@@ -20,13 +23,13 @@ export class TransactionItem {
   transaction_id: string;
 
   @Column({ type: "jsonb" })
-  elements?: any; // TODO: ajustar o tipo
+  elements?: Partial<Service | Transport>;
 
   @Column()
   reference_key?: string;
 
-  @Column()
-  type: string; // TODO::ajustar tipo
+  @Column({ type: "enum", enum: ItensTypesTransactions })
+  type: string;
 
   @Column()
   increment_amount: number;

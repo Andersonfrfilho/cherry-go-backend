@@ -42,7 +42,7 @@ export class CreateTransactionItens1624658067863 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: "value",
+            name: "amount",
             type: "bigint",
             isNullable: true,
           },

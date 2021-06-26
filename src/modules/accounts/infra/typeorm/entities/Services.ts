@@ -16,7 +16,7 @@ import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 @Entity("services")
-class Service {
+export class Service {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
@@ -59,5 +59,3 @@ class Service {
   @Exclude()
   deleted_at?: Date;
 }
-
-export { Service };

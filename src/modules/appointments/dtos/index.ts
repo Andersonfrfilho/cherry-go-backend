@@ -6,3 +6,4 @@ export { CreateAppointmentProvidersServiceRepositoryDTO } from "@modules/appoint
 export { CreateAppointmentsAddressesRepositoryDTO } from "@modules/appointments/dtos/repositories/CreateAppointmentsAddressesRepository.dto";
 export { CreateAppointmentsUsersTransactionsRepositoryDTO } from "@modules/appointments/dtos/repositories/CreateAppointmentsUsersTransactionsRepository.dto";
 export { UpdatedAppointmentsUsersTransactionsRepositoryDTO } from "@modules/appointments/dtos/repositories/UpdatedAppointmentsUsersTransactionsRepository.dto";
+export { CreateAppointmentTransactionsItensRepositoryDTO } from "@modules/appointments/dtos/repositories/CreateAppointmentTransactionsItensRepository.dto";
