@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
-import { ItensTypesTransactions } from "@modules/transactions/enums/ItensTypesTransactions.enum";
+import { ItensTypesTransactionsEnum } from "@modules/transactions/enums/ItensTypesTransactions.enum";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
@@ -28,7 +28,7 @@ export class TransactionItem {
   @Column()
   reference_key?: string;
 
-  @Column({ type: "enum", enum: ItensTypesTransactions })
+  @Column({ type: "enum", enum: ItensTypesTransactionsEnum })
   type: string;
 
   @Column()

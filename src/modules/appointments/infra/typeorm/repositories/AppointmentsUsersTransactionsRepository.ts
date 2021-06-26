@@ -18,8 +18,8 @@ export class AppointmentsUsersTransactionsRepository
     appointment_id,
     user_id,
     status,
-  }: CreateAppointmentsUsersTransactionsRepositoryDTO): Promise<void> {
-    this.repository.save({
+  }: CreateAppointmentsUsersTransactionsRepositoryDTO): Promise<Transaction> {
+    return this.repository.save({
       appointment_id,
       user_id,
       status,

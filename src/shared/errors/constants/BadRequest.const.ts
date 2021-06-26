@@ -11,4 +11,8 @@ export const BAD_REQUEST = {
     message: "Provider does not exist!",
     status_code,
   },
+  TRANSACTION_INVALID: {
+    message: "Transaction Invalid!",
+    status_code,
+  },
 };

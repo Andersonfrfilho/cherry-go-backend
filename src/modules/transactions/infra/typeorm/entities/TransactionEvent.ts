@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
+import { StatusEventsTransactionsEnum } from "@modules/transactions/enums";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 
 @Entity("transactions_events")
@@ -19,7 +20,7 @@ class TransactionEvent {
   id?: string;
 
   @Column()
-  amount: string;
+  amount: number;
 
   @Column()
   transaction_id?: string;
@@ -27,7 +28,7 @@ class TransactionEvent {
   @Column()
   payment_type_id?: string;
 
-  @Column()
+  @Column({ type: "enum", enum: StatusEventsTransactionsEnum })
   status: string;
 
   @Column()

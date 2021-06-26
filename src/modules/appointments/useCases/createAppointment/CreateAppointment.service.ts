@@ -10,9 +10,13 @@ import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/
 import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServicesRepository.interface";
 import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsRepository.interface";
 import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersRepository.interface";
+import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactionsRepository.interface";
+import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItensRepository.interface";
+import { ItensTypesTransactionsEnum } from "@modules/transactions/enums/ItensTypesTransactions.enum";
+import { StatusTransactionsEnum } from "@modules/transactions/enums/StatusTransactionsEvents.enums";
 import { TransportsRepositoryInterface } from "@modules/transports/repositories/TransportsRepository.interface";
 import { AppError } from "@shared/errors/AppError";
-import { NOT_FOUND } from "@shared/errors/constants";
+import { BAD_REQUEST, NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
 export class CreateAppointmentService {
@@ -36,7 +40,11 @@ export class CreateAppointmentService {
     @inject("AppointmentsAddressesRepository")
     private appointmentsAddressesRepository: AppointmentsAddressesRepositoryInterface,
     @inject("TransportsRepository")
-    private transportsRepository: TransportsRepositoryInterface
+    private transportsRepository: TransportsRepositoryInterface,
+    @inject("AppointmentsUsersTransactionsRepository")
+    private appointmentsUsersTransactionsRepository: AppointmentsUsersTransactionsRepositoryInterface,
+    @inject("AppointmentTransactionsItensRepository")
+    private appointmentTransactionsItensRepository: AppointmentTransactionsItensRepositoryInterface
   ) {}
   async execute({
     users,
@@ -107,42 +115,106 @@ export class CreateAppointmentService {
       origin_address_id: address.id,
     });
 
+    const transaction = await this.appointmentsUsersTransactionsRepository.createAppointmentsUsersTransactions(
+      {
+        appointment_id: appointment_created.id,
+        user_id: users_founds[0].id,
+        status: StatusTransactionsEnum.PROGRESS,
+      }
+    );
+
     // Soma
-    const value_service_totals = providers
-      .map((element) => element.services.map((service) => service.amount))
+    const service_itens = providers
+      .map((provider) =>
+        provider.services.map((service) => ({
+          transaction_id: transaction.id,
+          elements: service,
+          reference_key: service.id,
+          type: ItensTypesTransactionsEnum.SERVICE,
+          increment_amount: service.increment_amount,
+          discount_amount: service.discount_amount,
+          amount: service.amount,
+        }))
+      )
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
+
+    const transport_itens = providers
+      .map((provider) =>
+        provider.transports.map((transport) => ({
+          transaction_id: transaction.id,
+          elements: transport,
+          reference_key: transport.id,
+          type: ItensTypesTransactionsEnum.TRANSPORT,
+          increment_amount: transport.increment_amount,
+          discount_amount: transport.discount_amount,
+          amount: transport.amount,
+        }))
+      )
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
+
+    const itens_transactions = [...service_itens, ...transport_itens];
+
+    await this.appointmentTransactionsItensRepository.createAppointmentsTransactionsItens(
+      itens_transactions
+    );
+
+    const amount_services_totals = providers
+      .map((provider) => provider.services.map((service) => service.amount))
       .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
       .reduce((accumulator, currentValue) => accumulator + currentValue);
-    // pegar todas criações de services transport e adicionar o total aqui
-    const value_transport_totals = providers
-      .map((element) => element.transports.map((transport) => transport.amount))
+
+    const amount_transports_totals = providers
+      .map((provider) =>
+        provider.transports.map((transport) => transport.amount)
+      )
       .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
       .reduce((accumulator, currentValue) => accumulator + currentValue);
     // pegar os descontos
     const discount_service_totals = providers
-      .map((element) => element.services.map((service) => service.discount))
+      .map((provider) =>
+        provider.services.map((service) => service.discount_amount)
+      )
       .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
       .reduce((accumulator, currentValue) => accumulator + currentValue);
 
     const discount_transport_totals = providers
-      .map((element) =>
-        element.transports.map((transport) => transport.discount)
+      .map((provider) =>
+        provider.transports.map((transport) => transport.discount_amount)
       )
       .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
       .reduce((accumulator, currentValue) => accumulator + currentValue);
 
     const increment_service_totals = providers
-      .map((element) => element.services.map((service) => service.increment))
-      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
-      .reduce((accumulator, currentValue) => accumulator + currentValue);
-
-    const increment_transport_totals = providers
-      .map((element) =>
-        element.transports.map((transport) => transport.increment)
+      .map((provider) =>
+        provider.services.map((service) => service.increment_amount)
       )
       .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
       .reduce((accumulator, currentValue) => accumulator + currentValue);
 
-    const original_amount = value_service_totals + value_transport_totals;
+    const increment_transport_totals = providers
+      .map((provider) =>
+        provider.transports.map((transport) => transport.increment_amount)
+      )
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue])
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+
+    const original_amount = amount_services_totals + amount_transports_totals;
     const discount_amount = discount_service_totals + discount_transport_totals;
+    const increment_amount =
+      increment_service_totals + increment_transport_totals;
+    const current_amount = original_amount + increment_amount - discount_amount;
+    if (current_amount < 0) {
+      throw new AppError(BAD_REQUEST.TRANSACTION_INVALID);
+    }
+    await this.appointmentsUsersTransactionsRepository.updatedAppointmentsUsersTransactions(
+      {
+        current_amount,
+        discount_amount,
+        increment_amount,
+        original_amount,
+        transaction_id: transaction.id,
+      }
+    );
+    await this.
   }
 }

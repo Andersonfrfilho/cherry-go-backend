@@ -7,11 +7,13 @@ import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transa
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 interface ServiceDiscount extends Service {
-  discount: number;
+  discount_amount: number;
+  increment_amount: number;
 }
 
 interface TransportDiscount extends Transport {
-  discount: number;
+  discount_amount: number;
+  increment_amount: number;
 }
 export interface CreateAppointmentProviders {
   provider: Provider;

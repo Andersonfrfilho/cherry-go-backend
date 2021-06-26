@@ -22,10 +22,14 @@ import { AppointmentsProvidersServicesRepository } from "@modules/appointments/i
 import { AppointmentsAddressesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsAddressesRepository";
 import { AppointmentsProvidersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsProvidersRepository";
 import { AppointmentsUsersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsersRepository";
+import { AppointmentsUsersTransactionsRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsersTransactionsRepository";
+import { AppointmentTransactionsItensRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentTransactionsItensRepository";
 import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddressesRepository.interface";
 import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
 import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServicesRepository.interface";
 import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersRepository.interface";
+import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactionsRepository.interface";
+import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItensRepository.interface";
 import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/ImagesRepository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
@@ -103,6 +107,16 @@ container.registerSingleton<ServicesProvidersRepositoryInterface>(
 container.registerSingleton<TransportsRepositoryInterface>(
   "TransportsRepository",
   TransportsRepository
+);
+
+container.registerSingleton<AppointmentsUsersTransactionsRepositoryInterface>(
+  "AppointmentsUsersTransactionsRepository",
+  AppointmentsUsersTransactionsRepository
+);
+
+container.registerSingleton<AppointmentTransactionsItensRepositoryInterface>(
+  "AppointmentTransactionsItensRepository",
+  AppointmentTransactionsItensRepository
 );
 
 container.registerSingleton<AppointmentsProvidersServicesRepositoryInterface>(

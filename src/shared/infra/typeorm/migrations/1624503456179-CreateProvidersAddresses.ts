@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class UsersTags1623119954157 implements MigrationInterface {
+export class CreateProvidersAddresses1624503456179
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "users_tags",
+        name: "providers_addresses",
         columns: [
           {
             name: "id",
@@ -14,12 +15,21 @@ export class UsersTags1623119954157 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "tag_id",
+            name: "provider_id",
             type: "uuid",
           },
           {
-            name: "user_id",
+            name: "address_id",
             type: "uuid",
+          },
+          {
+            name: "active",
+            type: "boolean",
+          },
+          {
+            name: "amount",
+            type: "bigint",
+            isNullable: true,
           },
           {
             name: "created_at",
@@ -39,18 +49,18 @@ export class UsersTags1623119954157 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKTagsServices",
-            referencedTableName: "tags",
+            name: "FKProvidersAddresses",
+            referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["tag_id"],
+            columnNames: ["provider_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
           {
-            name: "FKUsersTags",
-            referencedTableName: "users",
+            name: "FKAddressesProviders",
+            referencedTableName: "addresses",
             referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
+            columnNames: ["address_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -60,6 +70,6 @@ export class UsersTags1623119954157 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("users_tags");
+    await queryRunner.dropTable("providers_addresses");
   }
 }

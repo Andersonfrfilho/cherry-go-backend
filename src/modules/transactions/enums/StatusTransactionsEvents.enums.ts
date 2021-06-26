@@ -1,11 +1,11 @@
-export enum StatusTransactions {
+export enum StatusTransactionsEnum {
   PROGRESS = "progress",
   FINISHED = "finished",
   CANCELED = "canceled",
   REFUNDS = "refunds",
 }
 
-export enum StatusEventsTransactions {
+export enum StatusEventsTransactionsEnum {
   PAYMENT = "payment",
   REFUND = "refund",
   PARTIAL = "partial",

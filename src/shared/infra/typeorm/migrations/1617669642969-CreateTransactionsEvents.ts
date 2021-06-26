@@ -24,11 +24,12 @@ export class CreateTransactionsEvents1617669642969
           },
           {
             name: "amount",
-            type: "varchar",
+            type: "bigint",
           },
           {
             name: "payment_type_id",
             type: "uuid",
+            isNullable: true,
           },
           {
             name: "details",

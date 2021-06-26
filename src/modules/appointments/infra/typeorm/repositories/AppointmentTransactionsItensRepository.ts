@@ -1,22 +1,20 @@
 import { getRepository, Repository } from "typeorm";
 
-import {
-  CreateAppointmentsUsersTransactionsRepositoryDTO,
-  UpdatedAppointmentsUsersTransactionsRepositoryDTO,
-} from "@modules/appointments/dtos";
+import { CreateAppointmentTransactionsItensRepositoryDTO } from "@modules/appointments/dtos";
 import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItensRepository.interface";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
+import { TransactionItem } from "@modules/transactions/infra/typeorm/entities/TransactionItem";
 
 export class AppointmentTransactionsItensRepository
   implements AppointmentTransactionsItensRepositoryInterface {
-  private repository: Repository<Transaction>;
+  private repository: Repository<TransactionItem>;
 
   constructor() {
-    this.repository = getRepository(Transaction);
+    this.repository = getRepository(TransactionItem);
   }
-  createAppointmentsTransactionsItens(
-    data: CreateAppointmentsUsersTransactionsRepositoryDTO[]
+  async createAppointmentsTransactionsItens(
+    transaction_items: CreateAppointmentTransactionsItensRepositoryDTO[]
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    await this.repository.save(transaction_items);
   }
 }

@@ -1,7 +1,7 @@
-import { CreateAppointmentsUsersTransactionsRepositoryDTO } from "@modules/appointments/dtos";
+import { CreateAppointmentTransactionsItensRepositoryDTO } from "@modules/appointments/dtos";
 
 export interface AppointmentTransactionsItensRepositoryInterface {
   createAppointmentsTransactionsItens(
-    data: CreateAppointmentsUsersTransactionsRepositoryDTO[]
+    data: CreateAppointmentTransactionsItensRepositoryDTO[]
   ): Promise<void>;
 }

@@ -1,11 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class ProvidersTransporteAcceptType1624409789268
-  implements MigrationInterface {
+export class CreateUsersTags1623119954157 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "providers_transports_types",
+        name: "users_tags",
         columns: [
           {
             name: "id",
@@ -15,21 +14,12 @@ export class ProvidersTransporteAcceptType1624409789268
             default: "uuid_generate_v4()",
           },
           {
-            name: "provider_id",
+            name: "tag_id",
             type: "uuid",
           },
           {
-            name: "transport_type_id",
+            name: "user_id",
             type: "uuid",
-          },
-          {
-            name: "active",
-            type: "boolean",
-          },
-          {
-            name: "amount",
-            type: "bigint",
-            isNullable: true,
           },
           {
             name: "created_at",
@@ -49,18 +39,18 @@ export class ProvidersTransporteAcceptType1624409789268
         ],
         foreignKeys: [
           {
-            name: "FKProviderTransportsTypes",
-            referencedTableName: "users",
+            name: "FKTagsServices",
+            referencedTableName: "tags",
             referencedColumnNames: ["id"],
-            columnNames: ["provider_id"],
+            columnNames: ["tag_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
           {
-            name: "FKTransportsTypesProvider",
-            referencedTableName: "transports_types",
+            name: "FKUsersTags",
+            referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["transport_type_id"],
+            columnNames: ["user_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -70,6 +60,6 @@ export class ProvidersTransporteAcceptType1624409789268
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("providers_transports_types");
+    await queryRunner.dropTable("users_tags");
   }
 }
