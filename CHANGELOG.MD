@@ -12,3 +12,9 @@ https://pigment.shapefactory.co/?d=3&a=BF4874&b=EDFFFF
 Database diagram
 
 https://dbdiagram.io/d/604a358bfcdcb6230b23b25c
+
+//arrumar os seeds
+//fazer os testes
+//fazer os testes de integração
+//fazer a documentação
+//iniciar o bff
