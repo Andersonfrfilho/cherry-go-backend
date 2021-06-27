@@ -1,7 +1,7 @@
 import { getConnection, MigrationInterface } from "typeorm";
 
-import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { AddressesFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateAddresses1620612729413 implements MigrationInterface {

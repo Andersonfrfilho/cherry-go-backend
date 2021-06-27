@@ -11,26 +11,24 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
       .getRepository("users")
       .find()) as User[];
 
-    // const users_types_factory = new UsersTypesFactory();
-
-    // const types = users_types_factory.generate();
-
-    // await getConnection("seeds").getRepository("types_users").save(types);
-
     const types_list = (await getConnection("seeds")
       .getRepository("types_users")
       .find()) as TypeUser[];
 
-    const relationship_users_types = users
-      .map((user) =>
-        Array.from({
-          length: faker.datatype.number({ min: 1, max: types_list.length }),
-        }).map((_, index) => ({
-          user_type_id: types_list[index].id,
-          user_id: user.id,
-        }))
-      )
-      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
+    const groups = Math.trunc(users.length / types_list.length);
+
+    for(let i=0;i<types_users.length;i++){
+      let array_send=[]
+      for(let j=0;j<users.length;j++){
+        if(j<number_groups){
+          array_send.push(users[j+(i*number_groups)])
+        }
+        if(users.length%types_users.length!=0&&i==types_users.length-1&&j==users.length-1){
+          array_send.push(users[users.length-1])
+        }
+      }
+      array.push(array_send)
+    }
 
     await getConnection("seeds")
       .getRepository("users_types_users")
