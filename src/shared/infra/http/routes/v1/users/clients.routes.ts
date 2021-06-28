@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { ActiveUserClientController } from "@modules/accounts/useCases/activeAccount/ActiveAccount.controller";
-import { schemaActiveUser } from "@modules/accounts/useCases/activeAccount/ActiveAccount.schema";
+import { schemaActiveUser } from "@modules/accounts/useCases/activeAccount/activeAccount.schema";
 import { CreateUserAddressClientController } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.controller";
 import { schemaCreateUserAddressClient } from "@modules/accounts/useCases/createAddressUserClient/createUserAddressClient.schema";
 import { schemaCreateUserPhoneClient } from "@modules/accounts/useCases/createPhonesUserClient/createUserPhoneClient.schema";
