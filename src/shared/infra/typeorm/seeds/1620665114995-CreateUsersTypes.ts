@@ -1,9 +1,7 @@
-import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { UsersTypesFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateUsersTypes1620665114995 implements MigrationInterface {
   public async up(): Promise<void> {
@@ -11,27 +9,45 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
       .getRepository("users")
       .find()) as User[];
 
-    // const users_types_factory = new UsersTypesFactory();
-
-    // const types = users_types_factory.generate();
-
-    // await getConnection("seeds").getRepository("types_users").save(types);
-
-    const types_list = (await getConnection("seeds")
+    const users_types = (await getConnection("seeds")
       .getRepository("types_users")
       .find()) as TypeUser[];
 
-    const relationship_users_types = users
-      .map((user) =>
-        Array.from({
-          length: faker.datatype.number({ min: 1, max: types_list.length }),
-        }).map((_, index) => ({
-          user_type_id: types_list[index].id,
-          user_id: user.id,
-        }))
-      )
-      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
+    const number_groups = Math.trunc(users.length / users_types.length);
 
+    const connects = [];
+
+    for (
+      let index_type_user = 0;
+      index_type_user < users_types.length;
+      index_type_user += 1
+    ) {
+      const array_send = [];
+      for (let index_user = 0; index_user < users.length; index_user += 1) {
+        if (index_user < number_groups) {
+          array_send.push({
+            user_id: users[index_user + index_type_user * number_groups],
+            user_type_id: users_types[index_type_user].id,
+            active: true,
+          });
+        }
+        if (
+          users.length % users_types.length !== 0 &&
+          index_type_user === users_types.length - 1 &&
+          index_user === users.length - 1
+        ) {
+          array_send.push({
+            user_id: users[users.length - 1].id,
+            user_type_id: users_types[index_type_user].id,
+            active: true,
+          });
+        }
+      }
+      connects.push(array_send);
+    }
+    const relationship_users_types = connects.reduce(
+      (accumulator, currentValue) => [...accumulator, ...currentValue]
+    );
     await getConnection("seeds")
       .getRepository("users_types_users")
       .save(relationship_users_types);
@@ -39,6 +55,5 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
 
   public async down(): Promise<void> {
     await getConnection("seeds").getRepository("users_types_users").delete({});
-    await getConnection("seeds").getRepository("types_users").delete({});
   }
 }

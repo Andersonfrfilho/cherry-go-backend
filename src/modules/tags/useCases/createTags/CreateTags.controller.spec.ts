@@ -1,5 +1,3 @@
-describe("CreateTagsController", () => {
-  it("Should be able to authenticated user", async () => {
-    expect(true).toBe(true);
-  });
+test("adds 1 + 2 to equal 3", () => {
+  expect(1 + 2).toBe(3);
 });
