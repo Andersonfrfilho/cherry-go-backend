@@ -1,23 +1,10 @@
-import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { PaymentsTypesFactory } from "@shared/infra/typeorm/factories";
+import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 
 export class CreatePaymentTypes1620675129709 implements MigrationInterface {
   public async up(): Promise<void> {
-    const payment_types_factory = new PaymentsTypesFactory();
-
-    const payment_types = payment_types_factory.generate();
-
-    await getConnection("seeds")
-      .getRepository("payments_types")
-      .save(payment_types);
-
-    const payments_types_list = await getConnection("seeds")
-      .getRepository("payments_types")
-      .find();
-
     const providers = await getConnection("seeds")
       .getRepository(Provider)
       .createQueryBuilder("users")
@@ -29,19 +16,65 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
       )
       .getMany();
 
-    const relationship_providers_payments_types = providers.map((provider) => ({
-      ...provider,
-      payments_types: Array.from({
-        length: faker.datatype.number({
-          min: 1,
-          max: payments_types_list.length,
-        }),
-      }).map((_, index) => payments_types_list[index]),
-    }));
+    const payments_types_list = (await getConnection("seeds")
+      .getRepository("payments_types")
+      .find()) as PaymentType[];
+
+    let related = 0;
+
+    const related_array = [];
+
+    while (related < providers.length) {
+      let related_types = 0;
+      while (related_types < payments_types_list.length) {
+        if (
+          related <=
+          payments_types_list.length * payments_types_list.length
+        ) {
+          related_array.push({
+            provider_id: providers[related].id,
+            payment_type_id: payments_types_list[related_types].id,
+            active: true,
+          });
+          related += 1;
+        }
+        if (
+          related > payments_types_list.length * payments_types_list.length &&
+          related <=
+            payments_types_list.length * payments_types_list.length +
+              payments_types_list.length
+        ) {
+          const data = payments_types_list
+            .filter((_, index) => index !== payments_types_list.length - 1)
+            .map((payment_type_list) => ({
+              provider_id: providers[related].id,
+              payment_type_id: payment_type_list[related_types].id,
+              active: true,
+            }));
+          related_array.push(...data);
+          related += 1;
+        }
+        if (
+          related < providers.length &&
+          related >
+            payments_types_list.length * payments_types_list.length +
+              payments_types_list.length
+        ) {
+          const data = payments_types_list.map((payment_type_list) => ({
+            provider_id: providers[related].id,
+            payment_type_id: payment_type_list[related_types].id,
+            active: true,
+          }));
+          related_array.push(...data);
+          related += 1;
+        }
+        related_types += 1;
+      }
+    }
 
     await getConnection("seeds")
-      .getRepository(Provider)
-      .save(relationship_providers_payments_types);
+      .getRepository("providers_payments_types")
+      .save(related_array);
   }
 
   public async down(): Promise<void> {

@@ -13,47 +13,57 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
       .getRepository("types_users")
       .find()) as TypeUser[];
 
-    const number_groups = Math.trunc(users.length / users_types.length);
-
-    const connects = [];
-
-    for (
-      let index_type_user = 0;
-      index_type_user < users_types.length;
-      index_type_user += 1
-    ) {
-      const array_send = [];
-      for (let index_user = 0; index_user < users.length; index_user += 1) {
-        if (index_user < number_groups) {
-          array_send.push({
-            user_id: users[index_user + index_type_user * number_groups],
-            user_type_id: users_types[index_type_user].id,
+    let related = 0;
+    const related_array = [];
+    while (related < users.length && users_types.length !== 0) {
+      let related_types = 0;
+      while (related_types < users_types.length) {
+        if (related <= users_types.length * users_types.length) {
+          related_array.push({
+            user_id: users[related].id,
+            user_type_id: users_types[related_types].id,
             active: true,
           });
+          related += 1;
         }
         if (
-          users.length % users_types.length !== 0 &&
-          index_type_user === users_types.length - 1 &&
-          index_user === users.length - 1
+          related > users_types.length * users_types.length &&
+          related <=
+            users_types.length * users_types.length + users_types.length
         ) {
-          array_send.push({
-            user_id: users[users.length - 1].id,
-            user_type_id: users_types[index_type_user].id,
-            active: true,
-          });
+          const data = users_types
+            .filter((_, index) => index !== users_types.length - 1)
+            .map((user_type) => ({
+              user_id: users[related].id,
+              user_type_id: user_type.id,
+              active: true,
+            }));
+          related_array.push(...data);
+          related += 1;
         }
+        if (
+          related < users.length &&
+          related > users_types.length * users_types.length + users_types.length
+        ) {
+          const data = users_types.map((user_type) => ({
+            user_id: users[related].id,
+            user_type_id: user_type.id,
+            active: true,
+          }));
+          related_array.push(...data);
+          related += 1;
+        }
+        related_types += 1;
       }
-      connects.push(array_send);
     }
-    const relationship_users_types = connects.reduce(
-      (accumulator, currentValue) => [...accumulator, ...currentValue]
-    );
+
     await getConnection("seeds")
       .getRepository("users_types_users")
-      .save(relationship_users_types);
+      .save(related_array);
   }
 
   public async down(): Promise<void> {
     await getConnection("seeds").getRepository("users_types_users").delete({});
+    await getConnection("seeds").getRepository("types_users").delete({});
   }
 }

@@ -24,9 +24,9 @@ class UsersFactory {
       { length: quantity },
       (): Partial<User> => ({
         id: id ? faker.datatype.uuid() : undefined,
-        name: name || faker.name.firstName(),
-        last_name: last_name || faker.name.lastName(),
-        email: email || faker.internet.email(),
+        name: name || faker.name.firstName().toLowerCase(),
+        last_name: last_name || faker.name.lastName().toLowerCase(),
+        email: email || faker.internet.email().toLowerCase(),
         birth_date: birth_date || faker.date.past(),
         cpf: rg || faker.phone.phoneNumber("###########"),
         rg:

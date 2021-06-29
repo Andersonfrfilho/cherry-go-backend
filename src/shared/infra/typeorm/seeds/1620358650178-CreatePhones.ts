@@ -23,12 +23,13 @@ export class CreatePhones1620358650178 implements MigrationInterface {
       .find()) as Phone[];
 
     const relationship_users_phones = users.map((user, index) => ({
-      ...user,
-      phones: [phones_list[index]],
+      user_id: user.id,
+      phone_id: phones_list[index].id,
+      active: true,
     }));
 
     await getConnection("seeds")
-      .getRepository(User)
+      .getRepository("users_phones")
       .save(relationship_users_phones);
   }
 

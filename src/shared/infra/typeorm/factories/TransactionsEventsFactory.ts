@@ -1,6 +1,6 @@
 import faker from "faker";
 
-import { StatusEventsTransactions } from "@modules/transactions/enums/StatusTransactionsEvents.enums";
+import { StatusEventsTransactionsEnum } from "@modules/transactions/enums/StatusTransactionsEvents.enums";
 import { TransactionEvent } from "@modules/transactions/infra/typeorm/entities/TransactionEvent";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
@@ -11,12 +11,12 @@ class TransactionsEventsFactory {
     return Array.from(
       { length: quantity },
       (): Omit<TransactionEvent, "id"> => ({
-        amount: faker.datatype.number({ precision: 2 }).toString(),
+        amount: faker.datatype.number({ precision: 2 }),
         details: faker.random.words(),
-        status: Object.values(StatusEventsTransactions)[
+        status: Object.values(StatusEventsTransactionsEnum)[
           faker.datatype.number({
             min: 0,
-            max: Object.values(StatusEventsTransactions).length - 1,
+            max: Object.values(StatusEventsTransactionsEnum).length - 1,
           })
         ],
       })

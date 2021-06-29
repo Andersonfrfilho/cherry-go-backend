@@ -35,7 +35,8 @@ export class InsertInfos1622165715932 implements MigrationInterface {
   }
 
   public async down(): Promise<void> {
-    await getConnection("seed").getRepository("users_types_users").delete({});
+    await getConnection("seed").getRepository("payments_types").delete({});
+    await getConnection("seed").getRepository("transports_types").delete({});
     await getConnection("seed").getRepository("types_users").delete({});
   }
 }

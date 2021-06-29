@@ -53,7 +53,7 @@
     "seed:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -c seed",
     "seed:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -c seed",
     "seeds:create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create -c seeds -n",
-    "seeds:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -c seeds",
+    "seeds:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -c seed && ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -c seeds",
     "seeds:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -c seeds",
     "start:prod": "node ./dist/shared/infra/http/server.js --experimental-modules",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",

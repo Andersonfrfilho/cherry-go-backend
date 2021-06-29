@@ -24,12 +24,12 @@ class AddressesFactory {
       (): Partial<Address> => ({
         id: id ? faker.datatype.uuid() : undefined,
         city: city || faker.address.city(),
-        country: country || faker.address.country(),
+        country: country || faker.address.country().toLowerCase(),
         district: district || faker.address.secondaryAddress(),
-        number: number || faker.random.alphaNumeric(4),
+        number: number || faker.phone.phoneNumber("####"),
         state: state || faker.address.state(),
         street: street || faker.address.streetName(),
-        zipcode: zipcode || faker.address.zipCode(),
+        zipcode: zipcode || faker.phone.phoneNumber("########"),
       })
     );
   }

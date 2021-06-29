@@ -79,16 +79,16 @@ class Provider {
     ],
   })
   payments_types: PaymentType[];
-
-  @ManyToMany(() => Appointment, { cascade: true, eager: true })
-  @JoinTable({
-    name: "appointments_providers",
-    joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [
-      { name: "appointment_id", referencedColumnName: "id" },
-    ],
-  })
-  appointments: Appointment[];
+  // TODO:: refatorar relacionamento
+  // @ManyToMany(() => Appointment, { cascade: true, eager: true })
+  // @JoinTable({
+  //   name: "appointments_providers",
+  //   joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
+  //   inverseJoinColumns: [
+  //     { name: "appointment_id", referencedColumnName: "id" },
+  //   ],
+  // })
+  // appointments: Appointment[];
 
   @OneToMany(
     () => ProviderTransportType,
