@@ -3,23 +3,21 @@ import faker from "faker";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
-interface ICreateServiceParametersFactory
+interface CreateServiceParametersFactoryDTO
   extends Partial<Service>,
     ParametersFactoryDTO {}
 
 class ServicesFactory {
   public generate({
     quantity = 1,
-    provider_id,
     name,
     amount,
     duration,
     active,
-  }: ICreateServiceParametersFactory): Omit<Service, "id">[] {
+  }: CreateServiceParametersFactoryDTO): Partial<Service>[] {
     return Array.from(
       { length: quantity },
-      (): Omit<Service, "id"> => ({
-        provider_id,
+      (): Partial<Service> => ({
         name: name || faker.name.jobTitle(),
         amount: amount || faker.datatype.number(),
         duration: duration || faker.datatype.number({ min: 10000, max: 99999 }),

@@ -9,33 +9,27 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
 
-@Entity("users_documents_images")
-class DocumentUserImage {
+@Entity("providers_images")
+export class ProviderImage {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()
-  user_id: string;
+  provider_id: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  user: User;
+  @ManyToOne(() => Provider)
+  @JoinColumn({ name: "provider_id", referencedColumnName: "id" })
+  provider: Provider;
 
   @Column()
   image_id: string;
 
-  @ManyToOne(() => Image, { eager: true })
+  @ManyToOne(() => Image)
   @JoinColumn({ name: "image_id", referencedColumnName: "id" })
   image: Image;
-
-  @Column()
-  value: string;
-
-  @Column()
-  description: string;
 
   @CreateDateColumn()
   created_at?: Date;
@@ -46,5 +40,3 @@ class DocumentUserImage {
   @DeleteDateColumn()
   deleted_at?: Date;
 }
-
-export { DocumentUserImage };

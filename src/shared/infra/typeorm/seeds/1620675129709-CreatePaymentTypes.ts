@@ -28,8 +28,9 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
       let related_types = 0;
       while (related_types < payments_types_list.length) {
         if (
-          related <=
-          payments_types_list.length * payments_types_list.length
+          related <= payments_types_list.length * payments_types_list.length &&
+          related < providers.length &&
+          related_types < payments_types_list.length
         ) {
           related_array.push({
             provider_id: providers[related].id,
@@ -39,16 +40,18 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
           related += 1;
         }
         if (
+          related < providers.length &&
           related > payments_types_list.length * payments_types_list.length &&
           related <=
             payments_types_list.length * payments_types_list.length +
-              payments_types_list.length
+              payments_types_list.length &&
+          related_types < payments_types_list.length
         ) {
           const data = payments_types_list
             .filter((_, index) => index !== payments_types_list.length - 1)
             .map((payment_type_list) => ({
               provider_id: providers[related].id,
-              payment_type_id: payment_type_list[related_types].id,
+              payment_type_id: payment_type_list.id,
               active: true,
             }));
           related_array.push(...data);
@@ -58,11 +61,12 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
           related < providers.length &&
           related >
             payments_types_list.length * payments_types_list.length +
-              payments_types_list.length
+              payments_types_list.length &&
+          related_types < payments_types_list.length
         ) {
           const data = payments_types_list.map((payment_type_list) => ({
             provider_id: providers[related].id,
-            payment_type_id: payment_type_list[related_types].id,
+            payment_type_id: payment_type_list.id,
             active: true,
           }));
           related_array.push(...data);
