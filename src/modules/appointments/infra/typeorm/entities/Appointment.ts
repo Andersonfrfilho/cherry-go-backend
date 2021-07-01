@@ -23,7 +23,10 @@ export class Appointment {
   id?: string;
 
   @Column()
-  date: Date;
+  initial_date?: Date;
+
+  @Column()
+  final_date?: Date;
 
   @Column()
   confirm: boolean;
@@ -59,10 +62,10 @@ export class Appointment {
   )
   addresses?: AppointmentAddress[];
 
-  @OneToMany(() => Transaction, (transaction) => transaction.user, {
-    eager: true,
-  })
-  transactions?: Transaction[];
+  // @OneToMany(() => Transaction, (transaction) => transaction.user, {
+  //   eager: true,
+  // })
+  // transactions?: Transaction[];
 
   @CreateDateColumn()
   created_at?: Date;

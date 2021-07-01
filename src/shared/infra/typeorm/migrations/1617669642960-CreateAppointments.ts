@@ -14,8 +14,14 @@ export class CreateAppointments1617669642960 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "date",
+            name: "initial_date",
             type: "timestamp",
+            isNullable: true,
+          },
+          {
+            name: "final_date",
+            type: "timestamp",
+            isNullable: true,
           },
           {
             name: "confirm",

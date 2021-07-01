@@ -11,7 +11,8 @@ class AppointmentsFactory {
       { length: quantity },
       (): Omit<Appointment, "id"> => ({
         confirm: faker.datatype.boolean(),
-        date: faker.date.future(),
+        initial_date: faker.date.future(),
+        final_date: faker.date.future(),
       })
     );
   }

@@ -47,9 +47,9 @@ class Transaction {
   @Column()
   appointment_id: string;
 
-  @ManyToOne(() => Appointment, (appointment) => appointment.transactions)
-  @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
-  appointment?: Appointment;
+  // @ManyToOne(() => Appointment, (appointment) => appointment.transactions)
+  // @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
+  // appointment?: Appointment;
 
   @ManyToOne(
     () => TransactionItem,
