@@ -17,6 +17,8 @@ class AddressesFactory {
     street,
     zipcode,
     district,
+    latitude,
+    longitude,
     id,
   }: ICreateUserParametersFactory): Partial<Address>[] {
     return Array.from(
@@ -30,6 +32,8 @@ class AddressesFactory {
         state: state || faker.address.state(),
         street: street || faker.address.streetName(),
         zipcode: zipcode || faker.phone.phoneNumber("########"),
+        latitude: latitude || faker.phone.phoneNumber("##.######"),
+        longitude: longitude || faker.phone.phoneNumber("##.######"),
       })
     );
   }
