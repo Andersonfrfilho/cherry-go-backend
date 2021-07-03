@@ -1,5 +1,5 @@
 export { ItensTypesTransactionsEnum } from "@modules/transactions/enums/ItensTypesTransactions.enum";
-export { PaymentTypesEnum } from "@modules/transactions/enums/PaymentTypes.enum";
+export { PAYMENT_TYPES_ENUM } from "@modules/transactions/enums/PaymentTypes.enum";
 export {
   StatusEventsTransactionsEnum,
   StatusTransactionsEnum,

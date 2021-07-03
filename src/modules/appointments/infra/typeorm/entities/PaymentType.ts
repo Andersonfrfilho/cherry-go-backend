@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { PaymentTypesEnum } from "@modules/transactions/enums/PaymentTypes.enum";
+import { PAYMENT_TYPES_ENUM } from "@modules/transactions/enums/PaymentTypes.enum";
 
 @Entity("payments_types")
 export class PaymentType {
@@ -18,7 +18,7 @@ export class PaymentType {
 
   @Column({
     type: "enum",
-    enum: PaymentTypesEnum,
+    enum: PAYMENT_TYPES_ENUM,
   })
   name: string;
 

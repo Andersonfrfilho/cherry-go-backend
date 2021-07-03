@@ -1,17 +1,38 @@
 import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
+import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { AppointmentProviderService } from "@modules/appointments/infra/typeorm/entities/AppointmentsProvidersServices";
 
 export class CreateAppointmentServices1621058145504
   implements MigrationInterface {
   public async up(): Promise<void> {
-    // const appointments = (await getConnection("seeds")
-    //   .getRepository(Appointment)
-    //   .find({
-    //     relations: ["providers", "providers.services"],
-    //   })) as Appointment[];
+    const providers = await getConnection("seeds")
+      .getRepository(Provider)
+      .createQueryBuilder("users")
+      .leftJoinAndSelect(
+        "users.types",
+        "types_users",
+        "types_users.name = :category_name",
+        { category_name: "provider" }
+      )
+      .getMany();
+
+    const appointments = (await getConnection("seeds")
+      .getRepository(Appointment)
+      .find()) as Appointment[];
+
+    let related = 0;
+    const related_transport_appointment = [];
+    while (related < appointments.length && !!providers[related]) {
+      related_days_providers.push({
+        provider_id: providers[related].id,
+        day,
+      });
+
+      related += 1;
+    }
     // const services_appointments = appointments
     //   .map((appointment) =>
     //     appointment.providers

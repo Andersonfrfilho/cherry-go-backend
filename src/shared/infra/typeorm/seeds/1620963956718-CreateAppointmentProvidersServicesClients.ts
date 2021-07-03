@@ -13,6 +13,8 @@ export class CreateAppointmentProvidersServicesClients1620963956718
       .getRepository(Provider)
       .createQueryBuilder("users")
       .leftJoinAndSelect("users.services", "services")
+      .leftJoinAndSelect("users.transport_types", "transport_types")
+      .leftJoinAndSelect("users.locals", "locals")
       .leftJoinAndSelect(
         "users.types",
         "types_users",

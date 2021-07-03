@@ -93,6 +93,5 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
     await getConnection("seeds")
       .getRepository("users_profiles_images")
       .delete({});
-    await getConnection("seeds").getRepository("images").delete({});
   }
 }

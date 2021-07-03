@@ -2,7 +2,6 @@ import { getConnection, MigrationInterface } from "typeorm";
 
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
-import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 import { ImagesFactory, TagsFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateTags1620955864666 implements MigrationInterface {
@@ -35,11 +34,9 @@ export class CreateTags1620955864666 implements MigrationInterface {
       image_id: images_list[index].id,
     }));
 
-    await getConnection("seeds").getRepository("tags").save(images_tags);
-
-    const tags = (await getConnection("seeds")
+    const tags = await getConnection("seeds")
       .getRepository("tags")
-      .find()) as Tag[];
+      .save(images_tags);
 
     let tag_index = 0;
     const related_tags = [];
@@ -66,6 +63,5 @@ export class CreateTags1620955864666 implements MigrationInterface {
 
   public async down(): Promise<void> {
     await getConnection("seeds").getRepository("services_tags").delete({});
-    await getConnection("seeds").getRepository("tags").delete({});
   }
 }
