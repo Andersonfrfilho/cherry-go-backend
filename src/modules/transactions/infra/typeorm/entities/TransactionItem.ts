@@ -5,6 +5,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -22,6 +23,10 @@ export class TransactionItem {
   @Column()
   transaction_id: string;
 
+  @ManyToOne(() => Transaction, (transaction) => transaction.itens)
+  @JoinColumn({ name: "transaction_id", referencedColumnName: "id" })
+  transaction?: Transaction;
+
   @Column({ type: "jsonb" })
   elements?: Partial<Service | Transport>;
 
@@ -38,11 +43,7 @@ export class TransactionItem {
   discount_amount: number;
 
   @Column()
-  value: number;
-
-  @ManyToOne(() => Transaction, (transactions) => transactions.itens)
-  @JoinColumn({ name: "transaction_id", referencedColumnName: "id" })
-  transaction?: Transaction;
+  amount: number;
 
   @CreateDateColumn()
   created_at?: Date;

@@ -94,7 +94,7 @@ class User {
 
   @ManyToMany(() => Appointment)
   @JoinTable({
-    name: "appointments_users",
+    name: "appointments_clients",
     joinColumns: [{ name: "user_id" }],
     inverseJoinColumns: [{ name: "appointment_id" }],
   })
@@ -111,7 +111,7 @@ class User {
   })
   tags?: Tag[];
 
-  @OneToMany(() => Transaction, (transaction) => transaction.user, {
+  @OneToMany(() => Transaction, (transaction) => transaction.client, {
     eager: true,
   })
   transactions?: Transaction[];

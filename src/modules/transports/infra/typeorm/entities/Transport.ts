@@ -15,14 +15,14 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
 @Entity("transports")
-class Transport {
+export class Transport {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()
   provider_id: string;
 
-  @ManyToOne(() => Provider)
+  @ManyToOne(() => Provider, { eager: true })
   @JoinColumn({ name: "provider_id" })
   provider?: Provider;
 
@@ -39,21 +39,21 @@ class Transport {
   @Column()
   transport_type_id?: string;
 
-  @ManyToOne(() => TransportType)
+  @ManyToOne(() => TransportType, { eager: true })
   @JoinColumn({ name: "transport_type_id" })
   transport_type?: TransportType;
 
   @Column()
   origin_address_id?: string;
 
-  @ManyToOne(() => Address)
+  @ManyToOne(() => Address, { eager: true })
   @JoinColumn({ name: "origin_address_id" })
   origin_address?: Address;
 
   @Column()
   destination_address_id?: string;
 
-  @ManyToOne(() => Address)
+  @ManyToOne(() => Address, { eager: true })
   @JoinColumn({ name: "destination_address_id" })
   destination_address?: Address;
 
@@ -84,5 +84,3 @@ class Transport {
   @DeleteDateColumn()
   deleted_at?: Date;
 }
-
-export { Transport };

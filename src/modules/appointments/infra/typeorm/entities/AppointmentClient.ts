@@ -12,17 +12,17 @@ import {
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
-@Entity("appointments_users")
-export class AppointmentUser {
+@Entity("appointments_clients")
+export class AppointmentClient {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
   @Column()
-  user_id: string;
+  client_id: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  user: User;
+  @JoinColumn({ name: "client_id", referencedColumnName: "id" })
+  client: User;
 
   @Column()
   appointment_id: string;

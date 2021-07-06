@@ -53,10 +53,20 @@ class Provider {
   @Column()
   active: boolean;
 
-  @OneToMany(() => Phone, (phone) => phone)
+  @ManyToMany(() => Phone, { cascade: true, eager: true })
+  @JoinTable({
+    name: "users_phones",
+    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "phone_id", referencedColumnName: "id" }],
+  })
   phones?: Phone[];
 
-  @OneToMany(() => Address, (address) => address)
+  @ManyToMany(() => Address, { cascade: true, eager: true })
+  @JoinTable({
+    name: "users_addresses",
+    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "address_id", referencedColumnName: "id" }],
+  })
   addresses?: Address[];
 
   @ManyToMany(() => TypeUser, { cascade: true, eager: true })
@@ -97,7 +107,7 @@ class Provider {
       eager: true,
     }
   )
-  transport_types?: ProviderTransportType[];
+  transports_types?: ProviderTransportType[];
 
   @OneToMany(() => Service, (service) => service.provider, {
     eager: true,

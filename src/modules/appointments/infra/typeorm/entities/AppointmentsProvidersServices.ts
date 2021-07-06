@@ -21,7 +21,7 @@ export class AppointmentProviderService {
   @Column()
   provider_id: string;
 
-  @ManyToOne(() => Provider)
+  @ManyToOne(() => Provider, { eager: true })
   @JoinColumn({ name: "provider_id" })
   provider: Provider;
 
@@ -35,8 +35,8 @@ export class AppointmentProviderService {
   @Column()
   service_id: string;
 
-  @ManyToOne(() => Service)
-  @JoinColumn({ name: "service_id" })
+  @ManyToOne(() => Service, { eager: true })
+  @JoinColumn({ name: "service_id", referencedColumnName: "id" })
   service: Service;
 
   @CreateDateColumn()

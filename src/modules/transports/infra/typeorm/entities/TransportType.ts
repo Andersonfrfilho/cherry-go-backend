@@ -32,7 +32,7 @@ export class TransportType {
   @OneToMany(() => Transport, (transports) => transports)
   transport?: Transport[];
 
-  @OneToMany(() => Provider, (provider) => provider.transport_types)
+  @OneToMany(() => Provider, (provider) => provider.transports_types)
   providers?: Provider[];
 
   @CreateDateColumn()
