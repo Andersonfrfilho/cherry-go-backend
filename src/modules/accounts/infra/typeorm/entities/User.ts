@@ -105,8 +105,8 @@ class User {
 
   @ManyToMany(() => Tag)
   @JoinTable({
-    name: "users_tags",
-    joinColumns: [{ name: "user_id" }],
+    name: "clients_tags",
+    joinColumns: [{ name: "client_id" }],
     inverseJoinColumns: [{ name: "tag_id" }],
   })
   tags?: Tag[];

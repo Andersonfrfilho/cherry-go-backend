@@ -35,7 +35,7 @@ class TransactionEvent {
   details: string;
 
   @ManyToOne(() => Transaction)
-  @JoinColumn({ name: "transaction_id" })
+  @JoinColumn({ name: "transaction_id", referencedColumnName: "id" })
   transaction?: Transaction;
 
   @OneToMany(() => PaymentType, (payment_type) => payment_type)
