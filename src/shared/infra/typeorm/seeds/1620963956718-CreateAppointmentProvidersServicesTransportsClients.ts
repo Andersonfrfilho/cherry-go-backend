@@ -49,6 +49,7 @@ export class CreateAppointmentProvidersServicesTransportsClients1620963956718
       .save(appointments_factory_list);
 
     const related_services_clients = [];
+    const related_appointments_addresses = [];
     const related_transports_appointment = [];
     let appointment_index = 0;
     const related_appointments_providers = [];
@@ -96,6 +97,11 @@ export class CreateAppointmentProvidersServicesTransportsClients1620963956718
           appointment_id: appointments[appointment_index].id,
           active: true,
         });
+        related_appointments_addresses.push({
+          address_id: providers[provider_index].locals[0].address_id,
+          appointment_id: appointments[appointment_index].id,
+          active: true,
+        });
         appointment_index += 1;
         provider_index += 1;
       }
@@ -108,6 +114,10 @@ export class CreateAppointmentProvidersServicesTransportsClients1620963956718
     await getConnection("seeds")
       .getRepository("appointments_providers")
       .save(related_appointments_providers);
+
+    await getConnection("seeds")
+      .getRepository("appointments_addresses")
+      .save(related_appointments_addresses);
 
     await getConnection("seeds")
       .getRepository("appointments_providers_services")

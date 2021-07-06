@@ -1,7 +1,7 @@
 import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
-import { DAYS_WEEK_ENUMS } from "@modules/accounts/enums/DaysProviders.enum";
+import { DAYS_WEEK_ENUM } from "@modules/accounts/enums/DaysProviders.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
@@ -48,7 +48,7 @@ export class CreateAddressesDaysTimesTransportsProviders1620665114995
     let related = 0;
     const related_days_providers = [];
     while (related < providers.length && !!providers[related]) {
-      Object.values(DAYS_WEEK_ENUMS).forEach((day) => {
+      Object.values(DAYS_WEEK_ENUM).forEach((day) => {
         related_days_providers.push({
           provider_id: providers[related].id,
           day,

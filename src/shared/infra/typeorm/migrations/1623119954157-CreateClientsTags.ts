@@ -4,7 +4,7 @@ export class CreateUsersTags1623119954157 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "users_tags",
+        name: "clients_tags",
         columns: [
           {
             name: "id",
@@ -18,7 +18,7 @@ export class CreateUsersTags1623119954157 implements MigrationInterface {
             type: "uuid",
           },
           {
-            name: "user_id",
+            name: "client_id",
             type: "uuid",
           },
           {
@@ -39,7 +39,7 @@ export class CreateUsersTags1623119954157 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKTagsServices",
+            name: "FKTagsClients",
             referencedTableName: "tags",
             referencedColumnNames: ["id"],
             columnNames: ["tag_id"],
@@ -47,10 +47,10 @@ export class CreateUsersTags1623119954157 implements MigrationInterface {
             onUpdate: "SET NULL",
           },
           {
-            name: "FKUsersTags",
+            name: "FKClientsTags",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
+            columnNames: ["client_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
@@ -60,6 +60,6 @@ export class CreateUsersTags1623119954157 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("users_tags");
+    await queryRunner.dropTable("clients_tags");
   }
 }
