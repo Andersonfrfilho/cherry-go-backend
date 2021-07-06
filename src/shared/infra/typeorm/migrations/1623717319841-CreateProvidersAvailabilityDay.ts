@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-import { DAYS_WEEK_ENUMS } from "@modules/accounts/enums/DaysProviders.enum";
+import { DAYS_WEEK_ENUM } from "@modules/accounts/enums/DaysProviders.enum";
 
 export class CreateProvidersAvailabilityWeek1623717319841
   implements MigrationInterface {
@@ -24,9 +24,8 @@ export class CreateProvidersAvailabilityWeek1623717319841
             name: "day",
             type: "enum",
             enum: Array.from(
-              { length: Object.keys(DAYS_WEEK_ENUMS).length },
-              (_, index): DAYS_WEEK_ENUMS =>
-                Object.values(DAYS_WEEK_ENUMS)[index]
+              { length: Object.keys(DAYS_WEEK_ENUM).length },
+              (_, index): DAYS_WEEK_ENUM => Object.values(DAYS_WEEK_ENUM)[index]
             ),
           },
           {
