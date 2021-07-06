@@ -3,6 +3,7 @@ import { getConnection, MigrationInterface } from "typeorm";
 
 import { DAYS_WEEK_ENUMS } from "@modules/accounts/enums/DaysProviders.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
+import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 import {
   AddressesFactory,
@@ -62,19 +63,19 @@ export class CreateAddressesDaysTimesTransportsProviders1620665114995
       .save(related_days_providers);
 
     const transports_types = (await getConnection("seeds")
-      .getRepository("providers_transports_types")
+      .getRepository("transports_types")
       .find()) as TransportType[];
 
     related = 0;
     const related_transports_types_providers = [];
     while (related < providers.length && !!providers[related]) {
-      transports_types.forEach((transport, index) => {
+      transports_types.forEach((transport_type, index) => {
         related_transports_types_providers.push({
-          provider_id: providers[index].id,
-          transport_type_id: transport.id,
+          provider_id: providers[related].id,
+          transport_type_id: transport_type.id,
           active: true,
           amount:
-            transport.name === ""
+            transport_type.name === TRANSPORT_TYPES_ENUM.PROVIDER
               ? faker.datatype.number({ min: 10, max: 999 })
               : undefined,
         });

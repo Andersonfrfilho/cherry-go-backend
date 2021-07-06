@@ -6,14 +6,15 @@ import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { AppointmentsFactory } from "@shared/infra/typeorm/factories";
 
-export class CreateAppointmentProvidersServicesClients1620963956718
+export class CreateAppointmentProvidersServicesTransportsClients1620963956718
   implements MigrationInterface {
   public async up(): Promise<void> {
     const providers = await getConnection("seeds")
       .getRepository(Provider)
       .createQueryBuilder("users")
       .leftJoinAndSelect("users.services", "services")
-      .leftJoinAndSelect("users.transport_types", "transport_types")
+      .leftJoinAndSelect("users.transports_types", "transports_types")
+      .leftJoinAndSelect("users.addresses", "addresses")
       .leftJoinAndSelect("users.locals", "locals")
       .leftJoinAndSelect(
         "users.types",
@@ -46,7 +47,9 @@ export class CreateAppointmentProvidersServicesClients1620963956718
     const appointments: Appointment[] = await getConnection("seeds")
       .getRepository("appointments")
       .save(appointments_factory_list);
+
     const related_services_clients = [];
+    const related_transports_appointment = [];
     let appointment_index = 0;
     const related_appointments_providers = [];
     while (appointment_index < appointments.length) {
@@ -71,6 +74,23 @@ export class CreateAppointmentProvidersServicesClients1620963956718
           service_index += 1;
         }
 
+        related_transports_appointment.push({
+          amount: faker.datatype.number({ min: 10, max: 999 }),
+          transport_type_id:
+            providers[provider_index].transports_types[2].transport_type_id,
+          origin_address_id: providers[provider_index].addresses[0].id,
+          destination_address_id:
+            providers[provider_index].locals[0].address_id,
+          confirm: true,
+          initial_hour: faker.date.future(),
+          departure_time: faker.date.future(),
+          arrival_time_destination: faker.date.future(),
+          arrival_time_return: faker.date.future(),
+          return_time: faker.date.future(),
+          provider_id: providers[provider_index].id,
+          appointment_id: appointments[appointment_index].id,
+        });
+
         related_appointments_providers.push({
           provider_id: providers[provider_index].id,
           appointment_id: appointments[appointment_index].id,
@@ -80,6 +100,10 @@ export class CreateAppointmentProvidersServicesClients1620963956718
         provider_index += 1;
       }
     }
+
+    await getConnection("seeds")
+      .getRepository("transports")
+      .save(related_transports_appointment);
 
     await getConnection("seeds")
       .getRepository("appointments_providers")
@@ -98,7 +122,7 @@ export class CreateAppointmentProvidersServicesClients1620963956718
         !!appointments[appointment_index]
       ) {
         related_appointments_clients.push({
-          user_id: clients[client_index].id,
+          client_id: clients[client_index].id,
           appointment_id: appointments[appointment_index].id,
           active: true,
         });
@@ -108,18 +132,21 @@ export class CreateAppointmentProvidersServicesClients1620963956718
     }
 
     await getConnection("seeds")
-      .getRepository("appointments_users")
+      .getRepository("appointments_clients")
       .save(related_appointments_clients);
   }
 
   public async down(): Promise<void> {
+    await getConnection("seeds").getRepository("transports").delete({});
     await getConnection("seeds")
       .getRepository("appointments_providers_services")
       .delete({});
     await getConnection("seeds")
       .getRepository("appointments_providers")
       .delete({});
-    await getConnection("seeds").getRepository("appointments_users").delete({});
+    await getConnection("seeds")
+      .getRepository("appointments_clients")
+      .delete({});
     await getConnection("seeds").getRepository("appointments").delete({});
   }
 }

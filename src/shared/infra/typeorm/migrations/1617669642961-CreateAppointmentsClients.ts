@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateAppointmentsUsers1617669642961
+export class CreateAppointmentsClients1617669642961
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointments_users",
+        name: "appointments_clients",
         columns: [
           {
             name: "id",
@@ -15,7 +15,7 @@ export class CreateAppointmentsUsers1617669642961
             default: "uuid_generate_v4()",
           },
           {
-            name: "user_id",
+            name: "client_id",
             type: "uuid",
           },
           {
@@ -44,15 +44,15 @@ export class CreateAppointmentsUsers1617669642961
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentsUsers",
+            name: "FKAppointmentsClients",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
+            columnNames: ["client_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
           {
-            name: "FKUsersAppointments",
+            name: "FKClientsAppointments",
             referencedTableName: "appointments",
             referencedColumnNames: ["id"],
             columnNames: ["appointment_id"],
@@ -65,6 +65,6 @@ export class CreateAppointmentsUsers1617669642961
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointments_users");
+    await queryRunner.dropTable("appointments_clients");
   }
 }

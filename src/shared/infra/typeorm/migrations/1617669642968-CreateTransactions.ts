@@ -38,7 +38,7 @@ export class CreateTransactions1617669642968 implements MigrationInterface {
             type: "uuid",
           },
           {
-            name: "user_id",
+            name: "client_id",
             type: "uuid",
           },
           {
@@ -63,7 +63,7 @@ export class CreateTransactions1617669642968 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: "FKAppointmentUsersTransactions",
+            name: "FKAppointmentClientsTransactions",
             referencedTableName: "appointments",
             referencedColumnNames: ["id"],
             columnNames: ["appointment_id"],
@@ -71,10 +71,10 @@ export class CreateTransactions1617669642968 implements MigrationInterface {
             onUpdate: "CASCADE",
           },
           {
-            name: "FKUsersTransactionsAppointment",
-            referencedTableName: "transactions",
+            name: "FKClientsTransactionsAppointment",
+            referencedTableName: "users",
             referencedColumnNames: ["id"],
-            columnNames: ["user_id"],
+            columnNames: ["client_id"],
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
           },
