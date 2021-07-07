@@ -44,9 +44,9 @@ export class CreateAppointmentProvidersServicesTransportsClients1620963956718
       }),
     });
 
-    const appointments: Appointment[] = await getConnection("seeds")
+    const appointments = (await getConnection("seeds")
       .getRepository("appointments")
-      .save(appointments_factory_list);
+      .save(appointments_factory_list)) as Appointment[];
 
     const related_services_clients = [];
     const related_appointments_addresses = [];
