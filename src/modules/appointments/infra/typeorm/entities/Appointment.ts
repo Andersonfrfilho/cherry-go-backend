@@ -69,10 +69,10 @@ export class Appointment {
   )
   addresses?: AppointmentAddress[];
 
-  // @OneToMany(() => Transaction, (transaction) => transaction.user, {
-  //   eager: true,
-  // })
-  // transactions?: Transaction[];
+  @OneToMany(() => Transaction, (transaction) => transaction.appointment, {
+    eager: true,
+  })
+  transactions?: Transaction[];
 
   @CreateDateColumn()
   created_at?: Date;
