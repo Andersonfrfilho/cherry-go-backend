@@ -338,7 +338,8 @@ create seeders migration
 
   yarn seed:generate create "name"
 
-
+# Run test specific
+yarn test:unit "d:/project/cherry-go/src/shared/infra/typeorm/factories/AddressFactory.spec.ts -t "AddressesFactory Should be able to create factory an addresses"
 # Docker
  - docker-compose -f .\apache-kafka\docker-compose.yaml up -d
  - docker-compose up -d
