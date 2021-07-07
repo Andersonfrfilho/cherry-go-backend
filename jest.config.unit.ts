@@ -19,7 +19,10 @@ export default {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ["<rootDir>/src/modules/**/useCases/**/*service.ts"],
+  collectCoverageFrom: [
+    "<rootDir>/src/modules/**/useCases/**/*service.ts",
+    "<rootDir>/src/shared/infra/typeorm/factories/*Factory.ts",
+  ],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: "covarage",
@@ -140,6 +143,6 @@ export default {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ["**/*service.spec.ts"],
+  testMatch: ["**/*service.spec.ts", "**/*Factory.spec.ts"],
   modulePathIgnorePatterns: ["dist", "node_modules", "coverage"],
 };
