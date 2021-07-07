@@ -10,6 +10,7 @@ interface CreateServiceParametersFactoryDTO
 class ServicesFactory {
   public generate({
     quantity = 1,
+    id,
     name,
     amount,
     duration,
@@ -18,10 +19,11 @@ class ServicesFactory {
     return Array.from(
       { length: quantity },
       (): Partial<Service> => ({
+        id: id ? faker.datatype.uuid() : undefined,
         name: name || faker.name.jobTitle(),
         amount: amount || faker.datatype.number(),
         duration: duration || faker.datatype.number({ min: 10000, max: 99999 }),
-        active: active || faker.datatype.boolean(),
+        active: typeof active === "boolean" ? active : faker.datatype.boolean(),
       })
     );
   }

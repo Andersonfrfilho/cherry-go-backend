@@ -3,11 +3,11 @@ import faker from "faker";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
-interface ICreateUserParametersFactory
+interface ICreateUserParametersFactoryDTO
   extends Partial<Address>,
     ParametersFactoryDTO {}
 
-class AddressesFactory {
+export class AddressesFactory {
   public generate({
     quantity = 1,
     city,
@@ -20,7 +20,7 @@ class AddressesFactory {
     latitude,
     longitude,
     id,
-  }: ICreateUserParametersFactory): Partial<Address>[] {
+  }: ICreateUserParametersFactoryDTO): Partial<Address>[] {
     return Array.from(
       { length: quantity },
       (): Partial<Address> => ({
@@ -38,4 +38,3 @@ class AddressesFactory {
     );
   }
 }
-export { AddressesFactory };

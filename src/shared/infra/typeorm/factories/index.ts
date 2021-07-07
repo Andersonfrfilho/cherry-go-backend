@@ -1,23 +1,11 @@
-import { AddressesFactory } from "@shared/infra/typeorm/factories/AddressesFactory";
-import { AppointmentsFactory } from "@shared/infra/typeorm/factories/AppointmentsFactory";
-import { ImagesFactory } from "@shared/infra/typeorm/factories/ImagesFactory";
-import { PaymentsTypesFactory } from "@shared/infra/typeorm/factories/PaymentTypeFactory";
-import { PhonesFactory } from "@shared/infra/typeorm/factories/PhonesFactory";
-import { ServicesFactory } from "@shared/infra/typeorm/factories/ServicesFactory";
-import { TagsFactory } from "@shared/infra/typeorm/factories/TagsFactory";
-import { UsersFactory } from "@shared/infra/typeorm/factories/UsersFactory";
-import { UsersTypesFactory } from "@shared/infra/typeorm/factories/UsersTypesFactory";
-
+export { AddressesFactory } from "@shared/infra/typeorm/factories/AddressesFactory";
+export { AppointmentsFactory } from "@shared/infra/typeorm/factories/AppointmentsFactory";
+export { ImagesFactory } from "@shared/infra/typeorm/factories/ImagesFactory";
+export { PaymentsTypesFactory } from "@shared/infra/typeorm/factories/PaymentsTypesFactory";
+export { PhonesFactory } from "@shared/infra/typeorm/factories/PhonesFactory";
+export { ServicesFactory } from "@shared/infra/typeorm/factories/ServicesFactory";
+export { TagsFactory } from "@shared/infra/typeorm/factories/TagsFactory";
+export { UsersFactory } from "@shared/infra/typeorm/factories/UsersFactory";
+export { UsersTypesFactory } from "@shared/infra/typeorm/factories/UsersTypesFactory";
 export { TransportsTypesFactory } from "@shared/infra/typeorm/factories/TransportsTypesFactory";
 export { UserTermFactory } from "@shared/infra/typeorm/factories/Term.factory";
-export {
-  UsersFactory,
-  PhonesFactory,
-  UsersTypesFactory,
-  AddressesFactory,
-  AppointmentsFactory,
-  PaymentsTypesFactory,
-  ImagesFactory,
-  ServicesFactory,
-  TagsFactory,
-};

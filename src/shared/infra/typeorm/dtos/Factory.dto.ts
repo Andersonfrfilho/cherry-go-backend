@@ -1,5 +1,5 @@
 interface ParametersFactoryDTO {
-  quantity: number;
+  quantity?: number;
 }
 
 export { ParametersFactoryDTO };
