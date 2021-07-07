@@ -17,8 +17,9 @@ class TagsFactory {
       (): Partial<Tag> => ({
         id: id ? faker.datatype.uuid() : undefined,
         name: name || faker.name.jobTitle(),
-        description: description || faker.random.words(),
-        active: active || true,
+        description:
+          description === "faker" ? faker.lorem.words() : description,
+        active: typeof active === "boolean" ? active : faker.datatype.boolean(),
       })
     );
   }
