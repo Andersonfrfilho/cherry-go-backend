@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { CreateTagsServiceDTO } from "@modules/tags/dtos";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
-import { TagsRepositoryInterface } from "@modules/tags/repositories/TagsRepository.interface";
+import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
 import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";
 

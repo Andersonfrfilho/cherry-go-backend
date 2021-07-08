@@ -2,7 +2,7 @@ import { getRepository, Repository } from "typeorm";
 
 import { CreateUserDTO } from "@modules/tags/dtos";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
-import { TagsRepositoryInterface } from "@modules/tags/repositories/TagsRepository.interface";
+import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
 
 class TagsRepository implements TagsRepositoryInterface {
   private repository: Repository<Tag>;

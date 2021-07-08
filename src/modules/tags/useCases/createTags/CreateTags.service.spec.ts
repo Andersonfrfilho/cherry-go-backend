@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { tagsRepositoryMock } from "@modules/tags/repositories/mocks/TagsRepository.mock";
+import { tagsRepositoryMock } from "@modules/tags/repositories/mocks/Tags.repository.mock";
 import { CreateTagsService } from "@modules/tags/useCases/createTags/CreateTags.service";
 import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";

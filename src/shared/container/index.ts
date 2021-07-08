@@ -35,7 +35,7 @@ import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.r
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
 import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/NotificationsRepository.interface";
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/TagsRepository";
-import { TagsRepositoryInterface } from "@modules/tags/repositories/TagsRepository.interface";
+import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
 import { TransportsRepository } from "@modules/transports/infra/typeorm/repositories/TransportsRepository";
 import { TransportsRepositoryInterface } from "@modules/transports/repositories/TransportsRepository.interface";
 
