@@ -7,7 +7,7 @@ interface CreateServiceParametersFactoryDTO
   extends Partial<Service>,
     ParametersFactoryDTO {}
 
-class ServicesFactory {
+export class ServicesFactory {
   public generate({
     quantity = 1,
     id,
@@ -28,4 +28,3 @@ class ServicesFactory {
     );
   }
 }
-export { ServicesFactory };

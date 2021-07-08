@@ -7,7 +7,7 @@ interface ICreateUserParametersFactory
   extends Partial<User>,
     ParametersFactoryDTO {}
 
-class UsersFactory {
+export class UsersFactory {
   public generate({
     name,
     last_name,
@@ -35,10 +35,9 @@ class UsersFactory {
             faker.datatype.boolean() ? "########" : "#########"
           ),
         password_hash: password_hash || faker.internet.password(),
-        active,
+        active: typeof active === "boolean" ? active : faker.datatype.boolean(),
       })
     );
     return arrayUsers;
   }
 }
-export { UsersFactory };

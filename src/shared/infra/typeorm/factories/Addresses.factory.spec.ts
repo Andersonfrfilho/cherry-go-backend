@@ -6,8 +6,7 @@ describe("AddressesFactory", () => {
   const addressesFactory = new AddressesFactory();
 
   it("Should be able to create factory an addresses with random information", async () => {
-    // arrange
-    // act
+    // arrange act
     const addresses = addressesFactory.generate({
       quantity: 1,
       id: "true",
@@ -33,8 +32,7 @@ describe("AddressesFactory", () => {
   });
 
   it("Should be able to create factory an addresses with parameters information", async () => {
-    // arrange
-    // act
+    // arrange act
     const city = faker.address.city();
     const country = faker.address.country().toLowerCase();
     const district = faker.address.secondaryAddress();
@@ -78,8 +76,7 @@ describe("AddressesFactory", () => {
   });
 
   it("Should be able to create factory an addresses without quantity and id", async () => {
-    // arrange
-    // act
+    // arrange act
     const addresses = addressesFactory.generate({});
 
     // assert

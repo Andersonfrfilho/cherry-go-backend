@@ -4,7 +4,7 @@ import mime from "mime";
 import { resolve } from "path";
 
 import upload from "@config/upload";
-import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
+import { IStorageProvider } from "@shared/container/providers/Storage.provider/IStorageProvider";
 
 class S3StorageProvider implements IStorageProvider {
   private client: S3;

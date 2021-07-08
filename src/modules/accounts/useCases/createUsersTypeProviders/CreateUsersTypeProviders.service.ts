@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 

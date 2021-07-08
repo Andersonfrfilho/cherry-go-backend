@@ -6,8 +6,7 @@ describe("AppointmentsFactory", () => {
   const appointmentsFactory = new AppointmentsFactory();
 
   it("Should be able to create factory an appointments with random information", async () => {
-    // arrange
-    // act
+    // arrange act
     const appointments = appointmentsFactory.generate({
       quantity: 1,
       id: "true",
@@ -27,8 +26,7 @@ describe("AppointmentsFactory", () => {
   });
 
   it("Should be able to create factory an appointments with parameters information", async () => {
-    // arrange
-    // act
+    // arrange act
     const confirm = faker.datatype.boolean();
     const initial_date = faker.date.future();
     const final_date = faker.date.future();
@@ -55,9 +53,9 @@ describe("AppointmentsFactory", () => {
   });
 
   it("Should be able to create factory an appointments without quantity and id", async () => {
-    // arrange
-    // act
+    // arrange act
     const appointments = appointmentsFactory.generate({});
+
     // assert
     expect(appointments).toEqual(
       expect.arrayContaining([

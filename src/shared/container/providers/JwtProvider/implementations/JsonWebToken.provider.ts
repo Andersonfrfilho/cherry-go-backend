@@ -5,7 +5,7 @@ import {
   JwtProviderVerifyDTO,
   JwtProviderPayload,
 } from "@shared/container/providers/JwtProvider/dtos";
-import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 
 interface IPayload {
   email: string;

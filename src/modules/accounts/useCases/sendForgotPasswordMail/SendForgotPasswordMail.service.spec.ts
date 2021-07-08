@@ -3,13 +3,13 @@ import faker from "faker";
 import * as uuid from "uuid";
 
 import { config } from "@config/environment";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
 import { SendForgotPasswordMailService } from "@modules/accounts/useCases/sendForgotPasswordMail/SendForgotPasswordMail.service";
-import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
+import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos/SendMail.dto";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
+import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/Queue.provider.mock";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
@@ -55,7 +55,7 @@ describe("SendForgotPasswordMailService", () => {
         id,
       },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
-    const [type] = usersTypesFactory.generate("with_id");
+    const [type] = usersTypesFactory.generate({});
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
     const refresh_token_faker = faker.datatype.uuid();
@@ -64,7 +64,7 @@ describe("SendForgotPasswordMailService", () => {
       link: `${process.env.FORGOT_MAIL_URL}${refresh_token_faker}`,
     };
 
-    const message: ISendMailDTO = {
+    const message: SendMailDTO = {
       to: email,
       email_type: MailContent.FORGOT_PASSWORD,
       variables,

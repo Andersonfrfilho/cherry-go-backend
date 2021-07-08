@@ -2,7 +2,7 @@ import fs from "fs";
 import { resolve } from "path";
 
 import upload from "@config/upload";
-import { IStorageProvider } from "@shared/container/providers/StorageProvider/IStorageProvider";
+import { IStorageProvider } from "@shared/container/providers/Storage.provider/IStorageProvider";
 
 class LocalStorageProvider implements IStorageProvider {
   async save(file: string, folder: string): Promise<string> {

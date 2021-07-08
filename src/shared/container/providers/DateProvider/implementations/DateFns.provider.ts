@@ -1,6 +1,6 @@
 import { add, differenceInYears, isBefore, toDate, addMinutes } from "date-fns";
 
-import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 
 export class DateFnsProvider implements DateProviderInterface {
   addMinutes(minutes: number): Date {

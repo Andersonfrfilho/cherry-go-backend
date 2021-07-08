@@ -7,8 +7,7 @@ describe("PaymentTypeFactory", () => {
   const paymentsTypesFactory = new PaymentsTypesFactory();
 
   it("Should be able to create factory an PaymentsTypes  with random information", async () => {
-    // arrange
-    // act
+    // arrange act
     const paymentsTypes = paymentsTypesFactory.generate({});
 
     // assert
@@ -24,8 +23,7 @@ describe("PaymentTypeFactory", () => {
   });
 
   it("Should be able to create factory an PaymentsTypes with parameters information", async () => {
-    // arrange
-    // act
+    // arrange act
     const active = faker.datatype.boolean();
     const description = faker.lorem.words();
     const paymentsTypes = paymentsTypesFactory.generate({
@@ -46,12 +44,12 @@ describe("PaymentTypeFactory", () => {
   });
 
   it("Should be able to create factory an payments types content faker without quantity and id", async () => {
-    // arrange
-    // act
+    // arrange act
     const description = "faker";
     const paymentsTypes = paymentsTypesFactory.generate({
       description,
     });
+
     // assert
     expect(paymentsTypes).toEqual(
       expect.arrayContaining([

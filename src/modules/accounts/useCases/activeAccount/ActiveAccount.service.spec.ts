@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { ActiveAccountService } from "@modules/accounts/useCases/activeAccount/ActiveAccount.service";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST } from "@shared/errors/constants";
@@ -9,7 +9,7 @@ import {
   PhonesFactory,
   UsersFactory,
   UsersTypesFactory,
-  UserTermFactory,
+  UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
 let activeAccountService: ActiveAccountService;
@@ -21,7 +21,7 @@ describe("ActiveAccountService", () => {
   const usersFactory = new UsersFactory();
   const phonesFactory = new PhonesFactory();
   const imagesFactory = new ImagesFactory();
-  const userTermFactory = new UserTermFactory();
+  const usersTermsFactory = new UsersTermsFactory();
   const usersTypesFactory = new UsersTypesFactory();
 
   beforeEach(() => {
@@ -41,7 +41,7 @@ describe("ActiveAccountService", () => {
     const addresses = phonesFactory.generate({ quantity: 1, id: "true" });
     const image_profile = imagesFactory.generate({ quantity: 1, id: "true" });
     const [type] = usersTypesFactory.generate();
-    const [term] = userTermFactory.generate({ quantity: 1, accept: false });
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: false });
     usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue({
       cpf,
       rg,

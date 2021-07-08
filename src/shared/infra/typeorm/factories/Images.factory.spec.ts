@@ -6,8 +6,7 @@ describe("ImagesFactory", () => {
   const imagesFactory = new ImagesFactory();
 
   it("Should be able to create factory an images with random information", async () => {
-    // arrange
-    // act
+    // arrange act
     const images = imagesFactory.generate({
       quantity: 1,
       id: "true",
@@ -25,8 +24,7 @@ describe("ImagesFactory", () => {
   });
 
   it("Should be able to create factory an images with parameters information", async () => {
-    // arrange
-    // act
+    // arrange act
     const name = faker.image.avatar();
 
     const images = imagesFactory.generate({
@@ -47,9 +45,9 @@ describe("ImagesFactory", () => {
   });
 
   it("Should be able to create factory an images without quantity and id", async () => {
-    // arrange
-    // act
+    // arrange act
     const images = imagesFactory.generate({});
+
     // assert
     expect(images).toEqual(
       expect.arrayContaining([

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { CreateUserAddressClientService } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.service";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST } from "@shared/errors/constants";
@@ -9,7 +9,7 @@ import {
   PhonesFactory,
   UsersFactory,
   UsersTypesFactory,
-  UserTermFactory,
+  UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
 let createUserAddressClientService: CreateUserAddressClientService;
@@ -23,7 +23,7 @@ describe("CreateUserAddressClientService", () => {
   const phonesFactory = new PhonesFactory();
   const addressesFactory = new AddressesFactory();
 
-  const userTermFactory = new UserTermFactory();
+  const usersTermsFactory = new UsersTermsFactory();
 
   beforeEach(() => {
     createUserAddressClientService = new CreateUserAddressClientService(
@@ -46,9 +46,9 @@ describe("CreateUserAddressClientService", () => {
         active,
       },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
-    const [type] = usersTypesFactory.generate("uuid");
+    const [type] = usersTypesFactory.generate({});
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
     const [
       {
         id: address_id,

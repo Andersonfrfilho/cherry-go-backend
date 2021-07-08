@@ -7,7 +7,7 @@ interface CreateImageParametersFactoryDTO
   extends Partial<Image>,
     ParametersFactoryDTO {}
 
-class ImagesFactory {
+export class ImagesFactory {
   public generate({
     quantity = 1,
     id,
@@ -22,4 +22,3 @@ class ImagesFactory {
     );
   }
 }
-export { ImagesFactory };

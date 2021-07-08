@@ -4,7 +4,7 @@ import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 
 interface CreateTagsFactoryDTO extends Partial<Tag>, ParametersFactoryDTO {}
-class TagsFactory {
+export class TagsFactory {
   public generate({
     quantity = 1,
     id,
@@ -24,4 +24,3 @@ class TagsFactory {
     );
   }
 }
-export { TagsFactory };

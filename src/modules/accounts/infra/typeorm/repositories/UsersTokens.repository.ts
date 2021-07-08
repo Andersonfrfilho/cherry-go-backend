@@ -5,7 +5,7 @@ import {
   FindByUserIdAndRefreshTokenRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { UserTokens } from "@modules/accounts/infra/typeorm/entities/UserTokens";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 
 class UsersTokensRepository implements UsersTokensRepositoryInterface {
   private repository: Repository<UserTokens>;

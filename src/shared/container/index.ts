@@ -8,7 +8,7 @@ import { ProvidersRepository } from "@modules/accounts/infra/typeorm/repositorie
 import { ServicesProvidersRepository } from "@modules/accounts/infra/typeorm/repositories/ServicesProvidersRepository";
 import { TypesUsersRepository } from "@modules/accounts/infra/typeorm/repositories/TypesUsersRepository";
 import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImageRepository";
-import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
+import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/Users.repository";
 import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositories/UsersTokensRepository";
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/PhonesRepository.interface";
@@ -16,8 +16,8 @@ import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Pro
 import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProvidersRepository.interface";
 import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/TypesUsersRepository.interface";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { AppointmentsProvidersServicesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentProviderServiceRepository";
 import { AppointmentsAddressesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsAddressesRepository";
 import { AppointmentsProvidersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsProvidersRepository";
@@ -30,8 +30,8 @@ import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appoi
 import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersRepository.interface";
 import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactionsRepository.interface";
 import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItensRepository.interface";
-import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/ImagesRepository";
-import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
+import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/Images.repository";
+import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
 import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/NotificationsRepository.interface";
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/TagsRepository";

@@ -2,7 +2,7 @@ import { getRepository, Repository } from "typeorm";
 
 import { CreateUserRepositoryDTO } from "@modules/images/dtos";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
-import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
+import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
 
 class ImagesRepository implements ImagesRepositoryInterface {
   private repository: Repository<Image>;

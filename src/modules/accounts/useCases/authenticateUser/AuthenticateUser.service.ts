@@ -2,11 +2,11 @@ import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
-import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
-import { HashProviderInterface } from "@shared/container/providers/HashProvider/HashProvider.interface";
-import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
+import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST, UNAUTHORIZED } from "@shared/errors/constants";
 

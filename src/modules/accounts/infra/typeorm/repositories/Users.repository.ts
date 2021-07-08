@@ -19,7 +19,7 @@ import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UserPhone } from "@modules/accounts/infra/typeorm/entities/UserPhone";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { UserTypeUser } from "@modules/accounts/infra/typeorm/entities/UserTypeUser";
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 class UsersRepository implements UsersRepositoryInterface {

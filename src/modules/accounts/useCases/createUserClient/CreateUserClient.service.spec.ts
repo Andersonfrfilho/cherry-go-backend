@@ -3,20 +3,20 @@ import faker from "faker";
 import * as uuid from "uuid";
 
 import { config } from "@config/environment";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
 import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
-import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
-import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
-import { ISendMailDTO } from "@shared/container/providers/MailProvider/dtos/ISendMailDTO";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
+import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/Hash.provider.mock";
+import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos/SendMail.dto";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
+import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/Queue.provider.mock";
 import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";
 import {
   UsersFactory,
   UsersTypesFactory,
-  UserTermFactory,
+  UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
 let createUserService: CreateUserClientService;
@@ -27,7 +27,7 @@ jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 describe("CreateUserClientService", () => {
   const usersFactory = new UsersFactory();
   const usersTypesFactory = new UsersTypesFactory();
-  const userTermFactory = new UserTermFactory();
+  const usersTermsFactory = new UsersTermsFactory();
 
   beforeEach(() => {
     createUserService = new CreateUserClientService(
@@ -54,8 +54,8 @@ describe("CreateUserClientService", () => {
         active,
       },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
-    const [type] = usersTypesFactory.generate("with_id");
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const [type] = usersTypesFactory.generate({});
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
     const uuid_fake = faker.datatype.uuid();
     const variables = {
       name,
@@ -166,11 +166,11 @@ describe("CreateUserClientService", () => {
 
   it("Not should able to create user already email exist", async () => {
     // arrange
-    const [type] = usersTypesFactory.generate("with_id");
+    const [type] = usersTypesFactory.generate({});
     const [
       { name, last_name, cpf, rg, email, birth_date, password_hash, id },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: false });
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
 
     usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue({
       id,

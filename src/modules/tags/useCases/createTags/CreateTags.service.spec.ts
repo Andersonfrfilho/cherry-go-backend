@@ -11,7 +11,7 @@ import {
   TagsFactory,
   UsersFactory,
   UsersTypesFactory,
-  UserTermFactory,
+  UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
 let createTagsService: CreateTagsService;

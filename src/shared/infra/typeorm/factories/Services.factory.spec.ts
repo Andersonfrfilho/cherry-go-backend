@@ -6,8 +6,7 @@ describe("ServicesFactory", () => {
   const servicesFactory = new ServicesFactory();
 
   it("Should be able to create factory an services  with random information", async () => {
-    // arrange
-    // act
+    // arrange act
     const services = servicesFactory.generate({
       quantity: 1,
       id: "true",
@@ -28,8 +27,7 @@ describe("ServicesFactory", () => {
   });
 
   it("Should be able to create factory an phones with parameters information", async () => {
-    // arrange
-    // act
+    // arrange act
     const name = faker.name.jobTitle();
     const amount = faker.datatype.number();
     const duration = faker.datatype.number({ min: 10000, max: 99999 });
@@ -59,8 +57,7 @@ describe("ServicesFactory", () => {
   });
 
   it("Should be able to create factory an payments types content faker without quantity and id", async () => {
-    // arrange
-    // act
+    // arrange act
     const services = servicesFactory.generate({});
     // assert
     expect(services).toEqual(

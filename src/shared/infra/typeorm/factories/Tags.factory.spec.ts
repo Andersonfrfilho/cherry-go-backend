@@ -6,8 +6,7 @@ describe("TagsFactory", () => {
   const tagsFactory = new TagsFactory();
 
   it("Should be able to create factory an tags with random information", async () => {
-    // arrange
-    // act
+    // arrange act
 
     const tags = tagsFactory.generate({
       quantity: 1,
@@ -28,8 +27,7 @@ describe("TagsFactory", () => {
   });
 
   it("Should be able to create factory an tags with parameters information", async () => {
-    // arrange
-    // act
+    // arrange act
 
     const name = faker.name.jobTitle();
     const description = faker.lorem.words();
@@ -57,9 +55,9 @@ describe("TagsFactory", () => {
   });
 
   it("Should be able to create factory an tags content faker without quantity and id", async () => {
-    // arrange
-    // act
+    // arrange act
     const tags = tagsFactory.generate({});
+
     // assert
     expect(tags).toEqual(
       expect.arrayContaining([
