@@ -20,7 +20,7 @@ describe("TransportsTypesFactory", () => {
           id: expect.any(String) && transportsTypes[0].id,
           name: expect.any(TRANSPORT_TYPES_ENUM) && transportsTypes[0].name,
           active: expect.any(Boolean) && transportsTypes[0].active,
-          description: expect.any(Boolean) && transportsTypes[0].description,
+          description: undefined,
         }),
       ])
     );
@@ -29,7 +29,6 @@ describe("TransportsTypesFactory", () => {
   it("Should be able to create factory an transports types with parameters information", async () => {
     // arrange
     // act
-
     const active = faker.datatype.boolean();
     const description = faker.random.words();
 
@@ -47,6 +46,30 @@ describe("TransportsTypesFactory", () => {
           name: expect.any(TRANSPORT_TYPES_ENUM) && transportsTypes[0].name,
           active: expect.any(Boolean) && active,
           description: expect.any(Boolean) && description,
+        }),
+      ])
+    );
+  });
+
+  it("Should be able to create factory an transports types with parameters information description faker", async () => {
+    // arrange
+    // act
+    const active = faker.datatype.boolean();
+
+    const transportsTypes = transportsTypesFactory.generate({
+      id: "true",
+      active,
+      description: "faker",
+    });
+
+    // assert
+    expect(transportsTypes).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(String) && transportsTypes[0].id,
+          name: expect.any(TRANSPORT_TYPES_ENUM) && transportsTypes[0].name,
+          active: expect.any(Boolean) && active,
+          description: expect.any(Boolean) && transportsTypes[0].description,
         }),
       ])
     );

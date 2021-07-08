@@ -18,8 +18,8 @@ describe("UsersTypesFactory", () => {
         expect.objectContaining({
           id: expect.any(String) && usersTypes[0].id,
           name: expect.any(String) && usersTypes[0].name,
-          last_name: expect.any(String) && usersTypes[0].description,
-          email: expect.any(Boolean) && usersTypes[0].active,
+          description: undefined,
+          active: expect.any(Boolean) && usersTypes[0].active,
         }),
       ])
     );
@@ -33,6 +33,8 @@ describe("UsersTypesFactory", () => {
 
     const usersTypes = usersTypesFactory.generate({
       id: "true",
+      active,
+      description,
     });
 
     // assert
@@ -43,6 +45,30 @@ describe("UsersTypesFactory", () => {
           name: expect.any(TRANSPORT_TYPES_ENUM) && usersTypes[0].name,
           active: expect.any(Boolean) && active,
           description: expect.any(Boolean) && description,
+        }),
+      ])
+    );
+  });
+
+  it("Should be able to create factory an users types types with parameters description information", async () => {
+    // arrange act
+
+    const active = faker.datatype.boolean();
+
+    const usersTypes = usersTypesFactory.generate({
+      id: "true",
+      description: "faker",
+      active,
+    });
+
+    // assert
+    expect(usersTypes).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(String) && usersTypes[0].id,
+          name: expect.any(TRANSPORT_TYPES_ENUM) && usersTypes[0].name,
+          active: expect.any(Boolean) && active,
+          description: expect.any(Boolean) && usersTypes[0].description,
         }),
       ])
     );

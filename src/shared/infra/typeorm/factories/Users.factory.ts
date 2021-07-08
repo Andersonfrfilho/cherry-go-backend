@@ -28,9 +28,9 @@ export class UsersFactory {
         last_name: last_name || faker.name.lastName().toLowerCase(),
         email: email || faker.internet.email().toLowerCase(),
         birth_date: birth_date || faker.date.past(),
-        cpf: rg || faker.phone.phoneNumber("###########"),
+        cpf: cpf || faker.phone.phoneNumber("###########"),
         rg:
-          cpf ||
+          rg ||
           faker.phone.phoneNumber(
             faker.datatype.boolean() ? "########" : "#########"
           ),

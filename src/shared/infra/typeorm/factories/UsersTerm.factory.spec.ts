@@ -18,13 +18,13 @@ describe("TagsFactory", () => {
       expect.arrayContaining([
         expect.objectContaining({
           id: expect.any(String) && terms[0].id,
-          active: expect.any(Boolean) && terms[0].accept,
+          accept: expect.any(Boolean) && terms[0].accept,
         }),
       ])
     );
   });
 
-  it("Should be able to create factory an tags with parameters information", async () => {
+  it("Should be able to create factory an user terms with parameters information", async () => {
     // arrange act
 
     const accept = faker.datatype.boolean();
@@ -40,13 +40,13 @@ describe("TagsFactory", () => {
       expect.arrayContaining([
         expect.objectContaining({
           id: expect.any(String) && usersTerms[0].id,
-          accept: expect.any(String) && accept,
+          accept: expect.any(Boolean) && accept,
         }),
       ])
     );
   });
 
-  it("Should be able to create factory an tags content faker without quantity and id", async () => {
+  it("Should be able to create factory an user terms content faker without quantity and id", async () => {
     // arrange act
     const usersTerms = usersTermsFactory.generate({});
 
@@ -55,7 +55,7 @@ describe("TagsFactory", () => {
       expect.arrayContaining([
         expect.objectContaining({
           id: undefined,
-          accept: expect.any(String) && usersTerms[0].accept,
+          accept: expect.any(Boolean) && usersTerms[0].accept,
         }),
       ])
     );

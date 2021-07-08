@@ -54,6 +54,33 @@ describe("TagsFactory", () => {
     );
   });
 
+  it("Should be able to create factory an tags with parameters faker params", async () => {
+    // arrange act
+
+    const name = faker.name.jobTitle();
+    const active = faker.datatype.boolean();
+
+    const tags = tagsFactory.generate({
+      quantity: 1,
+      id: "true",
+      name,
+      description: "faker",
+      active,
+    });
+
+    // assert
+    expect(tags).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: expect.any(String) && tags[0].id,
+          name: expect.any(String) && name,
+          description: expect.any(String) && tags[0].description,
+          active: expect.any(Boolean) && active,
+        }),
+      ])
+    );
+  });
+
   it("Should be able to create factory an tags content faker without quantity and id", async () => {
     // arrange act
     const tags = tagsFactory.generate({});

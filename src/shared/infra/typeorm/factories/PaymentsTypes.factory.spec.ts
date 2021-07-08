@@ -8,7 +8,7 @@ describe("PaymentTypeFactory", () => {
 
   it("Should be able to create factory an PaymentsTypes  with random information", async () => {
     // arrange act
-    const paymentsTypes = paymentsTypesFactory.generate({});
+    const paymentsTypes = paymentsTypesFactory.generate({ id: "true" });
 
     // assert
     expect(paymentsTypes).toEqual(
