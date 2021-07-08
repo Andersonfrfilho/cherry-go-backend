@@ -14,7 +14,7 @@ export default {
 
   // Automatically clear mock calls and instances between every test
   clearMocks: true,
-
+  resetMocks: true,
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: true,
 
@@ -31,7 +31,7 @@ export default {
   coveragePathIgnorePatterns: ["\\\\node_modules\\\\", "\\\\dist\\\\"],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  // coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
   coverageReporters: ["text-summary", "lcov"],
@@ -47,7 +47,6 @@ export default {
 
   // Force coverage collection from ignored files using an array of glob patterns
   // forceCoverageMatch: [],
-
   // A path to a module which exports an async function that is triggered once before all test suites
   // globalSetup: undefined,
 
