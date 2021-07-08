@@ -2,6 +2,10 @@ kafka:
 	docker-compose -f ./apache-kafka/docker-compose.yaml up -d
 .PHONY: kafka
 
+kafka-down:
+	docker-compose -f ./apache-kafka/docker-compose.yaml up -d
+.PHONY: kafka-down
+
 queue:
 	yarn start:queue
 .PHONY: queue
@@ -18,34 +22,34 @@ database-mongo:
 	docker-compose up -d database-mongo
 .PHONY: database-mongo
 
-# down-databases:
-#   docker-compose stop
-# .PHONY: down-databases
+databases:
+	docker-compose up -d
+.PHONY: databases
 
-# down-kafka:
-#   docker-compose -f ./apache-kafka/docker-compose.yaml down
-# .PHONY: down-kafka
+databases-down:
+	docker-compose down
+.PHONY: databases-down
 
-# setup-env:
-# 	cp .env.example env
-# .PHONY: setup-env
+setup-env:
+	cp .example.env env
+.PHONY: setup-env
 
-# postgres-migration:
-# 	yarn migration:run
-# .PHONY: postgres-migration
+postgres-migration:
+	yarn migration:run
+.PHONY: postgres-migration
 
-# app-dev:
-# 	yarn start:dev
-# .PHONY: app-dev
+app-dev:
+	yarn start:dev
+.PHONY: app-dev
 
-# all:
-# 	$(MAKE) kafka database-postgres database-redis database-mongo queue postgres-migration app-dev
-# .PHONY: all
+all:
+	$(MAKE) kafka databases postgres-migration app-dev
+.PHONY: all
 
-# down:
-# 	$(MAKE) kafka-down databases-down
-# .PHONY: down
+down:
+	$(MAKE) kafka-down databases-down
+.PHONY: down
 
-# clean:
-# 	docker rmi $(shell docker images -f "dangling=true" -q)
-# .PHONY: clean
+clean:
+	docker rmi $(shell docker images -f "dangling=true" -q)
+.PHONY: clean

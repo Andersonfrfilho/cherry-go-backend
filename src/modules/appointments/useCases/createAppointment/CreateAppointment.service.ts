@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
 import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProvidersRepository.interface";
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { AddressesRepositoryInterface } from "@modules/addresses/repositories/AddressesRepository.interface";
 import { CreateAppointmentServiceDTO } from "@modules/appointments/dtos";
 import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddressesRepository.interface";

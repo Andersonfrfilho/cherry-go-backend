@@ -14,12 +14,15 @@ export default {
 
   // Automatically clear mock calls and instances between every test
   clearMocks: true,
-
+  resetMocks: true,
   // Indicates whether the coverage information should be collected while executing the test
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ["<rootDir>/src/modules/**/useCases/**/*service.ts"],
+  collectCoverageFrom: [
+    "<rootDir>/src/modules/**/useCases/**/*service.ts",
+    "<rootDir>/src/shared/infra/typeorm/factories/*.factory.ts",
+  ],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: "covarage",
@@ -28,7 +31,7 @@ export default {
   coveragePathIgnorePatterns: ["\\\\node_modules\\\\", "\\\\dist\\\\"],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  // coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
   coverageReporters: ["text-summary", "lcov"],
@@ -44,7 +47,6 @@ export default {
 
   // Force coverage collection from ignored files using an array of glob patterns
   // forceCoverageMatch: [],
-
   // A path to a module which exports an async function that is triggered once before all test suites
   // globalSetup: undefined,
 
@@ -140,6 +142,6 @@ export default {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ["**/*service.spec.ts"],
+  testMatch: ["**/*service.spec.ts", "**/*.factory.spec.ts"],
   modulePathIgnorePatterns: ["dist", "node_modules", "coverage"],
 };

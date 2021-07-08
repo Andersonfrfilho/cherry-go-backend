@@ -1,15 +1,15 @@
 import { inject, injectable } from "tsyringe";
 
 import { CreateDocumentsUsersServiceDTO } from "@modules/accounts/dtos";
-import { UserDocumentValue } from "@modules/accounts/enums/UserDocumentValue.enum";
-import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
-import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
-import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/StorageProvider.interface";
+import { USER_DOCUMENT_VALUE_ENUM } from "@modules/accounts/enums/UserDocumentValue.enum";
+import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImage.repository.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
+import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
+import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/Storage.provider.interface";
 
 @injectable()
-class CreateDocumentsUsersService {
+export class CreateDocumentsUsersService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
@@ -44,7 +44,7 @@ class CreateDocumentsUsersService {
 
       await this.storageProvider.delete(
         image_found.name,
-        StorageTypeFolderEnum.DOCUMENTS
+        STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
       );
 
       await this.imagesRepository.deleteById(
@@ -54,7 +54,7 @@ class CreateDocumentsUsersService {
 
     const name = await this.storageProvider.save(
       document_file,
-      StorageTypeFolderEnum.DOCUMENTS
+      STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
     );
 
     const image = await this.imagesRepository.create({ name });
@@ -63,8 +63,7 @@ class CreateDocumentsUsersService {
       image_id: image.id,
       user_id,
       value: user.rg,
-      description: UserDocumentValue[description],
+      description: USER_DOCUMENT_VALUE_ENUM[description],
     });
   }
 }
-export { CreateDocumentsUsersService };

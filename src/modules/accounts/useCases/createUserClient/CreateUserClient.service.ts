@@ -4,14 +4,14 @@ import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
 import { CreateUserClientServiceDTO } from "@modules/accounts/dtos";
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { User } from "@sentry/node";
-import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
-import { HashProviderInterface } from "@shared/container/providers/HashProvider/HashProvider.interface";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
+import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
+import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/Queue.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";
 

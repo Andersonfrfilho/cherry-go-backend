@@ -2,12 +2,12 @@ import "reflect-metadata";
 import faker from "faker";
 
 import auth from "@config/auth";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
 import { AuthenticateUserService } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.service";
-import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
-import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
-import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/jwtProvider.mock";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
+import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/Hash.provider.mock";
+import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/Jwt.provider.mock";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST, UNAUTHORIZED } from "@shared/errors/constants";
 import {
@@ -16,7 +16,7 @@ import {
   PhonesFactory,
   UsersFactory,
   UsersTypesFactory,
-  UserTermFactory,
+  UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
 let authenticateUserService: AuthenticateUserService;
@@ -32,7 +32,7 @@ describe("AuthenticateUserService", () => {
   const addressesFactory = new AddressesFactory();
   const phonesFactory = new PhonesFactory();
   const imageProfileFactory = new ImagesFactory();
-  const userTermFactory = new UserTermFactory();
+  const usersTermsFactory = new UsersTermsFactory();
 
   beforeEach(() => {
     authenticateUserService = new AuthenticateUserService(
@@ -60,14 +60,14 @@ describe("AuthenticateUserService", () => {
         active,
       },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
-    const [type] = usersTypesFactory.generate("uuid");
+    const [type] = usersTypesFactory.generate({});
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
     const [image_profile] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",
     });
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
     const token_faker = faker.datatype.uuid();
     const refresh_token_faker = faker.datatype.uuid();
 
@@ -229,14 +229,14 @@ describe("AuthenticateUserService", () => {
         active,
       },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
-    const [type] = usersTypesFactory.generate("uuid");
+    const [type] = usersTypesFactory.generate({});
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
     const [image_profile] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",
     });
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
 
     usersRepositoryMock.findByEmail.mockResolvedValue({
       id,

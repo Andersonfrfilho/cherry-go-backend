@@ -2,12 +2,12 @@ import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
-import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/QueueProvider.interface";
+import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/Queue.provider.interface";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";

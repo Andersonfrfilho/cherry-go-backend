@@ -12,7 +12,7 @@ import {
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
 
-@Entity("documents_users_images")
+@Entity("users_documents_images")
 class DocumentUserImage {
   @PrimaryGeneratedColumn("uuid")
   id?: string;

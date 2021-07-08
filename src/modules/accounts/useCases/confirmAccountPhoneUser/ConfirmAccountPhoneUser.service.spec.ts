@@ -2,12 +2,12 @@ import "reflect-metadata";
 import faker from "faker";
 
 import auth from "@config/auth";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
 import { ConfirmAccountPhoneUserService } from "@modules/accounts/useCases/confirmAccountPhoneUser/ConfirmAccountPhoneUser.service";
-import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
-import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
-import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/jwtProvider.mock";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
+import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/Hash.provider.mock";
+import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/Jwt.provider.mock";
 import { AppError } from "@shared/errors/AppError";
 import {
   METHOD_NOT_ALLOWED,

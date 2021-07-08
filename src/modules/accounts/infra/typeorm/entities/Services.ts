@@ -8,11 +8,13 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
+import { AppointmentProviderService } from "@modules/appointments/infra/typeorm/entities/AppointmentsProvidersServices";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 @Entity("services")
@@ -46,6 +48,12 @@ export class Service {
     inverseJoinColumns: [{ name: "tag_id", referencedColumnName: "id" }],
   })
   tags?: Tag[];
+
+  @OneToMany(
+    () => AppointmentProviderService,
+    (appointment) => appointment.service
+  )
+  providers?: AppointmentProviderService[];
 
   @CreateDateColumn()
   @Exclude()

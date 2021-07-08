@@ -23,12 +23,13 @@ export class CreateAddresses1620612729413 implements MigrationInterface {
       .find()) as Address[];
 
     const relationship_users_addresses = users.map((user, index) => ({
-      ...user,
-      addresses: [addresses_list[index]],
+      user_id: user.id,
+      address_id: addresses_list[index].id,
+      active: true,
     }));
 
     await getConnection("seeds")
-      .getRepository(User)
+      .getRepository("users_addresses")
       .save(relationship_users_addresses);
   }
 

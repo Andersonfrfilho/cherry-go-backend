@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
 
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
-import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
-import { HashProviderInterface } from "@shared/container/providers/HashProvider/HashProvider.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
+import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN } from "@shared/errors/constants";
 

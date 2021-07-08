@@ -20,16 +20,16 @@ export class AppointmentProvider {
   @Column()
   provider_id: string;
 
-  @ManyToOne(() => Provider)
-  @JoinColumn({ name: "provider_id", referencedColumnName: "id" })
-  provider: Provider;
+  // @ManyToOne(() => Provider)
+  // @JoinColumn({ name: "provider_id", referencedColumnName: "id" })
+  // provider: Provider;
 
   @Column()
   appointment_id: string;
 
-  @ManyToOne(() => Appointment)
-  @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
-  appointment: Appointment;
+  // @ManyToOne(() => Appointment)
+  // @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
+  // appointment: Appointment;
 
   @Column()
   active: boolean;

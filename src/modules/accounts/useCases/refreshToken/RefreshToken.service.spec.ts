@@ -2,9 +2,9 @@ import "reflect-metadata";
 import faker from "faker";
 
 import auth from "@config/auth";
-import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
-import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
-import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/jwtProvider.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
+import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/Jwt.provider.mock";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN } from "@shared/errors/constants";
 import { UsersFactory } from "@shared/infra/typeorm/factories";

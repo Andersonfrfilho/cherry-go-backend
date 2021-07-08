@@ -7,6 +7,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -38,11 +39,11 @@ class Transaction {
   status: string;
 
   @Column()
-  user_id: string;
+  client_id: string;
 
-  @ManyToOne(() => User, (user) => user.transactions)
-  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  user?: User;
+  @ManyToOne(() => User, (client) => client.transactions)
+  @JoinColumn({ name: "client_id", referencedColumnName: "id" })
+  client?: User;
 
   @Column()
   appointment_id: string;
@@ -51,11 +52,10 @@ class Transaction {
   @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
   appointment?: Appointment;
 
-  @ManyToOne(
-    () => TransactionItem,
-    (transaction_itens) => transaction_itens.transaction
-  )
-  itens?: TransactionItem;
+  @OneToMany(() => TransactionItem, (service) => service.transaction, {
+    eager: true,
+  })
+  itens?: TransactionItem[];
 
   @CreateDateColumn()
   created_at?: Date;

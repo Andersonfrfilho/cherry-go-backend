@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { CreateUserAddressClientServiceDTO } from "@modules/accounts/dtos";
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { User } from "@sentry/node";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST } from "@shared/errors/constants";

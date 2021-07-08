@@ -11,11 +11,14 @@ import {
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
+import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 import { AppointmentAddress } from "./AppointmentAddress";
+import { AppointmentClient } from "./AppointmentClient";
+import { AppointmentProviderService } from "./AppointmentsProvidersServices";
 
 @Entity("appointments")
 export class Appointment {
@@ -23,20 +26,23 @@ export class Appointment {
   id?: string;
 
   @Column()
-  date: Date;
+  initial_date?: Date;
+
+  @Column()
+  final_date?: Date;
 
   @Column()
   confirm: boolean;
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, { eager: true })
   @JoinTable({
-    name: "appointments_users",
+    name: "appointments_clients",
     joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "user_id", referencedColumnName: "id" }],
+    inverseJoinColumns: [{ name: "client_id", referencedColumnName: "id" }],
   })
-  users?: User[];
+  clients?: User[];
 
-  @ManyToMany(() => Provider)
+  @ManyToMany(() => Provider, { eager: true })
   @JoinTable({
     name: "appointments_providers",
     joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
@@ -44,22 +50,26 @@ export class Appointment {
   })
   providers?: Provider[];
 
-  @ManyToMany(() => Transport)
-  @JoinTable({
-    name: "appointments_transports",
-    joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "transport_id", referencedColumnName: "id" }],
+  @OneToMany(() => Transport, (transport) => transport.appointment, {
+    eager: true,
   })
   transports?: Transport[];
 
   @OneToMany(
+    () => AppointmentProviderService,
+    (appointment_provider_service) => appointment_provider_service.appointment,
+    { eager: true }
+  )
+  services?: AppointmentProviderService[];
+
+  @OneToMany(
     () => AppointmentAddress,
-    (appointment_address) => appointment_address.address,
+    (appointment_address) => appointment_address.appointment,
     { eager: true }
   )
   addresses?: AppointmentAddress[];
 
-  @OneToMany(() => Transaction, (transaction) => transaction.user, {
+  @OneToMany(() => Transaction, (transaction) => transaction.appointment, {
     eager: true,
   })
   transactions?: Transaction[];

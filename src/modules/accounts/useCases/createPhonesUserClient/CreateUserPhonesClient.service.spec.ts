@@ -4,13 +4,13 @@ import faker, { phone } from "faker";
 import auth from "@config/auth";
 import { config } from "@config/environment";
 import { phonesRepositoryMock } from "@modules/accounts/repositories/mocks/PhonesRepository.mock";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
 import { CreateUserPhonesClientService } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhonesClient.service";
-import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
-import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
-import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/jwtProvider.mock";
-import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/QueueProvider.mock";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
+import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/Hash.provider.mock";
+import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/Jwt.provider.mock";
+import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/Queue.provider.mock";
 import { SendSmsDTO } from "@shared/container/providers/SmsProvider/dtos/SendSms.dto";
 import { AppError } from "@shared/errors/AppError";
 import {
@@ -46,7 +46,7 @@ describe("CreateUserPhonesClientService", () => {
     const [
       { name, last_name, cpf, rg, email, birth_date, password_hash, id },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
-    const [type] = usersTypesFactory.generate("with_id");
+    const [type] = usersTypesFactory.generate({});
     const [
       { country_code, ddd, id: phone_id, number },
     ] = phonesFactory.generate({

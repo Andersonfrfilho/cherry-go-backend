@@ -1,20 +1,20 @@
 import "reflect-metadata";
 import faker from "faker";
 
-import { UserDocumentValue } from "@modules/accounts/enums/UserDocumentValue.enum";
+import { USER_DOCUMENT_VALUE_ENUM } from "@modules/accounts/enums/UserDocumentValue.enum";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { usersDocumentsRepositoryMock } from "@modules/accounts/repositories/mocks/UsersDocumentsRepository.mock";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
 import { CreateDocumentsUsersService } from "@modules/accounts/useCases/createDocumentsUsers/CreateDocumentsUsers.service";
-import { imagesRepositoryMock } from "@modules/images/repositories/mocks/ImagesRepository.mock";
-import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
-import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/StorageProvider.mock";
+import { imagesRepositoryMock } from "@modules/images/repositories/mocks/Images.repository.mock";
+import { StorageTypeFolderEnum } from "@shared/container/providers/Storage.provider/enums/StorageTypeFolder.enum";
+import { storageProviderMock } from "@shared/container/providers/Storage.provider/mock/Storage.provider.mock";
 import {
   AddressesFactory,
   ImagesFactory,
   PhonesFactory,
   UsersFactory,
   UsersTypesFactory,
-  UserTermFactory,
+  UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
 let createDocumentsUsersService: CreateDocumentsUsersService;
@@ -28,7 +28,7 @@ describe("CreateDocumentsUsersService", () => {
   const phonesFactory = new PhonesFactory();
   const addressesFactory = new AddressesFactory();
   const imageProfileFactory = new ImagesFactory();
-  const userTermFactory = new UserTermFactory();
+  const usersTermsFactory = new UsersTermsFactory();
 
   beforeEach(() => {
     createDocumentsUsersService = new CreateDocumentsUsersService(
@@ -54,14 +54,14 @@ describe("CreateDocumentsUsersService", () => {
         active,
       },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
-    const [type] = usersTypesFactory.generate("uuid");
+    const [type] = usersTypesFactory.generate({});
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
     const [image_profile] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",
     });
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
     const name_file = faker.name.firstName();
     const [image_document_front] = imageProfileFactory.generate({
       quantity: 1,
@@ -92,7 +92,7 @@ describe("CreateDocumentsUsersService", () => {
     await createDocumentsUsersService.execute({
       user_id: id,
       document_file: name_file,
-      description: UserDocumentValue.FRONT,
+      description: USER_DOCUMENT_VALUE_ENUM.FRONT,
     });
 
     // assert
@@ -108,7 +108,7 @@ describe("CreateDocumentsUsersService", () => {
       image_id: image_document_front.id,
       user_id: id,
       value: rg,
-      description: UserDocumentValue[UserDocumentValue.FRONT],
+      description: USER_DOCUMENT_VALUE_ENUM[USER_DOCUMENT_VALUE_ENUM.FRONT],
     });
   });
   it("Should be able to substituted a document image user front", async () => {
@@ -126,14 +126,14 @@ describe("CreateDocumentsUsersService", () => {
         active,
       },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
-    const [type] = usersTypesFactory.generate("uuid");
+    const [type] = usersTypesFactory.generate({});
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
     const [image_profile] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",
     });
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
     const name_file = faker.name.firstName();
     const [image_document_front] = imageProfileFactory.generate({
       quantity: 1,
@@ -175,7 +175,7 @@ describe("CreateDocumentsUsersService", () => {
     await createDocumentsUsersService.execute({
       user_id: id,
       document_file: name_file,
-      description: UserDocumentValue.FRONT.toUpperCase(),
+      description: USER_DOCUMENT_VALUE_ENUM.FRONT.toUpperCase(),
     });
 
     // assert
@@ -204,7 +204,8 @@ describe("CreateDocumentsUsersService", () => {
       image_id: image_document_front.id,
       user_id: id,
       value: rg,
-      description: UserDocumentValue[UserDocumentValue.FRONT.toUpperCase()],
+      description:
+        USER_DOCUMENT_VALUE_ENUM[USER_DOCUMENT_VALUE_ENUM.FRONT.toUpperCase()],
     });
   });
 });

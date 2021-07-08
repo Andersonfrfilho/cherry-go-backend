@@ -1,8 +1,8 @@
 import { container } from "tsyringe";
 
-import { LocalStorageProvider } from "@shared/container/providers/StorageProvider/implementations/LocalStorageProvider";
-import { S3StorageProvider } from "@shared/container/providers/StorageProvider/implementations/S3StorageProvider";
-import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/StorageProvider.interface";
+import { LocalStorageProvider } from "@shared/container/providers/Storage.provider/implementations/LocalStorageProvider";
+import { S3StorageProvider } from "@shared/container/providers/Storage.provider/implementations/S3StorageProvider";
+import { StorageProviderInterface } from "@shared/container/providers/Storage.provider/Storage.provider.interface";
 
 const diskStorage = {
   local: LocalStorageProvider,

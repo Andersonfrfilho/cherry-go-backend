@@ -1,23 +1,12 @@
-import { AddressesFactory } from "@shared/infra/typeorm/factories/AddressesFactory";
-import { AppointmentsFactory } from "@shared/infra/typeorm/factories/AppointmentsFactory";
-import { ImagesFactory } from "@shared/infra/typeorm/factories/ImagesFactory";
-import { PaymentsTypesFactory } from "@shared/infra/typeorm/factories/PaymentTypeFactory";
-import { PhonesFactory } from "@shared/infra/typeorm/factories/PhonesFactory";
-import { ServicesFactory } from "@shared/infra/typeorm/factories/ServicesFactory";
-import { TagsFactory } from "@shared/infra/typeorm/factories/TagsFactory";
-import { UsersFactory } from "@shared/infra/typeorm/factories/UsersFactory";
-import { UsersTypesFactory } from "@shared/infra/typeorm/factories/UsersTypesFactory";
-
-export { TransportsTypesFactory } from "@shared/infra/typeorm/factories/TransportsTypesFactory";
-export { UserTermFactory } from "@shared/infra/typeorm/factories/Term.factory";
-export {
-  UsersFactory,
-  PhonesFactory,
-  UsersTypesFactory,
-  AddressesFactory,
-  AppointmentsFactory,
-  PaymentsTypesFactory,
-  ImagesFactory,
-  ServicesFactory,
-  TagsFactory,
-};
+export { AddressesFactory } from "@shared/infra/typeorm/factories/Addresses.factory";
+export { AppointmentsFactory } from "@shared/infra/typeorm/factories/Appointments.factory";
+export { ImagesFactory } from "@shared/infra/typeorm/factories/Images.factory";
+export { PaymentsTypesFactory } from "@shared/infra/typeorm/factories/PaymentsTypes.factory";
+export { PhonesFactory } from "@shared/infra/typeorm/factories/Phones.factory";
+export { ServicesFactory } from "@shared/infra/typeorm/factories/Services.factory";
+export { TagsFactory } from "@shared/infra/typeorm/factories/Tags.factory";
+export { UsersFactory } from "@shared/infra/typeorm/factories/Users.factory";
+export { UsersTypesFactory } from "@shared/infra/typeorm/factories/UsersTypes.factory";
+export { TransportsTypesFactory } from "@shared/infra/typeorm/factories/TransportsTypes.factory";
+export { TransportsFactory } from "@shared/infra/typeorm/factories/Transports.factory";
+export { UsersTermsFactory } from "@shared/infra/typeorm/factories/UsersTerm.factory";

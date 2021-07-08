@@ -3,24 +3,24 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
+import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 @Entity("transports_types")
-class TransportType {
+export class TransportType {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
-  @Column()
+  @Column({
+    type: "enum",
+    enum: TRANSPORT_TYPES_ENUM,
+  })
   name: string;
 
   @Column()
@@ -32,7 +32,7 @@ class TransportType {
   @OneToMany(() => Transport, (transports) => transports)
   transport?: Transport[];
 
-  @OneToMany(() => Provider, (provider) => provider.transport_types)
+  @OneToMany(() => Provider, (provider) => provider.transports_types)
   providers?: Provider[];
 
   @CreateDateColumn()
@@ -44,5 +44,3 @@ class TransportType {
   @DeleteDateColumn()
   deleted_at?: Date;
 }
-
-export { TransportType };

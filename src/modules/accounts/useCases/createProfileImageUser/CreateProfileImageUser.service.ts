@@ -2,9 +2,9 @@ import { inject, injectable } from "tsyringe";
 
 import { CreateImageProfileUserServiceDTO } from "@modules/accounts/dtos";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
-import { UsersRepositoryInterface } from "@modules/accounts/repositories/UsersRepository.interface";
-import { ImagesRepositoryInterface } from "@modules/images/repositories/ImagesRepository.interface";
-import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/StorageProvider.interface";
+import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
+import { StorageProviderInterface } from "@shared/container/providers/Storage.provider/Storage.provider.interface";
 
 @injectable()
 class CreateProfileImageUserService {

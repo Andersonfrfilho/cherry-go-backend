@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import faker from "faker";
 
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
-import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokensRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
+import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
 import { ResetPasswordService } from "@modules/accounts/useCases/resetPasswordUser/ResetPasswordUser.service";
-import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/DateProvider.mock";
-import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/HashProvider.mock";
+import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
+import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/Hash.provider.mock";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN } from "@shared/errors/constants";
 import { UsersFactory } from "@shared/infra/typeorm/factories";

@@ -2,18 +2,18 @@ import "reflect-metadata";
 import faker from "faker";
 
 import { userProfileImageRepositoryMock } from "@modules/accounts/repositories/mocks/UserProfileImageRepository.mock";
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/UsersRepository.mock";
+import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { CreateProfileImageUserService } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.service";
-import { imagesRepositoryMock } from "@modules/images/repositories/mocks/ImagesRepository.mock";
-import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
-import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/StorageProvider.mock";
+import { imagesRepositoryMock } from "@modules/images/repositories/mocks/Images.repository.mock";
+import { StorageTypeFolderEnum } from "@shared/container/providers/Storage.provider/enums/StorageTypeFolder.enum";
+import { storageProviderMock } from "@shared/container/providers/Storage.provider/mock/Storage.provider.mock";
 import {
   AddressesFactory,
   ImagesFactory,
   PhonesFactory,
   UsersFactory,
   UsersTypesFactory,
-  UserTermFactory,
+  UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
 let createProfileImageUserService: CreateProfileImageUserService;
@@ -27,7 +27,7 @@ describe("CreateProfileImageUserService", () => {
   const phonesFactory = new PhonesFactory();
   const addressesFactory = new AddressesFactory();
   const imageProfileFactory = new ImagesFactory();
-  const userTermFactory = new UserTermFactory();
+  const usersTermsFactory = new UsersTermsFactory();
 
   beforeEach(() => {
     createProfileImageUserService = new CreateProfileImageUserService(
@@ -53,14 +53,14 @@ describe("CreateProfileImageUserService", () => {
         active,
       },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
-    const [type] = usersTypesFactory.generate("uuid");
+    const [type] = usersTypesFactory.generate({});
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
     const [image_profile] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",
     });
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
     const name_file = faker.name.firstName();
 
     usersRepositoryMock.findByIdWithProfileImage.mockResolvedValue({
@@ -121,15 +121,14 @@ describe("CreateProfileImageUserService", () => {
         active,
       },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: true });
-    const [type] = usersTypesFactory.generate("uuid");
+    const [type] = usersTypesFactory.generate({});
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
     const [image_profile] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",
     });
-    const [term] = userTermFactory.generate({ quantity: 1, accept: true });
-    const name_file = faker.name.firstName();
+    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
     const [image_document_front] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",

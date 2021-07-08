@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokensRepository.interface";
-import { DateProviderInterface } from "@shared/container/providers/DateProvider/DateProvider.interface";
-import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/JwtProvider.interface";
+import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
+import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
+import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN } from "@shared/errors/constants";
 

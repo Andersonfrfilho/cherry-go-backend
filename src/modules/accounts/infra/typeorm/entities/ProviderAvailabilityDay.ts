@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { DAYS_WEEK } from "@modules/accounts/enums/DaysProviders.enum";
+import { DAYS_WEEK_ENUM } from "@modules/accounts/enums/DaysProviders.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 
 @Entity("providers_availabilities_days")
@@ -22,7 +22,7 @@ class ProviderAvailabilityDay {
 
   @Column({
     type: "enum",
-    enum: DAYS_WEEK,
+    enum: DAYS_WEEK_ENUM,
   })
   day: string;
 
@@ -31,7 +31,7 @@ class ProviderAvailabilityDay {
 
   @ManyToOne(() => Provider)
   @JoinColumn({ name: "provider_id", referencedColumnName: "id" })
-  provider: Provider;
+  provider?: Provider;
 
   @CreateDateColumn()
   @Exclude()
