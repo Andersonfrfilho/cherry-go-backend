@@ -5,7 +5,7 @@ import {
   FindByIndiciesAddressesRepositoryDTO,
 } from "@modules/addresses/dtos";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
-import { AddressesRepositoryInterface } from "@modules/addresses/repositories/AddressesRepository.interface";
+import { AddressesRepositoryInterface } from "@modules/addresses/repositories/Addresses.repository.interface";
 
 export class AddressesRepository implements AddressesRepositoryInterface {
   private repository: Repository<Address>;

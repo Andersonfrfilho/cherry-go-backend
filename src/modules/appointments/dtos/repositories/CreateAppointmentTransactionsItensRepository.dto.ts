@@ -1,5 +1,5 @@
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
-import { ItensTypesTransactionsEnum } from "@modules/transactions/enums/ItensTypesTransactions.enum";
+import { ITENS_TYPES_TRANSACTIONS_ENUM } from "@modules/transactions/enums/ItensTypesTransactions.enum";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 interface ServiceDiscount extends Service {
@@ -16,7 +16,7 @@ export interface CreateAppointmentTransactionsItensRepositoryDTO {
   transaction_id: string;
   elements: Partial<ServiceDiscount | TransportDiscount>;
   reference_key: string;
-  type: ItensTypesTransactionsEnum;
+  type: ITENS_TYPES_TRANSACTIONS_ENUM;
   increment_amount: number;
   discount_amount: number;
   amount: number;

@@ -3,9 +3,9 @@ import { getConnection, MigrationInterface } from "typeorm";
 
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import {
-  ItensTypesTransactionsEnum,
+  ITENS_TYPES_TRANSACTIONS_ENUM,
   PAYMENT_TYPES_ENUM,
-  StatusTransactionsEnum,
+  STATUS_TRANSACTION_ENUM,
 } from "@modules/transactions/enums";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 
@@ -29,7 +29,7 @@ export class CreateAppointmentTransactions1621058145504
       related_appointment_transactions.push({
         appointment_id: appointments[appointment_index].id,
         client_id: appointments[appointment_index].clients[0].id,
-        status: StatusTransactionsEnum.PROGRESS,
+        status: STATUS_TRANSACTION_ENUM.PROGRESS,
         current_amount: 0,
         original_amount: 0,
         increment_amount: 0,
@@ -76,7 +76,7 @@ export class CreateAppointmentTransactions1621058145504
           elements: appointments[appointment_index].services[service_index],
           reference_key:
             appointments[appointment_index].services[service_index].id,
-          type: ItensTypesTransactionsEnum.SERVICE,
+          type: ITENS_TYPES_TRANSACTIONS_ENUM.SERVICE,
           increment_amount,
           discount_amount,
           amount:
@@ -92,7 +92,7 @@ export class CreateAppointmentTransactions1621058145504
       transactions[appointment_index].original_amount = original_amount_total;
       transactions[appointment_index].increment_amount = increment_amount_total;
       transactions[appointment_index].discount_amount = discount_amount_total;
-      transactions[appointment_index].status = StatusTransactionsEnum.PROGRESS;
+      transactions[appointment_index].status = STATUS_TRANSACTION_ENUM.PROGRESS;
 
       appointment_index += 1;
     }

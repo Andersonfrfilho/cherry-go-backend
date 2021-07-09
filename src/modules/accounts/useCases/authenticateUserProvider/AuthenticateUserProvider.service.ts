@@ -6,7 +6,7 @@ import {
   AuthenticateUserProviderServiceResponseDTO,
 } from "@modules/accounts/dtos";
 import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
-import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
+import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";

@@ -2,7 +2,7 @@ import { getRepository, In, Repository } from "typeorm";
 
 import { CreateServiceProviderRepositoryDTO } from "@modules/accounts/dtos";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
-import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProvidersRepository.interface";
+import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProviders.repository.interface";
 
 export class ServicesProvidersRepository
   implements ServicesProvidersRepositoryInterface {

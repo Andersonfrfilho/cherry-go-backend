@@ -4,7 +4,7 @@ import {
   CreateAppointmentsUsersTransactionsRepositoryDTO,
   UpdatedAppointmentsUsersTransactionsRepositoryDTO,
 } from "@modules/appointments/dtos";
-import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactionsRepository.interface";
+import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactions.repository.interface";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 
 export class AppointmentsUsersTransactionsRepository

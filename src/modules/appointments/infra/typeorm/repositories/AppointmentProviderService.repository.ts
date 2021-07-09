@@ -1,7 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import { CreateAppointmentProvidersServiceRepositoryDTO } from "@modules/appointments/dtos";
-import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServicesRepository.interface";
+import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServices.repository.interface";
 
 import { AppointmentProviderService } from "../entities/AppointmentsProvidersServices";
 

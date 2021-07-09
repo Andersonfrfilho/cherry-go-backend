@@ -2,7 +2,7 @@ import { getRepository, Repository } from "typeorm";
 
 import { CreateAppointmentProvidersRepositoryDTO } from "@modules/appointments/dtos";
 import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProviders";
-import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
+import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProviders.repository.interface";
 
 export class AppointmentsProvidersRepository
   implements AppointmentsProvidersRepositoryInterface {

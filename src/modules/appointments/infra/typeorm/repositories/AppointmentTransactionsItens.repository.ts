@@ -1,7 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import { CreateAppointmentTransactionsItensRepositoryDTO } from "@modules/appointments/dtos";
-import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItensRepository.interface";
+import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItens.repository.interface";
 import { TransactionItem } from "@modules/transactions/infra/typeorm/entities/TransactionItem";
 
 export class AppointmentTransactionsItensRepository

@@ -1,20 +1,20 @@
 import { inject, injectable } from "tsyringe";
 
-import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
-import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProvidersRepository.interface";
+import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
+import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProviders.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
-import { AddressesRepositoryInterface } from "@modules/addresses/repositories/AddressesRepository.interface";
+import { AddressesRepositoryInterface } from "@modules/addresses/repositories/Addresses.repository.interface";
 import { CreateAppointmentServiceDTO } from "@modules/appointments/dtos";
-import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddressesRepository.interface";
-import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
-import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServicesRepository.interface";
-import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsRepository.interface";
-import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersRepository.interface";
-import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactionsRepository.interface";
-import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItensRepository.interface";
-import { ItensTypesTransactionsEnum } from "@modules/transactions/enums/ItensTypesTransactions.enum";
-import { StatusTransactionsEnum } from "@modules/transactions/enums/StatusTransactionsEvents.enums";
-import { TransportsRepositoryInterface } from "@modules/transports/repositories/TransportsRepository.interface";
+import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/Appointments.repository.interface";
+import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddresses.repository.interface";
+import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProviders.repository.interface";
+import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServices.repository.interface";
+import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsers.repository.interface";
+import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactions.repository.interface";
+import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItens.repository.interface";
+import { ITENS_TYPES_TRANSACTIONS_ENUM } from "@modules/transactions/enums/ItensTypesTransactions.enum";
+import { STATUS_TRANSACTION_ENUM } from "@modules/transactions/enums/StatusTransactionsEvents.enums";
+import { TransportsRepositoryInterface } from "@modules/transports/repositories/Transports.repository.interface";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST, NOT_FOUND } from "@shared/errors/constants";
 
@@ -110,7 +110,7 @@ export class CreateAppointmentService {
 
     await this.transportsRepository.createAppointmentsTransport({
       providers,
-      appointment_id: appointment.id,
+      appointment_id: appointment_created.id,
       origin_address_id: address.id,
     });
 
@@ -118,7 +118,7 @@ export class CreateAppointmentService {
       {
         appointment_id: appointment_created.id,
         user_id: users_founds[0].id,
-        status: StatusTransactionsEnum.PROGRESS,
+        status: STATUS_TRANSACTION_ENUM.PROGRESS,
       }
     );
 
@@ -129,7 +129,7 @@ export class CreateAppointmentService {
           transaction_id: transaction.id,
           elements: service,
           reference_key: service.id,
-          type: ItensTypesTransactionsEnum.SERVICE,
+          type: ITENS_TYPES_TRANSACTIONS_ENUM.SERVICE,
           increment_amount: service.increment_amount,
           discount_amount: service.discount_amount,
           amount: service.amount,
@@ -143,7 +143,7 @@ export class CreateAppointmentService {
           transaction_id: transaction.id,
           elements: transport,
           reference_key: transport.id,
-          type: ItensTypesTransactionsEnum.TRANSPORT,
+          type: ITENS_TYPES_TRANSACTIONS_ENUM.TRANSPORT,
           increment_amount: transport.increment_amount,
           discount_amount: transport.discount_amount,
           amount: transport.amount,

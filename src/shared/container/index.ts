@@ -12,8 +12,8 @@ import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/Us
 import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositories/UsersTokensRepository";
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/PhonesRepository.interface";
-import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
-import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProvidersRepository.interface";
+import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
+import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProviders.repository.interface";
 import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/TypesUsersRepository.interface";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
@@ -24,12 +24,12 @@ import { AppointmentsProvidersRepository } from "@modules/appointments/infra/typ
 import { AppointmentsUsersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsersRepository";
 import { AppointmentsUsersTransactionsRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsersTransactionsRepository";
 import { AppointmentTransactionsItensRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentTransactionsItensRepository";
-import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddressesRepository.interface";
-import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
-import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServicesRepository.interface";
-import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersRepository.interface";
-import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactionsRepository.interface";
-import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItensRepository.interface";
+import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddresses.repository.interface";
+import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProviders.repository.interface";
+import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServices.repository.interface";
+import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsers.repository.interface";
+import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactions.repository.interface";
+import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItens.repository.interface";
 import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/Images.repository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
@@ -37,7 +37,7 @@ import { NotificationsRepositoryInterface } from "@modules/notifications/reposit
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/TagsRepository";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
 import { TransportsRepository } from "@modules/transports/infra/typeorm/repositories/TransportsRepository";
-import { TransportsRepositoryInterface } from "@modules/transports/repositories/TransportsRepository.interface";
+import { TransportsRepositoryInterface } from "@modules/transports/repositories/Transports.repository.interface";
 
 container.registerSingleton<ProvidersRepositoryInterface>(
   "ProvidersRepository",

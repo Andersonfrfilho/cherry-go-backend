@@ -1,7 +1,7 @@
-import { StatusTransactionsEnum } from "@modules/transactions/enums/StatusTransactionsEvents.enums";
+import { STATUS_TRANSACTION_ENUM } from "@modules/transactions/enums/StatusTransactionsEvents.enums";
 
 export interface CreateAppointmentsUsersTransactionsRepositoryDTO {
   appointment_id: string;
   user_id: string;
-  status: StatusTransactionsEnum;
+  status: STATUS_TRANSACTION_ENUM;
 }

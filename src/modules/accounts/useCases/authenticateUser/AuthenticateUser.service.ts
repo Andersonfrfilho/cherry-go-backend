@@ -8,7 +8,7 @@ import { DateProviderInterface } from "@shared/container/providers/DateProvider/
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST, UNAUTHORIZED } from "@shared/errors/constants";
+import { BAD_REQUEST, NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
 
 interface IResponse {
   user: User;
@@ -20,7 +20,7 @@ interface IRequest {
   password: string;
 }
 @injectable()
-class AuthenticateUserService {
+export class AuthenticateUserService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
@@ -38,7 +38,7 @@ class AuthenticateUserService {
     const { expires_in, secret } = auth;
 
     if (!user) {
-      throw new AppError(BAD_REQUEST.USER_NOT_EXIST);
+      throw new AppError(NOT_FOUND.USER_NOT_EXIST);
     }
     const passwordHash = await this.hashProvider.compareHash(
       password,
@@ -85,4 +85,3 @@ class AuthenticateUserService {
     };
   }
 }
-export { AuthenticateUserService };

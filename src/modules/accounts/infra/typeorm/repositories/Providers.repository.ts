@@ -15,7 +15,7 @@ import { ProviderAvailabilityTime } from "@modules/accounts/infra/typeorm/entiti
 import { ProviderPaymentType } from "@modules/accounts/infra/typeorm/entities/ProviderPaymentType";
 import { ProviderTransportType } from "@modules/accounts/infra/typeorm/entities/ProviderTransportTypes";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
-import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
+import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";

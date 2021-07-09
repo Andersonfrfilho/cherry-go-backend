@@ -13,7 +13,7 @@ interface IRequest {
 }
 
 @injectable()
-class ResetPasswordService {
+export class ResetPasswordService {
   constructor(
     @inject("UsersTokensRepository")
     private usersTokensRepository: UsersTokensRepositoryInterface,
@@ -49,4 +49,3 @@ class ResetPasswordService {
     await this.usersTokensRepository.deleteById(user_token.id);
   }
 }
-export { ResetPasswordService };

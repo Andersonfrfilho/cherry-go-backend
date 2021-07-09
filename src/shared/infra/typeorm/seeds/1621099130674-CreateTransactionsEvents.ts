@@ -2,7 +2,7 @@ import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
-import { StatusTransactionsEnum } from "@modules/transactions/enums";
+import { STATUS_TRANSACTION_ENUM } from "@modules/transactions/enums";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 
 export class CreateTransactionsEvents1621099130674
@@ -31,13 +31,13 @@ export class CreateTransactionsEvents1621099130674
         ].id;
       transactions_events.push({
         transaction_id: transactions[transaction_index].id,
-        status: StatusTransactionsEnum.PROGRESS,
+        status: STATUS_TRANSACTION_ENUM.PROGRESS,
         amount: 0,
         payment_type_id,
       });
       transactions_events.push({
         transaction_id: transactions[transaction_index].id,
-        status: StatusTransactionsEnum.FINISHED,
+        status: STATUS_TRANSACTION_ENUM.FINISHED,
         amount: transactions[transaction_index].current_amount,
         payment_type_id,
       });

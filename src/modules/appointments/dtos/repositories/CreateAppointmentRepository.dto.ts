@@ -1,4 +1,5 @@
 export interface CreateAppointmentRepositoryDTO {
-  date: Date;
+  initial_date?: Date;
+  final_date?: Date;
   confirm: boolean;
 }

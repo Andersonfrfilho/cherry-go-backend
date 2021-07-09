@@ -5,7 +5,7 @@ import {
   CreateTransportsRepositoryDTO,
 } from "@modules/transports/dtos";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
-import { TransportsRepositoryInterface } from "@modules/transports/repositories/TransportsRepository.interface";
+import { TransportsRepositoryInterface } from "@modules/transports/repositories/Transports.repository.interface";
 
 export class TransportsRepository implements TransportsRepositoryInterface {
   private repository: Repository<Transport>;

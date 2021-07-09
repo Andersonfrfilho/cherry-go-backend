@@ -1,12 +1,12 @@
 import { inject, injectable } from "tsyringe";
 
-import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
-import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProvidersRepository.interface";
+import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
+import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProviders.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { CreateAppointmentServiceDTO } from "@modules/appointments/dtos";
-import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersRepository.interface";
-import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsRepository.interface";
-import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersRepository.interface";
+import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProviders.repository.interface";
+import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/Appointments.repository.interface";
+import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsers.repository.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 

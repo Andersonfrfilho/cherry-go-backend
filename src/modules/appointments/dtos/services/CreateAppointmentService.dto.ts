@@ -20,9 +20,14 @@ export interface CreateAppointmentProviders {
   services: Partial<ServiceDiscount>[];
   transports: Partial<TransportDiscount>[];
 }
+interface appointment {
+  initial_date?: Date;
+  final_date?: Date;
+  confirm: boolean;
+}
 
 export interface CreateAppointmentServiceDTO {
-  appointment: Appointment;
+  appointment: appointment;
   transactions: Partial<Transaction>[];
   local: Address;
   users: Partial<User>[];

@@ -2,7 +2,7 @@ import { getRepository, Repository } from "typeorm";
 
 import { CreateAppointmentRepositoryDTO } from "@modules/appointments/dtos";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
-import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsRepository.interface";
+import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/Appointments.repository.interface";
 
 export class AppointmentsRepository implements AppointmentsRepositoryInterface {
   private repository: Repository<Appointment>;

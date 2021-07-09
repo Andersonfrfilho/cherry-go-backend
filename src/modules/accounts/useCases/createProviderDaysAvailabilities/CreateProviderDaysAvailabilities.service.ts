@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { CreateProviderDaysAvailabilityServiceDTO } from "@modules/accounts/dtos";
-import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/ProvidersRepository.interface";
+import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
