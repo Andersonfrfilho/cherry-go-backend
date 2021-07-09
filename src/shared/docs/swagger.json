@@ -6,6 +6,280 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/v1/tags": {
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Tags create",
+        "description": "create tags",
+        "requestBody": {
+          "content": {
+            "application/json - email": {
+              "schema": {
+                "$ref": "#/components/schemas/request_tags"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_tags"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/clients/phones": {
+      "patch": {
+        "tags": [
+          "Users clients"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Users client register phones",
+        "description": "Phone register the user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_client_phone"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/clients/addresses": {
+      "patch": {
+        "tags": [
+          "Users clients"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Users client register address",
+        "description": "Address register the user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_client_address"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/clients/active": {
+      "patch": {
+        "tags": [
+          "Users clients"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Users client active only admin",
+        "description": "Activate the user by **cpf**, **rg** or **email**",
+        "requestBody": {
+          "content": {
+            "application/json - cpf": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/request_users_client_active_cpf"
+                  },
+                  {
+                    "$ref": "#/components/schemas/request_users_client_active_rg"
+                  },
+                  {
+                    "$ref": "#/components/schemas/request_users_client_active_email"
+                  }
+                ],
+                "example": {
+                  "cpf": "12345678910"
+                }
+              }
+            },
+            "application/json - rg": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/request_users_client_active_rg"
+                  },
+                  {
+                    "$ref": "#/components/schemas/request_users_client_active_cpf"
+                  },
+                  {
+                    "$ref": "#/components/schemas/request_users_client_active_email"
+                  }
+                ],
+                "example": {
+                  "rg": "123456789"
+                }
+              }
+            },
+            "application/json - email": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/request_users_client_active_email"
+                  },
+                  {
+                    "$ref": "#/components/schemas/request_users_client_active_rg"
+                  },
+                  {
+                    "$ref": "#/components/schemas/request_users_client_active_cpf"
+                  }
+                ],
+                "example": {
+                  "email": "email@mail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/clients/tags": {
+      "patch": {
+        "tags": [
+          "Users clients"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Users client create tags",
+        "description": "link **tags** to a user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/request_users_client_tags"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
     "/v1/users/sessions": {
       "post": {
         "tags": [
@@ -17,17 +291,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "default": "admin@cherrygo.com.br"
-                  },
-                  "password": {
-                    "type": "string",
-                    "default": "admin"
-                  }
-                }
+                "$ref": "#/components/schemas/request_users_sessions"
               }
             }
           }
@@ -38,71 +302,25 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "user":{
-                      "type":"object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "format": "uuid"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "last_name": {
-                          "type": "string"
-                        },
-                        "cpf": {
-                          "type": "string"
-                        },
-                        "rg": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string",
-                          "format": "email"
-                        },
-                        "active": {
-                          "type": "boolean"
-                        }
-                      }
-                    },
-                    "token": {
-                      "type": "string",
-                      "format": "token"
-                    },
-                    "refresh_token": {
-                      "type": "string",
-                      "format": "token"
-                    }
-                  },
-                  "example": {
-                    "user":{
-                    "id": "Name",
-                    "name": "Name",
-                    "last_name": "Lastname",
-                    "cpf": "12345678910",
-                    "rg": "123456789",
-                    "email": "e@mail.com",
-                    "active": true
-                    },
-                    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QSA",
-                    "refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QSA"
-                  }
+                  "$ref": "#/components/schemas/response_users_sessions"
                 }
               }
             }
           },
           "400": {
-            "description": "Email or password incorrect",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
           }
         }
       }
@@ -112,22 +330,18 @@
         "tags": [
           "Sessions"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "summary": "Refresh token user",
         "description": "Refresh token user",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "token": {
-                    "type": "string",
-                    "format": "token"
-                  }
-                },
-                "example":{
-                  "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QSA"
-                }
+                "$ref": "#/components/schemas/request_users_sessions_refresh_token"
               }
             }
           }
@@ -138,44 +352,25 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "refresh_token": {
-                      "type": "string",
-                      "format": "token"
-                    },
-                    "token": {
-                      "type": "string",
-                      "format": "token"
-                    }
-                  },
-                  "example": {
-                    "refresh_token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjE5MTQwMjEsImV4cCI6MTYyMTkxNDkyMSwic3ViIjoiXCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIiJ9.ddxG3TWAyHL89NFX6HPisRa70TOcv8rTNM-0uGS6i",
-                    "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelBVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QS"
-                  }
+                  "$ref": "#/components/schemas/response_users_sessions_refresh_token"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
           },
           "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Internal_Server_Error"
           }
         }
       }
@@ -191,16 +386,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  }
-                },
-                "example": {
-                  "email": "e@mail.com"
-                }
+                "$ref": "#/components/schemas/request_users_password_forgot"
               }
             }
           }
@@ -210,24 +396,19 @@
             "description": "No Content"
           },
           "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
           },
           "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Internal_Server_Error"
           }
         }
       }
@@ -243,16 +424,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "password": {
-                    "type": "string",
-                    "format": "password"
-                  }
-                },
-                "example": {
-                  "password": "*********"
-                }
+                "$ref": "#/components/schemas/request_users_password_reset"
               }
             }
           }
@@ -262,24 +434,19 @@
             "description": "No Content"
           },
           "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
           },
           "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Internal_Server_Error"
           }
         }
       }
@@ -295,48 +462,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "last_name": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "cpf": {
-                    "type": "string",
-                    "maximum": 11
-                  },
-                  "rg": {
-                    "type": "string",
-                    "maximum": 9,
-                    "minimum": 8
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "password_confirm": {
-                    "type": "string"
-                  },
-                  "birth_date": {
-                    "type": "string",
-                    "format": "date"
-                  }
-                },
-                "example": {
-                  "name": "Name",
-                  "last_name": "Lastname",
-                  "cpf": "12345678910",
-                  "rg": "123456789",
-                  "email": "e@mail.com",
-                  "password": "password",
-                  "password_confirm": "password",
-                  "birth_date": "2021-05-27T04:10:42.732Z"
-                }
+                "$ref": "#/components/schemas/request_users_clients_create"
               }
             }
           }
@@ -347,104 +473,454 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "last_name": {
-                      "type": "string"
-                    },
-                    "cpf": {
-                      "type": "string"
-                    },
-                    "rg": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "active": {
-                      "type": "boolean"
-                    }
-                  },
-                  "example": {
-                    "id": "Name",
-                    "name": "Name",
-                    "last_name": "Lastname",
-                    "cpf": "12345678910",
-                    "rg": "123456789",
-                    "email": "e@mail.com",
-                    "active": true
-                  }
+                  "$ref": "#/components/schemas/response_users_clients_create"
                 }
               }
             }
           },
           "400": {
-            "description": "User client already exist",
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/confirm/mail": {
+      "get": {
+        "tags": [
+          "Users Confirms"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Confirm account by email",
+        "description": "Confirm account by email",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_client_confirm_mail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/confirm/phone": {
+      "patch": {
+        "tags": [
+          "Users Confirms"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Confirm phone by user",
+        "description": "Confirm phone by user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_client_confirm_phone"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "405": {
+            "$ref": "#/components/responses/Method_Not_Allowed"
+          },
+          "422": {
+            "$ref": "#/components/responses/Unprocessable_Entity"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/confirm/term": {
+      "post": {
+        "tags": [
+          "Users Confirms"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "User accept Term",
+        "description": "User accept Term",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_client_confirm_term"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/document/image": {
+      "post": {
+        "tags": [
+          "Users Documents"
+        ],
+        "summary": "User upload document",
+        "description": "User upload document",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_document_image"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/providers": {
+      "patch": {
+        "tags": [
+          "Users Providers"
+        ],
+        "summary": "Users add type providers",
+        "description": "Users add type providers",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/providers/sessions": {
+      "patch": {
+        "tags": [
+          "Users Providers"
+        ],
+        "summary": "Users providers sessions",
+        "description": "Users providers sessions",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_providers_sessions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
             "content": {
               "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
+                "schema": {
+                  "$ref": "#/components/schemas/response_users_providers_sessions"
                 }
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
           "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Internal_Server_Error"
           }
         }
       }
-    }
-  },
-  "definitions": {
-    "Specification": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
+    },
+    "/v1/users/providers/days": {
+      "patch": {
+        "tags": [
+          "Users Providers"
+        ],
+        "summary": "Users providers registers days",
+        "description": "Users providers registers days",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_providers_days"
+              }
+            }
+          }
         },
-        "description": {
-          "type": "string"
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
         }
       }
     },
-    "Car": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
+    "/v1/users/providers/hours": {
+      "patch": {
+        "tags": [
+          "Users Providers"
+        ],
+        "summary": "Users providers registers hours available",
+        "description": "Users providers registers hours available",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_providers_hours"
+              }
+            }
+          }
         },
-        "description": {
-          "type": "string"
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/providers/services": {
+      "patch": {
+        "tags": [
+          "Users Providers"
+        ],
+        "summary": "Users providers registers services available",
+        "description": "Users providers registers services available",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_providers_services"
+              }
+            }
+          }
         },
-        "daily_rate": {
-          "type": "number"
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
+        }
+      }
+    },
+    "/v1/users/providers/payment_types": {
+      "patch": {
+        "tags": [
+          "Users Providers"
+        ],
+        "summary": "Users providers registers payment types available",
+        "description": "Users providers registers payment types available",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/request_users_providers_payment_types"
+              }
+            }
+          }
         },
-        "license_plate": {
-          "type": "string"
-        },
-        "fine_amount": {
-          "type": "number"
-        },
-        "brand": {
-          "type": "string"
-        },
-        "category_id": {
-          "type": "string"
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "$ref": "#/components/responses/Bad_Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/Not_Found"
+          },
+          "500": {
+            "$ref": "#/components/responses/Internal_Server_Error"
+          }
         }
       }
     }
@@ -457,19 +933,1295 @@
         "bearerFormat": "JWT"
       }
     },
-    "schemas":{
-      "Error":{
-        "type":"object",
-        "properties":{
-          "status":{"type": "string"},
-          "message":{"type": "string"}
+    "responses": {
+      "Bad_Request": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Forbidden",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Not_Found": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Method_Not_Allowed": {
+        "description": "Method Not Allowed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unprocessable_Entity": {
+        "description": "Unprocessable Entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Internal_Server_Error": {
+        "description": "Conflict",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          }
         },
-        "example":{
-          "status":"error",
-          "message":"Description error"
+        "required": [
+          "status",
+          "message"
+        ],
+        "example": {
+          "status": "error",
+          "message": "Description error"
+        }
+      },
+      "request_tags": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "cherry-go",
+            "maxLength": 100,
+            "minLength": 3
+          },
+          "description": {
+            "type": "string",
+            "example": "descriptions",
+            "maxLength": 140,
+            "minLength": 10
+          },
+          "active": {
+            "type": "boolean",
+            "example": true
+          },
+          "image_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "d53da695-f00e-4243-b23c-bc3514c88e67"
+          }
+        },
+        "required": [
+          "name",
+          "active",
+          "image_id"
+        ]
+      },
+      "response_tags": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "active": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "image_id": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "12345678-90ab-cdef-ghij-klmnopqrstuv",
+          "name": "Name",
+          "description": "description",
+          "image_id": "12345678-90ab-cdef-ghij-klmnopqrstuv",
+          "active": true
+        }
+      },
+      "request_users_client_active_cpf": {
+        "type": "object",
+        "properties": {
+          "cpf": {
+            "type": "string",
+            "maxLength": 11,
+            "minLength": 11,
+            "example": "12345678910"
+          }
+        }
+      },
+      "request_users_client_active_rg": {
+        "type": "object",
+        "properties": {
+          "rg": {
+            "type": "string",
+            "maxLength": 9,
+            "minLength": 10,
+            "example": "123456789"
+          }
+        }
+      },
+      "request_users_client_active_email": {
+        "type": "object",
+        "properties": {
+          "rg": {
+            "type": "string",
+            "format": "email",
+            "example": "email@mail.com"
+          }
+        }
+      },
+      "request_users_client_tags": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "active": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "image_id": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": "12345678-90ab-cdef-ghij-klmnopqrstuv",
+          "name": "Name",
+          "description": "description",
+          "image_id": "12345678-90ab-cdef-ghij-klmnopqrstuv",
+          "active": true
+        }
+      },
+      "request_users_sessions": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        },
+        "example": {
+          "email": "email@mail.com",
+          "password": "P@s$w0rd"
+        }
+      },
+      "response_users_sessions": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "cpf": {
+                "type": "string"
+              },
+              "rg": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "active": {
+                "type": "boolean"
+              }
+            }
+          },
+          "token": {
+            "type": "string",
+            "format": "token"
+          },
+          "refresh_token": {
+            "type": "string",
+            "format": "token"
+          }
+        },
+        "example": {
+          "user": {
+            "id": "Name",
+            "name": "Name",
+            "last_name": "Lastname",
+            "cpf": "12345678910",
+            "rg": "123456789",
+            "email": "e@mail.com",
+            "active": true
+          },
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QSA",
+          "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QSA"
+        }
+      },
+      "request_users_sessions_refresh_token": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "format": "token"
+          }
+        },
+        "example": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QSA"
+        }
+      },
+      "response_users_sessions_refresh_token": {
+        "type": "object",
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "format": "token"
+          },
+          "token": {
+            "type": "string",
+            "format": "token"
+          }
+        },
+        "example": {
+          "refresh_token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjE5MTQwMjEsImV4cCI6MTYyMTkxNDkyMSwic3ViIjoiXCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIiJ9.ddxG3TWAyHL89NFX6HPisRa70TOcv8rTNM-0uGS6i",
+          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelBVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QS"
+        }
+      },
+      "request_users_password_forgot": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "example": {
+          "email": "e@mail.com"
+        }
+      },
+      "request_users_password_reset": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        },
+        "example": {
+          "password": "*********"
+        }
+      },
+      "request_users_clients_create": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "cpf": {
+            "type": "string",
+            "maximum": 11
+          },
+          "rg": {
+            "type": "string",
+            "maximum": 9,
+            "minimum": 8
+          },
+          "password": {
+            "type": "string"
+          },
+          "password_confirm": {
+            "type": "string"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "example": {
+          "name": "Name",
+          "last_name": "Lastname",
+          "cpf": "12345678910",
+          "rg": "123456789",
+          "email": "e@mail.com",
+          "password": "password",
+          "password_confirm": "password",
+          "birth_date": "2021-05-27T04:10:42.732Z"
+        }
+      },
+      "response_users_clients_create": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "rg": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "id": "Name",
+          "name": "Name",
+          "last_name": "Last Name",
+          "cpf": "12345678910",
+          "rg": "123456789",
+          "email": "e@mail.com",
+          "active": true
+        }
+      },
+      "request_users_client_address": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "zipcode": {
+            "type": "string"
+          },
+          "district": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "string",
+            "format": "date"
+          },
+          "latitude": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "example": {
+          "street": "Rua exemplo",
+          "number": "1234",
+          "zipcode": "12345567",
+          "district": "Jardim Bairro",
+          "city": "Exemplo",
+          "state": "Exemplar",
+          "country": "São Estado",
+          "longitude": "12.345",
+          "latitude": "67.890"
+        }
+      },
+      "request_users_client_phone": {
+        "type": "object",
+        "properties": {
+          "country_code": {
+            "type": "string",
+            "maxLength": 4,
+            "minLength": 3
+          },
+          "ddd": {
+            "type": "string",
+            "maxLength": 2,
+            "minLength": 2
+          },
+          "number": {
+            "type": "string",
+            "maxLength": 9,
+            "minLength": 8
+          }
+        },
+        "example": {
+          "country_code": "+55",
+          "ddd": "16",
+          "number": "912345678"
+        }
+      },
+      "request_users_client_confirm_mail": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "format": "token"
+          }
+        },
+        "example": {
+          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelBVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QS"
+        }
+      },
+      "request_users_client_confirm_phone": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "format": "token"
+          },
+          "code": {
+            "type": "string",
+            "format": "string",
+            "maxLength": 4,
+            "minLength": 4
+          }
+        },
+        "example": {
+          "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuZGVyc29uZnJmaWxob0BnbWFpbC5jb20iLCJpYXQiOjE2MjE5MTM4MjMsImV4cCI6MTYyNDUwNTgyMywic3ViIjoie1widXNlclwiOntcImlkXCI6XCI4MDhiNDViOC1mZmVkLTQxNjgtOWI0ZS04ZDA0NGQ0NTNjMGJcIixcImFjdGl2ZVwiOnRydWV9fSJ9.tGJJILTZelBVtYVIMvvwa7oH3Rm72ab6DjJc8Vj1QS",
+          "code": "1234"
+        }
+      },
+      "request_users_client_confirm_term": {
+        "type": "object",
+        "properties": {
+          "accept": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "accept": true
+        }
+      },
+      "request_users_document_image": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "request_users_providers_sessions": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        },
+        "example": {
+          "email": "email@mail.com",
+          "password": "P@s$w0rd"
+        }
+      },
+      "response_users_providers_sessions": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "cpf": {
+                "type": "string"
+              },
+              "rg": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "active": {
+                "type": "boolean"
+              },
+              "types": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "maxLength": 140
+                    }
+                  }
+                }
+              },
+              "payments_types": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "active": {
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "type": "string",
+                      "maxLength": 140
+                    }
+                  }
+                }
+              },
+              "transport_types": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "provider_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "transport_type_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "active": {
+                      "type": "boolean"
+                    },
+                    "transport_type": {
+                      "type": "array",
+                      "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "active": {
+                          "type": "boolean"
+                        },
+                        "description": {
+                          "type": "string",
+                          "maxLength": 140
+                        }
+                      }
+                    }
+                    },
+                    "services": {
+                      "type": "array",
+                      "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "number"
+                        },
+                        "active": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                    },
+                    "days": {
+                      "type": "array",
+                      "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "day": {
+                          "type": "string"
+                        },
+                        "provider_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        }
+                      }
+                    }
+                    },
+                    "hours": {
+                      "type": "array",
+                      "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "start_time": {
+                          "type": "string",
+                          "format":"date"
+                        },
+                        "end_time": {
+                          "type": "string",
+                          "format":"date"
+                        },
+                        "provider_id": {
+                          "type": "string",
+                          "format":"uuid"
+                        }
+                      }
+                    }
+                    },
+                    "locals":{
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "start_time": {
+                            "type": "string",
+                            "format":"date"
+                          },
+                          "end_time": {
+                            "type": "string",
+                            "format":"date"
+                          },
+                          "provider_id": {
+                            "type": "string",
+                            "format":"uuid"
+                          },
+                          "address_id": {
+                            "type": "string",
+                            "format":"uuid"
+                          }
+                        }
+                      }
+                    },
+                    "term":{
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "accept": {
+                            "type": "string",
+                            "format":"boolean"
+                          }
+                        }
+                      }
+                    },
+                    "payment_type":{
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "provider_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "payment_type_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "payment":{
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "amount": {
+                                "type": "number"
+                              },
+                              "active": {
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "token": {
+            "type": "string",
+            "format": "token"
+          },
+          "refresh_token": {
+            "type": "string",
+            "format": "token"
+          }
+        },
+        "example": {
+          "user": {
+            "id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+            "name": "destany",
+            "last_name": "lynch",
+            "cpf": "29382467563",
+            "rg": "05184047",
+            "email": "clifton_tillman62@gmail.com",
+            "password_hash": "$2a$08$9DSbmnruzNZdkzA/kKeKC.5MMm8Jd0f4JuEjHU5WUvYL0OlZ2ZNnm",
+            "birth_date": "2020-07-06T02:45:48.944Z",
+            "active": true,
+            "created_at": "2021-07-05T05:56:07.681Z",
+            "updated_at": null,
+            "deleted_at": null,
+            "types": [
+              {
+                "id": "a2754611-5923-48f5-addd-5f39b65788de",
+                "name": "provider",
+                "description": "plum Bike"
+              }
+            ],
+            "payments_types": [
+              {
+                "id": "d9fc35da-33ed-44db-a0bd-d13a6fc58f05",
+                "name": "money",
+                "description": null,
+                "active": true,
+                "created_at": "2021-07-05T05:55:58.452Z",
+                "updated_at": null,
+                "deleted_at": null
+              }
+            ],
+            "transports_types": [
+              {
+                "id": "26e2cb92-8300-4e81-b1b8-7a071ddc4266",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "48c713fd-8707-4779-9862-9480811d3e64",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "4fceb7cd-4ad2-4ab2-945d-1da31f37ec7c",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "6f5b195e-f491-4d1f-a81d-54ed1c6b1e76",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "76b7a586-f4bb-4b3a-bc2e-27393851fa6a",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "dc4e25d9-0d53-45a9-ba04-ec05630eb729",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "07ced47e-a0a7-49ca-87a4-29492a5bc15a",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "d8a1b2dd-f55c-4a7e-8af8-344859e0d6e8",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "79233c2e-34dc-4c7f-aba5-7a54a1a95cfe",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "71e85aa4-1562-4cb1-95cf-a85f94874915",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "5ab3f3b7-20ce-4a80-b4b8-6a5164ee2088",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "16d8d1a5-7f22-4cbf-87e2-68d20ce717a1",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "3c7b7648-dd04-4053-8485-eecff8bfece0",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "a3f19089-b953-4951-8f2f-0a036456d643",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              },
+              {
+                "id": "26f85015-73df-4371-abbd-61d748210fe9",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "transport_type_id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                "active": true,
+                "amount": null,
+                "transport_type": {
+                  "id": "1e10d131-db5e-44e4-8131-300ab8e9067a",
+                  "name": "uber",
+                  "description": "cross-platform Pants",
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.431Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              }
+            ],
+            "services": [
+              {
+                "id": "d3365a0b-0d77-4d65-aae8-bf132edaab40",
+                "name": "Central Applications Planner",
+                "amount": "11976",
+                "duration": "93867",
+                "active": true,
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              },
+              {
+                "id": "4b422cf2-8aac-4c6b-b114-cc4c10464480",
+                "name": "Principal Brand Designer",
+                "amount": "23920",
+                "duration": "94027",
+                "active": true,
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              }
+            ],
+            "days": [
+              {
+                "id": "c8419c7a-829f-4d23-941d-09d7ab598af4",
+                "day": "MONDAY",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              },
+              {
+                "id": "4e2ac160-f189-427c-b711-2f831df5b58c",
+                "day": "TUESDAY",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              },
+              {
+                "id": "0b91ba3a-a81a-482e-b136-8f8358d4f682",
+                "day": "WEDNESDAY",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              },
+              {
+                "id": "6150f660-cb38-4ec5-9f3a-a8f4980ac84d",
+                "day": "THURSDAY",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              },
+              {
+                "id": "031c0f04-9cf5-4233-813d-e44240f7c338",
+                "day": "FRIDAY",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              },
+              {
+                "id": "2371385e-cfd9-440e-ab4e-5b1171189bcf",
+                "day": "SATURDAY",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              },
+              {
+                "id": "3ee5a2e5-fcf5-43d0-94ff-3704c917cf58",
+                "day": "SUNDAY",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              }
+            ],
+            "hours": [
+              {
+                "id": "bdc69a17-ad87-4374-b8ea-f070463016fb",
+                "start_time": "11:45",
+                "end_time": "15:34",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              },
+              {
+                "id": "9778c7ed-f982-41d5-b3c2-64bbd78261c4",
+                "start_time": "19:01",
+                "end_time": "22:27",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668"
+              }
+            ],
+            "locals": [
+              {
+                "id": "c06a48d3-09a8-43da-b1e5-fd9073d08758",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "address_id": "9b8683a9-c354-4cf6-8876-779ed58be885",
+                "active": true,
+                "amount": "796"
+              }
+            ],
+            "term": [],
+            "payment_type": [
+              {
+                "id": "4079e7a7-2e98-40d0-9dc0-423bf8eaec60",
+                "provider_id": "f6f143fa-0ec9-47b7-9eb4-eaa9e9873668",
+                "payment_type_id": "d9fc35da-33ed-44db-a0bd-d13a6fc58f05",
+                "active": true,
+                "payment": {
+                  "id": "d9fc35da-33ed-44db-a0bd-d13a6fc58f05",
+                  "name": "money",
+                  "description": null,
+                  "active": true,
+                  "created_at": "2021-07-05T05:55:58.452Z",
+                  "updated_at": null,
+                  "deleted_at": null
+                }
+              }
+            ]
+          },
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjU0NTUzNDEsImV4cCI6MTYyNTQ1NjI0MSwic3ViIjoie1widXNlclwiOntcImlkXCI6XCJmNmYxNDNmYS0wZWM5LTQ3YjctOWViNC1lYWE5ZTk4NzM2NjhcIixcImFjdGl2ZVwiOnRydWUsXCJ0eXBlc1wiOlt7XCJpZFwiOlwiYTI3NTQ2MTEtNTkyMy00OGY1LWFkZGQtNWYzOWI2NTc4OGRlXCIsXCJuYW1lXCI6XCJwcm92aWRlclwiLFwiZGVzY3JpcHRpb25cIjpcInBsdW0gQmlrZVwiLFwiYWN0aXZlXCI6dHJ1ZSxcImNyZWF0ZWRfYXRcIjpcIjIwMjEtMDctMDVUMDU6NTU6NTguNDAxWlwiLFwidXBkYXRlZF9hdFwiOm51bGwsXCJkZWxldGVkX2F0XCI6bnVsbH1dfX0ifQ.GdcJ2xh1Ky7VVI0Ux8pElA3yOZTChtnW-ZpeNCvaPMs",
+          "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWZ0b25fdGlsbG1hbjYyQGdtYWlsLmNvbSIsImlhdCI6MTYyNTQ1NTM0MSwiZXhwIjoxNjI4MDQ3MzQxLCJzdWIiOiJ7XCJ1c2VyXCI6e1wiaWRcIjpcImY2ZjE0M2ZhLTBlYzktNDdiNy05ZWI0LWVhYTllOTg3MzY2OFwiLFwiYWN0aXZlXCI6dHJ1ZSxcInR5cGVzXCI6W3tcImlkXCI6XCJhMjc1NDYxMS01OTIzLTQ4ZjUtYWRkZC01ZjM5YjY1Nzg4ZGVcIixcIm5hbWVcIjpcInByb3ZpZGVyXCIsXCJkZXNjcmlwdGlvblwiOlwicGx1bSBCaWtlXCIsXCJhY3RpdmVcIjp0cnVlLFwiY3JlYXRlZF9hdFwiOlwiMjAyMS0wNy0wNVQwNTo1NTo1OC40MDFaXCIsXCJ1cGRhdGVkX2F0XCI6bnVsbCxcImRlbGV0ZWRfYXRcIjpudWxsfV19fSJ9.NdvKr_CDyHdNLF51b7XcNgRoBEXqXLr2Gge5lWZqjwI"
+        }
+      },
+      "request_users_providers_days":{
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"]
+            }
+          }
+        }
+      },
+      "request_users_providers_hours":{
+        "type": "object",
+        "properties": {
+          "payments_types": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start_time":{
+                  "type":"string",
+                  "format":"date"
+                },
+                "end_time":{
+                  "type":"string",
+                  "format":"date"
+                }
+              }
+            }
+          }
+        }
+      },
+      "request_users_providers_services":{
+        "type": "object",
+        "properties": {
+          "payments_types": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start_time":{
+                  "type":"string",
+                  "format":"date"
+                },
+                "end_time":{
+                  "type":"string",
+                  "format":"date"
+                }
+              }
+            }
+          }
+        }
+      },
+      "request_users_providers_payment_types":{
+        "type": "object",
+        "properties": {
+          "payment_types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["money","credit","pix","debit"]
+            }
+          }
         }
       }
     }
-
   }
 }
+
