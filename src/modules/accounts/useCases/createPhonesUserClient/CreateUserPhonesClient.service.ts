@@ -4,10 +4,10 @@ import { inject, injectable } from "tsyringe";
 import auth from "@config/auth";
 import { config } from "@config/environment";
 import { CreateUserPhonesClientServiceDTO } from "@modules/accounts/dtos";
-import { PhonesRepositoryInterface } from "@modules/accounts/repositories/PhonesRepository.interface";
+import { CreateUserPhonesClientServiceResponseDTO } from "@modules/accounts/dtos/services/CreateUserPhonesClientService.dto";
+import { PhonesRepositoryInterface } from "@modules/accounts/repositories/Phones.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
-import { CreateUserPhoneClientDTO } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhoneClient.dto";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
@@ -38,7 +38,7 @@ class CreateUserPhonesClientService {
     country_code,
     number,
     ddd,
-  }: CreateUserPhonesClientServiceDTO): Promise<CreateUserPhoneClientDTO> {
+  }: CreateUserPhonesClientServiceDTO): Promise<CreateUserPhonesClientServiceResponseDTO> {
     const phone = await this.phonesRepository.findPhoneUser({
       ddd,
       country_code,

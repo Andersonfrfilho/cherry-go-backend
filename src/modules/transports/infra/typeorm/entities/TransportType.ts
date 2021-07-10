@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes";
+import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes.enum";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 @Entity("transports_types")

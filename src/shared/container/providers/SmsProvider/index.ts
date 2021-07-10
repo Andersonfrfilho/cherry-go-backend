@@ -1,7 +1,7 @@
 import { container } from "tsyringe";
 
 import { config } from "@config/environment";
-import { VonageSmsProvider } from "@shared/container/providers/SmsProvider/implementations/VonageSmsProvider";
+import { VonageSmsProvider } from "@shared/container/providers/SmsProvider/implementations/VonageSms.provider";
 import { SmsProviderInterface } from "@shared/container/providers/SmsProvider/SmsProvider.interface";
 
 const smsProvider = {

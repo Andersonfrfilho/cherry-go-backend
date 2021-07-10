@@ -5,8 +5,8 @@ import { userProfileImageRepositoryMock } from "@modules/accounts/repositories/m
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { CreateProfileImageUserService } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.service";
 import { imagesRepositoryMock } from "@modules/images/repositories/mocks/Images.repository.mock";
-import { StorageTypeFolderEnum } from "@shared/container/providers/Storage.provider/enums/StorageTypeFolder.enum";
-import { storageProviderMock } from "@shared/container/providers/Storage.provider/mock/Storage.provider.mock";
+import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
+import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/Storage.provider.mock";
 import {
   AddressesFactory,
   ImagesFactory,

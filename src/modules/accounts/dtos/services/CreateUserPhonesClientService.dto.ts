@@ -1,6 +1,6 @@
-export interface CreateUserPhonesClientServiceDTO {
-  user_id: string;
-  country_code: string;
-  number: string;
-  ddd: string;
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
+
+export interface CreateUserPhonesClientServiceResponseDTO {
+  user: User;
+  token: string;
 }

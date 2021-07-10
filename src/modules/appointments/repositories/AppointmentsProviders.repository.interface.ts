@@ -1,5 +1,5 @@
 import { CreateAppointmentProvidersRepositoryDTO } from "@modules/appointments/dtos";
-import { AppointmentUser } from "@modules/appointments/infra/typeorm/entities/AppointmentUser";
+import { AppointmentClient } from "@modules/appointments/infra/typeorm/entities/AppointmentClient";
 
 import { AppointmentProvider } from "../infra/typeorm/entities/AppointmentProviders";
 

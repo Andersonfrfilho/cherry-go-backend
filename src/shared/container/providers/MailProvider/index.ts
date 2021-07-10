@@ -1,7 +1,7 @@
 import { container } from "tsyringe";
 
-import { EtherealMailProvider } from "@shared/container/providers/MailProvider/implementations/EtherealMailProvider";
-import { SESMailProvider } from "@shared/container/providers/MailProvider/implementations/SESMailProvider";
+import { EtherealMailProvider } from "@shared/container/providers/MailProvider/implementations/EtherealMail.provider";
+import { SESMailProvider } from "@shared/container/providers/MailProvider/implementations/SESMail.provider";
 import { MailProviderInterface } from "@shared/container/providers/MailProvider/MailProvider.interface";
 
 const mailProvider = {

@@ -11,11 +11,11 @@ import {
 } from "typeorm";
 
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
-import { StatusEventsTransactionsEnum } from "@modules/transactions/enums";
+import { STATUS_EVENTS_TRANSACTIONS_ENUM } from "@modules/transactions/enums";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 
 @Entity("transactions_events")
-class TransactionEvent {
+export class TransactionEvent {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
@@ -28,7 +28,7 @@ class TransactionEvent {
   @Column()
   payment_type_id?: string;
 
-  @Column({ type: "enum", enum: StatusEventsTransactionsEnum })
+  @Column({ type: "enum", enum: STATUS_EVENTS_TRANSACTIONS_ENUM })
   status: string;
 
   @Column()
@@ -50,5 +50,3 @@ class TransactionEvent {
   @DeleteDateColumn()
   deleted_at?: Date;
 }
-
-export { TransactionEvent };

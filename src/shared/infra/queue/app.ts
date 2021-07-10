@@ -3,8 +3,8 @@ import "reflect-metadata";
 import { Kafka } from "kafkajs";
 
 import { config } from "@config/environment";
-import { EtherealMailProvider } from "@shared/container/providers/MailProvider/implementations/EtherealMailProvider";
-import { VonageSmsProvider } from "@shared/container/providers/SmsProvider/implementations/VonageSmsProvider";
+import { EtherealMailProvider } from "@shared/container/providers/MailProvider/implementations/EtherealMail.provider";
+import { VonageSmsProvider } from "@shared/container/providers/SmsProvider/implementations/VonageSms.provider";
 
 const kafka = new Kafka({
   clientId: "api-cherry-go",

@@ -3,7 +3,7 @@ import { getRepository, Repository } from "typeorm";
 import { CreateUserProfileImageRepositoryDTO } from "@modules/accounts/dtos";
 import { UpdateImageDocumentUserImageRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateImageDocumentUserImageRepository.dto";
 import { UserProfileImage } from "@modules/accounts/infra/typeorm/entities/UserProfileImage";
-import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImageRepository.interface";
+import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImage.repository.interface";
 
 export class UserProfileImageRepository
   implements UserProfileImageRepositoryInterface {

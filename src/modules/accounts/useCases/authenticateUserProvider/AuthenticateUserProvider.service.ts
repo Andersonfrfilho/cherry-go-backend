@@ -5,17 +5,22 @@ import {
   AuthenticateUserProviderServiceDTO,
   AuthenticateUserProviderServiceResponseDTO,
 } from "@modules/accounts/dtos";
-import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
+import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST, FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
+import {
+  BAD_REQUEST,
+  FORBIDDEN,
+  NOT_FOUND,
+  UNAUTHORIZED,
+} from "@shared/errors/constants";
 
 @injectable()
-class AuthenticateUserProviderService {
+export class AuthenticateUserProviderService {
   constructor(
     @inject("ProvidersRepository")
     private providersRepository: ProvidersRepositoryInterface,
@@ -36,10 +41,12 @@ class AuthenticateUserProviderService {
     const { expires_in, secret } = auth;
 
     if (!provider) {
-      throw new AppError(BAD_REQUEST.PROVIDER_NOT_EXIST);
+      throw new AppError(NOT_FOUND.PROVIDER_NOT_EXIST);
     }
 
-    if (!provider.types.some((type) => type.name === UserTypesEnum.PROVIDER)) {
+    if (
+      !provider.types.some((type) => type.name === USER_TYPES_ENUM.PROVIDER)
+    ) {
       throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);
     }
 
@@ -96,4 +103,3 @@ class AuthenticateUserProviderService {
     };
   }
 }
-export { AuthenticateUserProviderService };

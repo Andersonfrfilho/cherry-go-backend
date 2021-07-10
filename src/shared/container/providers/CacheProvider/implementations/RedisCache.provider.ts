@@ -1,7 +1,7 @@
 import Redis, { Redis as RedisClient } from "ioredis";
 
 import cacheConfig from "@config/cache";
-import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/CacheProvider.interface";
+import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
 
 class RedisCacheProvider implements CacheProviderInterface {
   private client: RedisClient;

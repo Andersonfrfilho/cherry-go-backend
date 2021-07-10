@@ -1,7 +1,7 @@
 import { container } from "tsyringe";
 
-import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/CacheProvider.interface";
-import { RedisCacheProvider } from "@shared/container/providers/CacheProvider/implementations/RedisCacheProviders";
+import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
+import { RedisCacheProvider } from "@shared/container/providers/CacheProvider/implementations/RedisCache.provider";
 
 const providers = {
   redis: RedisCacheProvider,

@@ -1,7 +1,7 @@
 import { container } from "tsyringe";
 
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
-import { DateFnsProvider } from "@shared/container/providers/DateProvider/implementations/DateFnsProvider";
+import { DateFnsProvider } from "@shared/container/providers/DateProvider/implementations/DateFns.provider";
 
 const dateProvider = {
   dateFns: DateFnsProvider,

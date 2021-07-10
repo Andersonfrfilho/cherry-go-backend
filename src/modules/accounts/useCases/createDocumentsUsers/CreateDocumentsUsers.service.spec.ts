@@ -3,11 +3,11 @@ import faker from "faker";
 
 import { USER_DOCUMENT_VALUE_ENUM } from "@modules/accounts/enums/UserDocumentValue.enum";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
-import { usersDocumentsRepositoryMock } from "@modules/accounts/repositories/mocks/UsersDocumentsRepository.mock";
+import { usersDocumentsRepositoryMock } from "@modules/accounts/repositories/mocks/UsersDocuments.repository.mock";
 import { CreateDocumentsUsersService } from "@modules/accounts/useCases/createDocumentsUsers/CreateDocumentsUsers.service";
 import { imagesRepositoryMock } from "@modules/images/repositories/mocks/Images.repository.mock";
-import { StorageTypeFolderEnum } from "@shared/container/providers/Storage.provider/enums/StorageTypeFolder.enum";
-import { storageProviderMock } from "@shared/container/providers/Storage.provider/mock/Storage.provider.mock";
+import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
+import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/Storage.provider.mock";
 import {
   AddressesFactory,
   ImagesFactory,
@@ -99,7 +99,7 @@ describe("CreateDocumentsUsersService", () => {
     expect(usersRepositoryMock.findByIdWithDocument).toHaveBeenCalledWith(id);
     expect(storageProviderMock.save).toHaveBeenCalledWith(
       name_file,
-      StorageTypeFolderEnum.DOCUMENTS
+      STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
     );
     expect(imagesRepositoryMock.create).toHaveBeenCalledWith({
       name: name_file,

@@ -3,7 +3,7 @@ import faker, { phone } from "faker";
 
 import auth from "@config/auth";
 import { config } from "@config/environment";
-import { phonesRepositoryMock } from "@modules/accounts/repositories/mocks/PhonesRepository.mock";
+import { phonesRepositoryMock } from "@modules/accounts/repositories/mocksPhones.repository.interfacemock";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
 import { CreateUserPhonesClientService } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhonesClient.service";

@@ -1,5 +1,5 @@
 import { CreateAppointmentUsersRepositoryDTO } from "@modules/appointments/dtos";
-import { AppointmentUser } from "@modules/appointments/infra/typeorm/entities/AppointmentUser";
+import { AppointmentClient } from "@modules/appointments/infra/typeorm/entities/AppointmentClient";
 
 export interface AppointmentsUsersRepositoryInterface {
   create(data: CreateAppointmentUsersRepositoryDTO): Promise<AppointmentUser[]>;
