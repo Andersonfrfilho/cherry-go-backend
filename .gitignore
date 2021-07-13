@@ -1,4 +1,6 @@
 node_modules/
+integration_covarage/
+unit_covarage/
 tmp/
 !tmp/.gitkeep
 !tmp/documents/.gitkeep
