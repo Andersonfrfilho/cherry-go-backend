@@ -3,7 +3,7 @@ import { container } from "tsyringe";
 
 import { CreateProfileImageUserService } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.service";
 
-class CreatePhotoProfileUsersController {
+export class CreatePhotoProfileUsersController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
     const image_profile = request.file.filename;
@@ -19,4 +19,3 @@ class CreatePhotoProfileUsersController {
     return response.status(204).send();
   }
 }
-export { CreatePhotoProfileUsersController };

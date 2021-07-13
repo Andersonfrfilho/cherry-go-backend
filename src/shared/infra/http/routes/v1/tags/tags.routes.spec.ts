@@ -28,26 +28,43 @@ describe("Create authenticated controller", () => {
   beforeAll(async () => {
     [connection] = await createConnections(orm_test);
     await connection.runMigrations();
-    const users_types_factory = new UsersTypesFactory();
-    const users_types = users_types_factory.generate({
-      active: true,
-      description: null,
-    });
-    await connection.getRepository("types_users").save(users_types);
+    // const users_types_factory = new UsersTypesFactory();
+    // const users_types = users_types_factory.generate({
+    //   active: true,
+    //   description: null,
+    // });
+    // await connection.getRepository("types_users").save(users_types);
 
-    const users_transports_types_factory = new TransportsTypesFactory();
-    const transports_types = users_transports_types_factory.generate({
-      active: true,
-      description: null,
-    });
-    await connection.getRepository("transports_types").save(transports_types);
+    // const users_transports_types_factory = new TransportsTypesFactory();
+    // const transports_types = users_transports_types_factory.generate({
+    //   active: true,
+    //   description: null,
+    // });
+    // await connection.getRepository("transports_types").save(transports_types);
 
-    const payments_types_factory = new PaymentsTypesFactory();
-    const payments_types = payments_types_factory.generate({
-      active: true,
-      description: null,
-    });
-    await connection.getRepository("payments_types").save(payments_types);
+    // const payments_types_factory = new PaymentsTypesFactory();
+    // const payments_types = payments_types_factory.generate({
+    //   active: true,
+    //   description: null,
+    // });
+    // await connection.getRepository("payments_types").save(payments_types);
+  }, 30000);
+
+  afterEach(async () => {
+    await connection.query(`
+  DELETE FROM
+    users_terms_accepts;
+  DELETE FROM
+    users_types_users;
+  DELETE FROM
+    clients_tags;
+  DELETE FROM
+    tags;
+  DELETE FROM
+    images;
+  DELETE FROM
+    users;
+  `);
   }, 30000);
 
   afterAll(async () => {
@@ -59,14 +76,14 @@ describe("Create authenticated controller", () => {
     const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
       quantity: 1,
     });
-    // const [image] = imagesFactory.generate({ quantity: 1 });
-    // const [{ name, active, description }] = tagsFactory.generate({
-    //   quantity: 1,
-    //   active: true,
-    // });
+    const [image] = imagesFactory.generate({ quantity: 1 });
+    const [tag] = tagsFactory.generate({
+      quantity: 1,
+      active: true,
+    });
 
     // act
-    const data = await request(app)
+    const { body: user } = await request(app)
       .post(paths.v1.users_clients)
       .send({
         name,
@@ -78,11 +95,16 @@ describe("Create authenticated controller", () => {
         password_confirm: "102030",
         birth_date: new Date(1995, 11, 17),
       });
-    console.log(data.body);
-    // const response = await request(app).post(paths.users_sessions).send({
-    //   email,
-    //   password: "102030",
-    // });
+
+    const response = await request(app).post(paths.v1.users_sessions).send({
+      email,
+      password: "102030",
+    });
+
+    const response = await request(app).post(paths.v1.users_sessions).send({
+      email,
+      password: "102030",
+    });
 
     // assert
     // expect(response.status).toBe(200);
