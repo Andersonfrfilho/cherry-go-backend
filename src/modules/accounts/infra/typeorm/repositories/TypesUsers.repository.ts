@@ -2,7 +2,7 @@ import { getRepository, Repository } from "typeorm";
 
 import { CreateTypesUsersRepositoryDTO } from "@modules/accounts/dtos";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
-import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/TypesUsersRepository.interface";
+import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/TypesUsers.repository.interface";
 
 class TypesUsersRepository implements TypesUsersRepositoryInterface {
   private repository: Repository<TypeUser>;

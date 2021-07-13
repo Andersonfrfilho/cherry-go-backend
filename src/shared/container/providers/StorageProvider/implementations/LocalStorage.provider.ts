@@ -2,9 +2,9 @@ import fs from "fs";
 import { resolve } from "path";
 
 import upload from "@config/upload";
-import { IStorageProvider } from "@shared/container/providers/Storage.provider/IStorageProvider";
+import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/Storage.provider.interface";
 
-class LocalStorageProvider implements IStorageProvider {
+export class LocalStorageProvider implements StorageProviderInterface {
   async save(file: string, folder: string): Promise<string> {
     await fs.promises.rename(
       resolve(upload.tmpFolder, file),
@@ -23,5 +23,3 @@ class LocalStorageProvider implements IStorageProvider {
     await fs.promises.unlink(filename);
   }
 }
-
-export { LocalStorageProvider };

@@ -2,7 +2,7 @@ import { getMongoRepository, MongoRepository } from "typeorm";
 
 import { CreateNotificationRepositoryDTO } from "@modules/notifications/dtos";
 import { Notification } from "@modules/notifications/infra/typeorm/schemas/Notification";
-import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/NotificationsRepository.interface";
+import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/Notifications.repository.interface";
 
 class NotificationsRepository implements NotificationsRepositoryInterface {
   private repository: MongoRepository<Notification>;

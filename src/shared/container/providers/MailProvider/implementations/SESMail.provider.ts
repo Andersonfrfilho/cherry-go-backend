@@ -9,7 +9,7 @@ import {
   MailSubject,
   MailType,
 } from "@shared/container/providers/MailProvider/enums/MailType.enum";
-import { MailProviderInterface } from "@shared/container/providers/MailProvider/MailProvider.interface";
+import { MailProviderInterface } from "@shared/container/providers/MailProvider/Mail.provider.interface";
 
 class SESMailProvider implements MailProviderInterface {
   private client: Transporter;

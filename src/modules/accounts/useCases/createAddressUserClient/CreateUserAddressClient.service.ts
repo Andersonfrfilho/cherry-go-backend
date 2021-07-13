@@ -4,10 +4,10 @@ import { CreateUserAddressClientServiceDTO } from "@modules/accounts/dtos";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { User } from "@sentry/node";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST } from "@shared/errors/constants";
+import { NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-class CreateUserAddressClientService {
+export class CreateUserAddressClientService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface
@@ -25,7 +25,7 @@ class CreateUserAddressClientService {
     const user_exist = await this.usersRepository.findById(user_id);
 
     if (!user_exist) {
-      throw new AppError(BAD_REQUEST.USER_NOT_EXIST);
+      throw new AppError(NOT_FOUND.USER_NOT_EXIST);
     }
 
     const user = await this.usersRepository.createUserAddress({
@@ -42,4 +42,3 @@ class CreateUserAddressClientService {
     return user;
   }
 }
-export { CreateUserAddressClientService };

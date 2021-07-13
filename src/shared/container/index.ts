@@ -10,11 +10,11 @@ import { TypesUsersRepository } from "@modules/accounts/infra/typeorm/repositori
 import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImage.repository";
 import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/Users.repository";
 import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositories/UsersTokens.repository";
-import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImageRepository.interface";
+import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImage.repository.interface";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/Phones.repository.interface";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProviders.repository.interface";
-import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/TypesUsersRepository.interface";
+import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/TypesUsers.repository.interface";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImage.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -33,7 +33,7 @@ import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appoin
 import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/Images.repository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/Notifications.repository";
-import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/NotificationsRepository.interface";
+import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/Notifications.repository.interface";
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/Tags.repository";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
 import { TransportsRepository } from "@modules/transports/infra/typeorm/repositories/Transports.repository";

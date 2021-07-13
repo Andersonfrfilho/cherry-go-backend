@@ -11,8 +11,7 @@ import {
   UpdateActiveUserRepositoryDTO,
   UpdatedUserClientRepositoryDTO,
 } from "@modules/accounts/dtos";
-import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
-import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
+import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -20,9 +19,10 @@ import { UserPhone } from "@modules/accounts/infra/typeorm/entities/UserPhone";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { UserTypeUser } from "@modules/accounts/infra/typeorm/entities/UserTypeUser";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
-class UsersRepository implements UsersRepositoryInterface {
+export class UsersRepository implements UsersRepositoryInterface {
   private repository: Repository<User>;
   private repository_address: Repository<Address>;
   private repository_users_types: Repository<TypeUser>;
@@ -50,7 +50,7 @@ class UsersRepository implements UsersRepositoryInterface {
     active,
   }: ProviderTypeForUserRepositoryDTO): Promise<void> {
     const provider_type = await this.repository_users_types.findOne({
-      where: { name: UserTypesEnum.PROVIDER },
+      where: { name: USER_TYPES_ENUM.PROVIDER },
     });
 
     await this.repository_users_types_users.save({
@@ -169,7 +169,7 @@ class UsersRepository implements UsersRepositoryInterface {
     active,
   }: CreateUserClientRepositoryDTO): Promise<User> {
     const type = await this.repository_users_types.findOne({
-      where: { name: UserTypesEnum.CLIENT },
+      where: { name: USER_TYPES_ENUM.CLIENT },
     });
     const user = await this.repository.save({
       name,
@@ -283,4 +283,3 @@ class UsersRepository implements UsersRepositoryInterface {
     return this.repository.findOne(id, { relations: ["image_profile"] });
   }
 }
-export { UsersRepository };

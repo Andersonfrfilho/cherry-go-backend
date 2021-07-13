@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from "express";
 import { verify } from "jsonwebtoken";
 
 import auth from "@config/auth";
-import { UserTypesEnum } from "@modules/accounts/enums/UserTypes.enum";
+import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
 
@@ -32,7 +32,7 @@ export async function ensureAuthenticatedProvider(
     throw new AppError(FORBIDDEN.USER_IS_NOT_ACTIVE);
   }
 
-  if (!types.some((type) => type.name === UserTypesEnum.PROVIDER)) {
+  if (!types.some((type) => type.name === USER_TYPES_ENUM.PROVIDER)) {
     throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);
   }
 

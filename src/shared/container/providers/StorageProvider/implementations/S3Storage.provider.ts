@@ -4,9 +4,9 @@ import mime from "mime";
 import { resolve } from "path";
 
 import upload from "@config/upload";
-import { IStorageProvider } from "@shared/container/providers/Storage.provider/IStorageProvider";
+import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/Storage.provider.interface";
 
-class S3StorageProvider implements IStorageProvider {
+class S3StorageProvider implements StorageProviderInterface {
   private client: S3;
   constructor() {
     this.client = new S3({

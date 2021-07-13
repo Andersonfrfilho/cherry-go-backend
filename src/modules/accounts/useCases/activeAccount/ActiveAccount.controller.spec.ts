@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { mock } from "jest-mock-extended";
 import { container } from "tsyringe";
 
 import { ActiveAccountService } from "./ActiveAccount.service";
