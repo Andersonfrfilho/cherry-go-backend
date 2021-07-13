@@ -19,10 +19,12 @@ export default {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ["<rootDir>/src/modules/**/useCases/**/*controller.ts"],
+  collectCoverageFrom: [
+    "<rootDir>/src/shared/infra/http/routes/**/**/*.routes.ts",
+  ],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "covarage",
+  coverageDirectory: "integration_covarage",
 
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: ["\\\\node_modules\\\\", "\\\\dist\\\\"],
@@ -140,6 +142,6 @@ export default {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ["**/*controller.spec.ts"],
+  testMatch: ["**/*routes.spec.ts"],
   modulePathIgnorePatterns: ["dist", "node_modules", "coverage"],
 };
