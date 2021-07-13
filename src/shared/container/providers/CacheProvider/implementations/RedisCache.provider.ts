@@ -18,6 +18,7 @@ class RedisCacheProvider implements CacheProviderInterface {
     const parsedData = JSON.parse(data) as T;
     return parsedData;
   }
+
   async save(key: string, value: any): Promise<void> {
     await this.client.set(key, JSON.stringify(value));
   }

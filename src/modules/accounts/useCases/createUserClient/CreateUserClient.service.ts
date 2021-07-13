@@ -83,6 +83,7 @@ class CreateUserClientService {
       email_type: MailContent.USER_CONFIRMATION_EMAIL,
       variables,
     };
+
     const messages = [];
 
     messages.push({ value: JSON.stringify(message) });

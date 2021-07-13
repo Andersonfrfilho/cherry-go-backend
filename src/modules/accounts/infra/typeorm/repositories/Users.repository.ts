@@ -171,6 +171,7 @@ export class UsersRepository implements UsersRepositoryInterface {
     const type = await this.repository_users_types.findOne({
       where: { name: USER_TYPES_ENUM.CLIENT },
     });
+
     const user = await this.repository.save({
       name,
       last_name,
@@ -181,6 +182,9 @@ export class UsersRepository implements UsersRepositoryInterface {
       password_hash: password,
       active,
     });
+    console.log("############");
+    console.log(user.id);
+    console.log(type);
 
     const users_types = this.repository_users_types_users.create({
       user_id: user.id,

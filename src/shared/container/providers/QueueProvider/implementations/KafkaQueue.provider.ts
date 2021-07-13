@@ -11,12 +11,19 @@ class KafkaQueueProvider implements QueueProviderInterface {
       brokers: ["host.docker.internal:9094"],
     });
   }
+
   async sendMessage({
     topic,
     messages,
   }: QueueSendMessageDTO): Promise<boolean> {
     const producer = this.client.producer();
     try {
+      if (
+        process.env.ENVIRONMENT === "test" ||
+        !!process.env.MAIL_COMMUNICATION
+      ) {
+        return true;
+      }
       await producer.connect();
       await producer.send({
         topic,
