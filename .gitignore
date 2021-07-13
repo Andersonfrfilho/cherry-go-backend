@@ -5,6 +5,7 @@ tmp/
 !tmp/.gitkeep
 !tmp/documents/.gitkeep
 !tmp/profiles/.gitkeep
+!tmp/images/.gitkeep
 .env
 covarage/
 dist/
