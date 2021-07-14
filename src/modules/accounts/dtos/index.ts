@@ -38,3 +38,4 @@ export { CreateProviderTransportTypesAvailabilitiesServiceDTO } from "@modules/a
 export { CreateAddressUsersProvidersServiceDTO } from "@modules/accounts/dtos/services/CreateAddressUsersProviders.service.dto";
 export { CreateAddressUsersProvidersRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateAddressUsersProviders.repository.dto";
 export { InsideTypeForUserRepositoryDTO } from "@modules/accounts/dtos/repositories/InsideTypeForUser.repository.dto";
+export { CreateTransportTypesAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTransportTypesAvailable.repository.dto";

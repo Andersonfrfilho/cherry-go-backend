@@ -2,12 +2,12 @@ import { getRepository, In, Repository } from "typeorm";
 
 import {
   CreatePaymentTypesAvailableRepositoryDTO,
-  CreateProviderDaysAvailabilityProviderDTO,
+  CreateProviderDaysAvailabilityProviderRepositoryDTO,
   CreateServiceProviderRepositoryDTO,
   CreateProviderTimesAvailabilityProviderDTO,
   CreateAddressUsersProvidersRepositoryDTO,
+  CreateTransportTypesAvailableRepositoryDTO,
 } from "@modules/accounts/dtos";
-import { CreateTransportTypesAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTransportTypesAvailableRepository.dto";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
 import { ProviderAvailabilityDay } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityDay";
@@ -145,7 +145,7 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
   async createDaysAvailable({
     days,
     provider_id,
-  }: CreateProviderDaysAvailabilityProviderDTO): Promise<void> {
+  }: CreateProviderDaysAvailabilityProviderRepositoryDTO): Promise<void> {
     const days_created = this.repository_available_days.create(
       days.map((day) => ({ day, provider_id }))
     );

@@ -4,10 +4,10 @@ import {
   CreateProviderDaysAvailabilityServiceDTO,
   CreateProviderTimesAvailabilityProviderDTO,
   CreateServiceProviderRepositoryDTO,
+  CreateTransportTypesAvailableRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-
-import { CreateTransportTypesAvailableRepositoryDTO } from "../dtos/repositories/CreateTransportTypesAvailableRepository.dto";
+import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/CreateAppointment.service.dto";
 
 export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
@@ -15,7 +15,7 @@ export interface ProvidersRepositoryInterface {
     data: CreateAddressUsersProvidersRepositoryDTO
   ): Promise<void>;
   findByIdsActiveAndServices(
-    providers_id: Partial<Provider>[]
+    providers: Partial<CreateAppointmentProviders>[]
   ): Promise<Provider[]>;
   findByEmail(email: string): Promise<Provider>;
   createDaysAvailable(

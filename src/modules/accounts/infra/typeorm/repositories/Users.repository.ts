@@ -10,8 +10,8 @@ import {
   TermsAcceptUserRepositoryDTO,
   UpdateActiveUserRepositoryDTO,
   UpdatedUserClientRepositoryDTO,
+  InsideTypeForUserRepositoryDTO,
 } from "@modules/accounts/dtos";
-import { InsideTypeForUserRepositoryDTO } from "@modules/accounts/dtos/repositories/InsideTypeForUserRepository.dto";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
