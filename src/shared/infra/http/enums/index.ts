@@ -1,1 +1,1 @@
-export { HttpSuccessCodeEnum } from "@shared/infra/http/enums/HttpSuccessCode.enum";
+export { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums/HttpSuccessCode.enum";

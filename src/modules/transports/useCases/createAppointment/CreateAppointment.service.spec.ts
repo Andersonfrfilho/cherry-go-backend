@@ -3,7 +3,7 @@ import "reflect-metadata";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { ActiveAccountService } from "@modules/accounts/useCases/activeAccount/ActiveAccount.service";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST } from "@shared/errors/constants";
+import { NOT_FOUND } from "@shared/errors/constants";
 import {
   ImagesFactory,
   PhonesFactory,
@@ -40,7 +40,7 @@ describe("ActiveAccountService", () => {
     const phones = phonesFactory.generate({ quantity: 1, id: "true" });
     const addresses = phonesFactory.generate({ quantity: 1, id: "true" });
     const image_profile = imagesFactory.generate({ quantity: 1, id: "true" });
-    const [type] = usersTypesFactory.generate();
+    const [type] = usersTypesFactory.generate({});
     const [term] = usersTermsFactory.generate({ quantity: 1, accept: false });
     usersRepositoryMock.findUserByEmailCpfRg.mockResolvedValue({
       cpf,
@@ -96,7 +96,7 @@ describe("ActiveAccountService", () => {
         rg,
         email,
       })
-    ).rejects.toEqual(new AppError(BAD_REQUEST.USER_NOT_EXIST));
+    ).rejects.toEqual(new AppError(NOT_FOUND.USER_NOT_EXIST));
     expect(usersRepositoryMock.findUserByEmailCpfRg).toHaveBeenCalledWith({
       cpf,
       rg,
