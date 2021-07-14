@@ -23,7 +23,14 @@ export async function ensureAuthenticatedInside(
 
   const [, token] = authHeader.split(" ");
 
+  try {
+    verify(token, auth.secret.token);
+  } catch (err) {
+    throw new AppError(UNAUTHORIZED.TOKEN_IS_INVALID);
+  }
+
   const { sub } = verify(token, auth.secret.token) as IPayload;
+
   const {
     user: { id, active, types },
   } = JSON.parse(sub);
@@ -41,7 +48,7 @@ export async function ensureAuthenticatedInside(
   ) {
     throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);
   }
-  console.log("######################################## passwopr");
+
   request.user = {
     id,
   };

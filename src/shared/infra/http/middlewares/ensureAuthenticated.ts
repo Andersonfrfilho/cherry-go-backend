@@ -14,7 +14,6 @@ export async function ensureAuthenticated(
   _: Response,
   next: NextFunction
 ) {
-  console.log("#@!$%");
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
@@ -23,16 +22,21 @@ export async function ensureAuthenticated(
 
   const [, token] = authHeader.split(" ");
 
+  try {
+    verify(token, auth.secret.token);
+  } catch (err) {
+    throw new AppError(UNAUTHORIZED.TOKEN_IS_INVALID);
+  }
+
   const { sub } = verify(token, auth.secret.token) as IPayload;
   const {
     user: { id, active },
   } = JSON.parse(sub);
 
-  console.log(active);
   if (!active) {
     throw new AppError(FORBIDDEN.USER_IS_NOT_ACTIVE);
   }
-  console.log(id);
+
   request.user = {
     id,
   };

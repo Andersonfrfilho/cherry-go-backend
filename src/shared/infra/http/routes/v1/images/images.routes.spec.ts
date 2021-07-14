@@ -35,7 +35,7 @@ describe("Create image route", () => {
     const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
       quantity: 1,
     });
-    // const [image] = imagesFactory.generate({ quantity: 1 });
+
     // act
     const { body: user } = await request(app)
       .post(paths.v1.users_clients)
@@ -49,12 +49,14 @@ describe("Create image route", () => {
         password_confirm: "102030",
         birth_date: new Date(1995, 11, 17),
       });
+
     const {
       body: { token: token_admin },
     } = await request(app).post(paths.v1.users_sessions).send({
       email: "admin@cherry-go.love",
       password: "102030",
     });
+
     await request(app)
       .patch(paths.v1.users_active)
       .set({
@@ -63,6 +65,7 @@ describe("Create image route", () => {
       .send({
         cpf,
       });
+
     await request(app)
       .patch(paths.v1.users_inside)
       .set({
@@ -71,12 +74,14 @@ describe("Create image route", () => {
       .send({
         id: user.id,
       });
+
     const {
       body: { token },
     } = await request(app).post(paths.v1.users_sessions).send({
       email,
       password: "102030",
     });
+
     const path_file = path.resolve(
       __dirname,
       "..",
@@ -88,7 +93,7 @@ describe("Create image route", () => {
       "..",
       "avatar.jpg"
     );
-    console.log("########### chegou");
+
     const response = await request(app)
       .post(paths.v1.images)
       .set({

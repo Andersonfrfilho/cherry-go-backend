@@ -23,6 +23,12 @@ export async function ensureAuthenticatedProvider(
 
   const [, token] = authHeader.split(" ");
 
+  try {
+    verify(token, auth.secret.token);
+  } catch (err) {
+    throw new AppError(UNAUTHORIZED.TOKEN_IS_INVALID);
+  }
+
   const { sub } = verify(token, auth.secret.token) as IPayload;
   const {
     user: { id, active, types },
