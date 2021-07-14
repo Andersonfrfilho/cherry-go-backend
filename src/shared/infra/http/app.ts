@@ -8,7 +8,7 @@ import "express-async-errors";
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
 import { AppError } from "@shared/errors/AppError";
-import { HttpErrorCodesEnum } from "@shared/errors/enums/StatusCode.enum";
+import { HTTP_ERROR_CODES_ENUM } from "@shared/errors/enums/StatusCode.enum";
 import rateLimiter from "@shared/infra/http/middlewares/rateLimiter";
 import createConnection from "@shared/infra/typeorm";
 
@@ -49,7 +49,7 @@ app.use((err: Error, _: Request, response: Response, next: NextFunction) => {
     });
   }
 
-  return response.status(HttpErrorCodesEnum.INTERNAL_SERVER_ERROR).json({
+  return response.status(HTTP_ERROR_CODES_ENUM.INTERNAL_SERVER_ERROR).json({
     status: "error",
     message: err.message,
   });

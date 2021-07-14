@@ -1,6 +1,6 @@
-import { HttpErrorCodesEnum } from "@shared/errors/enums";
+import { HTTP_ERROR_CODES_ENUM } from "@shared/errors/enums";
 
-const status_code = HttpErrorCodesEnum.BAD_REQUEST;
+const status_code = HTTP_ERROR_CODES_ENUM.BAD_REQUEST;
 
 export const BAD_REQUEST = {
   TRANSACTION_INVALID: {

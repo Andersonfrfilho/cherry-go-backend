@@ -1,6 +1,6 @@
-import { HttpErrorCodesEnum } from "@shared/errors/enums";
+import { HTTP_ERROR_CODES_ENUM } from "@shared/errors/enums";
 
-const status_code = HttpErrorCodesEnum.NOT_FOUND;
+const status_code = HTTP_ERROR_CODES_ENUM.NOT_FOUND;
 
 export const NOT_FOUND = {
   USER_DOES_NOT_EXIST: {

@@ -1,8 +1,10 @@
 import path from "path";
 import request from "supertest";
-import { Connection, createConnections, getConnection } from "typeorm";
+import { Connection, createConnections } from "typeorm";
 
 import { orm_test } from "@root/ormconfig.test";
+import { UNAUTHORIZED } from "@shared/errors/constants";
+import { HTTP_ERROR_CODES_ENUM } from "@shared/errors/enums";
 import { app } from "@shared/infra/http/app";
 import { HTTP_STATUS_CODE_SUCCESS } from "@shared/infra/http/enums/HttpSuccessCode.enum";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
@@ -109,33 +111,37 @@ describe("Create image route", () => {
       })
     );
   }, 30000);
+  it("should throw error to create a new image without token", async () => {
+    // arrange
+    // act
+    const response = await request(app).post(paths.v1.images);
 
-  // it("should not be able authenticated if incorrect password", async () => {
-  //   // arrange
-  //   const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
-  //     quantity: 1,
-  //     active: true,
-  //   });
+    expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+    expect(response.body.message).toBe(UNAUTHORIZED.TOKEN_IS_MISSING.message);
+  }, 30000);
 
-  //   // act
-  //   await request(app)
-  //     .post(paths.users_clients)
-  //     .send({
-  //       name,
-  //       last_name,
-  //       cpf,
-  //       rg,
-  //       email,
-  //       password: "102030",
-  //       password_confirm: "102030",
-  //       birth_date: new Date(1995, 11, 17),
-  //     });
+  it("should throw error to create a new image with invalid token", async () => {
+    // arrange
+    // act
 
-  //   const response = await request(app).post(paths.users_sessions).send({
-  //     email,
-  //     password: "invalid_password",
-  //   });
+    const path_file = path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "..",
+      "..",
+      "..",
+      "avatar.jpg"
+    );
 
-  //   expect(response.status).toBe(403);
-  // });
+    const response = await request(app).post(paths.v1.images).set({
+      Authorization: `Bearer invalid`,
+    });
+    // .attach("image", path_file);
+
+    expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS.OK);
+    expect(response.body.message).toEqual("");
+  }, 30000);
 });

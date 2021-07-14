@@ -1,5 +1,5 @@
 import { ErrorParametersDTO } from "@shared/errors/dtos";
-import { HttpErrorCodesEnum } from "@shared/errors/enums";
+import { HTTP_ERROR_CODES_ENUM } from "@shared/errors/enums";
 
 export class AppError {
   public readonly message: string;
@@ -8,7 +8,7 @@ export class AppError {
 
   constructor({
     message,
-    status_code = HttpErrorCodesEnum.BAD_REQUEST,
+    status_code = HTTP_ERROR_CODES_ENUM.BAD_REQUEST,
     code = "",
   }: ErrorParametersDTO) {
     this.message = message;

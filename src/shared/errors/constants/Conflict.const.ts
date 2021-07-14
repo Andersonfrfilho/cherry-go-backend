@@ -1,6 +1,6 @@
-import { HttpErrorCodesEnum } from "@shared/errors/enums";
+import { HTTP_ERROR_CODES_ENUM } from "@shared/errors/enums";
 
-const status_code = HttpErrorCodesEnum.CONFLICT;
+const status_code = HTTP_ERROR_CODES_ENUM.CONFLICT;
 
 export const CONFLICT = {
   USER_CLIENT_ALREADY_EXIST: {
