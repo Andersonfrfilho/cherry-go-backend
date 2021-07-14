@@ -11,6 +11,8 @@ import {
 } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
+import { InsideTypeForUserRepositoryDTO } from "../dtos/repositories/InsideTypeForUserRepository.dto";
+
 export interface UsersRepositoryInterface {
   create(data: CreateUserClientRepositoryDTO): Promise<User>;
   createUserAddress(data: CreateUserAddressClientRepositoryDTO): Promise<User>;
@@ -45,5 +47,6 @@ export interface UsersRepositoryInterface {
   }: CreateTagsUsersRepositoryDTO): Promise<void>;
   findByIdWithProfileImage(id: string): Promise<User>;
   providerTypeForUser(data: ProviderTypeForUserRepositoryDTO): Promise<void>;
+  insideTypeForUser(data: InsideTypeForUserRepositoryDTO): Promise<void>;
   findByIdsActive(users: Partial<User>[]): Promise<User[]>;
 }

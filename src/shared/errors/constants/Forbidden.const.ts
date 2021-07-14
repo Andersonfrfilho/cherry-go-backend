@@ -19,4 +19,12 @@ export const FORBIDDEN = {
     message: "Provider is not active!",
     status_code,
   },
+  INSIDER_IS_NOT_ACTIVE: {
+    message: "Insider is not active!",
+    status_code,
+  },
+  ADMIN_IS_NOT_ACTIVE: {
+    message: "admin is not active!",
+    status_code,
+  },
 };

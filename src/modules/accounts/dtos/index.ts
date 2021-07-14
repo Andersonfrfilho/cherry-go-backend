@@ -37,3 +37,4 @@ export { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/services/Terms
 export { CreateProviderTransportTypesAvailabilitiesServiceDTO } from "@modules/accounts/dtos/services/CreateProviderTransportTypesAvailabilitiesService.dto";
 export { CreateAddressUsersProvidersServiceDTO } from "@modules/accounts/dtos/services/CreateAddressUsersProvidersService.dto";
 export { CreateAddressUsersProvidersRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateAddressUsersProvidersRepository.dto";
+export { InsideTypeForUserRepositoryDTO } from "@modules/accounts/dtos/repositories/InsideTypeForUserRepository.dto";

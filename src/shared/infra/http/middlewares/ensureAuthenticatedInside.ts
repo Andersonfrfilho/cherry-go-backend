@@ -10,7 +10,7 @@ interface IPayload {
   sub: string;
 }
 
-export async function ensureAuthenticatedProvider(
+export async function ensureAuthenticatedInside(
   request: Request,
   _: Response,
   next: NextFunction
@@ -35,7 +35,7 @@ export async function ensureAuthenticatedProvider(
   if (
     !types.some(
       (type) =>
-        type.name === USER_TYPES_ENUM.PROVIDER ||
+        type.name === USER_TYPES_ENUM.INSIDE ||
         type.name === USER_TYPES_ENUM.ADMIN
     )
   ) {

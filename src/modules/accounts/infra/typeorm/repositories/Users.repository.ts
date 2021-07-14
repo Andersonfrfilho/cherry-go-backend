@@ -11,6 +11,7 @@ import {
   UpdateActiveUserRepositoryDTO,
   UpdatedUserClientRepositoryDTO,
 } from "@modules/accounts/dtos";
+import { InsideTypeForUserRepositoryDTO } from "@modules/accounts/dtos/repositories/InsideTypeForUserRepository.dto";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
@@ -41,6 +42,20 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_users_phones = getRepository(UserPhone);
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
     this.repository_tag = getRepository(Tag);
+  }
+  async insideTypeForUser({
+    active,
+    user_id,
+  }: InsideTypeForUserRepositoryDTO): Promise<void> {
+    const provider_type = await this.repository_users_types.findOne({
+      where: { name: USER_TYPES_ENUM.INSIDE },
+    });
+
+    await this.repository_users_types_users.save({
+      user_id,
+      user_type_id: provider_type.id,
+      active,
+    });
   }
   async findByIdsActive(users: Partial<User>[]): Promise<User[]> {
     return this.repository.find({ where: { id: users, active: true } });

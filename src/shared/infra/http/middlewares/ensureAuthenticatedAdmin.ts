@@ -10,7 +10,7 @@ interface IPayload {
   sub: string;
 }
 
-export async function ensureAuthenticatedProvider(
+export async function ensureAuthenticatedAdmin(
   request: Request,
   _: Response,
   next: NextFunction
@@ -32,13 +32,7 @@ export async function ensureAuthenticatedProvider(
     throw new AppError(FORBIDDEN.USER_IS_NOT_ACTIVE);
   }
 
-  if (
-    !types.some(
-      (type) =>
-        type.name === USER_TYPES_ENUM.PROVIDER ||
-        type.name === USER_TYPES_ENUM.ADMIN
-    )
-  ) {
+  if (!types.some((type) => type.name === USER_TYPES_ENUM.ADMIN)) {
     throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);
   }
 
