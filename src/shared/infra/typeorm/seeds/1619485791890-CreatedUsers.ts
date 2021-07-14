@@ -5,9 +5,12 @@ import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 export class CreatedUsers1619485791890 implements MigrationInterface {
   public async up(): Promise<void> {
+    const types_users = await getConnection("seeds")
+      .getRepository("types_users")
+      .find();
     const user_factory = new UsersFactory();
     const users = user_factory.generate({
-      quantity: faker.datatype.number({ min: 15, max: 20 }),
+      quantity: types_users.length * types_users.length,
     });
     await getConnection("seeds").getRepository("users").save(users);
   }
