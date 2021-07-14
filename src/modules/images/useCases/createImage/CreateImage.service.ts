@@ -1,3 +1,4 @@
+import { classToClass } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { CreateImageServiceDTO } from "@modules/images/dtos";
@@ -15,11 +16,11 @@ export class CreateImageService {
   ) {}
   async execute({ name }: CreateImageServiceDTO): Promise<Image> {
     const image_name = await this.storageProvider.save(name, "images");
-
+    console.log(image_name);
     const image = await this.imagesRepository.create({
       name: image_name,
     });
 
-    return image;
+    return classToClass(image);
   }
 }

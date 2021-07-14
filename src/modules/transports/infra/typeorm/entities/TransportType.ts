@@ -24,7 +24,7 @@ export class TransportType {
   name: string;
 
   @Column()
-  description: string;
+  description?: string;
 
   @Column()
   active: boolean;

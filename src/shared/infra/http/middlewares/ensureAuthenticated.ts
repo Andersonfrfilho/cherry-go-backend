@@ -14,6 +14,7 @@ export async function ensureAuthenticated(
   _: Response,
   next: NextFunction
 ) {
+  console.log("#@!$%");
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
@@ -27,10 +28,11 @@ export async function ensureAuthenticated(
     user: { id, active },
   } = JSON.parse(sub);
 
+  console.log(active);
   if (!active) {
     throw new AppError(FORBIDDEN.USER_IS_NOT_ACTIVE);
   }
-
+  console.log(id);
   request.user = {
     id,
   };

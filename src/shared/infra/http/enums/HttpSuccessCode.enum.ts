@@ -1,4 +1,4 @@
-export enum HttpSuccessCodeEnum {
+export enum HTTP_STATUS_CODE_SUCCESS {
   OK = 200,
   NO_CONTENT = 204,
 }

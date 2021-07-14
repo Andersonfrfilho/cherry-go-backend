@@ -21,6 +21,7 @@ export class CreateTransportsTypes1617669642964 implements MigrationInterface {
           {
             name: "description",
             type: "varchar",
+            isNullable: true,
           },
           {
             name: "active",

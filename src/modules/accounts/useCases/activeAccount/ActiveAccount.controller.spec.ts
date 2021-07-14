@@ -17,7 +17,6 @@ describe("ActiveAccountController", () => {
     // dependency A gets a mock version of dependency C during this resolution.
     const activeUserClientService = container.resolve(ActiveAccountService);
     const result = activeUserClientService.execute(data);
-    console.log(result);
     // We can call this now that we're done testing, and the mock will be removed.
     // When we resolve the instance after this, we get the original dependencies.
     // In practice, we've found it's easy to just place this in your afterEach block.

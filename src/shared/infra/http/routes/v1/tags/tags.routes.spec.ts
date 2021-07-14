@@ -68,7 +68,7 @@ describe("Create authenticated controller", () => {
   }, 30000);
 
   afterAll(async () => {
-    // await connection.dropDatabase();
+    await connection.dropDatabase();
     await connection.close();
   }, 30000);
   it("should be able to create a new token", async () => {
