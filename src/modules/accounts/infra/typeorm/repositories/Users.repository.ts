@@ -197,9 +197,6 @@ export class UsersRepository implements UsersRepositoryInterface {
       password_hash: password,
       active,
     });
-    console.log("############");
-    console.log(user.id);
-    console.log(type);
 
     const users_types = this.repository_users_types_users.create({
       user_id: user.id,

@@ -1,5 +1,7 @@
 import { getConnection, MigrationInterface } from "typeorm";
 
+import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
+import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import {
   UsersTypesFactory,
@@ -73,7 +75,23 @@ export class InsertInfos1622165715932 implements MigrationInterface {
         quantity: 1,
       });
 
-      await getConnection("seed").getRepository("users").save(user);
+      const user_saved = await getConnection("seed")
+        .getRepository("users")
+        .save(user);
+
+      const types_users = (await getConnection("seed")
+        .getRepository("types_users")
+        .find()) as TypeUser[];
+
+      const user_type_id_admin = types_users.find(
+        (user_type) => user_type.name === USER_TYPES_ENUM.ADMIN
+      );
+
+      await getConnection("seed").getRepository("users_types_users").save({
+        user_id: user_saved.id,
+        user_type_id: user_type_id_admin.id,
+        active: true,
+      });
     }
   }
 

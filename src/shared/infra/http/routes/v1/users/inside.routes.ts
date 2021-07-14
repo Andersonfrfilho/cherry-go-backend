@@ -3,13 +3,13 @@ import { Router } from "express";
 import { CreateUsersTypeInsideController } from "@modules/accounts/useCases/createUsersTypeInside/CreateUsersTypeInside.controller";
 import { ensureAuthenticatedAdmin } from "@shared/infra/http/middlewares/ensureAuthenticatedAdmin";
 
-const insideRoutes = Router();
+const insidesRoutes = Router();
 const createUsersTypeInsideController = new CreateUsersTypeInsideController();
 
-insideRoutes.patch(
+insidesRoutes.patch(
   "/",
   ensureAuthenticatedAdmin,
   createUsersTypeInsideController.handle
 );
 
-export { insideRoutes };
+export { insidesRoutes };

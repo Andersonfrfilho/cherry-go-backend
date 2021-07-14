@@ -2,18 +2,18 @@ import { Router } from "express";
 import multer from "multer";
 
 import uploadConfig from "@config/upload";
-import { CreateTransportController } from "@modules/images/useCases/createImage/CreateImage.controller";
+import { CreateImageController } from "@modules/images/useCases/createImage/CreateImage.controller";
 import { ensureAuthenticatedInside } from "@shared/infra/http/middlewares/ensureAuthenticatedInside";
 
 const imagesRoutes = Router();
 const uploadDocument = multer(uploadConfig);
-const createTransportController = new CreateTransportController();
+const createImageController = new CreateImageController();
 
 imagesRoutes.post(
   "/",
   ensureAuthenticatedInside,
   uploadDocument.single("image"),
-  createTransportController.handle
+  createImageController.handle
 );
 
 export { imagesRoutes };

@@ -41,7 +41,7 @@ export async function ensureAuthenticatedInside(
   ) {
     throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);
   }
-
+  console.log("######################################## passwopr");
   request.user = {
     id,
   };

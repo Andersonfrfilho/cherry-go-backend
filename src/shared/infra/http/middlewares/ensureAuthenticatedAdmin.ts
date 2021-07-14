@@ -33,7 +33,7 @@ export async function ensureAuthenticatedAdmin(
   }
 
   if (!types.some((type) => type.name === USER_TYPES_ENUM.ADMIN)) {
-    throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);
+    throw new AppError(FORBIDDEN.ADMIN_IS_NOT_ACTIVE);
   }
 
   request.user = {

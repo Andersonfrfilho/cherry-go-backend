@@ -4,6 +4,7 @@ import { authenticateUsersRoutes } from "@shared/infra/http/routes/v1/users/auth
 import { clientsRoutes } from "@shared/infra/http/routes/v1/users/clients.routes";
 import { confirmsRoutes } from "@shared/infra/http/routes/v1/users/confirms.routes";
 import { documentsRoutes } from "@shared/infra/http/routes/v1/users/documents.routes";
+import { insidesRoutes } from "@shared/infra/http/routes/v1/users/inside.routes";
 import { passwordRoutes } from "@shared/infra/http/routes/v1/users/password.routes";
 import { profileRoutes } from "@shared/infra/http/routes/v1/users/profile.routes";
 import { providersRoutes } from "@shared/infra/http/routes/v1/users/providers.routes";
@@ -11,6 +12,7 @@ import { providersRoutes } from "@shared/infra/http/routes/v1/users/providers.ro
 const usersRoutes = Router();
 
 usersRoutes.use("/clients", clientsRoutes);
+usersRoutes.use("/insides", insidesRoutes);
 usersRoutes.use("/providers", providersRoutes);
 usersRoutes.use("/password", passwordRoutes);
 usersRoutes.use("/confirm", confirmsRoutes);

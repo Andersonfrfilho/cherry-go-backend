@@ -11,6 +11,7 @@ import { schemaCreateTagsUsersClient } from "@modules/accounts/useCases/createTa
 import { CreateUserClientController } from "@modules/accounts/useCases/createUserClient/CreateUserClient.controller";
 import { schemaCreateUserClient } from "@modules/accounts/useCases/createUserClient/createUserClient.schema";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
+import { ensureAuthenticatedInside } from "@shared/infra/http/middlewares/ensureAuthenticatedInside";
 
 const clientsRoutes = Router();
 const createUserClientController = new CreateUserClientController();
@@ -47,6 +48,7 @@ clientsRoutes.patch(
 clientsRoutes.patch(
   "/active",
   schemaActiveUser,
+  ensureAuthenticatedInside,
   activeUserClientController.handle
 );
 
