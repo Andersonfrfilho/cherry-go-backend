@@ -20,7 +20,25 @@ export default {
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
-    "<rootDir>/src/shared/infra/http/routes/**/**/*.routes.ts",
+    "<rootDir>/src/shared/infra/http/routes/**/**/*.ts",
+    "<rootDir>/src/shared/infra/http/middlewares/*.ts",
+    "<rootDir>/src/modules/**/repositories/*.ts",
+    "!<rootDir>/src/modules/**/repositories/*.mock.ts",
+    "<rootDir>/src/modules/**/infra/typeorm/**/*.ts",
+    "<rootDir>/src/modules/**/useCases/**/*controllers.ts",
+    "<rootDir>/src/modules/**/useCases/**/*schema.ts",
+    "<rootDir>/src/modules/**/useCases/repositories/*.ts",
+    "<rootDir>/src/modules/**/useCases/**/*service.ts",
+    "<rootDir>/src/shared/infra/typeorm/factories/*.factory.ts",
+    "!src/config/**.ts",
+    "!**/swagger/**.ts",
+    "!<rootDir>/src/shared/infra/typeorm/migrations/*.ts",
+    "!<rootDir>/src/shared/infra/typeorm/seed/*.ts",
+    "!<rootDir>/src/shared/infra/typeorm/seeds/*.ts",
+    "!<rootDir>/src/shared/infra/typeorm/dtos/*.ts",
+    "!<rootDir>/src/modules/**/enums/*.ts",
+    "!<rootDir>/src/modules/**/dtos/*.ts",
+    "!<rootDir>/src/modules/**/dtos/**/*.ts",
   ],
 
   // The directory where Jest should output its coverage files
