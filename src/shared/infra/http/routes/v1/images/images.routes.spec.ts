@@ -124,24 +124,11 @@ describe("Create image route", () => {
     // arrange
     // act
 
-    const path_file = path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "..",
-      "..",
-      "..",
-      "..",
-      "avatar.jpg"
-    );
-
     const response = await request(app).post(paths.v1.images).set({
       Authorization: `Bearer invalid`,
     });
-    // .attach("image", path_file);
 
-    expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.OK);
-    expect(response.body.message).toEqual("");
+    expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+    expect(response.body.message).toBe(UNAUTHORIZED.TOKEN_IS_INVALID.message);
   }, 30000);
 });
