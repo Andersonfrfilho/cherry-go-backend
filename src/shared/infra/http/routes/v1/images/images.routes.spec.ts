@@ -14,6 +14,7 @@ import {
 } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
+let seed: Connection;
 describe("Create image route", () => {
   const usersFactory = new UsersFactory();
   const paths = {
@@ -25,41 +26,9 @@ describe("Create image route", () => {
     },
   };
   beforeAll(async () => {
-    [connection] = await createConnections(orm_test);
+    [connection, seed] = await createConnections(orm_test);
     await connection.runMigrations();
-    const users_types_factory = new UsersTypesFactory();
-    const users_types = users_types_factory.generate({
-      active: true,
-      description: null,
-    });
-    await connection.getRepository("types_users").save(users_types);
-
-    const users_transports_types_factory = new TransportsTypesFactory();
-    const transports_types = users_transports_types_factory.generate({
-      active: true,
-      description: null,
-    });
-    await connection.getRepository("transports_types").save(transports_types);
-
-    const payments_types_factory = new PaymentsTypesFactory();
-    const payments_types = payments_types_factory.generate({
-      active: true,
-      description: null,
-    });
-    await connection.getRepository("payments_types").save(payments_types);
-  }, 30000);
-
-  afterEach(async () => {
-    await connection.query(`
-      DELETE FROM
-        users_terms_accepts;
-      DELETE FROM
-        users_types_users;
-      DELETE FROM
-        images;
-      DELETE FROM
-        users;
-  `);
+    await seed.runMigrations();
   }, 30000);
 
   afterAll(async () => {
