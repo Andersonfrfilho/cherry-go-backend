@@ -16,9 +16,14 @@ export class AppointmentsRepository implements AppointmentsRepositoryInterface {
 
   async create({
     confirm,
-    date,
+    initial_date,
+    final_date,
   }: CreateAppointmentRepositoryDTO): Promise<Appointment> {
-    const appointment = await this.repository.save({ confirm, date });
+    const appointment = await this.repository.save({
+      confirm,
+      initial_date,
+      final_date,
+    });
     return appointment;
   }
 }

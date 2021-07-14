@@ -3,7 +3,7 @@ import request from "supertest";
 import { Connection, createConnections } from "typeorm";
 
 import { orm_test } from "@root/ormconfig.test";
-import { UNAUTHORIZED } from "@shared/errors/constants";
+import { FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
 import { HTTP_ERROR_CODES_ENUM } from "@shared/errors/enums";
 import { app } from "@shared/infra/http/app";
 import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums/HttpSuccessCode.enum";
@@ -123,12 +123,64 @@ describe("Create image route", () => {
   it("should throw error to create a new image with invalid token", async () => {
     // arrange
     // act
-
     const response = await request(app).post(paths.v1.images).set({
       Authorization: `Bearer invalid`,
     });
 
     expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
     expect(response.body.message).toBe(UNAUTHORIZED.TOKEN_IS_INVALID.message);
+  }, 30000);
+
+  it("should be throw error if user is not active", async () => {
+    // arrange
+    const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      quantity: 1,
+    });
+
+    // act
+    const { body: user } = await request(app)
+      .post(paths.v1.users_clients)
+      .send({
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        password: "102030",
+        password_confirm: "102030",
+        birth_date: new Date(1995, 11, 17),
+      });
+
+    const {
+      body: { token: token_admin },
+    } = await request(app).post(paths.v1.users_sessions).send({
+      email: "admin@cherry-go.love",
+      password: "102030",
+    });
+
+    await request(app)
+      .patch(paths.v1.users_inside)
+      .set({
+        Authorization: `Bearer ${token_admin}`,
+      })
+      .send({
+        id: user.id,
+      });
+
+    const {
+      body: { token },
+    } = await request(app).post(paths.v1.users_sessions).send({
+      email,
+      password: "102030",
+    });
+
+    const response = await request(app)
+      .post(paths.v1.images)
+      .set({
+        Authorization: `Bearer ${token}`,
+      });
+
+    expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
+    expect(response.body.message).toBe(FORBIDDEN.USER_IS_NOT_ACTIVE.message);
   }, 30000);
 });
