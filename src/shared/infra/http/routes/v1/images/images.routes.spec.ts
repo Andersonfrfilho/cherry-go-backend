@@ -5,13 +5,7 @@ import { Connection, createConnections, getConnection } from "typeorm";
 import { orm_test } from "@root/ormconfig.test";
 import { app } from "@shared/infra/http/app";
 import { HTTP_STATUS_CODE_SUCCESS } from "@shared/infra/http/enums/HttpSuccessCode.enum";
-import {
-  ImagesFactory,
-  PaymentsTypesFactory,
-  TransportsTypesFactory,
-  UsersFactory,
-  UsersTypesFactory,
-} from "@shared/infra/typeorm/factories";
+import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
 let seed: Connection;
@@ -21,6 +15,7 @@ describe("Create image route", () => {
     v1: {
       users_sessions: "/v1/users/sessions",
       users_active: "/v1/users/clients/active",
+      users_inside: "/v1/users/insides",
       users_clients: "/v1/users/clients",
       images: "/v1/images",
     },
@@ -37,14 +32,12 @@ describe("Create image route", () => {
   }, 30000);
   it("should be able to create a new image", async () => {
     // arrange
-    console.log("################");
     const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
       quantity: 1,
     });
     // const [image] = imagesFactory.generate({ quantity: 1 });
-
     // act
-    await request(app)
+    const { body: user } = await request(app)
       .post(paths.v1.users_clients)
       .send({
         name,
@@ -56,16 +49,34 @@ describe("Create image route", () => {
         password_confirm: "102030",
         birth_date: new Date(1995, 11, 17),
       });
-    await request(app).patch(paths.v1.users_active).send({
-      cpf,
+    const {
+      body: { token: token_admin },
+    } = await request(app).post(paths.v1.users_sessions).send({
+      email: "admin@cherry-go.love",
+      password: "102030",
     });
+    await request(app)
+      .patch(paths.v1.users_active)
+      .set({
+        Authorization: `Bearer ${token_admin}`,
+      })
+      .send({
+        cpf,
+      });
+    await request(app)
+      .patch(paths.v1.users_inside)
+      .set({
+        Authorization: `Bearer ${token_admin}`,
+      })
+      .send({
+        id: user.id,
+      });
     const {
       body: { token },
     } = await request(app).post(paths.v1.users_sessions).send({
       email,
       password: "102030",
     });
-    console.log(token);
     const path_file = path.resolve(
       __dirname,
       "..",
@@ -77,16 +88,14 @@ describe("Create image route", () => {
       "..",
       "avatar.jpg"
     );
-    console.log("###########token");
+    console.log("########### chegou");
     const response = await request(app)
       .post(paths.v1.images)
       .set({
         Authorization: `Bearer ${token}`,
       })
-      .field("image", "image")
-      .attach("avatar", path_file);
+      .attach("image", path_file);
 
-    console.log(response.body);
     expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS.OK);
     expect(response.body).toEqual(
       expect.objectContaining({
