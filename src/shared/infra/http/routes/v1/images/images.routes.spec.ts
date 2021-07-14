@@ -6,7 +6,7 @@ import { orm_test } from "@root/ormconfig.test";
 import { UNAUTHORIZED } from "@shared/errors/constants";
 import { HTTP_ERROR_CODES_ENUM } from "@shared/errors/enums";
 import { app } from "@shared/infra/http/app";
-import { HTTP_STATUS_CODE_SUCCESS } from "@shared/infra/http/enums/HttpSuccessCode.enum";
+import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums/HttpSuccessCode.enum";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
@@ -103,7 +103,7 @@ describe("Create image route", () => {
       })
       .attach("image", path_file);
 
-    expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS.OK);
+    expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.OK);
     expect(response.body).toEqual(
       expect.objectContaining({
         id: expect.any(String),
@@ -141,7 +141,7 @@ describe("Create image route", () => {
     });
     // .attach("image", path_file);
 
-    expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS.OK);
+    expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.OK);
     expect(response.body.message).toEqual("");
   }, 30000);
 });
