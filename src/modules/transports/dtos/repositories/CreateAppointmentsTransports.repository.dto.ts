@@ -1,4 +1,4 @@
-import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/CreateAppointmentService.dto";
+import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/CreateAppointment.service.dto";
 
 export interface CreateAppointmentsTransportsRepositoryDTO {
   providers: Partial<CreateAppointmentProviders>[];

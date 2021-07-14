@@ -1,1 +1,1 @@
-export { CreateNotificationRepositoryDTO } from "@modules/notifications/dtos/repositories/CreateNotificationRepository.dto";
+export { CreateNotificationRepositoryDTO } from "@modules/notifications/dtos/repositories/CreateNotification.repository.dto";

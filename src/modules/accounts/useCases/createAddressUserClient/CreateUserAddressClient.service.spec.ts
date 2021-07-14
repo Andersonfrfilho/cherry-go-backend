@@ -222,7 +222,7 @@ describe("CreateUserAddressClientService", () => {
         street,
         zipcode,
       })
-    ).rejects.toEqual(new AppError(BAD_REQUEST.USER_NOT_EXIST));
+    ).rejects.toEqual(new AppError(NOT_FOUND.USER_NOT_EXIST));
 
     expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
   });

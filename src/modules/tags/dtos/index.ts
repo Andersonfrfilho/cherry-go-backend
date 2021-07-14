@@ -1,3 +1,3 @@
-export { CreateTagsServiceDTO } from "@modules/tags/dtos/services";
+export { CreateUserRepositoryDTO } from "@modules/tags/dtos/repositories/CreateUser.repository.dto";
 
-export { CreateUserDTO } from "@modules/tags/dtos/repositories";
+export { CreateTagsServiceDTO } from "@modules/tags/dtos/services/CreateTags.service.dto";

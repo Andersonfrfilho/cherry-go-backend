@@ -209,7 +209,7 @@ describe("AuthenticateUserService", () => {
         email,
         password: password_hash,
       })
-    ).rejects.toEqual(new AppError(BAD_REQUEST.USER_NOT_EXIST));
+    ).rejects.toEqual(new AppError(NOT_FOUND.USER_NOT_EXIST));
 
     expect(usersRepositoryMock.findByEmail).toHaveBeenCalledWith(email);
   });
