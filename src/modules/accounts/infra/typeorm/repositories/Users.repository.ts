@@ -206,7 +206,7 @@ export class UsersRepository implements UsersRepositoryInterface {
 
     await this.repository_users_types_users.save(users_types);
 
-    return user;
+    return this.repository.create(user);
   }
 
   async create({

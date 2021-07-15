@@ -39,12 +39,14 @@ clientsRoutes.patch(
   schemaCreateUserPhoneClient,
   createUserPhoneClientController.handle
 );
+
 clientsRoutes.patch(
   "/tags",
   ensureAuthenticated,
   schemaCreateTagsUsersClient,
   createTagsUsersController.handle
 );
+
 clientsRoutes.patch(
   "/active",
   schemaActiveUser,

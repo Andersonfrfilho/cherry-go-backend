@@ -4,16 +4,19 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
+import { Image } from "@modules/images/infra/typeorm/entities/Image";
 
 @Entity("tags")
-class Tag {
+export class Tag {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
@@ -21,7 +24,7 @@ class Tag {
   name: string;
 
   @Column()
-  description: string;
+  description?: string;
 
   @Column()
   active: boolean;
@@ -37,6 +40,10 @@ class Tag {
   })
   services?: Service[];
 
+  @ManyToOne(() => Image, (image) => image.tags, { eager: true })
+  @JoinColumn({ name: "image_id", referencedColumnName: "id" })
+  image?: Image;
+
   @CreateDateColumn()
   @Exclude()
   created_at?: Date;
@@ -49,5 +56,3 @@ class Tag {
   @Exclude()
   deleted_at?: Date;
 }
-
-export { Tag };

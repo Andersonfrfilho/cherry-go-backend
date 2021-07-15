@@ -1,10 +1,10 @@
 import { getRepository, Repository } from "typeorm";
 
-import { CreateUserDTO } from "@modules/tags/dtos";
+import { CreateUserRepositoryDTO } from "@modules/tags/dtos";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
 
-class TagsRepository implements TagsRepositoryInterface {
+export class TagsRepository implements TagsRepositoryInterface {
   private repository: Repository<Tag>;
 
   constructor() {
@@ -15,20 +15,17 @@ class TagsRepository implements TagsRepositoryInterface {
     name,
     description,
     active,
-  }: CreateUserDTO): Promise<Tag> {
-    const tag = this.repository.create({
+  }: CreateUserRepositoryDTO): Promise<Tag> {
+    const tag = await this.repository.save({
       image_id,
       name,
       description,
       active,
     });
 
-    await this.repository.save(tag);
-
-    return tag;
+    return this.repository.create(tag);
   }
   async findByName(name: string): Promise<Tag> {
     return this.repository.findOne({ where: { name } });
   }
 }
-export { TagsRepository };

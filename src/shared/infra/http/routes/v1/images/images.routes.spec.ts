@@ -32,155 +32,212 @@ describe("Create image route", () => {
     await connection.dropDatabase();
     await connection.close();
   }, 30000);
-  it("should be able to create a new image", async () => {
-    // arrange
-    const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
-      quantity: 1,
-    });
+  describe("POST", () => {
+    it("should be able to create a new image", async () => {
+      // arrange
+      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+        quantity: 1,
+      });
 
-    // act
-    const { body: user } = await request(app)
-      .post(paths.v1.users_clients)
-      .send({
-        name,
-        last_name,
-        cpf,
-        rg,
+      // act
+      const { body: user } = await request(app)
+        .post(paths.v1.users_clients)
+        .send({
+          name,
+          last_name,
+          cpf,
+          rg,
+          email,
+          password: "102030",
+          password_confirm: "102030",
+          birth_date: new Date(1995, 11, 17),
+        });
+
+      const {
+        body: { token: token_admin },
+      } = await request(app).post(paths.v1.users_sessions).send({
+        email: "admin@cherry-go.love",
+        password: "102030",
+      });
+
+      await request(app)
+        .patch(paths.v1.users_active)
+        .set({
+          Authorization: `Bearer ${token_admin}`,
+        })
+        .send({
+          cpf,
+        });
+
+      await request(app)
+        .patch(paths.v1.users_inside)
+        .set({
+          Authorization: `Bearer ${token_admin}`,
+        })
+        .send({
+          id: user.id,
+        });
+
+      const {
+        body: { token },
+      } = await request(app).post(paths.v1.users_sessions).send({
         email,
         password: "102030",
-        password_confirm: "102030",
-        birth_date: new Date(1995, 11, 17),
       });
 
-    const {
-      body: { token: token_admin },
-    } = await request(app).post(paths.v1.users_sessions).send({
-      email: "admin@cherry-go.love",
-      password: "102030",
-    });
+      const path_file = path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "..",
+        "..",
+        "..",
+        "..",
+        "avatar.jpg"
+      );
 
-    await request(app)
-      .patch(paths.v1.users_active)
-      .set({
-        Authorization: `Bearer ${token_admin}`,
-      })
-      .send({
-        cpf,
+      const response = await request(app)
+        .post(paths.v1.images)
+        .set({
+          Authorization: `Bearer ${token}`,
+        })
+        .attach("image", path_file);
+
+      expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.OK);
+      expect(response.body).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: expect.any(String),
+        })
+      );
+    }, 30000);
+    it("should throw error to create a new image without token", async () => {
+      // arrange
+      // act
+      const response = await request(app).post(paths.v1.images);
+
+      expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+      expect(response.body.message).toBe(UNAUTHORIZED.TOKEN_IS_MISSING.message);
+    }, 30000);
+
+    it("should throw error to create a new image with invalid token", async () => {
+      // arrange
+      // act
+      const response = await request(app).post(paths.v1.images).set({
+        Authorization: `Bearer invalid`,
       });
 
-    await request(app)
-      .patch(paths.v1.users_inside)
-      .set({
-        Authorization: `Bearer ${token_admin}`,
-      })
-      .send({
-        id: user.id,
+      expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+      expect(response.body.message).toBe(UNAUTHORIZED.TOKEN_IS_INVALID.message);
+    }, 30000);
+
+    it("should be throw error if user is not active", async () => {
+      // arrange
+      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+        quantity: 1,
       });
 
-    const {
-      body: { token },
-    } = await request(app).post(paths.v1.users_sessions).send({
-      email,
-      password: "102030",
-    });
+      // act
+      const { body: user } = await request(app)
+        .post(paths.v1.users_clients)
+        .send({
+          name,
+          last_name,
+          cpf,
+          rg,
+          email,
+          password: "102030",
+          password_confirm: "102030",
+          birth_date: new Date(1995, 11, 17),
+        });
 
-    const path_file = path.resolve(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "..",
-      "..",
-      "..",
-      "..",
-      "avatar.jpg"
-    );
+      const {
+        body: { token: token_admin },
+      } = await request(app).post(paths.v1.users_sessions).send({
+        email: "admin@cherry-go.love",
+        password: "102030",
+      });
 
-    const response = await request(app)
-      .post(paths.v1.images)
-      .set({
-        Authorization: `Bearer ${token}`,
-      })
-      .attach("image", path_file);
+      await request(app)
+        .patch(paths.v1.users_inside)
+        .set({
+          Authorization: `Bearer ${token_admin}`,
+        })
+        .send({
+          id: user.id,
+        });
 
-    expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.OK);
-    expect(response.body).toEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        name: expect.any(String),
-      })
-    );
-  }, 30000);
-  it("should throw error to create a new image without token", async () => {
-    // arrange
-    // act
-    const response = await request(app).post(paths.v1.images);
-
-    expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
-    expect(response.body.message).toBe(UNAUTHORIZED.TOKEN_IS_MISSING.message);
-  }, 30000);
-
-  it("should throw error to create a new image with invalid token", async () => {
-    // arrange
-    // act
-    const response = await request(app).post(paths.v1.images).set({
-      Authorization: `Bearer invalid`,
-    });
-
-    expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
-    expect(response.body.message).toBe(UNAUTHORIZED.TOKEN_IS_INVALID.message);
-  }, 30000);
-
-  it("should be throw error if user is not active", async () => {
-    // arrange
-    const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
-      quantity: 1,
-    });
-
-    // act
-    const { body: user } = await request(app)
-      .post(paths.v1.users_clients)
-      .send({
-        name,
-        last_name,
-        cpf,
-        rg,
+      const {
+        body: { token },
+      } = await request(app).post(paths.v1.users_sessions).send({
         email,
         password: "102030",
-        password_confirm: "102030",
-        birth_date: new Date(1995, 11, 17),
       });
 
-    const {
-      body: { token: token_admin },
-    } = await request(app).post(paths.v1.users_sessions).send({
-      email: "admin@cherry-go.love",
-      password: "102030",
-    });
+      const response = await request(app)
+        .post(paths.v1.images)
+        .set({
+          Authorization: `Bearer ${token}`,
+        });
 
-    await request(app)
-      .patch(paths.v1.users_inside)
-      .set({
-        Authorization: `Bearer ${token_admin}`,
-      })
-      .send({
-        id: user.id,
+      expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
+      expect(response.body.message).toBe(FORBIDDEN.USER_IS_NOT_ACTIVE.message);
+    }, 30000);
+
+    it("should be throw error if user is not type INSIDE", async () => {
+      // arrange
+      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+        quantity: 1,
       });
 
-    const {
-      body: { token },
-    } = await request(app).post(paths.v1.users_sessions).send({
-      email,
-      password: "102030",
-    });
+      // act
+      await request(app)
+        .post(paths.v1.users_clients)
+        .send({
+          name,
+          last_name,
+          cpf,
+          rg,
+          email,
+          password: "102030",
+          password_confirm: "102030",
+          birth_date: new Date(1995, 11, 17),
+        });
 
-    const response = await request(app)
-      .post(paths.v1.images)
-      .set({
-        Authorization: `Bearer ${token}`,
+      const {
+        body: { token: token_admin },
+      } = await request(app).post(paths.v1.users_sessions).send({
+        email: "admin@cherry-go.love",
+        password: "102030",
       });
 
-    expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
-    expect(response.body.message).toBe(FORBIDDEN.USER_IS_NOT_ACTIVE.message);
-  }, 30000);
+      await request(app)
+        .patch(paths.v1.users_active)
+        .set({
+          Authorization: `Bearer ${token_admin}`,
+        })
+        .send({
+          cpf,
+        });
+
+      const {
+        body: { token },
+      } = await request(app).post(paths.v1.users_sessions).send({
+        email,
+        password: "102030",
+      });
+
+      const response = await request(app)
+        .post(paths.v1.images)
+        .set({
+          Authorization: `Bearer ${token}`,
+        });
+
+      expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
+      expect(response.body.message).toBe(
+        FORBIDDEN.INSIDE_IS_NOT_ACTIVE.message
+      );
+    }, 30000);
+  });
 });

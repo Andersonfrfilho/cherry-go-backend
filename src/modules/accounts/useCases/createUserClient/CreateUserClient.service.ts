@@ -16,7 +16,7 @@ import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";
 
 @injectable()
-class CreateUserClientService {
+export class CreateUserClientService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
@@ -96,4 +96,3 @@ class CreateUserClientService {
     return classToClass(user);
   }
 }
-export { CreateUserClientService };

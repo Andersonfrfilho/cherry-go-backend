@@ -15,12 +15,12 @@ export const NOT_FOUND = {
     message: "Service this provider does not exists!",
     status_code,
   },
-  USER_NOT_EXIST: {
-    message: "User does not exist!",
-    status_code,
-  },
   PROVIDER_NOT_EXIST: {
     message: "Provider does not exist!",
+    status_code,
+  },
+  REFRESH_TOKEN_DOES_NOT_EXIST: {
+    message: "Refresh Token does not exists!",
     status_code,
   },
 };

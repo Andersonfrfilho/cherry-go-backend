@@ -9,7 +9,6 @@ class RefreshTokenController {
       request.body.token ||
       request.headers["x-access-tokens"] ||
       request.query.token;
-
     const refreshTokenService = container.resolve(RefreshTokenService);
     const refresh_token = await refreshTokenService.execute(token);
 

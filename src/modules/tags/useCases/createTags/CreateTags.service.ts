@@ -1,3 +1,4 @@
+import { classToClass } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { CreateTagsServiceDTO } from "@modules/tags/dtos";
@@ -7,7 +8,7 @@ import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";
 
 @injectable()
-class CreateTagsService {
+export class CreateTagsService {
   constructor(
     @inject("TagsRepository")
     private tagsRepository: TagsRepositoryInterface
@@ -31,7 +32,6 @@ class CreateTagsService {
       image_id,
     });
 
-    return tag_saved;
+    return classToClass(tag_saved);
   }
 }
-export { CreateTagsService };

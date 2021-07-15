@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -11,18 +12,17 @@ import {
 } from "typeorm";
 
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
+import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
+import { ProviderAvailabilityDay } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityDay";
+import { ProviderAvailabilityTime } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityTime";
+import { ProviderPaymentType } from "@modules/accounts/infra/typeorm/entities/ProviderPaymentType";
 import { ProviderTransportType } from "@modules/accounts/infra/typeorm/entities/ProviderTransportTypes";
+import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
+import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
-
-import { ProviderAddress } from "./ProviderAddress";
-import { ProviderAvailabilityDay } from "./ProviderAvailabilityDay";
-import { ProviderAvailabilityTime } from "./ProviderAvailabilityTime";
-import { ProviderPaymentType } from "./ProviderPaymentType";
-import { Service } from "./Services";
-import { UserTermsAccept } from "./UserTermsAccept";
 
 @Entity("users")
 class Provider {
@@ -144,12 +144,15 @@ class Provider {
   payment_type: ProviderPaymentType[];
 
   @CreateDateColumn()
+  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at?: Date;
 }
 

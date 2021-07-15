@@ -15,6 +15,7 @@ import { config } from "@config/environment";
 import { DocumentUserImage } from "@modules/accounts/infra/typeorm/entities/DocumentUserImage";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UserProfileImage } from "@modules/accounts/infra/typeorm/entities/UserProfileImage";
+import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 @Entity("images")
 class Image {
@@ -40,6 +41,9 @@ class Image {
     inverseJoinColumns: [{ name: "user_id", referencedColumnName: "id" }],
   })
   user_profile?: User[];
+
+  @OneToMany(() => Tag, (tag) => tag.image)
+  tags?: Tag[];
 
   @CreateDateColumn()
   @Exclude()
