@@ -181,6 +181,8 @@ export class UsersRepository implements UsersRepositoryInterface {
     rg,
     birth_date,
     password,
+    gender,
+    details,
     active,
   }: CreateUserClientRepositoryDTO): Promise<User> {
     const type = await this.repository_users_types.findOne({
@@ -193,6 +195,8 @@ export class UsersRepository implements UsersRepositoryInterface {
       email,
       cpf,
       rg,
+      gender,
+      details,
       birth_date,
       password_hash: password,
       active,

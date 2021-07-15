@@ -48,6 +48,15 @@ export default class CreateUsers1617465827102 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: "gender",
+            type: "varchar",
+          },
+          {
+            name: "details",
+            type: "jsonb",
+            isNullable: true,
+          },
+          {
             name: "birth_date",
             type: "timestamp",
             isNullable: false,

@@ -36,6 +36,8 @@ export class CreateUserClientService {
     rg,
     email,
     password,
+    gender,
+    details,
     birth_date,
   }: CreateUserClientServiceDTO): Promise<User> {
     const userAlreadyExists = await this.usersRepository.findUserByEmailCpfRg({
@@ -56,6 +58,8 @@ export class CreateUserClientService {
       cpf,
       rg,
       email,
+      gender,
+      details,
       password: password_hash,
       birth_date,
       active: false,

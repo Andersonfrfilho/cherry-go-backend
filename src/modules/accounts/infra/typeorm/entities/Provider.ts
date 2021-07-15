@@ -53,6 +53,12 @@ class Provider {
   @Column()
   active: boolean;
 
+  @Column()
+  gender: string;
+
+  @Column({ type: "jsonb" })
+  details?: any;
+
   @ManyToMany(() => Phone, { cascade: true, eager: true })
   @JoinTable({
     name: "users_phones",
