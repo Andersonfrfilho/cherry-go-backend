@@ -34,7 +34,9 @@ describe("Authenticated routes", () => {
   describe("Sessions", () => {
     it("should be able to create a authenticate", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -49,6 +51,7 @@ describe("Authenticated routes", () => {
           email,
           password: "102030",
           password_confirm: "102030",
+          gender,
           birth_date: new Date(1995, 11, 17),
         });
 
@@ -84,6 +87,7 @@ describe("Authenticated routes", () => {
             rg: expect.any(String) && rg,
             email: expect.any(String) && email,
             active: expect.any(Boolean) && true,
+            gender: expect.any(String) && gender,
             phones: expect.arrayContaining([]),
             addresses: expect.arrayContaining([]),
             image_profile: expect.arrayContaining([]),
@@ -120,7 +124,9 @@ describe("Authenticated routes", () => {
 
     it("should be throw error if password not match", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -135,6 +141,7 @@ describe("Authenticated routes", () => {
           email,
           password: "102030",
           password_confirm: "102030",
+          gender,
           birth_date: new Date(1995, 11, 17),
         });
 
@@ -169,7 +176,9 @@ describe("Authenticated routes", () => {
   describe("Refresh Token", () => {
     it("should be able to create a refresh-token with body", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -184,6 +193,7 @@ describe("Authenticated routes", () => {
           email,
           password: "102030",
           password_confirm: "102030",
+          gender,
           birth_date: new Date(1995, 11, 17),
         });
 
@@ -227,7 +237,9 @@ describe("Authenticated routes", () => {
 
     it("should be able to create a refresh-token with x-access-tokens", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -242,6 +254,7 @@ describe("Authenticated routes", () => {
           email,
           password: "102030",
           password_confirm: "102030",
+          gender,
           birth_date: new Date(1995, 11, 17),
         });
 
@@ -285,7 +298,9 @@ describe("Authenticated routes", () => {
 
     it("should be able to create a refresh-token with query token", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -300,6 +315,7 @@ describe("Authenticated routes", () => {
           email,
           password: "102030",
           password_confirm: "102030",
+          gender,
           birth_date: new Date(1995, 11, 17),
         });
 
@@ -343,7 +359,9 @@ describe("Authenticated routes", () => {
 
     it("should be throw erro is refresh_token not exist", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -358,6 +376,7 @@ describe("Authenticated routes", () => {
           email,
           password: "102030",
           password_confirm: "102030",
+          gender,
           birth_date: new Date(1995, 11, 17),
         });
 

@@ -49,7 +49,9 @@ describe("Create tags route", () => {
   describe("Tags Routes", () => {
     it("should be able to create a new image", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
       const [tag] = tagsFactory.generate({ quantity: 1 });
@@ -61,6 +63,7 @@ describe("Create tags route", () => {
           last_name,
           cpf,
           rg,
+          gender,
           email,
           password: "102030",
           password_confirm: "102030",
@@ -142,9 +145,67 @@ describe("Create tags route", () => {
       expect(response.body.message).toBe(UNAUTHORIZED.TOKEN_IS_INVALID.message);
     }, 30000);
 
+    it("should be throw error if user is not active", async () => {
+      // arrange
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
+        quantity: 1,
+      });
+
+      // act
+      const { body: user } = await request(app)
+        .post(paths.v1.users_clients)
+        .send({
+          name,
+          last_name,
+          cpf,
+          rg,
+          email,
+          password: "102030",
+          password_confirm: "102030",
+          gender,
+          birth_date: new Date(1995, 11, 17),
+        });
+
+      const {
+        body: { token: token_admin },
+      } = await request(app).post(paths.v1.users_sessions).send({
+        email: "admin@cherry-go.love",
+        password: "102030",
+      });
+
+      await request(app)
+        .patch(paths.v1.users_inside)
+        .set({
+          Authorization: `Bearer ${token_admin}`,
+        })
+        .send({
+          id: user.id,
+        });
+
+      const {
+        body: { token },
+      } = await request(app).post(paths.v1.users_sessions).send({
+        email,
+        password: "102030",
+      });
+
+      const response = await request(app)
+        .post(paths.v1.tags)
+        .set({
+          Authorization: `Bearer ${token}`,
+        });
+
+      expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
+      expect(response.body.message).toBe(FORBIDDEN.USER_IS_NOT_ACTIVE.message);
+    }, 30000);
+
     it("should be throw error if user is not type INSIDE", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -158,6 +219,7 @@ describe("Create tags route", () => {
           cpf,
           rg,
           email,
+          gender,
           password: "102030",
           password_confirm: "102030",
           birth_date: new Date(1995, 11, 17),
@@ -206,7 +268,9 @@ describe("Create tags route", () => {
 
     it("should be throw error if tag is already exist", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
       const [tag] = tagsFactory.generate({ quantity: 1 });
@@ -217,6 +281,7 @@ describe("Create tags route", () => {
           name,
           last_name,
           cpf,
+          gender,
           rg,
           email,
           password: "102030",

@@ -35,7 +35,9 @@ describe("Create image route", () => {
   describe("POST", () => {
     it("should be able to create a new image", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -50,6 +52,7 @@ describe("Create image route", () => {
           email,
           password: "102030",
           password_confirm: "102030",
+          gender,
           birth_date: new Date(1995, 11, 17),
         });
 
@@ -134,7 +137,9 @@ describe("Create image route", () => {
 
     it("should be throw error if user is not active", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -149,6 +154,7 @@ describe("Create image route", () => {
           email,
           password: "102030",
           password_confirm: "102030",
+          gender,
           birth_date: new Date(1995, 11, 17),
         });
 
@@ -187,7 +193,9 @@ describe("Create image route", () => {
 
     it("should be throw error if user is not type INSIDE", async () => {
       // arrange
-      const [{ name, last_name, cpf, rg, email }] = usersFactory.generate({
+      const [
+        { name, last_name, cpf, rg, email, gender },
+      ] = usersFactory.generate({
         quantity: 1,
       });
 
@@ -202,6 +210,7 @@ describe("Create image route", () => {
           email,
           password: "102030",
           password_confirm: "102030",
+          gender,
           birth_date: new Date(1995, 11, 17),
         });
 
