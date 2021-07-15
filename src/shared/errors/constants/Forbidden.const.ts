@@ -23,4 +23,8 @@ export const FORBIDDEN = {
     message: "admin is not active!",
     status_code,
   },
+  PHONE_BELONGS_TO_ANOTHER_USER: {
+    message: "Phone belongs to another user",
+    status_code,
+  },
 };
