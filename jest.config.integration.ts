@@ -25,7 +25,7 @@ export default {
     "<rootDir>/src/modules/**/repositories/*.ts",
     "!<rootDir>/src/modules/**/repositories/*.mock.ts",
     "<rootDir>/src/modules/**/infra/typeorm/**/*.ts",
-    "<rootDir>/src/modules/**/useCases/**/*controllers.ts",
+    "<rootDir>/src/modules/**/useCases/**/*controller.ts",
     "<rootDir>/src/modules/**/useCases/**/*schema.ts",
     "<rootDir>/src/modules/**/useCases/repositories/*.ts",
     "<rootDir>/src/modules/**/useCases/**/*service.ts",
