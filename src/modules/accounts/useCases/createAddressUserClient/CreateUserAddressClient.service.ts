@@ -25,7 +25,7 @@ export class CreateUserAddressClientService {
     const user_exist = await this.usersRepository.findById(user_id);
 
     if (!user_exist) {
-      throw new AppError(NOT_FOUND.USER_NOT_EXIST);
+      throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
     const user = await this.usersRepository.createUserAddress({
