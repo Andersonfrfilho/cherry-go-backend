@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
 import { config } from "@config/environment";
+import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
 import {
   CreateUserPhonesClientServiceRequestDTO,
   CreateUserPhonesClientServiceResponseDTO,
@@ -15,6 +16,7 @@ import { HashProviderInterface } from "@shared/container/providers/HashProvider/
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/Queue.provider.interface";
 import { SendSmsDTO } from "@shared/container/providers/SmsProvider/dtos/SendSms.dto";
+import { ENVIRONMENT_TYPE_ENUMS } from "@shared/enums/EnviromentType.enum";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN } from "@shared/errors/constants";
 
@@ -59,7 +61,11 @@ class CreateUserPhonesClientService {
       ddd,
     });
 
-    const code = faker.phone.phoneNumber("####");
+    const code = Object.values(ENVIRONMENT_TYPE_ENUMS).includes(
+      process.env.ENVIRONMENT as ENVIRONMENT_TYPE_ENUMS
+    )
+      ? number.slice(CODE_STAGING_TEST)
+      : faker.phone.phoneNumber("####");
 
     const code_hash = await this.hashProvider.generateHash(code);
 
