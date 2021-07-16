@@ -55,14 +55,12 @@ describe("Create image route", () => {
           gender,
           birth_date: new Date(1995, 11, 17),
         });
-
       const {
         body: { token: token_admin },
       } = await request(app).post(paths.v1.users_sessions).send({
         email: "admin@cherry-go.love",
         password: "102030",
       });
-
       await request(app)
         .patch(paths.v1.users_active)
         .set({
@@ -71,7 +69,6 @@ describe("Create image route", () => {
         .send({
           cpf,
         });
-
       await request(app)
         .patch(paths.v1.users_inside)
         .set({
@@ -80,14 +77,12 @@ describe("Create image route", () => {
         .send({
           id: user.id,
         });
-
       const {
         body: { token },
       } = await request(app).post(paths.v1.users_sessions).send({
         email,
         password: "102030",
       });
-
       const path_file = path.resolve(
         __dirname,
         "..",
@@ -99,14 +94,12 @@ describe("Create image route", () => {
         "..",
         "avatar.jpg"
       );
-
       const response = await request(app)
         .post(paths.v1.images)
         .set({
           Authorization: `Bearer ${token}`,
         })
         .attach("image", path_file);
-
       expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.OK);
       expect(response.body).toEqual(
         expect.objectContaining({

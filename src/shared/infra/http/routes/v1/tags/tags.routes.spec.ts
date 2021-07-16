@@ -47,7 +47,7 @@ describe("Create tags route", () => {
     await connection.close();
   }, 30000);
   describe("Tags Routes", () => {
-    it("should be able to create a new image", async () => {
+    it("should be able to create a new tags", async () => {
       // arrange
       const [
         { name, last_name, cpf, rg, email, gender },

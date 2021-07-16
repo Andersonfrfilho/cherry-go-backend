@@ -26,7 +26,7 @@ export class CreateAddressUserProviderService {
     const provider_exist = await this.providersRepository.findById(provider_id);
 
     if (!provider_exist) {
-      throw new AppError(NOT_FOUND.USER_NOT_EXIST);
+      throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
     await this.providersRepository.createAddressProviders({

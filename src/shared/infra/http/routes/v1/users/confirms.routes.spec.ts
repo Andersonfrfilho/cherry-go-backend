@@ -7,6 +7,7 @@ import { orm_test } from "@root/ormconfig.test";
 import {
   FORBIDDEN,
   METHOD_NOT_ALLOWED,
+  NOT_FOUND,
   UNAUTHORIZED,
   UNPROCESSABLE_ENTITY,
 } from "@shared/errors/constants";
@@ -219,6 +220,7 @@ describe("Confirm routes", () => {
       it("should throw error to create a confirm phone without token", async () => {
         // arrange
         // act
+
         const response = await request(app).patch(paths.v1.users_confirm_phone);
 
         expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
@@ -577,10 +579,10 @@ describe("Confirm routes", () => {
         expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT);
       }, 30000);
 
-      it("should throw error to create a confirm phone without token", async () => {
+      it("should throw error to create a confirm term without token", async () => {
         // arrange
         // act
-        const response = await request(app).patch(paths.v1.users_confirm_term);
+        const response = await request(app).post(paths.v1.users_confirm_term);
 
         expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
         expect(response.body.message).toBe(
@@ -592,7 +594,7 @@ describe("Confirm routes", () => {
         // arrange
         // act
         const response = await request(app)
-          .patch(paths.v1.users_confirm_term)
+          .post(paths.v1.users_confirm_term)
           .set({
             Authorization: `Bearer invalid`,
           });
@@ -634,7 +636,7 @@ describe("Confirm routes", () => {
         });
 
         const response = await request(app)
-          .patch(paths.v1.users_confirm_term)
+          .post(paths.v1.users_confirm_term)
           .set({
             Authorization: `Bearer ${token}`,
           });
@@ -642,6 +644,77 @@ describe("Confirm routes", () => {
         expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
         expect(response.body.message).toBe(
           FORBIDDEN.USER_IS_NOT_ACTIVE.message
+        );
+      }, 30000);
+
+      it("should be throw error if user is not exist", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+
+        // act
+        const { body: user } = await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token: token_admin },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email: "admin@cherry-go.love",
+          password: "102030",
+        });
+
+        await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token_admin}`,
+          })
+          .send({
+            cpf,
+          });
+
+        const {
+          body: { token },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email,
+          password: "102030",
+        });
+
+        await connection
+          .getRepository("users_types_users")
+          .createQueryBuilder()
+          .delete()
+          .from("users_types_users")
+          .where("user_id = :id", { id: user.id })
+          .execute();
+
+        await connection.getRepository("users").delete(user.id);
+
+        const response = await request(app)
+          .post(paths.v1.users_confirm_term)
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+          .send({
+            accept: true,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.NOT_FOUND);
+        expect(response.body.message).toBe(
+          NOT_FOUND.USER_DOES_NOT_EXIST.message
         );
       }, 30000);
     });
