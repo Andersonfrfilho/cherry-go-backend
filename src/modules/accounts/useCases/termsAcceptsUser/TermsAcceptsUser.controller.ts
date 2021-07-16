@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { TermsAcceptUserService } from "@modules/accounts/useCases/termsAcceptsUser/termsAcceptsUser.service";
+import { TermsAcceptUserService } from "@modules/accounts/useCases/termsAcceptsUser/TermsAcceptsUser.service";
 
 class TermsAcceptUserController {
   async handle(request: Request, response: Response): Promise<Response> {
