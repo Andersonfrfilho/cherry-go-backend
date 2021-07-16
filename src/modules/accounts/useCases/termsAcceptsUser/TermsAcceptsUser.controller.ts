@@ -15,7 +15,7 @@ class TermsAcceptUserController {
       user_id: id,
     });
 
-    return response.status(204).send();
+    return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();
   }
 }
 export { TermsAcceptUserController };

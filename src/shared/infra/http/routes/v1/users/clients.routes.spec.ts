@@ -15,6 +15,8 @@ import {
   AddressesFactory,
   PhonesFactory,
   UsersFactory,
+  ImagesFactory,
+  TagsFactory,
 } from "@shared/infra/typeorm/factories";
 
 let connection: Connection;
@@ -23,16 +25,17 @@ describe("Client routes", () => {
   const usersFactory = new UsersFactory();
   const addressesFactory = new AddressesFactory();
   const phonesFactory = new PhonesFactory();
+  const imagesFactory = new ImagesFactory();
+  const tagsFactory = new TagsFactory();
 
   const paths = {
     v1: {
       users_clients: "/v1/users/clients",
       users_sessions: "/v1/users/sessions",
-      users_active: "/v1/users/clients/active",
+      users_clients_active: "/v1/users/clients/active",
       users_clients_addresses: "/v1/users/clients/addresses",
       users_clients_phones: "/v1/users/clients/phones",
       users_clients_tags: "/v1/users/clients/tags",
-      users_clients_active: "/v1/users/clients/active",
     },
   };
   beforeAll(async () => {
@@ -187,7 +190,7 @@ describe("Client routes", () => {
         });
 
         await request(app)
-          .patch(paths.v1.users_active)
+          .patch(paths.v1.users_clients_active)
           .set({
             Authorization: `Bearer ${token_admin}`,
           })
@@ -371,7 +374,7 @@ describe("Client routes", () => {
         });
 
         await request(app)
-          .patch(paths.v1.users_active)
+          .patch(paths.v1.users_clients_active)
           .set({
             Authorization: `Bearer ${token_admin}`,
           })
@@ -468,7 +471,7 @@ describe("Client routes", () => {
         });
 
         await request(app)
-          .patch(paths.v1.users_active)
+          .patch(paths.v1.users_clients_active)
           .set({
             Authorization: `Bearer ${token_admin}`,
           })
@@ -634,7 +637,7 @@ describe("Client routes", () => {
         });
 
         await request(app)
-          .patch(paths.v1.users_active)
+          .patch(paths.v1.users_clients_active)
           .set({
             Authorization: `Bearer ${token_admin}`,
           })
@@ -677,6 +680,657 @@ describe("Client routes", () => {
         expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
         expect(response.body.message).toEqual(
           FORBIDDEN.PHONE_BELONGS_TO_ANOTHER_USER.message
+        );
+      }, 30000);
+    });
+
+    describe("Create tags for client /tags", () => {
+      it("should be able to create a tags for user", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+        const [image_factory] = imagesFactory.generate({ quantity: 1 });
+        const [tag_factory] = tagsFactory.generate({ quantity: 1 });
+        const image = await connection
+          .getRepository("images")
+          .save(image_factory);
+
+        const tag = await connection
+          .getRepository("tags")
+          .save({ ...tag_factory, image_id: image.id });
+
+        // act
+        await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token: token_admin },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email: "admin@cherry-go.love",
+          password: "102030",
+        });
+
+        await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token_admin}`,
+          })
+          .send({
+            cpf,
+          });
+
+        const {
+          body: { token },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email,
+          password: "102030",
+        });
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_tags)
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+          .send({
+            tags: [tag],
+          });
+
+        expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT);
+      }, 30000);
+
+      it("should throw error to create a new tags without token", async () => {
+        // arrange
+        // act
+        const response = await request(app).patch(paths.v1.users_clients_tags);
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+        expect(response.body.message).toBe(
+          UNAUTHORIZED.TOKEN_IS_MISSING.message
+        );
+      }, 30000);
+
+      it("should throw error to create a new tags with invalid token", async () => {
+        // arrange
+        // act
+        const response = await request(app)
+          .patch(paths.v1.users_clients_tags)
+          .set({
+            Authorization: `Bearer invalid`,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+        expect(response.body.message).toBe(
+          UNAUTHORIZED.TOKEN_IS_INVALID.message
+        );
+      }, 30000);
+
+      it("should be throw error if user is not active", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+
+        // act
+        await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email,
+          password: "102030",
+        });
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_tags)
+          .set({
+            Authorization: `Bearer ${token}`,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
+        expect(response.body.message).toBe(
+          FORBIDDEN.USER_IS_NOT_ACTIVE.message
+        );
+      }, 30000);
+
+      it("should be able to create a user not already exist exist", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+
+        // act
+        const { body: user } = await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token: token_admin },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email: "admin@cherry-go.love",
+          password: "102030",
+        });
+
+        await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token_admin}`,
+          })
+          .send({
+            cpf,
+          });
+
+        const {
+          body: { token },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email,
+          password: "102030",
+        });
+
+        const [{ country_code, ddd, number }] = phonesFactory.generate({
+          quantity: 1,
+        });
+
+        await request(app)
+          .patch(paths.v1.users_clients_phones)
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+          .send({
+            country_code,
+            ddd,
+            number,
+          });
+
+        const tags = tagsFactory.generate({ quantity: 1, id: "true" });
+
+        await connection
+          .getRepository("users_types_users")
+          .createQueryBuilder()
+          .delete()
+          .from("users_types_users")
+          .where("user_id = :id", { id: user.id })
+          .execute();
+
+        await connection.getRepository("users").delete(user.id);
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_tags)
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+          .send({
+            tags,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.NOT_FOUND);
+        expect(response.body.message).toEqual(
+          NOT_FOUND.USER_DOES_NOT_EXIST.message
+        );
+      }, 30000);
+    });
+
+    describe("Create tags for client /tags", () => {
+      it("should be able to create a tags for user", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+        const [image_factory] = imagesFactory.generate({ quantity: 1 });
+        const [tag_factory] = tagsFactory.generate({ quantity: 1 });
+        const image = await connection
+          .getRepository("images")
+          .save(image_factory);
+
+        const tag = await connection
+          .getRepository("tags")
+          .save({ ...tag_factory, image_id: image.id });
+
+        // act
+        await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token: token_admin },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email: "admin@cherry-go.love",
+          password: "102030",
+        });
+
+        await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token_admin}`,
+          })
+          .send({
+            cpf,
+          });
+
+        const {
+          body: { token },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email,
+          password: "102030",
+        });
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_tags)
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+          .send({
+            tags: [tag],
+          });
+
+        expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT);
+      }, 30000);
+
+      it("should throw error to create a new tags without token", async () => {
+        // arrange
+        // act
+        const response = await request(app).patch(paths.v1.users_clients_tags);
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+        expect(response.body.message).toBe(
+          UNAUTHORIZED.TOKEN_IS_MISSING.message
+        );
+      }, 30000);
+
+      it("should throw error to create a new tags with invalid token", async () => {
+        // arrange
+        // act
+        const response = await request(app)
+          .patch(paths.v1.users_clients_tags)
+          .set({
+            Authorization: `Bearer invalid`,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+        expect(response.body.message).toBe(
+          UNAUTHORIZED.TOKEN_IS_INVALID.message
+        );
+      }, 30000);
+
+      it("should be throw error if user is not active", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+
+        // act
+        await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email,
+          password: "102030",
+        });
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_tags)
+          .set({
+            Authorization: `Bearer ${token}`,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
+        expect(response.body.message).toBe(
+          FORBIDDEN.USER_IS_NOT_ACTIVE.message
+        );
+      }, 30000);
+
+      it("should be able to create a user not already exist exist", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+
+        // act
+        const { body: user } = await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token: token_admin },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email: "admin@cherry-go.love",
+          password: "102030",
+        });
+
+        await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token_admin}`,
+          })
+          .send({
+            cpf,
+          });
+
+        const {
+          body: { token },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email,
+          password: "102030",
+        });
+
+        const [{ country_code, ddd, number }] = phonesFactory.generate({
+          quantity: 1,
+        });
+
+        await request(app)
+          .patch(paths.v1.users_clients_phones)
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+          .send({
+            country_code,
+            ddd,
+            number,
+          });
+
+        const tags = tagsFactory.generate({ quantity: 1, id: "true" });
+
+        await connection
+          .getRepository("users_types_users")
+          .createQueryBuilder()
+          .delete()
+          .from("users_types_users")
+          .where("user_id = :id", { id: user.id })
+          .execute();
+
+        await connection.getRepository("users").delete(user.id);
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_tags)
+          .set({
+            Authorization: `Bearer ${token}`,
+          })
+          .send({
+            tags,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.NOT_FOUND);
+        expect(response.body.message).toEqual(
+          NOT_FOUND.USER_DOES_NOT_EXIST.message
+        );
+      }, 30000);
+    });
+
+    describe("Active user for client /active", () => {
+      it("should be able to active a user client for user", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+
+        // act
+        await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token: token_admin },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email: "admin@cherry-go.love",
+          password: "102030",
+        });
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token_admin}`,
+          })
+          .send({
+            cpf,
+          });
+
+        expect(response.status).toBe(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT);
+      }, 30000);
+
+      it("should throw error to active an new user client without token", async () => {
+        // arrange
+        // act
+        const response = await request(app).patch(
+          paths.v1.users_clients_active
+        );
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+        expect(response.body.message).toBe(
+          UNAUTHORIZED.TOKEN_IS_MISSING.message
+        );
+      }, 30000);
+
+      it("should throw error to active an new user client with invalid token", async () => {
+        // arrange
+        // act
+        const response = await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer invalid`,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
+        expect(response.body.message).toBe(
+          UNAUTHORIZED.TOKEN_IS_INVALID.message
+        );
+      }, 30000);
+
+      it("should be throw error if user is not active", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+
+        // act
+        await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email,
+          password: "102030",
+        });
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token}`,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
+        expect(response.body.message).toBe(
+          FORBIDDEN.USER_IS_NOT_ACTIVE.message
+        );
+      }, 30000);
+
+      it("should be throw error if user is type diff ADMIN or INSIDE active", async () => {
+        // arrange
+        const [
+          { name, last_name, cpf, rg, email, gender },
+        ] = usersFactory.generate({
+          quantity: 1,
+        });
+
+        // act
+        await request(app)
+          .post(paths.v1.users_clients)
+          .send({
+            name,
+            last_name,
+            cpf,
+            rg,
+            email,
+            password: "102030",
+            password_confirm: "102030",
+            gender,
+            birth_date: new Date(1995, 11, 17),
+          });
+
+        const {
+          body: { token: token_admin },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email: "admin@cherry-go.love",
+          password: "102030",
+        });
+
+        await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token_admin}`,
+          })
+          .send({
+            cpf,
+          });
+
+        const {
+          body: { token },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email,
+          password: "102030",
+        });
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token}`,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.FORBIDDEN);
+        expect(response.body.message).toBe(
+          FORBIDDEN.INSIDE_IS_NOT_ACTIVE.message
+        );
+      }, 30000);
+
+      it("should be able active an new user client not exist exist", async () => {
+        // arrange
+        const [{ cpf }] = usersFactory.generate({
+          quantity: 1,
+        });
+
+        // act
+        const {
+          body: { token: token_admin },
+        } = await request(app).post(paths.v1.users_sessions).send({
+          email: "admin@cherry-go.love",
+          password: "102030",
+        });
+
+        const response = await request(app)
+          .patch(paths.v1.users_clients_active)
+          .set({
+            Authorization: `Bearer ${token_admin}`,
+          })
+          .send({
+            cpf,
+          });
+
+        expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.NOT_FOUND);
+        expect(response.body.message).toEqual(
+          NOT_FOUND.USER_DOES_NOT_EXIST.message
         );
       }, 30000);
     });

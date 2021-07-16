@@ -13,7 +13,7 @@ import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 @Entity("clients_tags")
-export class TagClient {
+export class ClientTag {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 

@@ -2,7 +2,7 @@ import { Response, Request } from "express";
 import { container } from "tsyringe";
 
 import { ActiveAccountService } from "@modules/accounts/useCases/activeAccount/ActiveAccount.service";
-import { HttpSuccessCodeEnum } from "@shared/infra/http/enums";
+import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums";
 
 class ActiveUserClientController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -16,7 +16,7 @@ class ActiveUserClientController {
       email,
     });
 
-    return response.status(HttpSuccessCodeEnum.NO_CONTENT).send();
+    return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();
   }
 }
 export { ActiveUserClientController };

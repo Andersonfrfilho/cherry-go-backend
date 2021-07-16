@@ -49,8 +49,8 @@ clientsRoutes.patch(
 
 clientsRoutes.patch(
   "/active",
-  schemaActiveUser,
   ensureAuthenticatedInside,
+  schemaActiveUser,
   activeUserClientController.handle
 );
 

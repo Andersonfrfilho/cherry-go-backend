@@ -23,7 +23,7 @@ class ActiveAccountService {
     });
 
     if (!user) {
-      throw new AppError(NOT_FOUND.USER_NOT_EXIST);
+      throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
     await this.usersRepository.updateActiveUser({
