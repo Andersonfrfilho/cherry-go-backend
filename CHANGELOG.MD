@@ -13,7 +13,7 @@ Database diagram
 
 https://dbdiagram.io/d/604a358bfcdcb6230b23b25c
 
-//arrumar os seeds
+//arrumar os seed
 //fazer os testes
 //fazer os testes de integração
 //fazer a documentação

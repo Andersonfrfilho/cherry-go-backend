@@ -3,9 +3,9 @@ import faker, { phone } from "faker";
 
 import auth from "@config/auth";
 import { config } from "@config/environment";
-import { phonesRepositoryMock } from "@modules/accounts/repositories/mocksPhones.repository.interfacemock";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
+import { phonesRepositoryMock } from "@modules/accounts/repositories/mocksPhones.repository.interfacemock";
 import { CreateUserPhonesClientService } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhonesClient.service";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
 import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/Hash.provider.mock";
@@ -189,11 +189,7 @@ describe("CreateUserPhonesClientService", () => {
         number,
         ddd,
       })
-    ).rejects.toEqual(
-      new AppError({
-        message: "Phone belongs to another user",
-      })
-    );
+    ).rejects.toEqual(new AppError(FORBIDDEN.PHONE_BELONGS_TO_ANOTHER_USER));
     expect(phonesRepositoryMock.findPhoneUser).toHaveBeenCalledWith({
       ddd,
       country_code,

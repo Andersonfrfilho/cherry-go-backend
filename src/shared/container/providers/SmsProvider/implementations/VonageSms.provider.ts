@@ -18,9 +18,6 @@ class VonageSmsProvider implements SmsProviderInterface {
 
   async sendSms({ from, to, text }: SendSmsDTO): Promise<void> {
     const vonage = this.client;
-    // const from = "Vonage APIs";
-    // const to_from = "5516993056772";
-    // const text = "A text message sent using the Vonage SMS API";
     await new Promise((resolve, reject) => {
       vonage.message.sendSms(from, to, text, {}, (err, response) => {
         if (err) {

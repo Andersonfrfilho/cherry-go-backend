@@ -6,5 +6,7 @@ export interface CreateUserClientRepositoryDTO {
   email: string;
   password: string;
   birth_date: Date;
+  gender: string;
+  details?: any;
   active?: boolean;
 }

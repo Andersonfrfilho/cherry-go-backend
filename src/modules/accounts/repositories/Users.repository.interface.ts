@@ -3,15 +3,14 @@ import {
   CreateUserAddressClientRepositoryDTO,
   CreateUserPhonesClientRepositoryDTO,
   UpdateActiveUserRepositoryDTO,
-  CreateTagsUsersRepositoryDTO,
+  CreateTagsUsersClientRepositoryDTO,
   TermsAcceptUserRepositoryDTO,
   ProviderTypeForUserRepositoryDTO,
   FindUserEmailCpfRgRepositoryDTO,
   UpdatePasswordUserRepositorySTO,
+  InsideTypeForUserRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-
-import { InsideTypeForUserRepositoryDTO } from "../dtos/repositories/InsideTypeForUserRepository.dto";
 
 export interface UsersRepositoryInterface {
   create(data: CreateUserClientRepositoryDTO): Promise<User>;
@@ -41,10 +40,10 @@ export interface UsersRepositoryInterface {
     active,
   }: UpdateActiveUserRepositoryDTO): Promise<void>;
   acceptTerms({ user_id, accept }: TermsAcceptUserRepositoryDTO): Promise<void>;
-  createTagsUsers({
-    user_id,
+  createTagsUsersClient({
+    client_id,
     tags,
-  }: CreateTagsUsersRepositoryDTO): Promise<void>;
+  }: CreateTagsUsersClientRepositoryDTO): Promise<void>;
   findByIdWithProfileImage(id: string): Promise<User>;
   providerTypeForUser(data: ProviderTypeForUserRepositoryDTO): Promise<void>;
   insideTypeForUser(data: InsideTypeForUserRepositoryDTO): Promise<void>;

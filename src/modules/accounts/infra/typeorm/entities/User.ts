@@ -48,6 +48,12 @@ class User {
   email: string;
 
   @Column()
+  gender: string;
+
+  @Column({ type: "jsonb" })
+  details?: any;
+
+  @Column()
   @Exclude()
   password_hash: string;
 

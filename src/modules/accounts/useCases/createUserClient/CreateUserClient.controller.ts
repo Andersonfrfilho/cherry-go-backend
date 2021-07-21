@@ -13,6 +13,7 @@ class CreateUserClientController {
       email,
       password_confirm,
       birth_date,
+      gender,
     } = request.body;
 
     const createUserClientService = container.resolve(CreateUserClientService);
@@ -23,6 +24,7 @@ class CreateUserClientController {
       cpf,
       rg,
       email,
+      gender,
       password: password_confirm,
       birth_date,
     });

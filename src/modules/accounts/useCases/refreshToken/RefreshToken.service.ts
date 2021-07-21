@@ -5,7 +5,7 @@ import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/U
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import { FORBIDDEN } from "@shared/errors/constants";
+import { FORBIDDEN, NOT_FOUND } from "@shared/errors/constants";
 
 interface ITokenResponse {
   token: string;
@@ -32,7 +32,7 @@ class RefreshTokenService {
     );
 
     if (!userToken) {
-      throw new AppError(FORBIDDEN.REFRESH_TOKEN_DOES_NOT_EXIST);
+      throw new AppError(NOT_FOUND.REFRESH_TOKEN_DOES_NOT_EXIST);
     }
 
     await this.usersTokensRepository.deleteById(userToken.id);

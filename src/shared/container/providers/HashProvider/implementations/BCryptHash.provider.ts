@@ -7,7 +7,7 @@ export class BCryptHashProvider implements HashProviderInterface {
     return hash(payload, 8);
   }
 
-  public async compareHash(payload: string, hashed: string): Promise<boolean> {
+  public compareHash(payload: string, hashed: string): Promise<boolean> {
     return compare(payload, hashed);
   }
 }

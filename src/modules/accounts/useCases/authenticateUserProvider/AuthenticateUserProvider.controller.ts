@@ -17,7 +17,7 @@ class AuthenticateUserProviderController {
       password,
     });
 
-    return response.json(classToClass(authenticateInfo));
+    return response.json(authenticateInfo);
   }
 }
 export { AuthenticateUserProviderController };

@@ -3,8 +3,11 @@ import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
 import { config } from "@config/environment";
-import { CreateUserPhonesClientServiceDTO } from "@modules/accounts/dtos";
-import { CreateUserPhonesClientServiceResponseDTO } from "@modules/accounts/dtos/services/CreateUserPhonesClientService.dto";
+import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
+import {
+  CreateUserPhonesClientServiceRequestDTO,
+  CreateUserPhonesClientServiceResponseDTO,
+} from "@modules/accounts/dtos";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/Phones.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -13,7 +16,9 @@ import { HashProviderInterface } from "@shared/container/providers/HashProvider/
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/Queue.provider.interface";
 import { SendSmsDTO } from "@shared/container/providers/SmsProvider/dtos/SendSms.dto";
+import { ENVIRONMENT_TYPE_ENUMS } from "@shared/enums/EnviromentType.enum";
 import { AppError } from "@shared/errors/AppError";
+import { FORBIDDEN } from "@shared/errors/constants";
 
 @injectable()
 class CreateUserPhonesClientService {
@@ -38,7 +43,7 @@ class CreateUserPhonesClientService {
     country_code,
     number,
     ddd,
-  }: CreateUserPhonesClientServiceDTO): Promise<CreateUserPhonesClientServiceResponseDTO> {
+  }: CreateUserPhonesClientServiceRequestDTO): Promise<CreateUserPhonesClientServiceResponseDTO> {
     const phone = await this.phonesRepository.findPhoneUser({
       ddd,
       country_code,
@@ -46,9 +51,7 @@ class CreateUserPhonesClientService {
     });
 
     if (phone && phone.users[0].id) {
-      throw new AppError({
-        message: "Phone belongs to another user",
-      });
+      throw new AppError(FORBIDDEN.PHONE_BELONGS_TO_ANOTHER_USER);
     }
 
     const user = await this.usersRepository.createUserPhones({
@@ -58,7 +61,11 @@ class CreateUserPhonesClientService {
       ddd,
     });
 
-    const code = faker.phone.phoneNumber("####");
+    const code = Object.values(ENVIRONMENT_TYPE_ENUMS).includes(
+      process.env.ENVIRONMENT as ENVIRONMENT_TYPE_ENUMS
+    )
+      ? number.slice(CODE_STAGING_TEST)
+      : faker.phone.phoneNumber("####");
 
     const code_hash = await this.hashProvider.generateHash(code);
 

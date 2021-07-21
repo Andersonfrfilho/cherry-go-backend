@@ -1,6 +1,6 @@
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
-export interface CreateTagsUsersRepositoryDTO {
+export interface CreateTagsUsersClientRepositoryDTO {
   tags: Partial<Tag>[];
-  user_id: string;
+  client_id: string;
 }

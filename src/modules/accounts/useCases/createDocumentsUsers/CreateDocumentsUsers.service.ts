@@ -30,8 +30,8 @@ export class CreateDocumentsUsersService {
     const [front, back] = user.documents;
 
     const document_side = {
-      FRONT: front,
-      BACK: back,
+      front,
+      back,
     };
 
     if (document_side[description]) {
@@ -41,12 +41,10 @@ export class CreateDocumentsUsersService {
       await this.usersDocumentsRepository.deleteById(
         document_side[description].id
       );
-
       await this.storageProvider.delete(
         image_found.name,
         STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
       );
-
       await this.imagesRepository.deleteById(
         document_side[description].image_id
       );
@@ -62,7 +60,7 @@ export class CreateDocumentsUsersService {
     await this.usersDocumentsRepository.create({
       image_id: image.id,
       user_id,
-      value: user.rg,
+      value: user.cpf,
       description: USER_DOCUMENT_VALUE_ENUM[description],
     });
   }

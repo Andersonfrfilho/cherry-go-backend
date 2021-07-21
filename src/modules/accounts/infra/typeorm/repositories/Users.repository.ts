@@ -1,7 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import {
-  CreateTagsUsersRepositoryDTO,
+  CreateTagsUsersClientRepositoryDTO,
   CreateUserAddressClientRepositoryDTO,
   CreateUserClientRepositoryDTO,
   CreateUserPhonesClientRepositoryDTO,
@@ -13,6 +13,7 @@ import {
   InsideTypeForUserRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
+import { ClientTag } from "@modules/accounts/infra/typeorm/entities/ClientTag";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -32,6 +33,7 @@ export class UsersRepository implements UsersRepositoryInterface {
   private repository_users_phones: Repository<UserPhone>;
   private repository_users_terms_accepts: Repository<UserTermsAccept>;
   private repository_tag: Repository<Tag>;
+  private repository_clients_tags: Repository<ClientTag>;
 
   constructor() {
     this.repository = getRepository(User);
@@ -42,6 +44,7 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_users_phones = getRepository(UserPhone);
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
     this.repository_tag = getRepository(Tag);
+    this.repository_clients_tags = getRepository(ClientTag);
   }
   async insideTypeForUser({
     active,
@@ -181,6 +184,8 @@ export class UsersRepository implements UsersRepositoryInterface {
     rg,
     birth_date,
     password,
+    gender,
+    details,
     active,
   }: CreateUserClientRepositoryDTO): Promise<User> {
     const type = await this.repository_users_types.findOne({
@@ -193,6 +198,8 @@ export class UsersRepository implements UsersRepositoryInterface {
       email,
       cpf,
       rg,
+      gender,
+      details,
       birth_date,
       password_hash: password,
       active,
@@ -206,7 +213,7 @@ export class UsersRepository implements UsersRepositoryInterface {
 
     await this.repository_users_types_users.save(users_types);
 
-    return user;
+    return this.repository.create(user);
   }
 
   async create({
@@ -285,14 +292,15 @@ export class UsersRepository implements UsersRepositoryInterface {
     await this.repository_users_terms_accepts.save(term);
   }
 
-  async createTagsUsers({
-    user_id,
+  async createTagsUsersClient({
+    client_id,
     tags,
-  }: CreateTagsUsersRepositoryDTO): Promise<void> {
+  }: CreateTagsUsersClientRepositoryDTO): Promise<void> {
     const tags_founds = await this.repository_tag.findByIds(tags);
-    await this.repository.update(user_id, {
-      tags: tags_founds,
-    });
+
+    await this.repository_clients_tags.save(
+      tags_founds.map((tag) => ({ client_id, tag_id: tag.id }))
+    );
   }
 
   async findByIdWithProfileImage(id: string): Promise<User> {

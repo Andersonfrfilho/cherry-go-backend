@@ -16,6 +16,7 @@ export class CreateImageService {
   ) {}
   async execute({ name }: CreateImageServiceDTO): Promise<Image> {
     const image_name = await this.storageProvider.save(name, "images");
+
     const image = await this.imagesRepository.create({
       name: image_name,
     });

@@ -1,5 +1,6 @@
 import { getConnection, MigrationInterface } from "typeorm";
 
+import { GENDERS_ENUM } from "@modules/accounts/enums/GendersUsers.enum";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -72,6 +73,7 @@ export class InsertInfos1622165715932 implements MigrationInterface {
         birth_date: new Date(2021, 5, 1),
         password_hash: process.env.PASSWORD_USER_SEED_HASH,
         active: true,
+        gender: GENDERS_ENUM.MALE,
         quantity: 1,
       });
 

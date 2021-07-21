@@ -20,6 +20,7 @@ export class CreateTags1617669642956 implements MigrationInterface {
           {
             name: "description",
             type: "varchar",
+            isNullable: true,
           },
           {
             name: "image_id",

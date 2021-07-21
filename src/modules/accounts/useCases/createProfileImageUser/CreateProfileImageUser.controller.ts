@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { container } from "tsyringe";
 
 import { CreateProfileImageUserService } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.service";
+import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums";
 
 export class CreatePhotoProfileUsersController {
   async handle(request: Request, response: Response): Promise<Response> {
@@ -16,6 +17,6 @@ export class CreatePhotoProfileUsersController {
       user_id: id,
     });
 
-    return response.status(204).send();
+    return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();
   }
 }

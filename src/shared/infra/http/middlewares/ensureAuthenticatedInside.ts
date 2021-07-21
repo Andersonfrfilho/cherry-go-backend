@@ -46,7 +46,7 @@ export async function ensureAuthenticatedInside(
         type.name === USER_TYPES_ENUM.ADMIN
     )
   ) {
-    throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);
+    throw new AppError(FORBIDDEN.INSIDE_IS_NOT_ACTIVE);
   }
 
   request.user = {

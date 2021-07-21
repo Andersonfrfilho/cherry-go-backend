@@ -23,15 +23,14 @@ export { CreateDocumentsUserImageRepositoryDTO } from "@modules/accounts/dtos/re
 export { RequestActiveUserClientServiceDTO } from "@modules/accounts/dtos/services/RequestActiveUserClient.service.dto";
 export { CreateDocumentsUsersServiceDTO } from "@modules/accounts/dtos/services/CreateDocumentsUsers.service.dto";
 export { CreateImageProfileUserServiceDTO } from "@modules/accounts/dtos/services/CreatePhotoProfileUser.service.dto";
-export { CreateTagsUsersRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTagsUsers.repository.dto";
+export { CreateTagsUsersClientRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTagsUsersClient.repository.dto";
 export { UpdatePasswordUserRepositorySTO } from "@modules/accounts/dtos/repositories/UpdatePasswordUser.repository.dto";
 export { AuthenticateUserProviderServiceDTO } from "@modules/accounts/dtos/services/AuthenticateUserProvider.service.dto";
-export { AuthenticateUserProviderResponseDTO } from "@modules/accounts/dtos/services/AuthenticateUserProviderResponse.service.dto";
+export { AuthenticateUserProviderServiceResponseDTO } from "@modules/accounts/dtos/services/AuthenticateUserProvider.response.service.dto";
 export { ConfirmAccountPhoneUserServiceDTO } from "@modules/accounts/dtos/services/ConfirmAccountPhoneUser.service.dto";
 export { UpdatedUserClientRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdatedUserClient.repository.dto";
 export { CreateUserAddressClientServiceDTO } from "@modules/accounts/dtos/services/CreateUserAddressClient.service.dto";
-export { CreateUserPhonesClientServiceResponseDTO } from "@modules/accounts/dtos/services/CreateUserPhonesClient.service.dto";
-export { CreateTagUsersServiceDTO } from "@modules/accounts/dtos/services/CreateTagUsers.service.dto";
+export { CreateTagsUsersClientServiceDTO } from "@modules/accounts/dtos/services/CreateTagsUsersClient.service.dto";
 export { CreateUserClientServiceDTO } from "@modules/accounts/dtos/services/CreateUserClient.service.dto";
 export { TermsAcceptUserServiceDTO } from "@modules/accounts/dtos/services/TermsAcceptUser.service.dto";
 export { CreateProviderTransportTypesAvailabilitiesServiceDTO } from "@modules/accounts/dtos/services/CreateProviderTransportTypesAvailabilities.service.dto";
@@ -39,3 +38,5 @@ export { CreateAddressUsersProvidersServiceDTO } from "@modules/accounts/dtos/se
 export { CreateAddressUsersProvidersRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateAddressUsersProviders.repository.dto";
 export { InsideTypeForUserRepositoryDTO } from "@modules/accounts/dtos/repositories/InsideTypeForUser.repository.dto";
 export { CreateTransportTypesAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTransportTypesAvailable.repository.dto";
+export { CreateUserPhonesClientServiceResponseDTO } from "@modules/accounts/dtos/services/CreateUserPhonesClient.response.service.dto";
+export { CreateUserPhonesClientServiceRequestDTO } from "@modules/accounts/dtos/services/CreateUserPhonesClient.request.service.dto";

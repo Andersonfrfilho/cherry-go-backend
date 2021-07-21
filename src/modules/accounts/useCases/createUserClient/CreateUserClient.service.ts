@@ -16,7 +16,7 @@ import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";
 
 @injectable()
-class CreateUserClientService {
+export class CreateUserClientService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
@@ -36,6 +36,8 @@ class CreateUserClientService {
     rg,
     email,
     password,
+    gender,
+    details,
     birth_date,
   }: CreateUserClientServiceDTO): Promise<User> {
     const userAlreadyExists = await this.usersRepository.findUserByEmailCpfRg({
@@ -56,6 +58,8 @@ class CreateUserClientService {
       cpf,
       rg,
       email,
+      gender,
+      details,
       password: password_hash,
       birth_date,
       active: false,
@@ -96,4 +100,3 @@ class CreateUserClientService {
     return classToClass(user);
   }
 }
-export { CreateUserClientService };

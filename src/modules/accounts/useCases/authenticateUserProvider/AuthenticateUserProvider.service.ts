@@ -1,3 +1,4 @@
+import { classToClass } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
@@ -6,6 +7,7 @@ import {
   AuthenticateUserProviderServiceResponseDTO,
 } from "@modules/accounts/dtos";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
+import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
@@ -37,7 +39,10 @@ export class AuthenticateUserProviderService {
     email,
     password,
   }: AuthenticateUserProviderServiceDTO): Promise<AuthenticateUserProviderServiceResponseDTO> {
-    const provider = await this.providersRepository.findByEmail(email);
+    const provider = (await this.providersRepository.findByEmail(
+      email
+    )) as Provider;
+
     const { expires_in, secret } = auth;
 
     if (!provider) {
@@ -73,6 +78,7 @@ export class AuthenticateUserProviderService {
         expiresIn: expires_in.token,
       },
     });
+
     const refresh_token = this.jwtProvider.assign({
       payload: { email },
       secretOrPrivateKey: secret.refresh,
@@ -97,7 +103,7 @@ export class AuthenticateUserProviderService {
     });
 
     return {
-      user: provider,
+      user: classToClass(provider),
       token,
       refresh_token,
     };
