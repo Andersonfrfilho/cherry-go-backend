@@ -83,7 +83,7 @@ describe("ConfirmAccountPhoneUserService", () => {
     );
     expect(hashProviderMock.compareHash).toHaveBeenCalledWith(code, code);
     expect(usersRepositoryMock.updateActivePhoneUser).toHaveBeenCalledWith({
-      user_id: id,
+      id,
       active: true,
     });
   });

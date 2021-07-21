@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import faker, { phone } from "faker";
+import faker from "faker";
 
 import auth from "@config/auth";
 import { config } from "@config/environment";
+import { phonesRepositoryMock } from "@modules/accounts/repositories/mocks/Phones.repository.mock";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
-import { phonesRepositoryMock } from "@modules/accounts/repositories/mocksPhones.repository.interfacemock";
 import { CreateUserPhonesClientService } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhonesClient.service";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
 import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/Hash.provider.mock";
@@ -13,6 +13,7 @@ import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/J
 import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/Queue.provider.mock";
 import { SendSmsDTO } from "@shared/container/providers/SmsProvider/dtos/SendSms.dto";
 import { AppError } from "@shared/errors/AppError";
+import { FORBIDDEN } from "@shared/errors/constants";
 import {
   PhonesFactory,
   UsersFactory,
@@ -44,7 +45,17 @@ describe("CreateUserPhonesClientService", () => {
   it("Should be able to create an user", async () => {
     // arrange
     const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash, id },
+      {
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        birth_date,
+        password_hash,
+        active,
+        id,
+      },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
     const [type] = usersTypesFactory.generate({});
     const [
@@ -54,7 +65,7 @@ describe("CreateUserPhonesClientService", () => {
       id: "true",
     });
     const refresh_token_faker = faker.datatype.uuid();
-    const code = faker.phone.phoneNumber("####");
+    const code = number.slice(-4);
     const message: SendSmsDTO = {
       to: `${country_code}${ddd}${number}`,
       from: config.application.name,
@@ -78,7 +89,7 @@ describe("CreateUserPhonesClientService", () => {
       types: [type],
       phones: [{ country_code, ddd, id: phone_id, number }],
     });
-    jest.spyOn(phone, "phoneNumber").mockReturnValue(code);
+
     hashProviderMock.generateHash.mockResolvedValue(code);
     jwtProviderMock.assign.mockReturnValue(refresh_token_faker);
     dateProviderMock.addMinutes.mockReturnValue(mocked_date);
@@ -100,18 +111,19 @@ describe("CreateUserPhonesClientService", () => {
       number,
     });
     expect(usersRepositoryMock.createUserPhones).toHaveBeenCalledWith({
-      user_id: id,
+      id,
       country_code,
       number,
       ddd,
     });
     expect(hashProviderMock.generateHash).toHaveBeenCalledWith(code);
+
     expect(jwtProviderMock.assign).toHaveBeenCalledWith({
       payload: { email },
       secretOrPrivateKey: auth.secret.refresh,
       options: {
         expiresIn: auth.expires_in.refresh,
-        subject: { user: { id }, code_hash: code },
+        subject: { user: { id, active, types: [type] }, code_hash: code },
       },
     });
     expect(dateProviderMock.addMinutes).toHaveBeenCalledWith(

@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
-import { TermsAcceptUserService } from "@modules/accounts/useCases/termsAcceptsUser/termsAcceptsUser.service";
+import { TermsAcceptUserService } from "@modules/accounts/useCases/termsAcceptsUser/TermsAcceptsUser.service";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 import {

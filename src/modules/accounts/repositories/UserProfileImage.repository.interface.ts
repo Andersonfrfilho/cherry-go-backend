@@ -1,7 +1,6 @@
 import { CreateUserProfileImageRepositoryDTO } from "@modules/accounts/dtos";
-
-import { UpdateImageDocumentUserImageRepositoryDTO } from "../dtos/repositories/UpdateImageDocumentUserImageRepository.dto";
-import { UserProfileImage } from "../infra/typeorm/entities/UserProfileImage";
+import { UpdateImageDocumentUserImageRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateImageDocumentUserImage.repository.dto";
+import { UserProfileImage } from "@modules/accounts/infra/typeorm/entities/UserProfileImage";
 
 export interface UserProfileImageRepositoryInterface {
   create(data: CreateUserProfileImageRepositoryDTO): Promise<void>;

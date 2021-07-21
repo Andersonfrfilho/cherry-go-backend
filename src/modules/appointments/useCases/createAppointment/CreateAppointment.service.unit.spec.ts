@@ -3,7 +3,7 @@ import "reflect-metadata";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { ActiveAccountService } from "@modules/accounts/useCases/activeAccount/ActiveAccount.service";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST } from "@shared/errors/constants";
+import { NOT_FOUND } from "@shared/errors/constants";
 import {
   ImagesFactory,
   PhonesFactory,
@@ -96,7 +96,7 @@ describe("ActiveAccountService", () => {
         rg,
         email,
       })
-    ).rejects.toEqual(new AppError(NOT_FOUND.USER_NOT_EXIST));
+    ).rejects.toEqual(new AppError(NOT_FOUND.USER_DOES_NOT_EXIST));
     expect(usersRepositoryMock.findUserByEmailCpfRg).toHaveBeenCalledWith({
       cpf,
       rg,

@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import faker from "faker";
 
-import { userProfileImageRepositoryMock } from "@modules/accounts/repositories/mocks/UserProfileImageRepository.mock";
+import { userProfileImageRepositoryMock } from "@modules/accounts/repositories/mocks/UserProfileImage.repository.mock";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { CreateProfileImageUserService } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.service";
 import { imagesRepositoryMock } from "@modules/images/repositories/mocks/Images.repository.mock";
-import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
-import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/Storage.provider.mock";
+import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
+import { storageProviderMock } from "@shared/container/providers/StorageProvider/mocks/Storage.provider.mock";
 import {
   AddressesFactory,
   ImagesFactory,
@@ -96,7 +96,7 @@ describe("CreateProfileImageUserService", () => {
     );
     expect(storageProviderMock.save).toHaveBeenCalledWith(
       name_file,
-      StorageTypeFolderEnum.PROFILES
+      STORAGE_TYPE_FOLDER_ENUM.PROFILES
     );
     expect(imagesRepositoryMock.create).toHaveBeenCalledWith({
       name: name_file,
@@ -189,14 +189,14 @@ describe("CreateProfileImageUserService", () => {
     );
     expect(storageProviderMock.delete).toHaveBeenCalledWith(
       image_profile.name,
-      StorageTypeFolderEnum.PROFILES
+      STORAGE_TYPE_FOLDER_ENUM.PROFILES
     );
     expect(imagesRepositoryMock.deleteById).toHaveBeenCalledWith(
       image_profile.id
     );
     expect(storageProviderMock.save).toHaveBeenCalledWith(
       new_image_profile.name,
-      StorageTypeFolderEnum.PROFILES
+      STORAGE_TYPE_FOLDER_ENUM.PROFILES
     );
     expect(imagesRepositoryMock.create).toHaveBeenCalledWith({
       name: new_image_profile.name,

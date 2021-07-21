@@ -3,7 +3,6 @@ import multer from "multer";
 
 import uploadConfig from "@config/upload";
 import { CreatePhotoProfileUsersController } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.controller";
-import { schemaCreateProfilePhotoUser } from "@modules/accounts/useCases/createProfileImageUser/createProfileImageUser.schema";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 
 const uploadDocument = multer(uploadConfig);

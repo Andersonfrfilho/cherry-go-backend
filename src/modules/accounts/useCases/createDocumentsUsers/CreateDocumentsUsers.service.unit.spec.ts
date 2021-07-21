@@ -7,7 +7,7 @@ import { usersDocumentsRepositoryMock } from "@modules/accounts/repositories/moc
 import { CreateDocumentsUsersService } from "@modules/accounts/useCases/createDocumentsUsers/CreateDocumentsUsers.service";
 import { imagesRepositoryMock } from "@modules/images/repositories/mocks/Images.repository.mock";
 import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
-import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/Storage.provider.mock";
+import { storageProviderMock } from "@shared/container/providers/StorageProvider/mocks/Storage.provider.mock";
 import {
   AddressesFactory,
   ImagesFactory,
@@ -107,7 +107,7 @@ describe("CreateDocumentsUsersService", () => {
     expect(usersDocumentsRepositoryMock.create).toHaveBeenCalledWith({
       image_id: image_document_front.id,
       user_id: id,
-      value: rg,
+      value: cpf,
       description: USER_DOCUMENT_VALUE_ENUM[USER_DOCUMENT_VALUE_ENUM.FRONT],
     });
   });
@@ -175,7 +175,7 @@ describe("CreateDocumentsUsersService", () => {
     await createDocumentsUsersService.execute({
       user_id: id,
       document_file: name_file,
-      description: USER_DOCUMENT_VALUE_ENUM.FRONT.toUpperCase(),
+      description: USER_DOCUMENT_VALUE_ENUM.FRONT,
     });
 
     // assert
@@ -188,14 +188,14 @@ describe("CreateDocumentsUsersService", () => {
     );
     expect(storageProviderMock.delete).toHaveBeenCalledWith(
       image_document_front.name,
-      StorageTypeFolderEnum.DOCUMENTS
+      STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
     );
     expect(imagesRepositoryMock.deleteById).toHaveBeenCalledWith(
       image_document_front.id
     );
     expect(storageProviderMock.save).toHaveBeenCalledWith(
       name_file,
-      StorageTypeFolderEnum.DOCUMENTS
+      STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
     );
     expect(imagesRepositoryMock.create).toHaveBeenCalledWith({
       name: name_file,
@@ -203,9 +203,8 @@ describe("CreateDocumentsUsersService", () => {
     expect(usersDocumentsRepositoryMock.create).toHaveBeenCalledWith({
       image_id: image_document_front.id,
       user_id: id,
-      value: rg,
-      description:
-        USER_DOCUMENT_VALUE_ENUM[USER_DOCUMENT_VALUE_ENUM.FRONT.toUpperCase()],
+      value: cpf,
+      description: USER_DOCUMENT_VALUE_ENUM[USER_DOCUMENT_VALUE_ENUM.FRONT],
     });
   });
 });

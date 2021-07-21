@@ -2,7 +2,7 @@ import { injectable } from "tsyringe";
 
 import { config } from "@config/environment";
 import { SendSmsDTO } from "@shared/container/providers/SmsProvider/dtos/SendSms.dto";
-import { SmsProviderInterface } from "@shared/container/providers/SmsProvider/SmsProvider.interface";
+import { SmsProviderInterface } from "@shared/container/providers/SmsProvider/Sms.provider.interface";
 import Vonage from "@vonage/server-sdk";
 
 @injectable()

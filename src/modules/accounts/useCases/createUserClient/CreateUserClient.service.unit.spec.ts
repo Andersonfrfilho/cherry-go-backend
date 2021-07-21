@@ -51,6 +51,7 @@ describe("CreateUserClientService", () => {
         birth_date,
         password_hash,
         id,
+        gender,
         active,
       },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
@@ -61,7 +62,7 @@ describe("CreateUserClientService", () => {
       name,
       link: `${process.env.CONFIRM_MAIL_URL}${uuid_fake}`,
     };
-    const message: ISendMailDTO = {
+    const message: SendMailDTO = {
       to: email,
       email_type: MailContent.USER_CONFIRMATION_EMAIL,
       variables,
@@ -99,6 +100,7 @@ describe("CreateUserClientService", () => {
       cpf,
       rg,
       email,
+      gender,
       birth_date,
       password: password_hash,
     });
@@ -116,6 +118,7 @@ describe("CreateUserClientService", () => {
       cpf,
       rg,
       email,
+      gender,
       birth_date,
       password: password_hash,
       active,
@@ -168,7 +171,18 @@ describe("CreateUserClientService", () => {
     // arrange
     const [type] = usersTypesFactory.generate({});
     const [
-      { name, last_name, cpf, rg, email, birth_date, password_hash, id },
+      {
+        name,
+        last_name,
+        cpf,
+        rg,
+        email,
+        gender,
+        active,
+        birth_date,
+        password_hash,
+        id,
+      },
     ] = usersFactory.generate({ quantity: 1, id: "true", active: false });
     const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
 
@@ -198,6 +212,8 @@ describe("CreateUserClientService", () => {
         last_name,
         cpf,
         rg,
+        gender,
+        active,
         email,
         birth_date,
         password: password_hash,

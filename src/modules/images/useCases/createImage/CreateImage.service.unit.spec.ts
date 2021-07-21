@@ -2,7 +2,8 @@ import "reflect-metadata";
 
 import { imagesRepositoryMock } from "@modules/images/repositories/mocks/Images.repository.mock";
 import { CreateImageService } from "@modules/images/useCases/createImage/CreateImage.service";
-import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/Storage.provider.mock";
+import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
+import { storageProviderMock } from "@shared/container/providers/StorageProvider/mocks/Storage.provider.mock";
 import { ImagesFactory } from "@shared/infra/typeorm/factories";
 
 let createImageService: CreateImageService;
@@ -24,7 +25,7 @@ describe("CreateImageService", () => {
       id: "true",
     });
 
-    storageProviderMock.save.mockResolvedValue({ name: image_factory.name });
+    storageProviderMock.save.mockResolvedValue(image_factory.name);
     imagesRepositoryMock.create.mockResolvedValue(image_factory);
 
     // act
@@ -33,9 +34,10 @@ describe("CreateImageService", () => {
     });
 
     // assert
-    expect(storageProviderMock.save).toHaveBeenCalledWith({
-      name: image_factory.name,
-    });
+    expect(storageProviderMock.save).toHaveBeenCalledWith(
+      image_factory.name,
+      STORAGE_TYPE_FOLDER_ENUM.IMAGES
+    );
     expect(imagesRepositoryMock.create).toHaveBeenCalledWith({
       name: image_factory.name,
     });
