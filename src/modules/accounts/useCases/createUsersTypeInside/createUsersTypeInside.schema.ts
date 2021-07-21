@@ -1,9 +1,9 @@
 import { celebrate, Joi, Segments } from "celebrate";
 
-const schemaAcceptUser = celebrate({
+const schemaUsersTypeInsideUser = celebrate({
   [Segments.BODY]: {
-    accept: Joi.boolean().required(),
+    id: Joi.string().uuid().required(),
   },
 });
 
-export { schemaAcceptUser };
+export { schemaUsersTypeInsideUser };

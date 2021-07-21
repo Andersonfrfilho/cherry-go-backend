@@ -26,7 +26,7 @@ export { CreateImageProfileUserServiceDTO } from "@modules/accounts/dtos/service
 export { CreateTagsUsersClientRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTagsUsersClient.repository.dto";
 export { UpdatePasswordUserRepositorySTO } from "@modules/accounts/dtos/repositories/UpdatePasswordUser.repository.dto";
 export { AuthenticateUserProviderServiceDTO } from "@modules/accounts/dtos/services/AuthenticateUserProvider.service.dto";
-export { AuthenticateUserProviderResponseDTO } from "@modules/accounts/dtos/services/AuthenticateUserProvider.response.service.dto";
+export { AuthenticateUserProviderServiceResponseDTO } from "@modules/accounts/dtos/services/AuthenticateUserProvider.response.service.dto";
 export { ConfirmAccountPhoneUserServiceDTO } from "@modules/accounts/dtos/services/ConfirmAccountPhoneUser.service.dto";
 export { UpdatedUserClientRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdatedUserClient.repository.dto";
 export { CreateUserAddressClientServiceDTO } from "@modules/accounts/dtos/services/CreateUserAddressClient.service.dto";

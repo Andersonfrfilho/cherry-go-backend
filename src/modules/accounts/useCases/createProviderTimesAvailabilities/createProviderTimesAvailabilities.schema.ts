@@ -2,7 +2,12 @@ import { celebrate, Joi, Segments } from "celebrate";
 
 const schemaCreateProviderTimesAvailabilities = celebrate({
   [Segments.BODY]: {
-    days: Joi.array().required(),
+    times: Joi.array().items(
+      Joi.object({
+        start_time: Joi.string().required(),
+        end_time: Joi.string().required(),
+      })
+    ),
   },
 });
 

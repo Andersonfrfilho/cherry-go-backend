@@ -21,7 +21,6 @@ import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
-import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 
 @Entity("users")
@@ -45,9 +44,11 @@ class Provider {
   email: string;
 
   @Column()
+  @Exclude()
   password_hash: string;
 
   @Column()
+  @Exclude()
   birth_date: string;
 
   @Column()
@@ -83,28 +84,16 @@ class Provider {
   })
   types: TypeUser[];
 
-  @ManyToMany(() => PaymentType, (payment_type) => payment_type.providers, {
-    cascade: true,
-    eager: true,
-  })
-  @JoinTable({
-    name: "providers_payments_types",
-    joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [
-      { name: "payment_type_id", referencedColumnName: "id" },
-    ],
-  })
-  payments_types: PaymentType[];
-  // TODO:: refatorar relacionamento
-  @ManyToMany(() => Appointment, { cascade: true, eager: true })
-  @JoinTable({
-    name: "appointments_providers",
-    joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [
-      { name: "appointment_id", referencedColumnName: "id" },
-    ],
-  })
-  appointments: Appointment[];
+  // // TODO:: refatorar relacionamento
+  // @ManyToMany(() => Appointment, { cascade: true, eager: true })
+  // @JoinTable({
+  //   name: "appointments_providers",
+  //   joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
+  //   inverseJoinColumns: [
+  //     { name: "appointment_id", referencedColumnName: "id" },
+  //   ],
+  // })
+  // appointments: Appointment[];
 
   @OneToMany(
     () => ProviderTransportType,
@@ -147,7 +136,7 @@ class Provider {
     (payment_type) => payment_type.provider,
     { eager: true }
   )
-  payment_type: ProviderPaymentType[];
+  payments_types: ProviderPaymentType[];
 
   @CreateDateColumn()
   @Exclude()
