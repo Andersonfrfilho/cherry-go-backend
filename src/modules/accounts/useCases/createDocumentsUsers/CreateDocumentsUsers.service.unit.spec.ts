@@ -1,12 +1,13 @@
 import "reflect-metadata";
 import faker from "faker";
 
-import { userProfileImageRepositoryMock } from "@modules/accounts/repositories/mocks/UserProfileImageRepository.mock";
+import { USER_DOCUMENT_VALUE_ENUM } from "@modules/accounts/enums/UserDocumentValue.enum";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
-import { CreateProfileImageUserService } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.service";
+import { usersDocumentsRepositoryMock } from "@modules/accounts/repositories/mocks/UsersDocuments.repository.mock";
+import { CreateDocumentsUsersService } from "@modules/accounts/useCases/createDocumentsUsers/CreateDocumentsUsers.service";
 import { imagesRepositoryMock } from "@modules/images/repositories/mocks/Images.repository.mock";
-import { StorageTypeFolderEnum } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
-import { storageProviderMock } from "@shared/container/providers/StorageProvider/mock/Storage.provider.mock";
+import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
+import { storageProviderMock } from "@shared/container/providers/StorageProvider/mocks/Storage.provider.mock";
 import {
   AddressesFactory,
   ImagesFactory,
@@ -16,12 +17,12 @@ import {
   UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
-let createProfileImageUserService: CreateProfileImageUserService;
+let createDocumentsUsersService: CreateDocumentsUsersService;
 const mocked_date = new Date("2020-09-01T09:33:37");
 jest.mock("uuid");
 jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
 
-describe("CreateProfileImageUserService", () => {
+describe("CreateDocumentsUsersService", () => {
   const usersFactory = new UsersFactory();
   const usersTypesFactory = new UsersTypesFactory();
   const phonesFactory = new PhonesFactory();
@@ -30,11 +31,11 @@ describe("CreateProfileImageUserService", () => {
   const usersTermsFactory = new UsersTermsFactory();
 
   beforeEach(() => {
-    createProfileImageUserService = new CreateProfileImageUserService(
+    createDocumentsUsersService = new CreateDocumentsUsersService(
       usersRepositoryMock,
+      usersDocumentsRepositoryMock,
       storageProviderMock,
-      imagesRepositoryMock,
-      userProfileImageRepositoryMock
+      imagesRepositoryMock
     );
   });
 
@@ -62,8 +63,11 @@ describe("CreateProfileImageUserService", () => {
     });
     const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
     const name_file = faker.name.firstName();
-
-    usersRepositoryMock.findByIdWithProfileImage.mockResolvedValue({
+    const [image_document_front] = imageProfileFactory.generate({
+      quantity: 1,
+      id: "true",
+    });
+    usersRepositoryMock.findByIdWithDocument.mockResolvedValue({
       id,
       name,
       last_name,
@@ -76,34 +80,35 @@ describe("CreateProfileImageUserService", () => {
       phones: [phone],
       addresses: [address],
       types: [type],
-      image_profile: [],
+      image_profile: [{ image: image_profile }],
       term: [term],
       documents: [],
     });
     storageProviderMock.save.mockResolvedValue(name_file);
-    imagesRepositoryMock.create.mockResolvedValue(image_profile);
-    userProfileImageRepositoryMock.create.mockResolvedValue({});
+    imagesRepositoryMock.create.mockResolvedValue(image_document_front);
+    usersDocumentsRepositoryMock.create.mockResolvedValue({});
 
     // act
-    await createProfileImageUserService.execute({
+    await createDocumentsUsersService.execute({
       user_id: id,
-      image_profile_name: name_file,
+      document_file: name_file,
+      description: USER_DOCUMENT_VALUE_ENUM.FRONT,
     });
 
     // assert
-    expect(usersRepositoryMock.findByIdWithProfileImage).toHaveBeenCalledWith(
-      id
-    );
+    expect(usersRepositoryMock.findByIdWithDocument).toHaveBeenCalledWith(id);
     expect(storageProviderMock.save).toHaveBeenCalledWith(
       name_file,
-      StorageTypeFolderEnum.PROFILES
+      STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
     );
     expect(imagesRepositoryMock.create).toHaveBeenCalledWith({
       name: name_file,
     });
-    expect(userProfileImageRepositoryMock.create).toHaveBeenCalledWith({
-      image_id: image_profile.id,
+    expect(usersDocumentsRepositoryMock.create).toHaveBeenCalledWith({
+      image_id: image_document_front.id,
       user_id: id,
+      value: cpf,
+      description: USER_DOCUMENT_VALUE_ENUM[USER_DOCUMENT_VALUE_ENUM.FRONT],
     });
   });
   it("Should be able to substituted a document image user front", async () => {
@@ -129,16 +134,13 @@ describe("CreateProfileImageUserService", () => {
       id: "true",
     });
     const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
+    const name_file = faker.name.firstName();
     const [image_document_front] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",
     });
-    const [new_image_profile] = imageProfileFactory.generate({
-      quantity: 1,
-      id: "true",
-    });
-    const image_profile_id = faker.datatype.uuid();
-    usersRepositoryMock.findByIdWithProfileImage.mockResolvedValue({
+    const document_user_id = faker.datatype.uuid();
+    usersRepositoryMock.findByIdWithDocument.mockResolvedValue({
       id,
       name,
       last_name,
@@ -151,59 +153,58 @@ describe("CreateProfileImageUserService", () => {
       phones: [phone],
       addresses: [address],
       types: [type],
-      image_profile: [
-        {
-          id: image_profile_id,
-          image_id: image_profile.id,
-          image: image_profile,
-        },
-      ],
+      image_profile: [{ image: image_profile }],
       term: [term],
       documents: [
         {
+          id: document_user_id,
           image_id: image_document_front.id,
           image: image_document_front,
         },
       ],
     });
-    imagesRepositoryMock.findById.mockResolvedValue(new_image_profile);
-    userProfileImageRepositoryMock.deleteById.mockResolvedValue({});
+    imagesRepositoryMock.findById.mockResolvedValue(image_document_front);
+    usersDocumentsRepositoryMock.deleteById.mockResolvedValue({});
     storageProviderMock.delete.mockResolvedValue({});
     imagesRepositoryMock.deleteById.mockResolvedValue({});
-    storageProviderMock.save.mockResolvedValue(new_image_profile.name);
-    imagesRepositoryMock.create.mockResolvedValue(new_image_profile);
-    userProfileImageRepositoryMock.create.mockResolvedValue({});
+    storageProviderMock.save.mockResolvedValue(name_file);
+    imagesRepositoryMock.create.mockResolvedValue(image_document_front);
+    usersDocumentsRepositoryMock.create.mockResolvedValue({});
 
     // act
-    await createProfileImageUserService.execute({
+    await createDocumentsUsersService.execute({
       user_id: id,
-      image_profile_name: new_image_profile.name,
+      document_file: name_file,
+      description: USER_DOCUMENT_VALUE_ENUM.FRONT,
     });
 
     // assert
-    expect(usersRepositoryMock.findByIdWithProfileImage).toHaveBeenCalledWith(
-      id
+    expect(usersRepositoryMock.findByIdWithDocument).toHaveBeenCalledWith(id);
+    expect(imagesRepositoryMock.findById).toHaveBeenCalledWith(
+      image_document_front.id
     );
-    expect(userProfileImageRepositoryMock.deleteById).toHaveBeenCalledWith(
-      image_profile_id
+    expect(usersDocumentsRepositoryMock.deleteById).toHaveBeenCalledWith(
+      document_user_id
     );
     expect(storageProviderMock.delete).toHaveBeenCalledWith(
-      image_profile.name,
-      StorageTypeFolderEnum.PROFILES
+      image_document_front.name,
+      STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
     );
     expect(imagesRepositoryMock.deleteById).toHaveBeenCalledWith(
-      image_profile.id
+      image_document_front.id
     );
     expect(storageProviderMock.save).toHaveBeenCalledWith(
-      new_image_profile.name,
-      StorageTypeFolderEnum.PROFILES
+      name_file,
+      STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
     );
     expect(imagesRepositoryMock.create).toHaveBeenCalledWith({
-      name: new_image_profile.name,
+      name: name_file,
     });
-    expect(userProfileImageRepositoryMock.create).toHaveBeenCalledWith({
-      image_id: new_image_profile.id,
+    expect(usersDocumentsRepositoryMock.create).toHaveBeenCalledWith({
+      image_id: image_document_front.id,
       user_id: id,
+      value: cpf,
+      description: USER_DOCUMENT_VALUE_ENUM[USER_DOCUMENT_VALUE_ENUM.FRONT],
     });
   });
 });

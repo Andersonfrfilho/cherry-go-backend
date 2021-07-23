@@ -15,7 +15,7 @@ interface TransportDiscount extends Transport {
   increment_amount: number;
 }
 export interface CreateAppointmentProviders {
-  provider: Provider;
+  provider: Partial<Provider>;
   services: Partial<ServiceDiscount>[];
   transports: Partial<TransportDiscount>[];
 }
@@ -28,7 +28,7 @@ interface appointment {
 export interface CreateAppointmentServiceDTO {
   appointment: appointment;
   transactions: Partial<Transaction>[];
-  local: Address;
+  local: Partial<Address>;
   users: Partial<User>[];
   providers: Partial<CreateAppointmentProviders>[];
 }

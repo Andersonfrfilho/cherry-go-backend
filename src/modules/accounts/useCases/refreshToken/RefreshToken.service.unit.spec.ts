@@ -6,7 +6,7 @@ import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
 import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/Jwt.provider.mock";
 import { AppError } from "@shared/errors/AppError";
-import { FORBIDDEN } from "@shared/errors/constants";
+import { NOT_FOUND } from "@shared/errors/constants";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 import { RefreshTokenService } from "./RefreshToken.service";
@@ -63,7 +63,7 @@ describe("RefreshTokenService", () => {
     });
     expect(
       usersTokensRepositoryMock.findByUserIdAndRefreshToken
-    ).toHaveBeenCalledWith(id, token);
+    ).toHaveBeenCalledWith({ refresh_token: token, user_id: id });
     expect(usersTokensRepositoryMock.deleteById).toHaveBeenCalledWith(
       id_token_faker
     );
@@ -119,7 +119,7 @@ describe("RefreshTokenService", () => {
     // act
     expect.assertions(3);
     await expect(refreshTokenService.execute(token)).rejects.toEqual(
-      new AppError(FORBIDDEN.REFRESH_TOKEN_DOES_NOT_EXIST)
+      new AppError(NOT_FOUND.REFRESH_TOKEN_DOES_NOT_EXIST)
     );
     // assert
     expect(jwtProviderMock.verifyJwt).toHaveBeenCalledWith({
@@ -128,6 +128,6 @@ describe("RefreshTokenService", () => {
     });
     expect(
       usersTokensRepositoryMock.findByUserIdAndRefreshToken
-    ).toHaveBeenCalledWith(id, token);
+    ).toHaveBeenCalledWith({ refresh_token: token, user_id: id });
   });
 });

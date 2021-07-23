@@ -10,3 +10,4 @@ export { UsersTypesFactory } from "@shared/infra/typeorm/factories/UsersTypes.fa
 export { TransportsTypesFactory } from "@shared/infra/typeorm/factories/TransportsTypes.factory";
 export { TransportsFactory } from "@shared/infra/typeorm/factories/Transports.factory";
 export { UsersTermsFactory } from "@shared/infra/typeorm/factories/UsersTerm.factory";
+export { TransactionsFactory } from "@shared/infra/typeorm/factories/Transaction.factory";

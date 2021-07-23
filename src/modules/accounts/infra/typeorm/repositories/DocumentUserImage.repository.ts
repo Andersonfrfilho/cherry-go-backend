@@ -1,7 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
 import { CreateDocumentsUserImageRepositoryDTO } from "@modules/accounts/dtos";
-import { UpdateImageDocumentUserImageRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateImageDocumentUserImageRepository.dto";
+import { UpdateImageDocumentUserImageRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateImageDocumentUserImage.repository.dto";
 import { DocumentUserImage } from "@modules/accounts/infra/typeorm/entities/DocumentUserImage";
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImage.repository.interface";
 

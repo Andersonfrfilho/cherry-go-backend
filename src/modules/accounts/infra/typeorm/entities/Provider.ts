@@ -49,7 +49,7 @@ class Provider {
 
   @Column()
   @Exclude()
-  birth_date: string;
+  birth_date: Date;
 
   @Column()
   active: boolean;

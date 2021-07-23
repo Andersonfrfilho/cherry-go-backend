@@ -1,40 +1,40 @@
 import "reflect-metadata";
 
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
-import { CreateTagsUsersClientService } from "@modules/accounts/useCases/createTagsUsersClient/CreateTagsUsersClient.service";
+import { CreateUsersTypeProvidersService } from "@modules/accounts/useCases/createUsersTypeProviders/CreateUsersTypeProviders.service";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 import {
   AddressesFactory,
   ImagesFactory,
   PhonesFactory,
-  TagsFactory,
   UsersFactory,
   UsersTypesFactory,
   UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
-let createTagsUsersClientService: CreateTagsUsersClientService;
-const mocked_date = new Date("2020-09-01T09:33:37");
-jest.mock("uuid");
-jest.useFakeTimers("modern").setSystemTime(mocked_date.getTime());
+let createUsersTypeProvidersService: CreateUsersTypeProvidersService;
 
-describe("CreateTagsUsersClientService", () => {
+const mockedDate = new Date("2020-09-01T09:33:37");
+
+jest.mock("uuid");
+jest.useFakeTimers("modern").setSystemTime(mockedDate.getTime());
+
+describe("CreateUsersTypeProvidersService", () => {
   const usersFactory = new UsersFactory();
   const usersTypesFactory = new UsersTypesFactory();
-  const phonesFactory = new PhonesFactory();
   const addressesFactory = new AddressesFactory();
+  const phonesFactory = new PhonesFactory();
   const imageProfileFactory = new ImagesFactory();
   const usersTermsFactory = new UsersTermsFactory();
-  const tagsFactory = new TagsFactory();
 
   beforeEach(() => {
-    createTagsUsersClientService = new CreateTagsUsersClientService(
+    createUsersTypeProvidersService = new CreateUsersTypeProvidersService(
       usersRepositoryMock
     );
   });
 
-  it("Should be able to create a tag user front", async () => {
+  it("Should be able to create providers type user", async () => {
     // arrange
     const [
       {
@@ -57,11 +57,6 @@ describe("CreateTagsUsersClientService", () => {
       id: "true",
     });
     const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
-    const [tag] = tagsFactory.generate({
-      quantity: 3,
-      id: "true",
-      active: true,
-    });
 
     usersRepositoryMock.findById.mockResolvedValue({
       id,
@@ -79,39 +74,34 @@ describe("CreateTagsUsersClientService", () => {
       image_profile: [{ image: image_profile }],
       term: [term],
     });
-    usersRepositoryMock.createTagsUsers.mockResolvedValue({});
+    usersRepositoryMock.acceptTerms.mockResolvedValue({});
 
     // act
-    await createTagsUsersClientService.execute({ tags: [tag], user_id: id });
+    await createUsersTypeProvidersService.execute(id);
 
     // assert
     expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
-    expect(usersRepositoryMock.createTagsUsers).toHaveBeenCalledWith({
-      tags: [tag],
+    expect(usersRepositoryMock.providerTypeForUser).toHaveBeenCalledWith({
+      active: true,
       user_id: id,
     });
   });
-  it("Should be able to substituted a document image user front", async () => {
+
+  it("Not should able to create providers type not exist", async () => {
     // arrange
     const [{ id }] = usersFactory.generate({
       quantity: 1,
       id: "true",
-      active: true,
     });
-
-    const [tag] = tagsFactory.generate({
-      quantity: 3,
-      id: "true",
-      active: true,
-    });
-
     usersRepositoryMock.findById.mockResolvedValue(undefined);
+
     // act
     // assert
     expect.assertions(2);
-    await expect(
-      createTagsUsersClientService.execute({ tags: [tag], user_id: id })
-    ).rejects.toEqual(new AppError(NOT_FOUND.USER_DOES_NOT_EXIST));
+    await expect(createUsersTypeProvidersService.execute(id)).rejects.toEqual(
+      new AppError(NOT_FOUND.USER_DOES_NOT_EXIST)
+    );
+
     expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
   });
 });

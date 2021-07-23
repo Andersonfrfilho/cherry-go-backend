@@ -1,7 +1,8 @@
 import "reflect-metadata";
 
-import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
-import { TermsAcceptUserService } from "@modules/accounts/useCases/termsAcceptsUser/termsAcceptsUser.service";
+import { providersRepositoryMock } from "@modules/accounts/repositories/mocks/Providers.repository.mock";
+import { CreateProviderTransportTypesAvailabilitiesService } from "@modules/accounts/useCases/createProviderTransportTypesAvailabilities/CreateProviderTransportTypesAvailabilities.service";
+import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes.enum";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 import {
@@ -11,25 +12,28 @@ import {
   UsersFactory,
   UsersTypesFactory,
   UsersTermsFactory,
+  TransportsTypesFactory,
 } from "@shared/infra/typeorm/factories";
 
-let termsAcceptUserService: TermsAcceptUserService;
+let createProviderTransportTypesAvailabilitiesService: CreateProviderTransportTypesAvailabilitiesService;
 
 const mockedDate = new Date("2020-09-01T09:33:37");
 
 jest.mock("uuid");
 jest.useFakeTimers("modern").setSystemTime(mockedDate.getTime());
-
-describe("TermsAcceptUserService", () => {
+describe("CreateTransportTypesService", () => {
   const usersFactory = new UsersFactory();
   const usersTypesFactory = new UsersTypesFactory();
   const addressesFactory = new AddressesFactory();
   const phonesFactory = new PhonesFactory();
   const imageProfileFactory = new ImagesFactory();
   const usersTermsFactory = new UsersTermsFactory();
+  const transportsTypesFactory = new TransportsTypesFactory();
 
   beforeEach(() => {
-    termsAcceptUserService = new TermsAcceptUserService(usersRepositoryMock);
+    createProviderTransportTypesAvailabilitiesService = new CreateProviderTransportTypesAvailabilitiesService(
+      providersRepositoryMock
+    );
   });
 
   it("Should be able to accept terms user", async () => {
@@ -50,13 +54,14 @@ describe("TermsAcceptUserService", () => {
     const [type] = usersTypesFactory.generate({});
     const [phone] = phonesFactory.generate({ quantity: 1, id: "true" });
     const [address] = addressesFactory.generate({ quantity: 1, id: "true" });
+    const transports = transportsTypesFactory.generate({});
     const [image_profile] = imageProfileFactory.generate({
       quantity: 1,
       id: "true",
     });
     const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
 
-    usersRepositoryMock.findById.mockResolvedValue({
+    providersRepositoryMock.findById.mockResolvedValue({
       id,
       name,
       last_name,
@@ -72,19 +77,20 @@ describe("TermsAcceptUserService", () => {
       image_profile: [{ image: image_profile }],
       term: [term],
     });
-    usersRepositoryMock.acceptTerms.mockResolvedValue({});
 
     // act
-    await termsAcceptUserService.execute({
-      accept: term.accept,
-      user_id: id,
+    await createProviderTransportTypesAvailabilitiesService.execute({
+      provider_id: id,
+      transport_types: transports,
     });
 
     // assert
-    expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
-    expect(usersRepositoryMock.acceptTerms).toHaveBeenCalledWith({
-      accept: term.accept,
-      user_id: id,
+    expect(providersRepositoryMock.findById).toHaveBeenCalledWith(id);
+    expect(
+      providersRepositoryMock.createTransportTypesAvailable
+    ).toHaveBeenCalledWith({
+      provider_id: id,
+      transport_types: transports,
     });
   });
 
@@ -94,19 +100,19 @@ describe("TermsAcceptUserService", () => {
       quantity: 1,
       id: "true",
     });
-    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
-    usersRepositoryMock.findById.mockResolvedValue(undefined);
+    const transports = transportsTypesFactory.generate({});
+    providersRepositoryMock.findById.mockResolvedValue(undefined);
 
     // act
     // assert
     expect.assertions(2);
     await expect(
-      termsAcceptUserService.execute({
-        accept: term.accept,
-        user_id: id,
+      createProviderTransportTypesAvailabilitiesService.execute({
+        provider_id: id,
+        transport_types: transports,
       })
-    ).rejects.toEqual(new AppError(NOT_FOUND.USER_DOES_NOT_EXIST));
+    ).rejects.toEqual(new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST));
 
-    expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
+    expect(providersRepositoryMock.findById).toHaveBeenCalledWith(id);
   });
 });

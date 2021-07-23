@@ -3,7 +3,7 @@ import "reflect-metadata";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { CreateUserAddressClientService } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.service";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST } from "@shared/errors/constants";
+import { NOT_FOUND } from "@shared/errors/constants";
 import {
   AddressesFactory,
   PhonesFactory,
@@ -222,7 +222,7 @@ describe("CreateUserAddressClientService", () => {
         street,
         zipcode,
       })
-    ).rejects.toEqual(new AppError(NOT_FOUND.USER_NOT_EXIST));
+    ).rejects.toEqual(new AppError(NOT_FOUND.USER_DOES_NOT_EXIST));
 
     expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
   });

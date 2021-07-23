@@ -9,7 +9,7 @@ import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks
 import { hashProviderMock } from "@shared/container/providers/HashProvider/mocks/Hash.provider.mock";
 import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/Jwt.provider.mock";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST, UNAUTHORIZED } from "@shared/errors/constants";
+import { NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
 import {
   AddressesFactory,
   ImagesFactory,
@@ -111,7 +111,13 @@ describe("AuthenticateUserService", () => {
       payload: {},
       secretOrPrivateKey: secret.token,
       options: {
-        subject: { user: { id, active } },
+        subject: {
+          user: {
+            id,
+            active,
+            types: [type],
+          },
+        },
         expiresIn: expires_in.token,
       },
     });
@@ -119,7 +125,13 @@ describe("AuthenticateUserService", () => {
       payload: { email },
       secretOrPrivateKey: secret.refresh,
       options: {
-        subject: { user: { id, active } },
+        subject: {
+          user: {
+            id,
+            active,
+            types: [type],
+          },
+        },
         expiresIn: expires_in.refresh,
       },
     });
@@ -209,7 +221,7 @@ describe("AuthenticateUserService", () => {
         email,
         password: password_hash,
       })
-    ).rejects.toEqual(new AppError(NOT_FOUND.USER_NOT_EXIST));
+    ).rejects.toEqual(new AppError(NOT_FOUND.USER_DOES_NOT_EXIST));
 
     expect(usersRepositoryMock.findByEmail).toHaveBeenCalledWith(email);
   });

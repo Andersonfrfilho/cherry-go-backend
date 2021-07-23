@@ -42,7 +42,7 @@ export default {
   ],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "integration_covarage",
+  coverageDirectory: "covarage_integration",
 
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: ["\\\\node_modules\\\\", "\\\\dist\\\\"],
@@ -163,6 +163,6 @@ export default {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: ["**/*routes.spec.ts"],
-  modulePathIgnorePatterns: ["dist", "node_modules", "coverage"],
+  testMatch: ["**/*integration.spec.ts"],
+  modulePathIgnorePatterns: ["dist", "node_modules", "covarage_integration"],
 };
