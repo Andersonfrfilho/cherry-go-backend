@@ -9,7 +9,6 @@ class ActiveUserClientController {
     const { cpf, rg, email } = request.body;
 
     const activeUserClientService = container.resolve(ActiveAccountService);
-
     await activeUserClientService.execute({
       cpf,
       rg,
