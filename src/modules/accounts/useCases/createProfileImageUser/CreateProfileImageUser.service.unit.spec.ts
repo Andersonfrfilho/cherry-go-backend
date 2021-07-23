@@ -7,6 +7,8 @@ import { CreateProfileImageUserService } from "@modules/accounts/useCases/create
 import { imagesRepositoryMock } from "@modules/images/repositories/mocks/Images.repository.mock";
 import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
 import { storageProviderMock } from "@shared/container/providers/StorageProvider/mocks/Storage.provider.mock";
+import { AppError } from "@shared/errors/AppError";
+import { NOT_FOUND } from "@shared/errors/constants";
 import {
   AddressesFactory,
   ImagesFactory,
@@ -205,5 +207,40 @@ describe("CreateProfileImageUserService", () => {
       image_id: new_image_profile.id,
       user_id: id,
     });
+  });
+  it("Should be able to substituted a document image is not exist user front", async () => {
+    // arrange
+    const [{ id }] = usersFactory.generate({
+      quantity: 1,
+      id: "true",
+      active: true,
+    });
+
+    const [new_image_profile] = imageProfileFactory.generate({
+      quantity: 1,
+      id: "true",
+    });
+
+    usersRepositoryMock.findByIdWithProfileImage.mockResolvedValue(undefined);
+    imagesRepositoryMock.findById.mockResolvedValue(new_image_profile);
+    userProfileImageRepositoryMock.deleteById.mockResolvedValue({});
+    storageProviderMock.delete.mockResolvedValue({});
+    imagesRepositoryMock.deleteById.mockResolvedValue({});
+    storageProviderMock.save.mockResolvedValue(new_image_profile.name);
+    imagesRepositoryMock.create.mockResolvedValue(new_image_profile);
+    userProfileImageRepositoryMock.create.mockResolvedValue({});
+
+    // act
+    // assert
+    expect.assertions(2);
+    await expect(
+      createProfileImageUserService.execute({
+        user_id: id,
+        image_profile_name: new_image_profile.name,
+      })
+    ).rejects.toEqual(new AppError(NOT_FOUND.USER_DOES_NOT_EXIST));
+    expect(usersRepositoryMock.findByIdWithProfileImage).toHaveBeenCalledWith(
+      id
+    );
   });
 });

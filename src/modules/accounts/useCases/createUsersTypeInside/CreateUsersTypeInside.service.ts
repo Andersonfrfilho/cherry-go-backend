@@ -5,7 +5,7 @@ import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-export class CreateUsersTypeInside {
+export class CreateUsersTypeInsideService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface

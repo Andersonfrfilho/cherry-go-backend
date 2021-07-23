@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
-import { TermsAcceptUserService } from "@modules/accounts/useCases/termsAcceptsUser/TermsAcceptsUser.service";
+import { CreateUsersTypeProvidersService } from "@modules/accounts/useCases/createUsersTypeProviders/CreateUsersTypeProviders.service";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 import {
@@ -13,14 +13,14 @@ import {
   UsersTermsFactory,
 } from "@shared/infra/typeorm/factories";
 
-let termsAcceptUserService: TermsAcceptUserService;
+let createUsersTypeProvidersService: CreateUsersTypeProvidersService;
 
 const mockedDate = new Date("2020-09-01T09:33:37");
 
 jest.mock("uuid");
 jest.useFakeTimers("modern").setSystemTime(mockedDate.getTime());
 
-describe("TermsAcceptUserService", () => {
+describe("CreateUsersTypeProvidersService", () => {
   const usersFactory = new UsersFactory();
   const usersTypesFactory = new UsersTypesFactory();
   const addressesFactory = new AddressesFactory();
@@ -29,10 +29,12 @@ describe("TermsAcceptUserService", () => {
   const usersTermsFactory = new UsersTermsFactory();
 
   beforeEach(() => {
-    termsAcceptUserService = new TermsAcceptUserService(usersRepositoryMock);
+    createUsersTypeProvidersService = new CreateUsersTypeProvidersService(
+      usersRepositoryMock
+    );
   });
 
-  it("Should be able to accept terms user", async () => {
+  it("Should be able to create providers type user", async () => {
     // arrange
     const [
       {
@@ -75,37 +77,30 @@ describe("TermsAcceptUserService", () => {
     usersRepositoryMock.acceptTerms.mockResolvedValue({});
 
     // act
-    await termsAcceptUserService.execute({
-      accept: term.accept,
-      user_id: id,
-    });
+    await createUsersTypeProvidersService.execute(id);
 
     // assert
     expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
-    expect(usersRepositoryMock.acceptTerms).toHaveBeenCalledWith({
-      accept: term.accept,
+    expect(usersRepositoryMock.providerTypeForUser).toHaveBeenCalledWith({
+      active: true,
       user_id: id,
     });
   });
 
-  it("Not should able to accept terms user not exist", async () => {
+  it("Not should able to create providers type not exist", async () => {
     // arrange
     const [{ id }] = usersFactory.generate({
       quantity: 1,
       id: "true",
     });
-    const [term] = usersTermsFactory.generate({ quantity: 1, accept: true });
     usersRepositoryMock.findById.mockResolvedValue(undefined);
 
     // act
     // assert
     expect.assertions(2);
-    await expect(
-      termsAcceptUserService.execute({
-        accept: term.accept,
-        user_id: id,
-      })
-    ).rejects.toEqual(new AppError(NOT_FOUND.USER_DOES_NOT_EXIST));
+    await expect(createUsersTypeProvidersService.execute(id)).rejects.toEqual(
+      new AppError(NOT_FOUND.USER_DOES_NOT_EXIST)
+    );
 
     expect(usersRepositoryMock.findById).toHaveBeenCalledWith(id);
   });
