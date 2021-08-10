@@ -26,6 +26,9 @@ class UserTypeUser {
   @Column()
   active: boolean;
 
+  @Column("varchar", { array: true })
+  roles?: string[];
+
   @CreateDateColumn()
   created_at?: Date;
 

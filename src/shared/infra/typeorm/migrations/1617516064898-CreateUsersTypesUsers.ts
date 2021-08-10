@@ -22,6 +22,12 @@ export class CreateUsersTypesUsers1617516064898 implements MigrationInterface {
             type: "uuid",
           },
           {
+            name: "roles",
+            type: "varchar",
+            isArray: true,
+            isNullable: true,
+          },
+          {
             name: "active",
             type: "boolean",
             default: false,
