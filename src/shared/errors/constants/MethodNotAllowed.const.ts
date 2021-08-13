@@ -6,5 +6,6 @@ export const METHOD_NOT_ALLOWED = {
   NOT_ALLOWED: {
     message: "Not Allowed!",
     status_code,
+    code: "5001",
   },
 };

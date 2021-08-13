@@ -46,7 +46,7 @@ export class AuthenticateUserProviderService {
     const { expires_in, secret } = auth;
 
     if (!provider) {
-      throw new AppError(NOT_FOUND.PROVIDER_NOT_EXIST);
+      throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
     }
 
     if (
@@ -61,7 +61,7 @@ export class AuthenticateUserProviderService {
     );
 
     if (!passwordHash) {
-      throw new AppError(UNAUTHORIZED.PROVIDER_PASSWORD_DOES_MATCH);
+      throw new AppError(UNAUTHORIZED.USER_PASSWORD_DOES_MATCH);
     }
 
     const token = this.jwtProvider.assign({

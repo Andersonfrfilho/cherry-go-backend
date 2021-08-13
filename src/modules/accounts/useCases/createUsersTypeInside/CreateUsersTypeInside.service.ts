@@ -17,6 +17,6 @@ export class CreateUsersTypeInsideService {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    await this.usersRepository.insideTypeForUser({ active: true, user_id });
+    await this.usersRepository.insideTypeForUser({ active: false, user_id });
   }
 }

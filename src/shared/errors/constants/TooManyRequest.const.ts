@@ -6,5 +6,6 @@ export const TOO_MANY_REQUESTS = {
   TOO_MANY_REQUESTS: {
     message: "Too many requests!",
     status_code,
+    code: "29001",
   },
 };

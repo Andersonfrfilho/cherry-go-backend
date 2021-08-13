@@ -9,7 +9,8 @@ const uploadDocument = multer(uploadConfig);
 const profileRoutes = Router();
 
 const createPhotoProfileUsersController = new CreatePhotoProfileUsersController();
-profileRoutes.post(
+
+profileRoutes.use(
   "/images/view",
   express.static(`${uploadConfig.tmpFolder}/profiles`)
 );

@@ -6,21 +6,21 @@ export const NOT_FOUND = {
   USER_DOES_NOT_EXIST: {
     message: "User does not exists!",
     status_code,
+    code: "4001",
   },
   PROVIDER_DOES_NOT_EXIST: {
     message: "Provider does not exists!",
     status_code,
+    code: "4002",
   },
   SERVICE_PROVIDER_DOES_NOT_EXIST: {
     message: "Service this provider does not exists!",
     status_code,
-  },
-  PROVIDER_NOT_EXIST: {
-    message: "Provider does not exist!",
-    status_code,
+    code: "4003",
   },
   REFRESH_TOKEN_DOES_NOT_EXIST: {
     message: "Refresh Token does not exists!",
     status_code,
+    code: "4004",
   },
 };

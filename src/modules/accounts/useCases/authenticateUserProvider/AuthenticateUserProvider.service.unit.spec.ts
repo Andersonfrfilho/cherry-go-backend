@@ -223,7 +223,7 @@ describe("AuthenticateUserProviderService", () => {
         email,
         password: password_hash,
       })
-    ).rejects.toEqual(new AppError(NOT_FOUND.PROVIDER_NOT_EXIST));
+    ).rejects.toEqual(new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST));
 
     expect(providersRepositoryMock.findByEmail).toHaveBeenCalledWith(email);
   });

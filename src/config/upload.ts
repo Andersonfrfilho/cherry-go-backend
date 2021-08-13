@@ -3,8 +3,10 @@ import multer from "multer";
 import { resolve } from "path";
 
 const tmpFolder = resolve(__dirname, "..", "..", "tmp");
+const assetsFolder = resolve(__dirname, "..", "shared", "assets");
 export default {
   tmpFolder,
+  assetsFolder,
   storage: multer.diskStorage({
     destination: tmpFolder,
     filename: (_, file, callback) => {

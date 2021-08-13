@@ -9,7 +9,6 @@ const createUsersTypeInsideController = new CreateUsersTypeInsideController();
 
 insidesRoutes.patch(
   "/",
-  ensureAuthenticatedAdmin,
   schemaUsersTypeInsideUser,
   createUsersTypeInsideController.handle
 );

@@ -308,7 +308,7 @@ describe("Password routes", () => {
 
         expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.NOT_FOUND);
         expect(response.body.message).toBe(
-          NOT_FOUND.PROVIDER_NOT_EXIST.message
+          NOT_FOUND.PROVIDER_DOES_NOT_EXIST.message
         );
       }, 30000);
 
@@ -409,7 +409,7 @@ describe("Password routes", () => {
 
         expect(response.status).toBe(HTTP_ERROR_CODES_ENUM.UNAUTHORIZED);
         expect(response.body.message).toBe(
-          UNAUTHORIZED.PROVIDER_PASSWORD_DOES_MATCH.message
+          UNAUTHORIZED.USER_PASSWORD_DOES_MATCH.message
         );
       }, 30000);
     });

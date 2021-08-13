@@ -6,9 +6,11 @@ export const CONFLICT = {
   USER_CLIENT_ALREADY_EXIST: {
     message: "User client already exist!",
     status_code,
+    code: "9001",
   },
   TAG_ALREADY_EXIST: {
     message: "Tag already exist!",
     status_code,
+    code: "9002",
   },
 };

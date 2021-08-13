@@ -6,5 +6,6 @@ export const UNPROCESSABLE_ENTITY = {
   CODE_INCORRECT: {
     message: "Code incorrect!",
     status_code,
+    code: "220001",
   },
 };

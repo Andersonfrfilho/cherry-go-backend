@@ -6,5 +6,6 @@ export const BAD_REQUEST = {
   TRANSACTION_INVALID: {
     message: "Transaction Invalid!",
     status_code,
+    code: "0001",
   },
 };

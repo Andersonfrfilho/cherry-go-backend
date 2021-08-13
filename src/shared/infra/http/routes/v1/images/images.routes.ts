@@ -1,4 +1,4 @@
-import { Router } from "express";
+import express, { Router } from "express";
 import multer from "multer";
 
 import uploadConfig from "@config/upload";
@@ -8,6 +8,12 @@ import { ensureAuthenticatedInside } from "@shared/infra/http/middlewares/ensure
 const imagesRoutes = Router();
 const uploadDocument = multer(uploadConfig);
 const createImageController = new CreateImageController();
+
+imagesRoutes.use("/view", express.static(`${uploadConfig.tmpFolder}/images`));
+imagesRoutes.use(
+  "/project/view",
+  express.static(`${uploadConfig.assetsFolder}`)
+);
 
 imagesRoutes.post(
   "/",
