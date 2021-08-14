@@ -9,6 +9,7 @@ import {
   FindUserEmailCpfRgRepositoryDTO,
   UpdatePasswordUserRepositorySTO,
   InsideTypeForUserRepositoryDTO,
+  CreateUserInsideRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
@@ -48,4 +49,8 @@ export interface UsersRepositoryInterface {
   providerTypeForUser(data: ProviderTypeForUserRepositoryDTO): Promise<void>;
   insideTypeForUser(data: InsideTypeForUserRepositoryDTO): Promise<void>;
   findByIdsActive(users: Partial<User>[]): Promise<User[]>;
+  createUserInsideType(data: CreateUserInsideRepositoryDTO): Promise<User>;
+  updateActiveUserTypeInsides(
+    data: UpdateActiveUserRepositoryDTO
+  ): Promise<void>;
 }

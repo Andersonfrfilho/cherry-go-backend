@@ -11,6 +11,7 @@ import {
   UpdateActiveUserRepositoryDTO,
   UpdatedUserClientRepositoryDTO,
   InsideTypeForUserRepositoryDTO,
+  CreateUserInsideRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { ClientTag } from "@modules/accounts/infra/typeorm/entities/ClientTag";
@@ -45,6 +46,60 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
     this.repository_tag = getRepository(Tag);
     this.repository_clients_tags = getRepository(ClientTag);
+  }
+  async updateActiveUserTypeInsides({
+    id,
+    active,
+  }: UpdateActiveUserRepositoryDTO): Promise<void> {
+    const type = await this.repository_users_types.findOne({
+      where: { name: USER_TYPES_ENUM.INSIDE },
+    });
+    const user_type = await this.repository_users_types_users.findOne({
+      where: { user_id: id, user_type_id: type.id },
+    });
+    await this.repository_users_types_users.update(user_type.id, {
+      active,
+    });
+  }
+
+  async createUserInsideType({
+    name,
+    last_name,
+    email,
+    cpf,
+    rg,
+    birth_date,
+    password,
+    gender,
+    details,
+    active,
+  }): Promise<User> {
+    const type = await this.repository_users_types.findOne({
+      where: { name: USER_TYPES_ENUM.INSIDE },
+    });
+
+    const user = await this.repository.save({
+      name,
+      last_name,
+      email,
+      cpf,
+      rg,
+      gender,
+      details,
+      birth_date,
+      password_hash: password,
+      active,
+    });
+
+    const users_types = this.repository_users_types_users.create({
+      user_id: user.id,
+      user_type_id: type.id,
+      active: false,
+    });
+
+    await this.repository_users_types_users.save(users_types);
+
+    return this.repository.create(user);
   }
   async insideTypeForUser({
     active,

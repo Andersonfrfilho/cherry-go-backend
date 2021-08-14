@@ -40,3 +40,5 @@ export { InsideTypeForUserRepositoryDTO } from "@modules/accounts/dtos/repositor
 export { CreateTransportTypesAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateTransportTypesAvailable.repository.dto";
 export { CreateUserPhonesClientServiceResponseDTO } from "@modules/accounts/dtos/services/CreateUserPhonesClient.response.service.dto";
 export { CreateUserPhonesClientServiceRequestDTO } from "@modules/accounts/dtos/services/CreateUserPhonesClient.request.service.dto";
+export { CreateUserInsideServiceDTO } from "@modules/accounts/dtos/services/CreateUserInside.service.dto";
+export { CreateUserInsideRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserInside.repository.dto";
