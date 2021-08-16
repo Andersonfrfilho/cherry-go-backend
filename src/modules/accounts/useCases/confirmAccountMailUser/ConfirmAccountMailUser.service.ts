@@ -4,7 +4,7 @@ import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.r
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import { FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
+import { FORBIDDEN, NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
 
 @injectable()
 class ConfirmAccountMailUserService {
@@ -22,7 +22,7 @@ class ConfirmAccountMailUserService {
     );
 
     if (!user_token) {
-      throw new AppError(FORBIDDEN.TOKEN_INVALID);
+      throw new AppError(NOT_FOUND.REFRESH_TOKEN_DOES_NOT_EXIST);
     }
 
     if (

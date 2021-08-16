@@ -25,6 +25,8 @@ import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.r
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
+import { UserTokens } from "../entities/UserTokens";
+
 export class UsersRepository implements UsersRepositoryInterface {
   private repository: Repository<User>;
   private repository_address: Repository<Address>;
@@ -35,6 +37,7 @@ export class UsersRepository implements UsersRepositoryInterface {
   private repository_users_terms_accepts: Repository<UserTermsAccept>;
   private repository_tag: Repository<Tag>;
   private repository_clients_tags: Repository<ClientTag>;
+  private repository_users_tokens: Repository<UserTokens>;
 
   constructor() {
     this.repository = getRepository(User);
@@ -46,6 +49,12 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
     this.repository_tag = getRepository(Tag);
     this.repository_clients_tags = getRepository(ClientTag);
+    this.repository_users_tokens = getRepository(UserTokens);
+  }
+  async findUserWithToken(token: string): Promise<UserTokens> {
+    return this.repository_users_tokens.findOne({
+      where: { refresh_token: token },
+    });
   }
   async updateActiveUserTypeInsides({
     id,

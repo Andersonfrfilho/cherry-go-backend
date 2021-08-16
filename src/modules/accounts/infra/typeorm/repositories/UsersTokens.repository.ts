@@ -13,6 +13,11 @@ class UsersTokensRepository implements UsersTokensRepositoryInterface {
   constructor() {
     this.repository = getRepository(UserTokens);
   }
+  async findByUserAndRemoveTokens(id: string): Promise<void> {
+    const user_tokens = await this.repository.find({ where: { user_id: id } });
+
+    await this.repository.remove(user_tokens);
+  }
 
   async findByRefreshToken(refresh_token: string): Promise<UserTokens> {
     const userToken = await this.repository.findOne({ refresh_token });

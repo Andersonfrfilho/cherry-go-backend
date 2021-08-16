@@ -13,6 +13,8 @@ import {
 } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
+import { UserTokens } from "../infra/typeorm/entities/UserTokens";
+
 export interface UsersRepositoryInterface {
   create(data: CreateUserClientRepositoryDTO): Promise<User>;
   createUserAddress(data: CreateUserAddressClientRepositoryDTO): Promise<User>;
@@ -53,4 +55,5 @@ export interface UsersRepositoryInterface {
   updateActiveUserTypeInsides(
     data: UpdateActiveUserRepositoryDTO
   ): Promise<void>;
+  findUserWithToken(token: string): Promise<UserTokens>;
 }

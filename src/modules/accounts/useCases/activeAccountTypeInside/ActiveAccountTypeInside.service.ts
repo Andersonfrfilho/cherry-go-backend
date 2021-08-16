@@ -6,7 +6,7 @@ import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-class ActiveAccountService {
+export class ActiveTypeInsideService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface
@@ -32,4 +32,3 @@ class ActiveAccountService {
     });
   }
 }
-export { ActiveAccountService };

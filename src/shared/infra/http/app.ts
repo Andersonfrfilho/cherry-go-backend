@@ -41,20 +41,22 @@ if (process.env.ENVIRONMENT === "production") {
   app.use(Sentry.Handlers.errorHandler());
 }
 app.use(errors());
-app.use((err: Error, _: Request, response: Response, next: NextFunction) => {
-  if (err instanceof AppError) {
-    console.log(err.code);
-    return response.status(err.status_code).json({
+app.use(
+  (err: Error, request: Request, response: Response, next: NextFunction) => {
+    if (err instanceof AppError) {
+      console.log(err);
+      return response.status(err.status_code).json({
+        status: "error",
+        message: err.message,
+        code: err.code,
+      });
+    }
+
+    return response.status(HTTP_ERROR_CODES_ENUM.INTERNAL_SERVER_ERROR).json({
       status: "error",
       message: err.message,
-      code: err.code,
     });
   }
-
-  return response.status(HTTP_ERROR_CODES_ENUM.INTERNAL_SERVER_ERROR).json({
-    status: "error",
-    message: err.message,
-  });
-});
+);
 
 export { app };
