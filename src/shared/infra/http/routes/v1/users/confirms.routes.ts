@@ -6,7 +6,7 @@ import { ConfirmAccountPhoneUserController } from "@modules/accounts/useCases/co
 import { schemaConfirmAccountPhoneUser } from "@modules/accounts/useCases/confirmAccountPhoneUser/confirmAccountPhoneUser.schema";
 import { ResendConfirmationMailUserController } from "@modules/accounts/useCases/resendConfirmationMailUser/ResendConfirmationMailUser.controller";
 import { schemaResendConfirmationMailUser } from "@modules/accounts/useCases/resendConfirmationMailUser/resendConfirmationMailUser.schema";
-import { ResendConfirmationMailUserMailController } from "@modules/accounts/useCases/resendConfirmationMailUserMail/resendConfirmationMailUserMail.controller";
+import { ResendConfirmationMailUserMailController } from "@modules/accounts/useCases/resendConfirmationMailUserMail/ResendConfirmationMailUserMail.controller";
 import { schemaResendConfirmationMailUserMailService } from "@modules/accounts/useCases/resendConfirmationMailUserMail/resendConfirmationMailUserMail.schema";
 import { TermsAcceptUserController } from "@modules/accounts/useCases/termsAcceptsUser/TermsAcceptsUser.controller";
 import { schemaAcceptUser } from "@modules/accounts/useCases/termsAcceptsUser/termsAcceptsUser.schema";
