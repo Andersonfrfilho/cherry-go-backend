@@ -21,7 +21,7 @@ import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN } from "@shared/errors/constants";
 
 @injectable()
-class CreateUserPhonesClientService {
+export class CreatePhonesUserInsideService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
@@ -109,4 +109,3 @@ class CreateUserPhonesClientService {
     return { user, token: refresh_token };
   }
 }
-export { CreateUserPhonesClientService };

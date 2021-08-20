@@ -11,7 +11,7 @@ export class ResendConfirmationMailUserMailController {
     const resendConfirmationMailUserService = container.resolve(
       ResendConfirmationMailUserMailService
     );
-
+    console.log(email);
     await resendConfirmationMailUserService.execute(email);
 
     return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();

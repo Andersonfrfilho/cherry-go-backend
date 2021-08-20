@@ -20,14 +20,25 @@ class UserTypeUser {
   @Column()
   user_id: string;
 
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
+  user?: User;
+
   @Column()
   user_type_id: string;
+
+  @ManyToOne(() => TypeUser, { eager: true })
+  @JoinColumn({ name: "user_type_id", referencedColumnName: "id" })
+  user_type?: TypeUser;
 
   @Column()
   active: boolean;
 
   @Column("varchar", { array: true })
   roles?: string[];
+
+  @Column("varchar", { array: true })
+  permissions?: string[];
 
   @CreateDateColumn()
   created_at?: Date;

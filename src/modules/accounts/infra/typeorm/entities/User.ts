@@ -23,6 +23,8 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 
+import { UserTypeUser } from "./UserTypeUser";
+
 @Entity("users")
 class User {
   @PrimaryColumn()
@@ -87,16 +89,10 @@ class User {
   )
   image_profile?: UserProfileImage[];
 
-  @ManyToMany(() => TypeUser, (type_user) => type_user.users, {
-    cascade: true,
+  @OneToMany(() => UserTypeUser, (userTypesUser) => userTypesUser.user, {
     eager: true,
   })
-  @JoinTable({
-    name: "users_types_users",
-    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "user_type_id", referencedColumnName: "id" }],
-  })
-  types?: TypeUser[];
+  types?: UserTypeUser[];
 
   @ManyToMany(() => Appointment)
   @JoinTable({

@@ -26,6 +26,14 @@ export class CreateUsersTypesUsers1617516064898 implements MigrationInterface {
             type: "varchar",
             isArray: true,
             isNullable: true,
+            default: "array[]::varchar[]",
+          },
+          {
+            name: "permissions",
+            type: "varchar",
+            isArray: true,
+            isNullable: true,
+            default: "array[]::varchar[]",
           },
           {
             name: "active",

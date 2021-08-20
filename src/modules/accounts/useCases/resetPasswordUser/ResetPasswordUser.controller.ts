@@ -5,8 +5,7 @@ import { ResetPasswordService } from "@modules/accounts/useCases/resetPasswordUs
 
 export class ResetPasswordUserController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { token } = request.query;
-    const { password } = request.body;
+    const { password, token } = request.body;
 
     const resetPasswordService = container.resolve(ResetPasswordService);
     await resetPasswordService.execute({

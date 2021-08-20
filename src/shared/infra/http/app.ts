@@ -43,6 +43,7 @@ if (process.env.ENVIRONMENT === "production") {
 app.use(errors());
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
+    console.log(err);
     if (err instanceof AppError) {
       console.log(err);
       return response.status(err.status_code).json({
@@ -55,6 +56,7 @@ app.use(
     return response.status(HTTP_ERROR_CODES_ENUM.INTERNAL_SERVER_ERROR).json({
       status: "error",
       message: err.message,
+      code: "50001",
     });
   }
 );
