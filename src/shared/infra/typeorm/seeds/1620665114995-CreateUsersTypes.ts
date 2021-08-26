@@ -1,4 +1,4 @@
-import { getConnection, MigrationInterface } from "typeorm";
+import { getConnection, MigrationInterface, Not } from "typeorm";
 
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -7,11 +7,11 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
   public async up(): Promise<void> {
     const users = (await getConnection("seeds")
       .getRepository("users")
-      .find()) as User[];
+      .find({ where: { cpf: Not("00000000000") } })) as User[];
 
     const users_types = (await getConnection("seeds")
       .getRepository("types_users")
-      .find()) as TypeUser[];
+      .find({ where: { name: Not("admin") } })) as TypeUser[];
 
     let related = 0;
     const related_array = [];
@@ -56,7 +56,6 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
         related_types += 1;
       }
     }
-
     await getConnection("seeds")
       .getRepository("users_types_users")
       .save(related_array);

@@ -5,16 +5,14 @@ import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 export class CreateClientTags1620960362104 implements MigrationInterface {
   public async up(): Promise<void> {
-    const clients = await getConnection("seeds")
-      .getRepository(User)
+    const clients = (await getConnection("seeds")
+      .getRepository("users")
       .createQueryBuilder("users")
-      .leftJoinAndSelect(
-        "users.types",
-        "types_users",
-        "types_users.name = :category_name",
-        { category_name: "clients" }
-      )
-      .getMany();
+      .leftJoinAndSelect("users.types", "types")
+      .leftJoinAndSelect("types.user_type", "user_type")
+      .where("user_type.name like :name", { name: "client" })
+      .getMany()) as User[];
+
     const tags = (await getConnection("seeds")
       .getRepository("tags")
       .find()) as Tag[];

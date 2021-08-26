@@ -1,5 +1,5 @@
 import faker from "faker";
-import { getConnection, MigrationInterface } from "typeorm";
+import { getConnection, MigrationInterface, Not } from "typeorm";
 
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
@@ -9,7 +9,8 @@ export class CreateDocumentsImages1620960362104 implements MigrationInterface {
   public async up(): Promise<void> {
     const users = (await getConnection("seeds")
       .getRepository("users")
-      .find()) as User[];
+      .find({ where: { cpf: Not("00000000000") } })) as User[];
+
     const images_factory = new ImagesFactory();
     const images_factory_list = images_factory.generate({
       quantity: users.length,

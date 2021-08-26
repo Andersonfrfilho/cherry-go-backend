@@ -13,6 +13,10 @@ import {
 } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
+import {
+  PaginationPropsDTO,
+  PaginationResponsePropsDTO,
+} from "../dtos/repositories/PaginationProps.dto";
 import { UserTokens } from "../infra/typeorm/entities/UserTokens";
 
 export interface UsersRepositoryInterface {
@@ -56,4 +60,7 @@ export interface UsersRepositoryInterface {
     data: UpdateActiveUserRepositoryDTO
   ): Promise<void>;
   findUserWithToken(token: string): Promise<UserTokens>;
+  findUsersWithPages(
+    data: PaginationPropsDTO
+  ): Promise<PaginationResponsePropsDTO>;
 }

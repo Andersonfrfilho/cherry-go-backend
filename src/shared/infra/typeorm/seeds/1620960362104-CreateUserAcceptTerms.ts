@@ -1,4 +1,4 @@
-import { getConnection, MigrationInterface } from "typeorm";
+import { getConnection, MigrationInterface, Not } from "typeorm";
 
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
@@ -6,7 +6,7 @@ export class CreateUserAcceptTerms1620960362104 implements MigrationInterface {
   public async up(): Promise<void> {
     const users = (await getConnection("seeds")
       .getRepository("users")
-      .find()) as User[];
+      .find({ where: { cpf: Not("00000000000") } })) as User[];
 
     let user_index = 0;
     const related_terms = [];

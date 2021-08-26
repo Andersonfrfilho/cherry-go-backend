@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { GetUsersController } from "@modules/accounts/useCases/getUsers/GetUsers.controller";
 import { authenticateUsersRoutes } from "@shared/infra/http/routes/v1/users/authenticate.routes";
 import { clientsRoutes } from "@shared/infra/http/routes/v1/users/clients.routes";
 import { confirmsRoutes } from "@shared/infra/http/routes/v1/users/confirms.routes";
@@ -10,7 +11,9 @@ import { profileRoutes } from "@shared/infra/http/routes/v1/users/profile.routes
 import { providersRoutes } from "@shared/infra/http/routes/v1/users/providers.routes";
 
 const usersRoutes = Router();
+const getUsersController = new GetUsersController();
 
+usersRoutes.get("/", getUsersController.handle);
 usersRoutes.use("/clients", clientsRoutes);
 usersRoutes.use("/insides", insidesRoutes);
 usersRoutes.use("/providers", providersRoutes);

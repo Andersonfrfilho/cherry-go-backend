@@ -11,8 +11,11 @@ import {
   UpdateActiveUserRepositoryDTO,
   UpdatedUserClientRepositoryDTO,
   InsideTypeForUserRepositoryDTO,
-  CreateUserInsideRepositoryDTO,
 } from "@modules/accounts/dtos";
+import {
+  PaginationPropsDTO,
+  PaginationResponsePropsDTO,
+} from "@modules/accounts/dtos/repositories/PaginationProps.dto";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { ClientTag } from "@modules/accounts/infra/typeorm/entities/ClientTag";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
@@ -50,6 +53,62 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_tag = getRepository(Tag);
     this.repository_clients_tags = getRepository(ClientTag);
     this.repository_users_tokens = getRepository(UserTokens);
+  }
+
+  async findUsersWithPages({
+    per_page = "10",
+    page = "1",
+    fields,
+    order = { property: "create_at", ordering: "ASC" },
+  }: PaginationPropsDTO): Promise<PaginationResponsePropsDTO> {
+    const page_start = (Number(page) - 1) * Number(per_page);
+    const usersQuery = this.repository
+      .createQueryBuilder("foundUsers")
+      .leftJoinAndSelect("foundUsers.types", "types")
+      .leftJoinAndSelect("types.user_type", "user_type")
+      .andWhere("user_type.name != :name", { name: "admin" });
+
+    if (fields?.cpf) {
+      usersQuery.andWhere("foundUsers.cpf like :cpf", {
+        cpf: `%${fields.cpf}%`,
+      });
+    }
+    if (fields?.name) {
+      usersQuery.andWhere("foundUsers.name like :name", {
+        name: `%${fields.name}%`,
+      });
+    }
+    if (fields?.last_name) {
+      usersQuery.andWhere("foundUsers.last_name like :last_name", {
+        last_name: `%${fields.last_name}%`,
+      });
+    }
+    if (fields?.birth_date) {
+      usersQuery.andWhere("foundUsers.birth_date like :birth_date", {
+        birth_date: `%${fields.birth_date}%`,
+      });
+    }
+    if (fields?.email) {
+      usersQuery.andWhere("foundUsers.email like :email", {
+        email: `%${fields.email}%`,
+      });
+    }
+    if (fields?.gender) {
+      usersQuery.andWhere("foundUsers.gender like :gender", {
+        gender: `%${fields.gender}%`,
+      });
+    }
+
+    const [result, total] = await usersQuery
+      .skip(page_start)
+      .take(Number(per_page))
+      .orderBy(`foundUsers.${order.property}`, `${order.ordering}`)
+      .getManyAndCount();
+
+    return {
+      data: result,
+      total,
+    };
   }
   async findUserWithToken(token: string): Promise<UserTokens> {
     return this.repository_users_tokens.findOne({

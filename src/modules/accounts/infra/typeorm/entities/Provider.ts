@@ -23,6 +23,8 @@ import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTe
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 
+import { UserTypeUser } from "./UserTypeUser";
+
 @Entity("users")
 class Provider {
   @PrimaryGeneratedColumn("uuid")
@@ -76,13 +78,10 @@ class Provider {
   })
   addresses?: Address[];
 
-  @ManyToMany(() => TypeUser, { cascade: true, eager: true })
-  @JoinTable({
-    name: "users_types_users",
-    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "user_type_id", referencedColumnName: "id" }],
+  @OneToMany(() => UserTypeUser, (userTypesUser) => userTypesUser.user, {
+    eager: true,
   })
-  types: TypeUser[];
+  types?: UserTypeUser[];
 
   // // TODO:: refatorar relacionamento
   // @ManyToMany(() => Appointment, { cascade: true, eager: true })

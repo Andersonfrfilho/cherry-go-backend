@@ -12,27 +12,21 @@ export class CreateAppointmentProvidersServicesTransportsClients1620963956718
     const providers = await getConnection("seeds")
       .getRepository(Provider)
       .createQueryBuilder("users")
+      .leftJoinAndSelect("users.types", "types")
+      .leftJoinAndSelect("types.user_type", "user_type")
       .leftJoinAndSelect("users.services", "services")
       .leftJoinAndSelect("users.transports_types", "transports_types")
       .leftJoinAndSelect("users.addresses", "addresses")
       .leftJoinAndSelect("users.locals", "locals")
-      .leftJoinAndSelect(
-        "users.types",
-        "types_users",
-        "types_users.name = :category_name",
-        { category_name: "provider" }
-      )
+      .where("user_type.name like :name", { name: "providers" })
       .getMany();
 
     const clients = (await getConnection("seeds")
-      .getRepository(User)
+      .getRepository("users")
       .createQueryBuilder("users")
-      .leftJoinAndSelect(
-        "users.types",
-        "types_users",
-        "types_users.name = :category_name",
-        { category_name: "client" }
-      )
+      .leftJoinAndSelect("users.types", "types")
+      .leftJoinAndSelect("types.user_type", "user_type")
+      .where("user_type.name like :name", { name: "client" })
       .getMany()) as User[];
 
     const appointments_factory = new AppointmentsFactory();

@@ -21,7 +21,7 @@ class Address {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
-  @Column({ transformer: [lowercase] })
+  @Column()
   street: string;
 
   @Column()
@@ -36,16 +36,16 @@ class Address {
   @Column()
   latitude: string;
 
-  @Column({ transformer: [lowercase] })
+  @Column()
   district: string;
 
-  @Column({ transformer: [lowercase] })
+  @Column()
   city: string;
 
-  @Column({ transformer: [lowercase] })
+  @Column()
   state: string;
 
-  @Column({ transformer: [initialUpperCase] })
+  @Column()
   country: string;
 
   @ManyToMany(() => User, { cascade: true })

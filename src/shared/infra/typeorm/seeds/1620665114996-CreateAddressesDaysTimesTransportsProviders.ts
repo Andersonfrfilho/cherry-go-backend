@@ -17,12 +17,9 @@ export class CreateAddressesDaysTimesTransportsProviders1620665114995
     const providers = await getConnection("seeds")
       .getRepository(Provider)
       .createQueryBuilder("users")
-      .leftJoinAndSelect(
-        "users.types",
-        "types_users",
-        "types_users.name = :category_name",
-        { category_name: "provider" }
-      )
+      .leftJoinAndSelect("users.types", "types")
+      .leftJoinAndSelect("types.user_type", "user_type")
+      .where("user_type.name like :name", { name: "providers" })
       .getMany();
 
     const address_factory = new AddressesFactory();

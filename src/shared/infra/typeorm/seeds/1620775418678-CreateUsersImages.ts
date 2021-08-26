@@ -1,6 +1,7 @@
 import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
+import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
 import { ImagesFactory } from "@shared/infra/typeorm/factories";
@@ -10,23 +11,17 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
     const clients = (await getConnection("seeds")
       .getRepository("users")
       .createQueryBuilder("users")
-      .leftJoinAndSelect(
-        "users.types",
-        "types_users",
-        "types_users.name = :category_name",
-        { category_name: "client" }
-      )
+      .leftJoinAndSelect("users.types", "types")
+      .leftJoinAndSelect("types.user_type", "user_type")
+      .where("user_type.name like :name", { name: "client" })
       .getMany()) as User[];
 
     const providers = await getConnection("seeds")
-      .getRepository(User)
+      .getRepository(Provider)
       .createQueryBuilder("users")
-      .leftJoinAndSelect(
-        "users.types",
-        "types_users",
-        "types_users.name = :category_name",
-        { category_name: "provider" }
-      )
+      .leftJoinAndSelect("users.types", "types")
+      .leftJoinAndSelect("types.user_type", "user_type")
+      .where("user_type.name like :name", { name: "providers" })
       .getMany();
 
     const images_factory = new ImagesFactory();
@@ -38,7 +33,7 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
     const providers_images = images_factory.generate({
       quantity: faker.datatype.number({
         min: providers.length,
-        max: providers.length * providers.length,
+        max: providers.length * 2,
       }),
     });
 
@@ -70,10 +65,7 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
     const related_array = [];
     while (related < provider_images_list.length) {
       let related_providers = 0;
-      while (
-        related_providers < providers.length &&
-        related < provider_images_list.length
-      ) {
+      while (related_providers < providers.length) {
         related_array.push({
           provider_id: providers[related_providers].id,
           image_id: provider_images_list[related].id,
@@ -81,6 +73,7 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
         related_providers += 1;
         related += 1;
       }
+      related += 1;
     }
 
     await getConnection("seeds")
