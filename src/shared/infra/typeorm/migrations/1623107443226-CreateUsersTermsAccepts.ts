@@ -24,6 +24,10 @@ export class CreateUsersTermsAccepts1623107443226
             type: "boolean",
           },
           {
+            name: "type",
+            type: "string",
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

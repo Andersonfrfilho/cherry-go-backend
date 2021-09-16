@@ -99,14 +99,14 @@ export class UsersRepository implements UsersRepositoryInterface {
       });
     }
 
-    const [result, total] = await usersQuery
+    const [results, total] = await usersQuery
       .skip(page_start)
       .take(Number(per_page))
       .orderBy(`foundUsers.${order.property}`, `${order.ordering}`)
       .getManyAndCount();
 
     return {
-      data: result,
+      results,
       total,
     };
   }
@@ -310,6 +310,7 @@ export class UsersRepository implements UsersRepositoryInterface {
     gender,
     details,
     active,
+    term,
   }: CreateUserClientRepositoryDTO): Promise<User> {
     const type = await this.repository_users_types.findOne({
       where: { name: USER_TYPES_ENUM.CLIENT },
@@ -335,6 +336,14 @@ export class UsersRepository implements UsersRepositoryInterface {
     });
 
     await this.repository_users_types_users.save(users_types);
+
+    const term_accept = this.repository_users_terms_accepts.create({
+      accept: term,
+      user_id: user.id,
+      type: USER_TYPES_ENUM.CLIENT,
+    });
+
+    await this.repository_users_terms_accepts.save(term_accept);
 
     return this.repository.create(user);
   }

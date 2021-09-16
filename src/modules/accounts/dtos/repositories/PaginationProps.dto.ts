@@ -13,5 +13,5 @@ export interface PaginationPropsDTO {
 
 export interface PaginationResponsePropsDTO {
   total: number;
-  data: User[];
+  results: User[];
 }

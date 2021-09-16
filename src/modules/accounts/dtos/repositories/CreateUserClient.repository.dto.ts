@@ -9,4 +9,5 @@ export interface CreateUserClientRepositoryDTO {
   gender: string;
   details?: any;
   active?: boolean;
+  term: boolean;
 }

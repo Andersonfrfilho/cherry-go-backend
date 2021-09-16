@@ -1,4 +1,4 @@
-export interface CreateUserClientServiceDTO {
+export interface CreateUserProviderServiceDTO {
   name: string;
   last_name: string;
   cpf: string;

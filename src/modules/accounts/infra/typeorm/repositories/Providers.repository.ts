@@ -8,6 +8,8 @@ import {
   CreateAddressUsersProvidersRepositoryDTO,
   CreateTransportTypesAvailableRepositoryDTO,
 } from "@modules/accounts/dtos";
+import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProviderType.repository.dto";
+import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
 import { ProviderAvailabilityDay } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityDay";
@@ -20,6 +22,10 @@ import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
+import { TypeUser } from "../entities/TypeUser";
+import { UserTermsAccept } from "../entities/UserTermsAccept";
+import { UserTypeUser } from "../entities/UserTypeUser";
+
 class ProvidersRepository implements ProvidersRepositoryInterface {
   private repository: Repository<Provider>;
   private repository_available_days: Repository<ProviderAvailabilityDay>;
@@ -31,6 +37,10 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
   private repository_transport_type: Repository<TransportType>;
   private repository_addresses: Repository<Address>;
   private repository_provider_addresses: Repository<ProviderAddress>;
+  private repository_users_types: Repository<TypeUser>;
+  private repository_users_types_users: Repository<UserTypeUser>;
+  private repository_users_terms_accepts: Repository<UserTermsAccept>;
+
   constructor() {
     this.repository = getRepository(Provider);
     this.repository_available_days = getRepository(ProviderAvailabilityDay);
@@ -44,6 +54,65 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_transport_type = getRepository(TransportType);
     this.repository_addresses = getRepository(Address);
     this.repository_provider_addresses = getRepository(ProviderAddress);
+    this.repository_users_types = getRepository(TypeUser);
+    this.repository_users_types_users = getRepository(UserTypeUser);
+    this.repository_users_terms_accepts = getRepository(UserTermsAccept);
+  }
+  async createUserProviderType({
+    birth_date,
+    cpf,
+    email,
+    gender,
+    last_name,
+    name,
+    password,
+    rg,
+    term,
+    term_provider,
+    active,
+    details,
+  }: CreateUserProviderRepositoryDTO): Promise<Provider> {
+    const type = await this.repository_users_types.findOne({
+      where: { name: USER_TYPES_ENUM.CLIENT },
+    });
+
+    const user = await this.repository.save({
+      name,
+      last_name,
+      email,
+      cpf,
+      rg,
+      gender,
+      details,
+      birth_date,
+      password_hash: password,
+      active,
+    });
+
+    const users_types = this.repository_users_types_users.create({
+      user_id: user.id,
+      user_type_id: type.id,
+      active: true,
+    });
+
+    await this.repository_users_types_users.save(users_types);
+
+    const term_accept = this.repository_users_terms_accepts.create([
+      {
+        accept: term,
+        user_id: user.id,
+        type: USER_TYPES_ENUM.CLIENT,
+      },
+      {
+        accept: term_provider,
+        user_id: user.id,
+        type: USER_TYPES_ENUM.PROVIDER,
+      },
+    ]);
+
+    await this.repository_users_terms_accepts.save(term_accept);
+
+    return this.repository.create(user);
   }
 
   async createAddressProviders({

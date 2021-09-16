@@ -24,6 +24,9 @@ class UserTermsAccept {
   @Column()
   accept: boolean;
 
+  @Column()
+  type: string;
+
   @ManyToOne(() => User)
   @JoinColumn({ name: "user_id" })
   user: User;

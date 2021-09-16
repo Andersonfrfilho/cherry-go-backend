@@ -2,7 +2,7 @@ import { celebrate, Joi, Segments } from "celebrate";
 import { differenceInYears } from "date-fns";
 
 const schemaCreateUserClient = celebrate({
-  [Segments.BODY]: {
+  [Segments.PATH]: {
     name: Joi.string().lowercase().required(),
     last_name: Joi.string().lowercase().required(),
     cpf: Joi.string().length(11).required(),
@@ -27,7 +27,6 @@ const schemaCreateUserClient = celebrate({
         }
         return value;
       }),
-    term_client: Joi.boolean().required(),
   },
 });
 

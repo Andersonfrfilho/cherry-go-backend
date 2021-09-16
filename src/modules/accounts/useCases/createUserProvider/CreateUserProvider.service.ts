@@ -3,7 +3,8 @@ import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
-import { CreateUserClientServiceDTO } from "@modules/accounts/dtos";
+import { CreateUserProviderServiceDTO } from "@modules/accounts/dtos/services/CreateUserProviderType.service.dto";
+import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { User } from "@sentry/node";
@@ -16,10 +17,12 @@ import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";
 
 @injectable()
-export class CreateUserClientService {
+export class CreateUserProviderService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
+    @inject("ProvidersRepository")
+    private providersRepository: ProvidersRepositoryInterface,
     @inject("HashProvider")
     private hashProvider: HashProviderInterface,
     @inject("UsersTokensRepository")
@@ -40,7 +43,8 @@ export class CreateUserClientService {
     details,
     birth_date,
     term,
-  }: CreateUserClientServiceDTO): Promise<User> {
+    term_provider,
+  }: CreateUserProviderServiceDTO): Promise<User> {
     const userAlreadyExists = await this.usersRepository.findUserByEmailCpfRg({
       email,
       cpf,
@@ -53,7 +57,7 @@ export class CreateUserClientService {
 
     const password_hash = await this.hashProvider.generateHash(password);
 
-    const user = await this.usersRepository.createUserClientType({
+    const user = await this.providersRepository.createUserProviderType({
       name,
       last_name,
       cpf,
@@ -65,6 +69,7 @@ export class CreateUserClientService {
       birth_date,
       active: false,
       term,
+      term_provider,
     });
 
     const refresh_token = uuidV4();

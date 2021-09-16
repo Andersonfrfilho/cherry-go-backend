@@ -9,6 +9,8 @@ import {
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/CreateAppointment.service.dto";
 
+import { CreateUserProviderRepositoryDTO } from "../dtos/repositories/CreateUserProviderType.repository.dto";
+
 export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
   createAddressProviders(
@@ -33,4 +35,7 @@ export interface ProvidersRepositoryInterface {
   createTransportTypesAvailable(
     data: CreateTransportTypesAvailableRepositoryDTO
   ): Promise<void>;
+  createUserProviderType(
+    data: CreateUserProviderRepositoryDTO
+  ): Promise<Provider>;
 }

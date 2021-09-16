@@ -17,6 +17,7 @@ import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthen
 import { ensureAuthenticatedProvider } from "@shared/infra/http/middlewares/ensureAuthenticatedProvider";
 
 const providersRoutes = Router();
+const createUsersProvidersController = new CreateUsersProvidersController();
 const createUsersTypeProvidersController = new CreateUsersTypeProvidersController();
 const authenticateUserProviderController = new AuthenticateUserProviderController();
 const createProviderTimesAvailabilitiesController = new CreateProviderTimesAvailabilitiesController();
@@ -24,6 +25,12 @@ const createProviderDaysAvailabilitiesController = new CreateProviderDaysAvailab
 const createServiceProviderController = new CreateServiceProviderController();
 const createProvidersPaymentsTypesController = new CreateProvidersPaymentsTypesController();
 const createProviderTransportTypesAvailabilitiesController = new CreateProviderTransportTypesAvailabilitiesController();
+
+providersRoutes.post(
+  "/",
+  ensureAuthenticated,
+  createUsersTypeProvidersController.handle
+);
 
 providersRoutes.patch(
   "/",

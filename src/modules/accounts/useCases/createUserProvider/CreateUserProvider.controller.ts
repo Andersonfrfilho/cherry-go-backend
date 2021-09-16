@@ -1,9 +1,9 @@
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { CreateUserClientService } from "@modules/accounts/useCases/createUserClient/CreateUserClient.service";
+import { CreateUserProviderService } from "@modules/accounts/useCases/createUserProvider/CreateUserProvider.service";
 
-class CreateUserClientController {
+class CreateUserProviderController {
   async handle(request: Request, response: Response): Promise<Response> {
     const {
       name,
@@ -15,11 +15,14 @@ class CreateUserClientController {
       birth_date,
       gender,
       term_client,
+      term_provider,
     } = request.body;
 
-    const createUserClientService = container.resolve(CreateUserClientService);
+    const createUserProviderService = container.resolve(
+      CreateUserProviderService
+    );
 
-    const user = await createUserClientService.execute({
+    const user = await createUserProviderService.execute({
       name,
       last_name,
       cpf,
@@ -29,9 +32,10 @@ class CreateUserClientController {
       password: password_confirm,
       birth_date,
       term: term_client,
+      term_provider,
     });
 
     return response.json(user);
   }
 }
-export { CreateUserClientController };
+export { CreateUserProviderController };
