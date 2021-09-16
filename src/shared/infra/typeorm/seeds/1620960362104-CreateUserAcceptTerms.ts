@@ -1,5 +1,6 @@
 import { getConnection, MigrationInterface, Not } from "typeorm";
 
+import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
 export class CreateUserAcceptTerms1620960362104 implements MigrationInterface {
@@ -14,6 +15,7 @@ export class CreateUserAcceptTerms1620960362104 implements MigrationInterface {
       related_terms.push({
         user_id: users[user_index].id,
         accept: true,
+        type: USER_TYPES_ENUM.CLIENT,
       });
       user_index += 1;
     }

@@ -17,7 +17,6 @@ export class CreateUsersTermsAccepts1623107443226
           {
             name: "user_id",
             type: "uuid",
-            isUnique: true,
           },
           {
             name: "accept",
@@ -25,7 +24,7 @@ export class CreateUsersTermsAccepts1623107443226
           },
           {
             name: "type",
-            type: "string",
+            type: "varchar",
           },
           {
             name: "created_at",
@@ -51,6 +50,12 @@ export class CreateUsersTermsAccepts1623107443226
             columnNames: ["user_id"],
             onDelete: "CASCADE",
             onUpdate: "CASCADE",
+          },
+        ],
+        indices: [
+          {
+            columnNames: ["user_id", "type"],
+            isUnique: true,
           },
         ],
       })

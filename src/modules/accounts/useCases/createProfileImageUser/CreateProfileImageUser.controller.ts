@@ -6,7 +6,7 @@ import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums";
 
 export class CreatePhotoProfileUsersController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { id } = request.user;
+    const { user_id } = request.body;
     const image_profile = request.file.filename;
     const createProfileImageUserService = container.resolve(
       CreateProfileImageUserService
@@ -14,7 +14,7 @@ export class CreatePhotoProfileUsersController {
 
     await createProfileImageUserService.execute({
       image_profile_name: image_profile,
-      user_id: id,
+      user_id,
     });
 
     return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();

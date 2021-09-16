@@ -12,12 +12,14 @@ import { CreateProviderTransportTypesAvailabilitiesController } from "@modules/a
 import { schemaCreateProviderTransportTypesAvailabilities } from "@modules/accounts/useCases/createProviderTransportTypesAvailabilities/createProviderTransportTypesAvailabilities.schema";
 import { CreateServiceProviderController } from "@modules/accounts/useCases/createServiceProvider/CreateServiceProvider.controller";
 import { schemaCreateServiceProvider } from "@modules/accounts/useCases/createServiceProvider/createServiceProvider.schema";
+import { CreateUserProviderController } from "@modules/accounts/useCases/createUserProvider/CreateUserProvider.controller";
+import { schemaCreateUserProvider } from "@modules/accounts/useCases/createUserProvider/createUserProvider.schema";
 import { CreateUsersTypeProvidersController } from "@modules/accounts/useCases/createUsersTypeProviders/CreateUsersTypeProviders.controller";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 import { ensureAuthenticatedProvider } from "@shared/infra/http/middlewares/ensureAuthenticatedProvider";
 
 const providersRoutes = Router();
-const createUsersProvidersController = new CreateUsersProvidersController();
+const createUserProviderController = new CreateUserProviderController();
 const createUsersTypeProvidersController = new CreateUsersTypeProvidersController();
 const authenticateUserProviderController = new AuthenticateUserProviderController();
 const createProviderTimesAvailabilitiesController = new CreateProviderTimesAvailabilitiesController();
@@ -28,8 +30,8 @@ const createProviderTransportTypesAvailabilitiesController = new CreateProviderT
 
 providersRoutes.post(
   "/",
-  ensureAuthenticated,
-  createUsersTypeProvidersController.handle
+  schemaCreateUserProvider,
+  createUserProviderController.handle
 );
 
 providersRoutes.patch(

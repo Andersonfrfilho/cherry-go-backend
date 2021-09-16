@@ -25,37 +25,48 @@ export class CreateDocumentsUsersService {
     user_id,
     description,
   }: CreateDocumentsUsersServiceDTO): Promise<void> {
+    console.log("#############");
     const user = await this.usersRepository.findByIdWithDocument(user_id);
-
+    console.log("############ - 1");
     const [front, back] = user.documents;
+    console.log("############ - 2");
 
     const document_side = {
       front,
       back,
     };
+    console.log("############ - 3");
 
     if (document_side[description]) {
+      console.log("############ - 4");
       const image_found = await this.imagesRepository.findById(
         document_side[description].image_id
       );
+      console.log("############ - 5");
       await this.usersDocumentsRepository.deleteById(
         document_side[description].id
       );
+      console.log("############ - 6");
       await this.storageProvider.delete(
         image_found.name,
         STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
       );
+      console.log("############ - 6");
       await this.imagesRepository.deleteById(
         document_side[description].image_id
       );
+      console.log("############ - 7");
     }
 
+    console.log("############ - 8");
     const name = await this.storageProvider.save(
       document_file,
       STORAGE_TYPE_FOLDER_ENUM.DOCUMENTS
     );
 
+    console.log("############ - 9");
     const image = await this.imagesRepository.create({ name });
+    console.log("############ - 10");
 
     await this.usersDocumentsRepository.create({
       image_id: image.id,
@@ -63,5 +74,6 @@ export class CreateDocumentsUsersService {
       value: user.cpf,
       description: USER_DOCUMENT_VALUE_ENUM[description],
     });
+    console.log("############ - 11");
   }
 }

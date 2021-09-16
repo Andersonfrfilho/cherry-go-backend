@@ -72,8 +72,11 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     active,
     details,
   }: CreateUserProviderRepositoryDTO): Promise<Provider> {
-    const type = await this.repository_users_types.findOne({
-      where: { name: USER_TYPES_ENUM.CLIENT },
+    const types = await this.repository_users_types.find({
+      where: [
+        { name: USER_TYPES_ENUM.CLIENT },
+        { name: USER_TYPES_ENUM.PROVIDER },
+      ],
     });
 
     const user = await this.repository.save({
@@ -89,11 +92,13 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       active,
     });
 
-    const users_types = this.repository_users_types_users.create({
-      user_id: user.id,
-      user_type_id: type.id,
-      active: true,
-    });
+    const users_types = this.repository_users_types_users.create(
+      types.map((type) => ({
+        user_id: user.id,
+        user_type_id: type.id,
+        active: true,
+      }))
+    );
 
     await this.repository_users_types_users.save(users_types);
 

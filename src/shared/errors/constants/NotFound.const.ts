@@ -23,4 +23,9 @@ export const NOT_FOUND = {
     status_code,
     code: "4004",
   },
+  PHONE_DOES_NOT_EXIST: {
+    message: "Phone does not exists!",
+    status_code,
+    code: "4005",
+  },
 };

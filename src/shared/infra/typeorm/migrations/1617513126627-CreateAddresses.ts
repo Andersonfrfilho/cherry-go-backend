@@ -52,6 +52,16 @@ export class CreateAddresses1617513126627 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: "complement",
+            type: "varchar",
+            isNullable: true,
+          },
+          {
+            name: "reference",
+            type: "varchar",
+            isNullable: true,
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

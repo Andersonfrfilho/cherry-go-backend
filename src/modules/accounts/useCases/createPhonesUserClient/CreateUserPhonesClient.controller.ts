@@ -6,20 +6,19 @@ import { CreateUserPhonesClientService } from "@modules/accounts/useCases/create
 
 class CreateUserPhoneClientController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { id } = request.user;
-    const { country_code, ddd, number } = request.body;
+    const { country_code, ddd, number, user_id } = request.body;
     const createUserPhonesClientService = container.resolve(
       CreateUserPhonesClientService
     );
 
-    const user_address = await createUserPhonesClientService.execute({
-      user_id: id,
+    const user_phones = await createUserPhonesClientService.execute({
+      user_id,
       country_code,
       ddd,
       number,
     });
 
-    return response.json(classToClass(user_address));
+    return response.json(classToClass(user_phones));
   }
 }
 export { CreateUserPhoneClientController };

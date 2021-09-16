@@ -5,8 +5,8 @@ import auth from "@config/auth";
 import { config } from "@config/environment";
 import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
 import {
-  CreateUserPhonesClientServiceRequestDTO,
   CreateUserPhonesClientServiceResponseDTO,
+  ResendPhoneCodeUserClientServiceDTO,
 } from "@modules/accounts/dtos";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/Phones.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
@@ -21,7 +21,7 @@ import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN, NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-class CreateUserPhonesClientService {
+class ResendPhoneCodeUserClientService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
@@ -40,32 +40,18 @@ class CreateUserPhonesClientService {
   ) {}
   async execute({
     user_id,
-    country_code,
-    number,
-    ddd,
-  }: CreateUserPhonesClientServiceRequestDTO): Promise<CreateUserPhonesClientServiceResponseDTO> {
-    const user_exist = await this.usersRepository.findById(user_id);
+  }: ResendPhoneCodeUserClientServiceDTO): Promise<CreateUserPhonesClientServiceResponseDTO> {
+    const user = await this.usersRepository.findById(user_id);
 
-    if (!user_exist) {
+    if (!user) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    const phone = await this.phonesRepository.findPhoneUser({
-      ddd,
-      country_code,
-      number,
-    });
-
-    if (phone && phone.users[0].id) {
-      throw new AppError(FORBIDDEN.PHONE_BELONGS_TO_ANOTHER_USER);
+    if (!(user.phones && user.phones[0] && user.phones[0].number)) {
+      throw new AppError(NOT_FOUND.PHONE_DOES_NOT_EXIST);
     }
 
-    const user = await this.usersRepository.createUserPhones({
-      id: user_id,
-      country_code,
-      number,
-      ddd,
-    });
+    const { number, country_code, ddd } = user.phones[0];
 
     const code = Object.values(ENVIRONMENT_TYPE_ENUMS).includes(
       process.env.ENVIRONMENT as ENVIRONMENT_TYPE_ENUMS
@@ -74,6 +60,8 @@ class CreateUserPhonesClientService {
       : faker.phone.phoneNumber("####");
 
     const code_hash = await this.hashProvider.generateHash(code);
+
+    await this.usersTokensRepository.findByUserAndRemoveTokens(user.id);
 
     const refresh_token = this.jwtProvider.assign({
       payload: { email: user.email },
@@ -115,4 +103,4 @@ class CreateUserPhonesClientService {
     return { user, token: refresh_token };
   }
 }
-export { CreateUserPhonesClientService };
+export { ResendPhoneCodeUserClientService };

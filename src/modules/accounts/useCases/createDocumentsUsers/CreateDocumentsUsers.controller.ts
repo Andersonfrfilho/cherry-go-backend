@@ -6,16 +6,15 @@ import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums";
 
 class CreateDocumentsUsersController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { id } = request.user;
-    const { description } = request.body;
+    const { description, user_id } = request.body;
     const document_file = request.file.filename;
     const createDocumentsUsersService = container.resolve(
       CreateDocumentsUsersService
     );
-
+    console.log(description, user_id, document_file);
     await createDocumentsUsersService.execute({
       document_file,
-      user_id: id,
+      user_id,
       description,
     });
 

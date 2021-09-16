@@ -18,7 +18,7 @@ export class CreateAppointmentProvidersServicesTransportsClients1620963956718
       .leftJoinAndSelect("users.transports_types", "transports_types")
       .leftJoinAndSelect("users.addresses", "addresses")
       .leftJoinAndSelect("users.locals", "locals")
-      .where("user_type.name like :name", { name: "providers" })
+      .where("user_type.name like :name", { name: "provider" })
       .getMany();
 
     const clients = (await getConnection("seeds")

@@ -17,7 +17,7 @@ profileRoutes.use(
 
 profileRoutes.post(
   "/images",
-  ensureAuthenticated,
+  // ensureAuthenticated,
   uploadDocument.single("image_profile"),
   // schemaCreateProfilePhotoUser, TODO:: adicionar schema for file multipartform
   createPhotoProfileUsersController.handle

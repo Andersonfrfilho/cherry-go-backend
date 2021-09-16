@@ -18,7 +18,7 @@ documentsRoutes.use(
 documentsRoutes.post(
   "/image",
   uploadDocument.single("document"),
-  ensureAuthenticated,
+  // ensureAuthenticated,
   createDocumentsUsersController.handle
 );
 

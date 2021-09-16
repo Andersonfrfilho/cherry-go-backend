@@ -62,6 +62,12 @@ class Address {
   )
   appointments: AppointmentAddress[];
 
+  @Column()
+  complement?: string;
+
+  @Column()
+  reference?: string;
+
   @CreateDateColumn()
   @Exclude()
   created_at?: Date;

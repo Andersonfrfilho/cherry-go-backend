@@ -1,7 +1,7 @@
 import { celebrate, Joi, Segments } from "celebrate";
 import { differenceInYears } from "date-fns";
 
-const schemaCreateUserClient = celebrate({
+export const schemaCreateUserProvider = celebrate({
   [Segments.BODY]: {
     name: Joi.string().lowercase().required(),
     last_name: Joi.string().lowercase().required(),
@@ -28,7 +28,6 @@ const schemaCreateUserClient = celebrate({
         return value;
       }),
     term_client: Joi.boolean().required(),
+    term_provider: Joi.boolean().required(),
   },
 });
-
-export { schemaCreateUserClient };

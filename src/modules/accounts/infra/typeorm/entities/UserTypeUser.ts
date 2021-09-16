@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -41,12 +42,15 @@ class UserTypeUser {
   permissions?: string[];
 
   @CreateDateColumn()
+  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at?: Date;
 }
 

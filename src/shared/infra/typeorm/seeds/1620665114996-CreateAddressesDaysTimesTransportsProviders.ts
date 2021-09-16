@@ -19,9 +19,8 @@ export class CreateAddressesDaysTimesTransportsProviders1620665114995
       .createQueryBuilder("users")
       .leftJoinAndSelect("users.types", "types")
       .leftJoinAndSelect("types.user_type", "user_type")
-      .where("user_type.name like :name", { name: "providers" })
+      .where("user_type.name like :name", { name: "provider" })
       .getMany();
-
     const address_factory = new AddressesFactory();
 
     const providers_addresses = address_factory.generate({
@@ -30,14 +29,12 @@ export class CreateAddressesDaysTimesTransportsProviders1620665114995
     const addresses = await getConnection("seeds")
       .getRepository("addresses")
       .save(providers_addresses);
-
     const related_addresses = providers.map((provider, index) => ({
       provider_id: provider.id,
       address_id: addresses[index].id,
       active: true,
       amount: faker.datatype.number({ min: 10, max: 999 }),
     }));
-
     await getConnection("seeds")
       .getRepository("providers_addresses")
       .save(related_addresses);
@@ -62,7 +59,6 @@ export class CreateAddressesDaysTimesTransportsProviders1620665114995
     const transports_types = (await getConnection("seeds")
       .getRepository("transports_types")
       .find()) as TransportType[];
-
     related = 0;
     const related_transports_types_providers = [];
     while (related < providers.length && !!providers[related]) {

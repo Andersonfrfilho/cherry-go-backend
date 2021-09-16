@@ -37,9 +37,8 @@ confirmsRoutes.post(
   resendConfirmationMailUserMailController.handle
 );
 
-confirmsRoutes.patch(
+confirmsRoutes.post(
   "/phone",
-  ensureAuthenticated,
   schemaConfirmAccountPhoneUser,
   confirmAccountPhoneUserController.handle
 );

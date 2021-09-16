@@ -11,7 +11,7 @@ export class CreateServices1620945118173 implements MigrationInterface {
       .createQueryBuilder("users")
       .leftJoinAndSelect("users.types", "types")
       .leftJoinAndSelect("types.user_type", "user_type")
-      .where("user_type.name like :name", { name: "providers" })
+      .where("user_type.name like :name", { name: "provider" })
       .getMany();
 
     const services_factory = new ServicesFactory();

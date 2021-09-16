@@ -10,7 +10,7 @@ export class CreatePaymentTypes1620675129709 implements MigrationInterface {
       .createQueryBuilder("users")
       .leftJoinAndSelect("users.types", "types")
       .leftJoinAndSelect("types.user_type", "user_type")
-      .where("user_type.name like :name", { name: "providers" })
+      .where("user_type.name like :name", { name: "provider" })
       .getMany();
 
     const payments_types_list = (await getConnection("seeds")
