@@ -12,7 +12,6 @@ import { CreateUserClientController } from "@modules/accounts/useCases/createUse
 import { schemaCreateUserClient } from "@modules/accounts/useCases/createUserClient/createUserClient.schema";
 import { ResendPhonesUserClientController } from "@modules/accounts/useCases/resendPhoneCodeUserClient/ResendPhonesUserClient.controller";
 import { schemaResendPhoneCodeUserClient } from "@modules/accounts/useCases/resendPhoneCodeUserClient/resendPhonesUserClient.schema";
-import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 import { ensureAuthenticatedInside } from "@shared/infra/http/middlewares/ensureAuthenticatedInside";
 
 const clientsRoutes = Router();
@@ -48,17 +47,16 @@ clientsRoutes.post(
 );
 
 clientsRoutes.patch(
-  "/tags",
-  ensureAuthenticated,
-  schemaCreateTagsUsersClient,
-  createTagsUsersController.handle
-);
-
-clientsRoutes.patch(
   "/active",
   ensureAuthenticatedInside,
   schemaActiveUser,
   activeUserClientController.handle
+);
+
+clientsRoutes.post(
+  "/tags",
+  schemaCreateTagsUsersClient,
+  createTagsUsersController.handle
 );
 
 export { clientsRoutes };

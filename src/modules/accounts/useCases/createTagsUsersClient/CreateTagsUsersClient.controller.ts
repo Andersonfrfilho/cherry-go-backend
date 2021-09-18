@@ -6,16 +6,14 @@ import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums";
 
 class CreateTagsUsersController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { id } = request.user;
-    const { tags } = request.body;
-
+    const { client_tags, client_tags_exclude } = request.body;
     const createTagsUsersClientService = container.resolve(
       CreateTagsUsersClientService
     );
 
     await createTagsUsersClientService.execute({
-      tags,
-      client_id: id,
+      client_tags,
+      client_tags_exclude,
     });
 
     return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();

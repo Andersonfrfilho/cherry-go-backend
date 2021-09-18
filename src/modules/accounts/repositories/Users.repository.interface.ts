@@ -10,9 +10,11 @@ import {
   UpdatePasswordUserRepositorySTO,
   InsideTypeForUserRepositoryDTO,
   CreateUserInsideRepositoryDTO,
+  DeleteTagsUsersClientRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
+import { UserTags } from "../dtos/repositories/CreateTagsUsersClient.repository.dto";
 import {
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
@@ -47,10 +49,9 @@ export interface UsersRepositoryInterface {
     active,
   }: UpdateActiveUserRepositoryDTO): Promise<void>;
   acceptTerms({ user_id, accept }: TermsAcceptUserRepositoryDTO): Promise<void>;
-  createTagsUsersClient({
-    client_id,
-    tags,
-  }: CreateTagsUsersClientRepositoryDTO): Promise<void>;
+  createTagsUsersClient(
+    data: CreateTagsUsersClientRepositoryDTO
+  ): Promise<void>;
   findByIdWithProfileImage(id: string): Promise<User>;
   providerTypeForUser(data: ProviderTypeForUserRepositoryDTO): Promise<void>;
   insideTypeForUser(data: InsideTypeForUserRepositoryDTO): Promise<void>;
@@ -63,4 +64,13 @@ export interface UsersRepositoryInterface {
   findUsersWithPages(
     data: PaginationPropsDTO
   ): Promise<PaginationResponsePropsDTO>;
+  verifyTagsUsersAlreadyExist({
+    client_tags,
+  }: CreateTagsUsersClientRepositoryDTO): Promise<UserTags[]>;
+  verifyTagsUsersAlreadyNotExist({
+    client_tags,
+  }: CreateTagsUsersClientRepositoryDTO): Promise<UserTags[]>;
+  deleteTagsUsersClient({
+    client_tags,
+  }: DeleteTagsUsersClientRepositoryDTO): Promise<void>;
 }

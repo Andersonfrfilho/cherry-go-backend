@@ -2,7 +2,8 @@ import { celebrate, Joi, Segments } from "celebrate";
 
 const schemaCreateTagsUsersClient = celebrate({
   [Segments.BODY]: {
-    tags: Joi.array().required(),
+    client_tags: Joi.array(),
+    client_tags_exclude: Joi.array(),
   },
 });
 

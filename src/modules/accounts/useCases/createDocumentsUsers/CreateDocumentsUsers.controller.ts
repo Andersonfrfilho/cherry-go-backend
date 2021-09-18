@@ -11,7 +11,7 @@ class CreateDocumentsUsersController {
     const createDocumentsUsersService = container.resolve(
       CreateDocumentsUsersService
     );
-    console.log(description, user_id, document_file);
+
     await createDocumentsUsersService.execute({
       document_file,
       user_id,

@@ -23,6 +23,7 @@ class Image {
   id?: string;
 
   @Column()
+  @Exclude()
   name: string;
 
   @OneToMany(() => DocumentUserImage, (document) => document.image)
@@ -59,7 +60,10 @@ class Image {
 
   @Expose({ name: "link" })
   avatar_url?(path: string): string {
-    return `${config.storage.base_url}/${path}/${this.name}`;
+    const re = new RegExp("^(http|https)://", "i");
+    return re.test(this.name)
+      ? this.name
+      : `${config.storage.base_url}/${path}/${this.name}`;
   }
 }
 

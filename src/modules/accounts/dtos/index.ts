@@ -43,3 +43,4 @@ export { CreateUserPhonesClientServiceRequestDTO } from "@modules/accounts/dtos/
 export { CreateUserInsideServiceDTO } from "@modules/accounts/dtos/services/CreateUserInside.service.dto";
 export { CreateUserInsideRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserInside.repository.dto";
 export { ResendPhoneCodeUserClientServiceDTO } from "@modules/accounts/dtos/services/ResendPhoneCodeUserClientService.dto";
+export { DeleteTagsUsersClientRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteTagsUsersClient.repository.dto";

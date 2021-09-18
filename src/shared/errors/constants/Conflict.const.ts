@@ -13,4 +13,9 @@ export const CONFLICT = {
     status_code,
     code: "9002",
   },
+  TAG_CONFLICT_SOME_TAG_NO_EXIST: {
+    message: "Tag conflict, some tag no longer exist!",
+    status_code,
+    code: "9003",
+  },
 };

@@ -4,6 +4,7 @@ import { inject, injectable } from "tsyringe";
 import { CreateTagsServiceDTO } from "@modules/tags/dtos";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
+import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";
 
@@ -11,7 +12,9 @@ import { CONFLICT } from "@shared/errors/constants";
 export class CreateTagsService {
   constructor(
     @inject("TagsRepository")
-    private tagsRepository: TagsRepositoryInterface
+    private tagsRepository: TagsRepositoryInterface,
+    @inject("CacheProvider")
+    private cacheProvider: CacheProviderInterface
   ) {}
   async execute({
     active,
@@ -31,6 +34,8 @@ export class CreateTagsService {
       name,
       image_id,
     });
+
+    await this.cacheProvider.invalidate("tags");
 
     return classToClass(tag_saved);
   }

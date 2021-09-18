@@ -27,9 +27,11 @@ export class Tag {
   description?: string;
 
   @Column()
+  @Exclude()
   active: boolean;
 
   @Column()
+  @Exclude()
   image_id?: string;
 
   @ManyToMany(() => Service)

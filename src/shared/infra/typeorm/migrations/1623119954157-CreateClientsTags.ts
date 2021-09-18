@@ -55,6 +55,7 @@ export class CreateUsersTags1623119954157 implements MigrationInterface {
             onUpdate: "SET NULL",
           },
         ],
+        indices: [{ columnNames: ["tag_id", "client_id"] }],
       })
     );
   }

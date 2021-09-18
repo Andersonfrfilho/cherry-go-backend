@@ -11,7 +11,9 @@ import {
   UpdateActiveUserRepositoryDTO,
   UpdatedUserClientRepositoryDTO,
   InsideTypeForUserRepositoryDTO,
+  DeleteTagsUsersClientRepositoryDTO,
 } from "@modules/accounts/dtos";
+import { UserTags } from "@modules/accounts/dtos/repositories/CreateTagsUsersClient.repository.dto";
 import {
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
@@ -425,13 +427,50 @@ export class UsersRepository implements UsersRepositoryInterface {
   }
 
   async createTagsUsersClient({
-    client_id,
-    tags,
+    client_tags,
   }: CreateTagsUsersClientRepositoryDTO): Promise<void> {
-    const tags_founds = await this.repository_tag.findByIds(tags);
+    await this.repository_clients_tags.save(client_tags);
+  }
+  async deleteTagsUsersClient({
+    client_tags,
+  }: DeleteTagsUsersClientRepositoryDTO): Promise<void> {
+    const client_tags_exist = await this.repository_clients_tags.find({
+      where: { client_id: client_tags[0].client_id },
+    });
 
-    await this.repository_clients_tags.save(
-      tags_founds.map((tag) => ({ client_id, tag_id: tag.id }))
+    const client_tags_remove = client_tags_exist
+      .filter((client_tag) =>
+        client_tags.some((tag) => tag.tag_id === client_tag.tag_id)
+      )
+      .map((client_tag) => client_tag.id);
+
+    if (client_tags_remove.length > 0) {
+      await this.repository_clients_tags.delete(client_tags_remove);
+    }
+  }
+  async verifyTagsUsersAlreadyExist({
+    client_tags,
+  }: CreateTagsUsersClientRepositoryDTO): Promise<UserTags[]> {
+    const client_tags_exist = await this.repository_clients_tags.find({
+      where: { client_id: client_tags[0].client_id },
+    });
+
+    return client_tags.filter((client_tag) =>
+      client_tags_exist.some((tag) => tag.tag_id === client_tag.tag_id)
+    );
+  }
+
+  async verifyTagsUsersAlreadyNotExist({
+    client_tags,
+  }: CreateTagsUsersClientRepositoryDTO): Promise<UserTags[]> {
+    const client_tags_exist = await this.repository_clients_tags.find({
+      where: { client_id: client_tags[0].client_id },
+    });
+
+    return client_tags.filter((client_tag) =>
+      client_tags_exist.some(
+        (tag_user) => tag_user.tag_id !== client_tag.tag_id
+      )
     );
   }
 

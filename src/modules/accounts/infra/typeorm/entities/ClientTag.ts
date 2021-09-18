@@ -22,14 +22,14 @@ export class ClientTag {
 
   @ManyToOne(() => Tag)
   @JoinColumn({ name: "tag_id", referencedColumnName: "id" })
-  tag: Tag;
+  tag?: Tag;
 
   @Column()
   client_id: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: "client_id", referencedColumnName: "id" })
-  client: User;
+  client?: User;
 
   @CreateDateColumn()
   created_at?: Date;
