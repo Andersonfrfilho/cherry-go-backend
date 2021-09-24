@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
+import { SendForgotPasswordMailServiceDTO } from "@modules/accounts/dtos/services/SendForgotPasswordMail.service.dto";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
@@ -24,13 +25,14 @@ class SendForgotPasswordMailService {
     @inject("QueueProvider")
     private queueProvider: QueueProviderInterface
   ) {}
-  async execute(email: string): Promise<void> {
+  async execute({ email }: SendForgotPasswordMailServiceDTO): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
+    console.log("############");
     const refresh_token = uuidV4();
     const expires_date = this.dateProvider.addMinutes(
       config.password.time_token_expires
@@ -44,7 +46,8 @@ class SendForgotPasswordMailService {
 
     const variables = {
       name: user.name,
-      link: `${process.env.FORGOT_MAIL_URL}${refresh_token}`,
+      link_web: `${process.env.FORGOT_MAIL_URL}${refresh_token}`,
+      link_mobile: `${process.env.FORGOT_MOBILE_URL}${refresh_token}`,
     };
 
     const message: SendMailDTO = {
@@ -57,7 +60,7 @@ class SendForgotPasswordMailService {
     messages.push({ value: JSON.stringify(message) });
 
     await this.queueProvider.sendMessage({
-      topic: TopicsQueueEnum.SEND_MAIL,
+      topic: TopicsQueueEnum.SEND_MAIL, // platform?:
       messages,
     });
   }

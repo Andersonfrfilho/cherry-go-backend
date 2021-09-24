@@ -44,3 +44,6 @@ export { CreateUserInsideServiceDTO } from "@modules/accounts/dtos/services/Crea
 export { CreateUserInsideRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserInside.repository.dto";
 export { ResendPhoneCodeUserClientServiceDTO } from "@modules/accounts/dtos/services/ResendPhoneCodeUserClientService.dto";
 export { DeleteTagsUsersClientRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteTagsUsersClient.repository.dto";
+export { SendForgotPasswordMailServiceDTO } from "@modules/accounts/dtos/services/SendForgotPasswordMail.service.dto";
+export { SendForgotPasswordPhoneServiceDTO } from "@modules/accounts/dtos/services/SendForgotPasswordPhone.service.dto";
+export { SendForgotPasswordPhoneServiceResponseDTO } from "@modules/accounts/dtos/services/SendForgotPasswordPhoneResponse.service.dto";

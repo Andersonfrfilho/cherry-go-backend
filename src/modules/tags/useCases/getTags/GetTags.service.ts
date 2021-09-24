@@ -25,8 +25,11 @@ export class GetTagsService {
   }: PaginationPropsDTO): Promise<PaginationResponsePropsDTO> {
     let tags;
 
+    await this.cacheProvider.invalidate("tags");
+
     if (!order && !!page && !!per_page && !fields && !!user_id) {
       tags = await this.cacheProvider.recover("tags");
+
       if (tags) {
         return classToClass(tags);
       }

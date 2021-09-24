@@ -444,8 +444,22 @@ export class UsersRepository implements UsersRepositoryInterface {
       )
       .map((client_tag) => client_tag.id);
 
-    if (client_tags_remove.length > 0) {
-      await this.repository_clients_tags.delete(client_tags_remove);
+    const client_tags_disabled = await this.repository_clients_tags
+      .createQueryBuilder("foundTagsClient")
+      .andWhere("foundTagsClient.client_id = :client_id", {
+        client_id: client_tags[0].client_id,
+      })
+      .leftJoinAndSelect("foundTagsClient.tag", "tag")
+      .andWhere("tag.active = :active", { active: false })
+      .getMany();
+
+    const client_tags_exclude = [
+      ...client_tags_remove,
+      ...client_tags_disabled.map((client_tag) => client_tag.id),
+    ];
+
+    if (client_tags_exclude.length > 0) {
+      await this.repository_clients_tags.delete(client_tags_exclude);
     }
   }
   async verifyTagsUsersAlreadyExist({
@@ -454,10 +468,21 @@ export class UsersRepository implements UsersRepositoryInterface {
     const client_tags_exist = await this.repository_clients_tags.find({
       where: { client_id: client_tags[0].client_id },
     });
-
-    return client_tags.filter((client_tag) =>
-      client_tags_exist.some((tag) => tag.tag_id === client_tag.tag_id)
+    const client_tags_active = client_tags.filter((client_tag) =>
+      client_tags_exist.some(
+        (client_tag_exist) => client_tag_exist.tag_id === client_tag.tag_id
+      )
     );
+    const client_tags_disabled = await this.repository_clients_tags
+      .createQueryBuilder("foundTagsClient")
+      .andWhere("foundTagsClient.client_id = :client_id", {
+        client_id: client_tags[0].client_id,
+      })
+      .leftJoinAndSelect("foundTagsClient.tag", "tag")
+      .andWhere("tag.active = :active", { active: false })
+      .getMany();
+
+    return [...client_tags_active, ...client_tags_disabled];
   }
 
   async verifyTagsUsersAlreadyNotExist({
@@ -468,7 +493,7 @@ export class UsersRepository implements UsersRepositoryInterface {
     });
 
     return client_tags.filter((client_tag) =>
-      client_tags_exist.some(
+      client_tags_exist.every(
         (tag_user) => tag_user.tag_id !== client_tag.tag_id
       )
     );

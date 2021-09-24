@@ -8,6 +8,7 @@ import { ResendConfirmationMailUserController } from "@modules/accounts/useCases
 import { schemaResendConfirmationMailUser } from "@modules/accounts/useCases/resendConfirmationMailUser/resendConfirmationMailUser.schema";
 import { ResendConfirmationMailUserMailController } from "@modules/accounts/useCases/resendConfirmationMailUserMail/ResendConfirmationMailUserMail.controller";
 import { schemaResendConfirmationMailUserMailService } from "@modules/accounts/useCases/resendConfirmationMailUserMail/resendConfirmationMailUserMail.schema";
+import { SendForgotPasswordPhoneController } from "@modules/accounts/useCases/sendForgotPasswordPhone/SendForgotPasswordPhone.controller";
 import { TermsAcceptUserController } from "@modules/accounts/useCases/termsAcceptsUser/TermsAcceptsUser.controller";
 import { schemaAcceptUser } from "@modules/accounts/useCases/termsAcceptsUser/termsAcceptsUser.schema";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
@@ -17,6 +18,7 @@ const confirmAccountMailUserController = new ConfirmAccountMailUserController();
 const confirmAccountPhoneUserController = new ConfirmAccountPhoneUserController();
 const resendConfirmationMailUserController = new ResendConfirmationMailUserController();
 const resendConfirmationMailUserMailController = new ResendConfirmationMailUserMailController();
+
 const termsAcceptUserController = new TermsAcceptUserController();
 
 confirmsRoutes.get(

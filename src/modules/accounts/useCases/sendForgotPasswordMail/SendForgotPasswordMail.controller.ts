@@ -12,7 +12,7 @@ class SendForgotPasswordMailController {
       SendForgotPasswordMailService
     );
 
-    await sendoForgotPasswordMailService.execute(email);
+    await sendoForgotPasswordMailService.execute({ email });
 
     return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();
   }

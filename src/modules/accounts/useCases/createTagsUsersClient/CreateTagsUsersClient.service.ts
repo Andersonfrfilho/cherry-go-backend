@@ -63,6 +63,7 @@ class CreateTagsUsersClientService {
       if (!user) {
         throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
       }
+
       const client_tags_for_delete = await this.usersRepository.verifyTagsUsersAlreadyExist(
         { client_tags: client_tags_exclude }
       );
