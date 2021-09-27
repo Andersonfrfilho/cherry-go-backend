@@ -61,9 +61,7 @@ export interface UsersRepositoryInterface {
     data: UpdateActiveUserRepositoryDTO
   ): Promise<void>;
   findUserWithToken(token: string): Promise<UserTokens>;
-  findUsersWithPages(
-    data: PaginationPropsDTO
-  ): Promise<PaginationResponsePropsDTO>;
+  findUsersWithPages(data: PaginationPropsDTO): Promise<PaginationPropsDTO>;
   verifyTagsUsersAlreadyExist({
     client_tags,
   }: CreateTagsUsersClientRepositoryDTO): Promise<UserTags[]>;

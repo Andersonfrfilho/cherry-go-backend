@@ -41,8 +41,8 @@ export async function ensureAuthenticatedProvider(
   if (
     !types.some(
       (type) =>
-        type.name === USER_TYPES_ENUM.PROVIDER ||
-        type.name === USER_TYPES_ENUM.ADMIN
+        type.user_type.name === USER_TYPES_ENUM.PROVIDER ||
+        type.user_type.name === USER_TYPES_ENUM.ADMIN
     )
   ) {
     throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);

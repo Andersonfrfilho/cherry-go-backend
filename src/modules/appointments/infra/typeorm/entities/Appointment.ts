@@ -11,13 +11,12 @@ import {
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 import { AppointmentAddress } from "./AppointmentAddress";
-import { AppointmentClient } from "./AppointmentClient";
+import { AppointmentProvider } from "./AppointmentProviders";
 import { AppointmentProviderService } from "./AppointmentsProvidersServices";
 
 @Entity("appointments")
@@ -42,13 +41,20 @@ export class Appointment {
   })
   clients?: User[];
 
-  @ManyToMany(() => Provider, { eager: true })
-  @JoinTable({
-    name: "appointments_providers",
-    joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
-  })
-  providers?: Provider[];
+  @OneToMany(
+    () => AppointmentProvider,
+    (appointment_provider) => appointment_provider.appointment,
+    { eager: true }
+  )
+  providers?: AppointmentProvider[];
+
+  // @ManyToMany(() => Provider, { eager: true })
+  // @JoinTable({
+  //   name: "appointments_providers",
+  //   joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
+  //   inverseJoinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
+  // })
+  // providers?: Provider[];
 
   @OneToMany(() => Transport, (transport) => transport.appointment, {
     eager: true,

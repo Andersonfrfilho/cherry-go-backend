@@ -13,7 +13,25 @@ export interface PaginationPropsDTO {
   user_id?: string;
 }
 
-export interface PaginationResponsePropsDTO {
+export interface PaginationPropsGenericDTO<T> {
+  per_page?: string;
+  fields?: Partial<T>;
+  page?: string;
+  order?: Order;
+  created_date?: string;
+  updated_date?: string;
+  [propName: string]: any;
+}
+export interface PaginationResponsePropsDTO<T> {
   total: number;
-  results: User[] | Tag[];
+  results: Array<T>;
+}
+
+export interface PaginationResponseAppointmentsDTO<T> {
+  total: number;
+  results: {
+    opens: Array<T>;
+    rejected: Array<T>;
+    confirmed: Array<T>;
+  };
 }

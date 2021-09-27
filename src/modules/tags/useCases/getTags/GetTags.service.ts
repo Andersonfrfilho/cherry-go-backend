@@ -5,6 +5,7 @@ import {
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
 } from "@modules/accounts/dtos/repositories/PaginationProps.dto";
+import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
 import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
 
@@ -22,7 +23,7 @@ export class GetTagsService {
     per_page,
     fields,
     user_id,
-  }: PaginationPropsDTO): Promise<PaginationResponsePropsDTO> {
+  }: PaginationPropsDTO): Promise<PaginationResponsePropsDTO<Tag>> {
     let tags;
 
     await this.cacheProvider.invalidate("tags");

@@ -62,7 +62,7 @@ export class UsersRepository implements UsersRepositoryInterface {
     page = "1",
     fields,
     order = { property: "create_at", ordering: "ASC" },
-  }: PaginationPropsDTO): Promise<PaginationResponsePropsDTO> {
+  }: PaginationPropsDTO): Promise<PaginationResponsePropsDTO<User>> {
     const page_start = (Number(page) - 1) * Number(per_page);
     const usersQuery = this.repository
       .createQueryBuilder("foundUsers")

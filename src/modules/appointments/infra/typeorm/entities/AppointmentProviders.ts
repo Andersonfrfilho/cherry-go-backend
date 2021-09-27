@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
+import { STATUS_PROVIDERS_APPOINTMENT } from "@modules/appointments/enums/StatusProvidersAppointment.enum";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
 @Entity("appointments_providers")
@@ -20,19 +21,19 @@ export class AppointmentProvider {
   @Column()
   provider_id: string;
 
-  // @ManyToOne(() => Provider)
-  // @JoinColumn({ name: "provider_id", referencedColumnName: "id" })
-  // provider: Provider;
+  @ManyToOne(() => Provider)
+  @JoinColumn({ name: "provider_id", referencedColumnName: "id" })
+  provider: Provider;
 
   @Column()
   appointment_id: string;
 
-  // @ManyToOne(() => Appointment)
-  // @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
-  // appointment: Appointment;
+  @ManyToOne(() => Appointment)
+  @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
+  appointment: Appointment;
 
-  @Column()
-  active: boolean;
+  @Column({ type: "enum", enum: STATUS_PROVIDERS_APPOINTMENT })
+  status: string;
 
   @CreateDateColumn()
   created_at?: Date;

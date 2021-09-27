@@ -3,6 +3,7 @@ import { getConnection, MigrationInterface } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { STATUS_PROVIDERS_APPOINTMENT } from "@modules/appointments/enums/StatusProvidersAppointment.enum";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { AppointmentsFactory } from "@shared/infra/typeorm/factories";
 
@@ -89,8 +90,13 @@ export class CreateAppointmentProvidersServicesTransportsClients1620963956718
         related_appointments_providers.push({
           provider_id: providers[provider_index].id,
           appointment_id: appointments[appointment_index].id,
-          active: true,
+          status: Object.values(STATUS_PROVIDERS_APPOINTMENT)[
+            Math.floor(
+              Math.random() * Object.values(STATUS_PROVIDERS_APPOINTMENT).length
+            )
+          ],
         });
+        console.log(related_appointments_providers);
         related_appointments_addresses.push({
           address_id: providers[provider_index].locals[0].address_id,
           appointment_id: appointments[appointment_index].id,

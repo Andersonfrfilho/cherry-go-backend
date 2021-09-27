@@ -2,10 +2,7 @@ import { classToClass } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
-import {
-  AuthenticateUserProviderServiceDTO,
-  AuthenticateUserProviderServiceResponseDTO,
-} from "@modules/accounts/dtos";
+import { AuthenticateUserProviderServiceResponseDTO } from "@modules/accounts/dtos";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
@@ -14,15 +11,10 @@ import { DateProviderInterface } from "@shared/container/providers/DateProvider/
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import {
-  BAD_REQUEST,
-  FORBIDDEN,
-  NOT_FOUND,
-  UNAUTHORIZED,
-} from "@shared/errors/constants";
+import { FORBIDDEN, NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-export class AuthenticateUserProviderService {
+export class MeProfileUserProviderService {
   constructor(
     @inject("ProvidersRepository")
     private providersRepository: ProvidersRepositoryInterface,
@@ -35,13 +27,10 @@ export class AuthenticateUserProviderService {
     @inject("JwtProvider")
     private jwtProvider: JwtProviderInterface
   ) {}
-  async execute({
-    email,
-    password,
-  }: AuthenticateUserProviderServiceDTO): Promise<AuthenticateUserProviderServiceResponseDTO> {
-    const provider = (await this.providersRepository.findByEmail(
-      email
-    )) as Provider;
+  async execute(
+    id: string
+  ): Promise<AuthenticateUserProviderServiceResponseDTO> {
+    const provider = (await this.providersRepository.findById(id)) as Provider;
 
     const { expires_in, secret } = auth;
 
@@ -55,15 +44,6 @@ export class AuthenticateUserProviderService {
       )
     ) {
       throw new AppError(FORBIDDEN.PROVIDER_IS_NOT_ACTIVE);
-    }
-
-    const passwordHash = await this.hashProvider.compareHash(
-      password,
-      provider.password_hash
-    );
-
-    if (!passwordHash) {
-      throw new AppError(UNAUTHORIZED.USER_PASSWORD_DOES_MATCH);
     }
 
     const token = this.jwtProvider.assign({
@@ -82,7 +62,7 @@ export class AuthenticateUserProviderService {
     });
 
     const refresh_token = this.jwtProvider.assign({
-      payload: { email },
+      payload: { email: provider.email },
       secretOrPrivateKey: secret.refresh,
       options: {
         subject: {
@@ -98,14 +78,19 @@ export class AuthenticateUserProviderService {
     const refresh_token_expires_date = this.dateProvider.addDays(
       expires_in.refresh_days
     );
+
     await this.usersTokensRepository.create({
       user_id: provider.id,
       expires_date: refresh_token_expires_date,
       refresh_token,
     });
 
+    const { results } = await this.providersRepository.findAppointments({
+      provider_id: provider.id,
+    });
+
     return {
-      provider: classToClass(provider),
+      provider: { ...classToClass(provider), appointments: results },
       token,
       refresh_token,
     };

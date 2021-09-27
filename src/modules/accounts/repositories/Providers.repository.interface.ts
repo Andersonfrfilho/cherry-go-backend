@@ -8,8 +8,15 @@ import {
 } from "@modules/accounts/dtos";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/CreateAppointment.service.dto";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
 import { CreateUserProviderRepositoryDTO } from "../dtos/repositories/CreateUserProviderType.repository.dto";
+import {
+  PaginationPropsDTO,
+  PaginationPropsGenericDTO,
+  PaginationResponseAppointmentsDTO,
+  PaginationResponsePropsDTO,
+} from "../dtos/repositories/PaginationProps.dto";
 
 export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
@@ -38,4 +45,7 @@ export interface ProvidersRepositoryInterface {
   createUserProviderType(
     data: CreateUserProviderRepositoryDTO
   ): Promise<Provider>;
+  findAppointments(
+    data: PaginationPropsGenericDTO<Appointment>
+  ): Promise<PaginationResponseAppointmentsDTO<Appointment>>;
 }

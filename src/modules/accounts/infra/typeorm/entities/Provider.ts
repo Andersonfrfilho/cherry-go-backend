@@ -23,6 +23,7 @@ import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTe
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 
+import { UserProfileImage } from "./UserProfileImage";
 import { UserTypeUser } from "./UserTypeUser";
 
 @Entity("users")
@@ -136,6 +137,13 @@ class Provider {
     { eager: true }
   )
   payments_types: ProviderPaymentType[];
+
+  @OneToMany(
+    () => UserProfileImage,
+    (user_profile_image) => user_profile_image.user,
+    { eager: true }
+  )
+  image_profile?: UserProfileImage[];
 
   @CreateDateColumn()
   @Exclude()

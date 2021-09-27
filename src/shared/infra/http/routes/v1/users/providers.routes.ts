@@ -15,6 +15,7 @@ import { schemaCreateServiceProvider } from "@modules/accounts/useCases/createSe
 import { CreateUserProviderController } from "@modules/accounts/useCases/createUserProvider/CreateUserProvider.controller";
 import { schemaCreateUserProvider } from "@modules/accounts/useCases/createUserProvider/createUserProvider.schema";
 import { CreateUsersTypeProvidersController } from "@modules/accounts/useCases/createUsersTypeProviders/CreateUsersTypeProviders.controller";
+import { MeProfileUserProviderController } from "@modules/accounts/useCases/meProfileUserProvider/MeProfileUserProvider.controller";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 import { ensureAuthenticatedProvider } from "@shared/infra/http/middlewares/ensureAuthenticatedProvider";
 
@@ -22,6 +23,7 @@ const providersRoutes = Router();
 const createUserProviderController = new CreateUserProviderController();
 const createUsersTypeProvidersController = new CreateUsersTypeProvidersController();
 const authenticateUserProviderController = new AuthenticateUserProviderController();
+const meProfileUserProviderController = new MeProfileUserProviderController();
 const createProviderTimesAvailabilitiesController = new CreateProviderTimesAvailabilitiesController();
 const createProviderDaysAvailabilitiesController = new CreateProviderDaysAvailabilitiesController();
 const createServiceProviderController = new CreateServiceProviderController();
@@ -32,6 +34,12 @@ providersRoutes.post(
   "/",
   schemaCreateUserProvider,
   createUserProviderController.handle
+);
+
+providersRoutes.get(
+  "/me",
+  ensureAuthenticatedProvider,
+  meProfileUserProviderController.handle
 );
 
 providersRoutes.patch(

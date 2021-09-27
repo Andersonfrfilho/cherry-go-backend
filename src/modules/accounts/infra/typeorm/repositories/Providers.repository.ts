@@ -1,3 +1,4 @@
+import { classToClass } from "class-transformer";
 import { getRepository, In, Repository } from "typeorm";
 
 import {
@@ -9,6 +10,11 @@ import {
   CreateTransportTypesAvailableRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProviderType.repository.dto";
+import {
+  PaginationPropsGenericDTO,
+  PaginationResponseAppointmentsDTO,
+  PaginationResponsePropsDTO,
+} from "@modules/accounts/dtos/repositories/PaginationProps.dto";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
@@ -19,6 +25,9 @@ import { ProviderTransportType } from "@modules/accounts/infra/typeorm/entities/
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
+import { STATUS_PROVIDERS_APPOINTMENT } from "@modules/appointments/enums/StatusProvidersAppointment.enum";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
+import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProviders";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
@@ -26,6 +35,9 @@ import { TypeUser } from "../entities/TypeUser";
 import { UserTermsAccept } from "../entities/UserTermsAccept";
 import { UserTypeUser } from "../entities/UserTypeUser";
 
+interface CustomAppointmentFound {
+  provider_id: string;
+}
 class ProvidersRepository implements ProvidersRepositoryInterface {
   private repository: Repository<Provider>;
   private repository_available_days: Repository<ProviderAvailabilityDay>;
@@ -40,6 +52,8 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
   private repository_users_types: Repository<TypeUser>;
   private repository_users_types_users: Repository<UserTypeUser>;
   private repository_users_terms_accepts: Repository<UserTermsAccept>;
+  private repository_appointments: Repository<Appointment>;
+  private repository_appointments_providers: Repository<AppointmentProvider>;
 
   constructor() {
     this.repository = getRepository(Provider);
@@ -57,7 +71,69 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_users_types = getRepository(TypeUser);
     this.repository_users_types_users = getRepository(UserTypeUser);
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
+    this.repository_appointments = getRepository(Appointment);
+    this.repository_appointments_providers = getRepository(AppointmentProvider);
   }
+
+  async findAppointments({
+    created_date,
+    provider_id,
+  }: PaginationPropsGenericDTO<Appointment>): Promise<
+    PaginationResponseAppointmentsDTO<Appointment>
+  > {
+    const providerQuery = this.repository_appointments.createQueryBuilder(
+      "foundAppointment"
+    );
+
+    if (created_date) {
+      providerQuery.andWhere("foundAppointment.created_at > :created_date", {
+        created_date,
+      });
+    }
+
+    providerQuery
+      .leftJoinAndSelect("foundAppointment.providers", "providers")
+      .andWhere("providers.provider_id = :provider_id", { provider_id })
+      .leftJoinAndSelect("foundAppointment.clients", "clients")
+      .leftJoinAndSelect("clients.image_profile", "image_profile")
+      .leftJoinAndSelect("image_profile.image", "image")
+      .leftJoinAndSelect("foundAppointment.transports", "transports")
+      .leftJoinAndSelect("transports.transport_type", "type")
+      .leftJoinAndSelect("transports.origin_address", "origin")
+      .leftJoinAndSelect("transports.destination_address", "destination")
+      .leftJoinAndSelect("foundAppointment.services", "services")
+      .leftJoinAndSelect("foundAppointment.addresses", "addresses")
+      .leftJoinAndSelect("addresses.address", "address")
+      .leftJoinAndSelect("foundAppointment.transactions", "transactions")
+      .leftJoinAndSelect("transactions.itens", "itens");
+
+    const [results, total] = await providerQuery
+      .orderBy("foundUsers.initial_date", "DESC")
+      .getManyAndCount();
+    const appointment_open = results.filter(
+      (appointment) =>
+        appointment.providers[0].status === STATUS_PROVIDERS_APPOINTMENT.OPEN
+    );
+    const appointment_rejected = results.filter(
+      (appointment) =>
+        appointment.providers[0].status ===
+        STATUS_PROVIDERS_APPOINTMENT.REJECTED
+    );
+    const appointment_accepted = results.filter(
+      (appointment) =>
+        appointment.providers[0].status ===
+        STATUS_PROVIDERS_APPOINTMENT.ACCEPTED
+    );
+    return {
+      results: {
+        opens: classToClass(appointment_open),
+        rejected: classToClass(appointment_rejected),
+        confirmed: classToClass(appointment_accepted),
+      },
+      total,
+    };
+  }
+
   async createUserProviderType({
     birth_date,
     cpf,

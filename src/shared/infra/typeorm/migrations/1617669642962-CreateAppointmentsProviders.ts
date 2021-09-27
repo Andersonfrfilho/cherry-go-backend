@@ -23,8 +23,8 @@ export class CreateAppointmentsProviders1617669642962
             type: "uuid",
           },
           {
-            name: "active",
-            type: "boolean",
+            name: "status",
+            type: "varchar",
           },
           {
             name: "created_at",
