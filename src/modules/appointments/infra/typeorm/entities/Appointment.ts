@@ -3,8 +3,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -16,6 +14,7 @@ import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transa
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 import { AppointmentAddress } from "./AppointmentAddress";
+import { AppointmentClient } from "./AppointmentClient";
 import { AppointmentProvider } from "./AppointmentProviders";
 import { AppointmentProviderService } from "./AppointmentsProvidersServices";
 
@@ -33,12 +32,11 @@ export class Appointment {
   @Column()
   confirm: boolean;
 
-  @ManyToMany(() => User, { eager: true })
-  @JoinTable({
-    name: "appointments_clients",
-    joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "client_id", referencedColumnName: "id" }],
-  })
+  @OneToMany(
+    () => AppointmentClient,
+    (appointment_client) => appointment_client.appointment,
+    { eager: true }
+  )
   clients?: User[];
 
   @OneToMany(
@@ -48,25 +46,15 @@ export class Appointment {
   )
   providers?: AppointmentProvider[];
 
-  // @ManyToMany(() => Provider, { eager: true })
-  // @JoinTable({
-  //   name: "appointments_providers",
-  //   joinColumns: [{ name: "appointment_id", referencedColumnName: "id" }],
-  //   inverseJoinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
-  // })
-  // providers?: Provider[];
-
-  @OneToMany(() => Transport, (transport) => transport.appointment, {
-    eager: true,
-  })
+  @OneToMany(() => Transport, (transports) => transports.appointment)
   transports?: Transport[];
 
-  @OneToMany(
-    () => AppointmentProviderService,
-    (appointment_provider_service) => appointment_provider_service.appointment,
-    { eager: true }
-  )
-  services?: AppointmentProviderService[];
+  // @OneToMany(
+  //   () => AppointmentProviderService,
+  //   (appointment_provider_service) => appointment_provider_service.appointment,
+  //   { eager: true }
+  // )
+  // services?: AppointmentProviderService[];
 
   @OneToMany(
     () => AppointmentAddress,

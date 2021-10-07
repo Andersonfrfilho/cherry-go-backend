@@ -24,7 +24,9 @@ interface broker {
 interface queue {
   broker: broker;
 }
-
+interface appointment {
+  hour_allowed_cancellation: number;
+}
 interface app {
   name: string;
 }
@@ -41,6 +43,7 @@ export interface interface_config {
   queue: queue;
   password: password;
   storage: storage;
+  appointment: appointment;
 }
 export interface InterfaceConfig {
   development: interface_config;

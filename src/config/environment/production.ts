@@ -12,6 +12,11 @@ export const production: interface_config = {
     base_url:
       process.env.STORAGE_URL || `http://localhost:${process.env.PORT || 3333}`,
   },
+  appointment: {
+    hour_allowed_cancellation: Number(
+      process.env.HOUR_ALLOWED_CANCELLATION || 1
+    ),
+  },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,
     token: {

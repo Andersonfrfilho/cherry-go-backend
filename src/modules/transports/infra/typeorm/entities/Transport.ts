@@ -4,6 +4,7 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -29,7 +30,7 @@ export class Transport {
   @Column()
   appointment_id: string;
 
-  @ManyToOne(() => Appointment)
+  @ManyToOne(() => Appointment, { eager: true })
   @JoinColumn({ name: "appointment_id" })
   appointment?: Appointment;
 

@@ -95,20 +95,20 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       .leftJoinAndSelect("foundAppointment.providers", "providers")
       .andWhere("providers.provider_id = :provider_id", { provider_id })
       .leftJoinAndSelect("foundAppointment.clients", "clients")
-      .leftJoinAndSelect("clients.image_profile", "image_profile")
+      .leftJoinAndSelect("clients.client", "client")
+      .leftJoinAndSelect("client.image_profile", "image_profile")
       .leftJoinAndSelect("image_profile.image", "image")
       .leftJoinAndSelect("foundAppointment.transports", "transports")
       .leftJoinAndSelect("transports.transport_type", "type")
       .leftJoinAndSelect("transports.origin_address", "origin")
       .leftJoinAndSelect("transports.destination_address", "destination")
-      .leftJoinAndSelect("foundAppointment.services", "services")
       .leftJoinAndSelect("foundAppointment.addresses", "addresses")
       .leftJoinAndSelect("addresses.address", "address")
       .leftJoinAndSelect("foundAppointment.transactions", "transactions")
       .leftJoinAndSelect("transactions.itens", "itens");
 
     const [results, total] = await providerQuery
-      .orderBy("foundUsers.initial_date", "DESC")
+      .orderBy("foundAppointment.initial_date", "DESC")
       .getManyAndCount();
     const appointment_open = results.filter(
       (appointment) =>

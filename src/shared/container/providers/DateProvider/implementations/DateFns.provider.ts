@@ -1,8 +1,20 @@
-import { add, differenceInYears, isBefore, toDate, addMinutes } from "date-fns";
+import {
+  add,
+  differenceInYears,
+  isBefore,
+  toDate,
+  addMinutes,
+  subHours,
+} from "date-fns";
 
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 
+import { SubHoursDTO } from "../dtos/SubHours.dto";
+
 export class DateFnsProvider implements DateProviderInterface {
+  subHours({ date, hours }: SubHoursDTO): Date {
+    return subHours(date, hours);
+  }
   addMinutes(minutes: number): Date {
     return addMinutes(new Date(), minutes);
   }

@@ -16,6 +16,10 @@ import { CreateUserProviderController } from "@modules/accounts/useCases/createU
 import { schemaCreateUserProvider } from "@modules/accounts/useCases/createUserProvider/createUserProvider.schema";
 import { CreateUsersTypeProvidersController } from "@modules/accounts/useCases/createUsersTypeProviders/CreateUsersTypeProviders.controller";
 import { MeProfileUserProviderController } from "@modules/accounts/useCases/meProfileUserProvider/MeProfileUserProvider.controller";
+import { ConfirmAppointmentProviderController } from "@modules/appointments/useCases/confirmAppointmentProvider/ConfirmAppointmentProvider.controller";
+import { schemaConfirmAppointmentProvider } from "@modules/appointments/useCases/confirmAppointmentProvider/confirmAppointmentProvider.schema";
+import { RejectAppointmentProviderController } from "@modules/appointments/useCases/rejectAppointmentProvider/RejectAppointmentProvider.controller";
+import { schemaRejectAppointmentProvider } from "@modules/appointments/useCases/rejectAppointmentProvider/rejectAppointmentProvider.schema";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 import { ensureAuthenticatedProvider } from "@shared/infra/http/middlewares/ensureAuthenticatedProvider";
 
@@ -29,6 +33,8 @@ const createProviderDaysAvailabilitiesController = new CreateProviderDaysAvailab
 const createServiceProviderController = new CreateServiceProviderController();
 const createProvidersPaymentsTypesController = new CreateProvidersPaymentsTypesController();
 const createProviderTransportTypesAvailabilitiesController = new CreateProviderTransportTypesAvailabilitiesController();
+const confirmAppointmentProviderController = new ConfirmAppointmentProviderController();
+const rejectAppointmentProviderController = new RejectAppointmentProviderController();
 
 providersRoutes.post(
   "/",
@@ -87,6 +93,20 @@ providersRoutes.patch(
   ensureAuthenticatedProvider,
   schemaCreateProviderTransportTypesAvailabilities,
   createProviderTransportTypesAvailabilitiesController.handle
+);
+
+providersRoutes.patch(
+  "/appointment/confirm",
+  ensureAuthenticatedProvider,
+  schemaConfirmAppointmentProvider,
+  confirmAppointmentProviderController.handle
+);
+
+providersRoutes.patch(
+  "/appointment/reject",
+  ensureAuthenticatedProvider,
+  schemaRejectAppointmentProvider,
+  rejectAppointmentProviderController.handle
 );
 
 export { providersRoutes };

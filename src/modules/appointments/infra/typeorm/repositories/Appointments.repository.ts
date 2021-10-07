@@ -10,6 +10,12 @@ export class AppointmentsRepository implements AppointmentsRepositoryInterface {
   constructor() {
     this.repository = getRepository(Appointment);
   }
+
+  async findById(id: string): Promise<Appointment> {
+    const appointment = await this.repository.findOne(id);
+    return appointment;
+  }
+
   async delete(id: string): Promise<void> {
     await this.repository.delete(id);
   }

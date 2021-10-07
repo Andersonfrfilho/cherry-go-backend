@@ -1,5 +1,6 @@
+import { ChangeStatusAppointmentRepositoryDTO } from "@modules/accounts/dtos/repositories/ChangeStatusAppointment.repository.dto";
+import { FindByIdsAppointmentProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/FindByIdsAppointmentProvider.repository.dto";
 import { CreateAppointmentProvidersRepositoryDTO } from "@modules/appointments/dtos";
-import { AppointmentClient } from "@modules/appointments/infra/typeorm/entities/AppointmentClient";
 
 import { AppointmentProvider } from "../infra/typeorm/entities/AppointmentProviders";
 
@@ -8,4 +9,10 @@ export interface AppointmentsProvidersRepositoryInterface {
     data: CreateAppointmentProvidersRepositoryDTO
   ): Promise<AppointmentProvider[]>;
   delete(id: string): Promise<void>;
+  changeStatusAppointment(
+    data: ChangeStatusAppointmentRepositoryDTO
+  ): Promise<void>;
+  findByIds(
+    data: FindByIdsAppointmentProviderRepositoryDTO
+  ): Promise<AppointmentProvider>;
 }

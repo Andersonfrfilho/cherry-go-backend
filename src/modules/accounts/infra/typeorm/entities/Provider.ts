@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
@@ -22,6 +23,7 @@ import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
+import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 import { UserProfileImage } from "./UserProfileImage";
 import { UserTypeUser } from "./UserTypeUser";
@@ -129,7 +131,7 @@ class Provider {
   locals?: ProviderAddress[];
 
   @OneToMany(() => UserTermsAccept, (term) => term.user, { eager: true })
-  term: UserTermsAccept[];
+  terms: UserTermsAccept[];
 
   @OneToMany(
     () => ProviderPaymentType,
@@ -140,10 +142,13 @@ class Provider {
 
   @OneToMany(
     () => UserProfileImage,
-    (user_profile_image) => user_profile_image.user,
+    (user_profile_image) => user_profile_image.provider,
     { eager: true }
   )
   image_profile?: UserProfileImage[];
+
+  @OneToMany(() => Transport, (transports) => transports.provider)
+  transports?: Transport[];
 
   @CreateDateColumn()
   @Exclude()

@@ -19,11 +19,13 @@ import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositor
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { AppointmentsProvidersServicesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentProviderService.repository";
+import { AppointmentsRepository } from "@modules/appointments/infra/typeorm/repositories/Appointments.repository";
 import { AppointmentsAddressesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsAddresses.repository";
 import { AppointmentsProvidersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsProviders.repository";
 import { AppointmentsUsersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsers.repository";
 import { AppointmentsUsersTransactionsRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsersTransactions.repository";
 import { AppointmentTransactionsItensRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentTransactionsItens.repository";
+import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/Appointments.repository.interface";
 import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddresses.repository.interface";
 import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProviders.repository.interface";
 import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServices.repository.interface";
@@ -82,6 +84,11 @@ container.registerSingleton<DocumentsUserImageRepositoryInterface>(
 container.registerSingleton<UserProfileImageRepositoryInterface>(
   "UserProfileImageRepository",
   UserProfileImageRepository
+);
+
+container.registerSingleton<AppointmentsRepositoryInterface>(
+  "AppointmentsRepository",
+  AppointmentsRepository
 );
 
 container.registerSingleton<AppointmentsUsersRepositoryInterface>(

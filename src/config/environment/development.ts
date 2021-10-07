@@ -5,6 +5,11 @@ export const development: interface_config = {
   application: {
     name: "Cherry-go",
   },
+  appointment: {
+    hour_allowed_cancellation: Number(
+      process.env.HOUR_ALLOWED_CANCELLATION || 1
+    ),
+  },
   password: {
     time_token_expires: 30,
   },

@@ -1,9 +1,11 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -11,6 +13,7 @@ import {
 
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
 
+import { Provider } from "./Provider";
 import { User } from "./User";
 
 @Entity("users_profiles_images")
@@ -23,7 +26,11 @@ class UserProfileImage {
 
   @ManyToOne(() => User)
   @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  user: User;
+  user?: User;
+
+  @ManyToOne(() => Provider)
+  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
+  provider?: Provider;
 
   @Column()
   image_id: string;
@@ -33,12 +40,15 @@ class UserProfileImage {
   image: Image;
 
   @CreateDateColumn()
+  @Exclude()
   created_at?: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   updated_at?: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   deleted_at?: Date;
 }
 

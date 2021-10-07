@@ -60,7 +60,6 @@ class User {
   password_hash: string;
 
   @Column()
-  @Exclude()
   birth_date: Date;
 
   @Column("boolean", { default: false })
@@ -103,7 +102,7 @@ class User {
   appointments?: Appointment[];
 
   @OneToMany(() => UserTermsAccept, (term) => term.user, { eager: true })
-  term: UserTermsAccept[];
+  terms: UserTermsAccept[];
 
   @ManyToMany(() => Tag)
   @JoinTable({

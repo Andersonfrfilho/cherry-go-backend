@@ -12,6 +12,11 @@ export const test: interface_config = {
   password: {
     time_token_expires: 30,
   },
+  appointment: {
+    hour_allowed_cancellation: Number(
+      process.env.HOUR_ALLOWED_CANCELLATION || 1
+    ),
+  },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,
     token: {

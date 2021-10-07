@@ -28,4 +28,14 @@ export const NOT_FOUND = {
     status_code,
     code: "4005",
   },
+  APPOINTMENT_DOES_NOT_EXIST: {
+    message: "Appointment does not exists!",
+    status_code,
+    code: "4006",
+  },
+  APPOINTMENT_PROVIDER_DOES_NOT_EXIST: {
+    message: "Appointment to provider does not exists!",
+    status_code,
+    code: "4007",
+  },
 };

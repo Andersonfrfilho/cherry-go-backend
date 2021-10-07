@@ -8,4 +8,19 @@ export const BAD_REQUEST = {
     status_code,
     code: "0001",
   },
+  APPOINTMENT_HAS_PASSED_THE_DATE: {
+    message: "Appointment has passed the date!",
+    status_code,
+    code: "0002",
+  },
+  APPOINTMENT_ALREADY_REJECTED: {
+    message: "Appointment already rejected!",
+    status_code,
+    code: "0003",
+  },
+  APPOINTMENT_ALREADY_ACCEPTED: {
+    message: "Appointment already accepted!",
+    status_code,
+    code: "0004",
+  },
 };
