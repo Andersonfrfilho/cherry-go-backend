@@ -12,10 +12,14 @@ import { CreateUserClientController } from "@modules/accounts/useCases/createUse
 import { schemaCreateUserClient } from "@modules/accounts/useCases/createUserClient/createUserClient.schema";
 import { ResendPhonesUserClientController } from "@modules/accounts/useCases/resendPhoneCodeUserClient/ResendPhonesUserClient.controller";
 import { schemaResendPhoneCodeUserClient } from "@modules/accounts/useCases/resendPhoneCodeUserClient/resendPhonesUserClient.schema";
+import { UpdateUserDetailsController } from "@modules/accounts/useCases/updateUserDetails/UpdateUserDetails.controller";
+import { schemaUpdateUserDetails } from "@modules/accounts/useCases/updateUserDetails/updateUserDetails.schema";
+import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 import { ensureAuthenticatedInside } from "@shared/infra/http/middlewares/ensureAuthenticatedInside";
 
 const clientsRoutes = Router();
 const createUserClientController = new CreateUserClientController();
+const updateUserDetailsController = new UpdateUserDetailsController();
 const resendPhonesUserClientController = new ResendPhonesUserClientController();
 const createUserAddressClientController = new CreateUserAddressClientController();
 const createUserPhoneClientController = new CreateUserPhoneClientController();
@@ -57,6 +61,13 @@ clientsRoutes.post(
   "/tags",
   schemaCreateTagsUsersClient,
   createTagsUsersController.handle
+);
+
+clientsRoutes.put(
+  "/details",
+  ensureAuthenticated,
+  schemaUpdateUserDetails,
+  updateUserDetailsController.handle
 );
 
 export { clientsRoutes };

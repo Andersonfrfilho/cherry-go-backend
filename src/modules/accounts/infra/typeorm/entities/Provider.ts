@@ -25,6 +25,7 @@ import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
+import { ProviderImage } from "./ProviderImage";
 import { UserProfileImage } from "./UserProfileImage";
 import { UserTypeUser } from "./UserTypeUser";
 
@@ -146,6 +147,11 @@ class Provider {
     { eager: true }
   )
   image_profile?: UserProfileImage[];
+
+  @OneToMany(() => ProviderImage, (provider_image) => provider_image.provider, {
+    eager: true,
+  })
+  images?: ProviderImage[];
 
   @OneToMany(() => Transport, (transports) => transports.provider)
   transports?: Transport[];

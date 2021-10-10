@@ -32,7 +32,6 @@ class SendForgotPasswordMailService {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    console.log("############");
     const refresh_token = uuidV4();
     const expires_date = this.dateProvider.addMinutes(
       config.password.time_token_expires

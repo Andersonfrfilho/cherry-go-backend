@@ -37,7 +37,7 @@ export class Appointment {
     (appointment_client) => appointment_client.appointment,
     { eager: true }
   )
-  clients?: User[];
+  clients?: AppointmentClient[];
 
   @OneToMany(
     () => AppointmentProvider,

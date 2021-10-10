@@ -96,7 +96,7 @@ export class CreateAppointmentProvidersServicesTransportsClients1620963956718
             )
           ],
         });
-        console.log(related_appointments_providers);
+
         related_appointments_addresses.push({
           address_id: providers[provider_index].locals[0].address_id,
           appointment_id: appointments[appointment_index].id,

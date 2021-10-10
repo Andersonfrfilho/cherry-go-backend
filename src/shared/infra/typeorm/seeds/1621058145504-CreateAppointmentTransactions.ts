@@ -4,7 +4,6 @@ import { getConnection, MigrationInterface } from "typeorm";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import {
   ITENS_TYPES_TRANSACTIONS_ENUM,
-  PAYMENT_TYPES_ENUM,
   STATUS_TRANSACTION_ENUM,
 } from "@modules/transactions/enums";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
@@ -16,10 +15,11 @@ export class CreateAppointmentTransactions1621058145504
       .getRepository(Appointment)
       .createQueryBuilder("appointments")
       .leftJoinAndSelect("appointments.clients", "clients")
+      .leftJoinAndSelect("clients.client", "client")
       .leftJoinAndSelect("appointments.providers", "providers")
+      .leftJoinAndSelect("providers.provider", "provider")
+      .leftJoinAndSelect("provider.services", "services")
       .leftJoinAndSelect("appointments.transports", "transports")
-      .leftJoinAndSelect("appointments.services", "services")
-      .leftJoinAndSelect("services.service", "services_values")
       .getMany()) as Appointment[];
 
     const related_appointment_transactions = [];
@@ -28,7 +28,7 @@ export class CreateAppointmentTransactions1621058145504
     while (appointment_index < appointments.length) {
       related_appointment_transactions.push({
         appointment_id: appointments[appointment_index].id,
-        client_id: appointments[appointment_index].clients[0].id,
+        client_id: appointments[appointment_index].clients[0].client.id,
         status: STATUS_TRANSACTION_ENUM.PROGRESS,
         current_amount: 0,
         original_amount: 0,
@@ -50,38 +50,51 @@ export class CreateAppointmentTransactions1621058145504
       let original_amount_total = 0;
       let increment_amount_total = 0;
       let discount_amount_total = 0;
-      while (service_index < appointments[appointment_index].services.length) {
+      while (
+        service_index <
+        appointments[appointment_index].providers[0].provider.services.length
+      ) {
         const increment_amount = faker.datatype.number({
           min: 0,
           max:
-            appointments[appointment_index].services[service_index].service
-              .amount * 0.1,
+            appointments[appointment_index].providers[0].provider.services[
+              service_index
+            ].amount * 0.1,
         });
 
         const discount_amount = faker.datatype.number({
           min: 0,
           max:
-            appointments[appointment_index].services[service_index].service
-              .amount * 0.25,
+            appointments[appointment_index].providers[0].provider.services[
+              service_index
+            ].amount * 0.25,
         });
 
         original_amount_total += Number(
-          appointments[appointment_index].services[service_index].service.amount
+          appointments[appointment_index].providers[0].provider.services[
+            service_index
+          ].amount
         );
         increment_amount_total += increment_amount;
         discount_amount_total += discount_amount;
 
         related_appointment_transactions_itens.push({
           transaction_id: transactions[appointment_index].id,
-          elements: appointments[appointment_index].services[service_index],
+          elements:
+            appointments[appointment_index].providers[0].provider.services[
+              service_index
+            ],
           reference_key:
-            appointments[appointment_index].services[service_index].id,
+            appointments[appointment_index].providers[0].provider.services[
+              service_index
+            ].id,
           type: ITENS_TYPES_TRANSACTIONS_ENUM.SERVICE,
           increment_amount,
           discount_amount,
           amount:
-            appointments[appointment_index].services[service_index].service
-              .amount,
+            appointments[appointment_index].providers[0].provider.services[
+              service_index
+            ].amount,
         });
         service_index += 1;
       }

@@ -26,20 +26,16 @@ export class ConfirmAppointmentProviderService {
     appointment_id,
   }: ConfirmAppointmentServiceDTO): Promise<void> {
     const provider = await this.providersRepository.findById(provider_id);
-    console.log("###### - 1");
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
     }
-    console.log("###### - 2");
 
     const appointment = await this.appointmentsRepository.findById(
       appointment_id
     );
-    console.log("###### - 3");
     if (!appointment) {
       throw new AppError(NOT_FOUND.APPOINTMENT_DOES_NOT_EXIST);
     }
-    console.log("###### - 4");
     if (
       this.dateProvider.compareIfBefore(
         new Date(appointment.initial_date),
@@ -59,7 +55,6 @@ export class ConfirmAppointmentProviderService {
     if (!provider_appointment) {
       throw new AppError(NOT_FOUND.APPOINTMENT_PROVIDER_DOES_NOT_EXIST);
     }
-    console.log(provider_appointment);
     if (provider_appointment.status === STATUS_PROVIDERS_APPOINTMENT.REJECTED) {
       throw new AppError(BAD_REQUEST.APPOINTMENT_ALREADY_REJECTED);
     }

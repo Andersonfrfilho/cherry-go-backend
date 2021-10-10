@@ -1,4 +1,4 @@
-import faker from "faker";
+import faker, { fake } from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
@@ -60,6 +60,13 @@ export class CreateUsersImages1620775418678 implements MigrationInterface {
         related_array.push({
           provider_id: providers[related_providers].id,
           image_id: provider_images_list[related].id,
+          rating: faker.datatype
+            .number({
+              min: 0,
+              max: 5,
+            })
+            .toString(),
+          position: related.toString(),
         });
         related_providers += 1;
         related += 1;

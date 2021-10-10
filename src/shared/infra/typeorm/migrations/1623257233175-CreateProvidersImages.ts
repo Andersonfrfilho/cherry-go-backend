@@ -22,6 +22,16 @@ export class CreateProvidersImages1623257233175 implements MigrationInterface {
             type: "uuid",
           },
           {
+            name: "position",
+            type: "varchar",
+            isNullable: true,
+          },
+          {
+            name: "rating",
+            type: "varchar",
+            isNullable: true,
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

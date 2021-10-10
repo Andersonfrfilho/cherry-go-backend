@@ -12,6 +12,7 @@ import {
   UpdatedUserClientRepositoryDTO,
   InsideTypeForUserRepositoryDTO,
   DeleteTagsUsersClientRepositoryDTO,
+  UpdateUserDetailsRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { UserTags } from "@modules/accounts/dtos/repositories/CreateTagsUsersClient.repository.dto";
 import {
@@ -55,6 +56,12 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_tag = getRepository(Tag);
     this.repository_clients_tags = getRepository(ClientTag);
     this.repository_users_tokens = getRepository(UserTokens);
+  }
+  async updateDetailsUser({
+    id,
+    details,
+  }: UpdateUserDetailsRepositoryDTO): Promise<void> {
+    await this.repository.update(id, { details });
   }
 
   async findUsersWithPages({

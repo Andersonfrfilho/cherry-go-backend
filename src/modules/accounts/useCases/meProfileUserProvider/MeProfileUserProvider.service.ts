@@ -84,7 +84,7 @@ export class MeProfileUserProviderService {
       expires_date: refresh_token_expires_date,
       refresh_token,
     });
-    console.log("veio até aqui");
+
     const { results } = await this.providersRepository.findAppointments({
       provider_id: provider.id,
     });

@@ -27,9 +27,15 @@ export class ProviderImage {
   @Column()
   image_id: string;
 
-  @ManyToOne(() => Image)
+  @ManyToOne(() => Image, { eager: true })
   @JoinColumn({ name: "image_id", referencedColumnName: "id" })
   image: Image;
+
+  @Column()
+  position: string;
+
+  @Column()
+  rating: string;
 
   @CreateDateColumn()
   created_at?: Date;

@@ -47,3 +47,5 @@ export { DeleteTagsUsersClientRepositoryDTO } from "@modules/accounts/dtos/repos
 export { SendForgotPasswordMailServiceDTO } from "@modules/accounts/dtos/services/SendForgotPasswordMail.service.dto";
 export { SendForgotPasswordPhoneServiceDTO } from "@modules/accounts/dtos/services/SendForgotPasswordPhone.service.dto";
 export { SendForgotPasswordPhoneServiceResponseDTO } from "@modules/accounts/dtos/services/SendForgotPasswordPhoneResponse.service.dto";
+export { UpdateUserDetailsServiceDTO } from "@modules/accounts/dtos/services/UpdateUserDetails.service.dto";
+export { UpdateUserDetailsRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateUserDetails.repository.dto";

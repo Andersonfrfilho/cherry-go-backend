@@ -6,14 +6,13 @@ import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums";
 
 class ConfirmAppointmentProviderController {
   async handle(request: Request, response: Response): Promise<Response> {
-    console.log("##########################");
     const { id } = request.user;
     const { appointment_id } = request.body;
 
     const confirmAppointmentProviderService = container.resolve(
       ConfirmAppointmentProviderService
     );
-    console.log("##########################");
+
     await confirmAppointmentProviderService.execute({
       provider_id: id,
       appointment_id,
