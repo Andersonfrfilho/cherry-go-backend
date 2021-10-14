@@ -38,4 +38,9 @@ export const NOT_FOUND = {
     status_code,
     code: "4007",
   },
+  IMAGE_NOT_CONTAIN_FOR_PROVIDER: {
+    message: "Image not found for provider!",
+    status_code,
+    code: "4008",
+  },
 };

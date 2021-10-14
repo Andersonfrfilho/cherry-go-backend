@@ -382,7 +382,12 @@ export class UsersRepository implements UsersRepositoryInterface {
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = await this.repository.findOne({ email });
+    const [user] = await this.repository.find({
+      where: {
+        email,
+      },
+      take: 1,
+    });
 
     return user;
   }

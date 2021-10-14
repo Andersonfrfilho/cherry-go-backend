@@ -1,3 +1,4 @@
+import { config } from "@config/environment";
 import { HTTP_ERROR_CODES_ENUM } from "@shared/errors/enums";
 
 const status_code = HTTP_ERROR_CODES_ENUM.BAD_REQUEST;
@@ -22,5 +23,10 @@ export const BAD_REQUEST = {
     message: "Appointment already accepted!",
     status_code,
     code: "0004",
+  },
+  PROVIDER_ALREADY_LIMITS_IMAGES: {
+    message: `The provider already has the number of supported images (${config.providers.max_images_quantity})!`,
+    status_code,
+    code: "0005",
   },
 };

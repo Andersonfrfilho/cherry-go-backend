@@ -27,6 +27,9 @@ interface queue {
 interface appointment {
   hour_allowed_cancellation: number;
 }
+interface providers {
+  max_images_quantity: number;
+}
 interface app {
   name: string;
 }
@@ -44,6 +47,7 @@ export interface interface_config {
   password: password;
   storage: storage;
   appointment: appointment;
+  providers: providers;
 }
 export interface InterfaceConfig {
   development: interface_config;

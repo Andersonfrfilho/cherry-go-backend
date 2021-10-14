@@ -5,6 +5,7 @@ import "@shared/container/providers";
 import { DocumentsUsersImageRepository } from "@modules/accounts/infra/typeorm/repositories/DocumentUserImage.repository";
 import { PhonesRepository } from "@modules/accounts/infra/typeorm/repositories/Phones.repository";
 import { ProvidersRepository } from "@modules/accounts/infra/typeorm/repositories/Providers.repository";
+import { ProvidersImagesRepository } from "@modules/accounts/infra/typeorm/repositories/ProvidersImages.repository";
 import { ServicesProvidersRepository } from "@modules/accounts/infra/typeorm/repositories/ServicesProviders.repository";
 import { TypesUsersRepository } from "@modules/accounts/infra/typeorm/repositories/TypesUsers.repository";
 import { UserProfileImageRepository } from "@modules/accounts/infra/typeorm/repositories/UserProfileImage.repository";
@@ -13,6 +14,7 @@ import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositor
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImage.repository.interface";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/Phones.repository.interface";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
+import { ProvidersImagesRepositoryInterface } from "@modules/accounts/repositories/ProvidersImages.repository.interface";
 import { ServicesProvidersRepositoryInterface } from "@modules/accounts/repositories/ServicesProviders.repository.interface";
 import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/TypesUsers.repository.interface";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImage.repository.interface";
@@ -129,6 +131,11 @@ container.registerSingleton<AppointmentTransactionsItensRepositoryInterface>(
 container.registerSingleton<AppointmentsProvidersServicesRepositoryInterface>(
   "AppointmentsProvidersServicesRepository",
   AppointmentsProvidersServicesRepository
+);
+
+container.registerSingleton<ProvidersImagesRepositoryInterface>(
+  "ProvidersImagesRepository",
+  ProvidersImagesRepository
 );
 
 container.registerSingleton<NotificationsRepositoryInterface>(

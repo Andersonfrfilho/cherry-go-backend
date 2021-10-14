@@ -17,6 +17,9 @@ export const test: interface_config = {
       process.env.HOUR_ALLOWED_CANCELLATION || 1
     ),
   },
+  providers: {
+    max_images_quantity: 5,
+  },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,
     token: {
