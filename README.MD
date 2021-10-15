@@ -343,3 +343,11 @@ yarn test:unit "d:/project/cherry-go/src/shared/infra/typeorm/factories/AddressF
 # Docker
  - docker-compose -f .\apache-kafka\docker-compose.yaml up -d
  - docker-compose up -d
+
+
+# Kubernetes
+  -  create a image:
+    -  ```docker build -t cherry-go-backend -f Dockerfile .```
+  -  docker run cherry-go-backend
+  -  create container
+      - ```docker run -itd --network=cherry-go-backend_network-cherry-go-local --rm -p 3333:3333 --name cherry-go-backend-api cherry-go/images/api```
