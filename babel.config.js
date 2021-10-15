@@ -13,6 +13,7 @@ module.exports = {
           '@modules': './src/modules',
           '@shared': './src/shared',
           '@utils': './src/utils',
+          '@root': './',
           swaggerFile: './src/swagger.json',
         },
       },

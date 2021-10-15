@@ -1,6 +1,4 @@
-import { ConnectionOptions } from "typeorm";
-
-const orm_test = [
+module.exports = [
   {
     name: "default",
     type: "postgres",
@@ -52,6 +50,5 @@ const orm_test = [
     useUnifiedTopology: true,
     entities: ["./src/modules/**/infra/typeorm/schemas/*.ts"],
   },
-] as ConnectionOptions[];
+]
 
-export { orm_test };

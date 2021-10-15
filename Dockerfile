@@ -1,13 +1,16 @@
-FROM node
+FROM node:14.18.1
 
 WORKDIR /usr/app
 
-COPY package.json ./
-
-RUN npm install
+COPY package.json yarn.lock ./
 
 COPY . .
 
+RUN yarn install --frozen-lockfile && \
+    yarn build
+
 EXPOSE 3333
 
-CMD ["npm","run","dev"] 
+
+
+CMD ["yarn","run","start:prod"]
