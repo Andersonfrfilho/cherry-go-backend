@@ -5,6 +5,64 @@
     "description": "This is a API Cherry-go",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "http://{base_url}:{port}/{tag}",
+      "description": "Local",
+      "variables": {
+        "base_url": {
+          "default": "locahost",
+          "description": "base-url"
+        },
+        "port": {
+          "enum": [
+            "3333"
+          ],
+          "default": "3333"
+        },
+        "tag": {
+          "enum": [
+            "v1"
+          ],
+          "default": "v1"
+        }
+      }
+    },
+    {
+      "url": "https://cherry-go.api.{envoriment}.love/{tag}",
+      "description": "Staging",
+      "variables": {
+        "envoriment": {
+          "default": "staging",
+          "description": "envoriment"
+        },
+        "port": {
+          "enum": [
+            "3333"
+          ],
+          "default": "3333"
+        },
+        "tag": {
+          "enum": [
+            "v1"
+          ],
+          "default": "v1"
+        }
+      }
+    },
+    {
+      "url": "https://cherry-go.api.love/{tag}",
+      "description": "Production",
+      "variables": {
+        "tag": {
+          "enum": [
+            "v1"
+          ],
+          "default": "v1"
+        }
+      }
+    }
+  ],
   "paths": {
     "/v1/tags": {
       "post": {
@@ -508,15 +566,6 @@
         ],
         "summary": "Confirm account by email",
         "description": "Confirm account by email",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/request_users_client_confirm_mail"
-              }
-            }
-          }
-        },
         "responses": {
           "204": {
             "description": "No Content"
@@ -1114,8 +1163,8 @@
         "properties": {
           "rg": {
             "type": "string",
-            "maxLength": 9,
-            "minLength": 10,
+            "minLength": 9,
+            "maxLength": 10,
             "example": "123456789"
           }
         }
@@ -1601,90 +1650,66 @@
                     "transport_type": {
                       "type": "array",
                       "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "format": "uuid"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "active": {
-                          "type": "boolean"
-                        },
-                        "description": {
-                          "type": "string",
-                          "maxLength": 140
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "active": {
+                            "type": "boolean"
+                          },
+                          "description": {
+                            "type": "string",
+                            "maxLength": 140
+                          }
                         }
                       }
-                    }
                     },
                     "services": {
                       "type": "array",
                       "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "format": "uuid"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "amount": {
-                          "type": "number"
-                        },
-                        "active": {
-                          "type": "boolean"
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "active": {
+                            "type": "boolean"
+                          }
                         }
                       }
-                    }
                     },
                     "days": {
                       "type": "array",
                       "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "format": "uuid"
-                        },
-                        "day": {
-                          "type": "string"
-                        },
-                        "provider_id": {
-                          "type": "string",
-                          "format": "uuid"
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "day": {
+                            "type": "string"
+                          },
+                          "provider_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
                         }
                       }
-                    }
                     },
                     "hours": {
-                      "type": "array",
-                      "items": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "format": "uuid"
-                        },
-                        "start_time": {
-                          "type": "string",
-                          "format":"date"
-                        },
-                        "end_time": {
-                          "type": "string",
-                          "format":"date"
-                        },
-                        "provider_id": {
-                          "type": "string",
-                          "format":"uuid"
-                        }
-                      }
-                    }
-                    },
-                    "locals":{
                       "type": "array",
                       "items": {
                         "type": "object",
@@ -1695,24 +1720,48 @@
                           },
                           "start_time": {
                             "type": "string",
-                            "format":"date"
+                            "format": "date"
                           },
                           "end_time": {
                             "type": "string",
-                            "format":"date"
+                            "format": "date"
                           },
                           "provider_id": {
                             "type": "string",
-                            "format":"uuid"
-                          },
-                          "address_id": {
-                            "type": "string",
-                            "format":"uuid"
+                            "format": "uuid"
                           }
                         }
                       }
                     },
-                    "term":{
+                    "locals": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "start_time": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "end_time": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "provider_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "address_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        }
+                      }
+                    },
+                    "term": {
                       "type": "array",
                       "items": {
                         "type": "object",
@@ -1723,12 +1772,12 @@
                           },
                           "accept": {
                             "type": "string",
-                            "format":"boolean"
+                            "format": "boolean"
                           }
                         }
                       }
                     },
-                    "payment_type":{
+                    "payment_type": {
                       "type": "array",
                       "items": {
                         "type": "object",
@@ -1745,7 +1794,7 @@
                             "type": "string",
                             "format": "uuid"
                           },
-                          "payment":{
+                          "payment": {
                             "type": "object",
                             "properties": {
                               "id": {
@@ -2155,19 +2204,26 @@
           "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNsaWZ0b25fdGlsbG1hbjYyQGdtYWlsLmNvbSIsImlhdCI6MTYyNTQ1NTM0MSwiZXhwIjoxNjI4MDQ3MzQxLCJzdWIiOiJ7XCJ1c2VyXCI6e1wiaWRcIjpcImY2ZjE0M2ZhLTBlYzktNDdiNy05ZWI0LWVhYTllOTg3MzY2OFwiLFwiYWN0aXZlXCI6dHJ1ZSxcInR5cGVzXCI6W3tcImlkXCI6XCJhMjc1NDYxMS01OTIzLTQ4ZjUtYWRkZC01ZjM5YjY1Nzg4ZGVcIixcIm5hbWVcIjpcInByb3ZpZGVyXCIsXCJkZXNjcmlwdGlvblwiOlwicGx1bSBCaWtlXCIsXCJhY3RpdmVcIjp0cnVlLFwiY3JlYXRlZF9hdFwiOlwiMjAyMS0wNy0wNVQwNTo1NTo1OC40MDFaXCIsXCJ1cGRhdGVkX2F0XCI6bnVsbCxcImRlbGV0ZWRfYXRcIjpudWxsfV19fSJ9.NdvKr_CDyHdNLF51b7XcNgRoBEXqXLr2Gge5lWZqjwI"
         }
       },
-      "request_users_providers_days":{
+      "request_users_providers_days": {
         "type": "object",
         "properties": {
           "days": {
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"]
+              "enum": [
+                "MONDAY",
+                "TUESDAY",
+                "WEDNESDAY",
+                "THURSDAY",
+                "FRIDAY",
+                "SATURDAY"
+              ]
             }
           }
         }
       },
-      "request_users_providers_hours":{
+      "request_users_providers_hours": {
         "type": "object",
         "properties": {
           "payments_types": {
@@ -2175,20 +2231,20 @@
             "items": {
               "type": "object",
               "properties": {
-                "start_time":{
-                  "type":"string",
-                  "format":"date"
+                "start_time": {
+                  "type": "string",
+                  "format": "date"
                 },
-                "end_time":{
-                  "type":"string",
-                  "format":"date"
+                "end_time": {
+                  "type": "string",
+                  "format": "date"
                 }
               }
             }
           }
         }
       },
-      "request_users_providers_services":{
+      "request_users_providers_services": {
         "type": "object",
         "properties": {
           "payments_types": {
@@ -2196,27 +2252,32 @@
             "items": {
               "type": "object",
               "properties": {
-                "start_time":{
-                  "type":"string",
-                  "format":"date"
+                "start_time": {
+                  "type": "string",
+                  "format": "date"
                 },
-                "end_time":{
-                  "type":"string",
-                  "format":"date"
+                "end_time": {
+                  "type": "string",
+                  "format": "date"
                 }
               }
             }
           }
         }
       },
-      "request_users_providers_payment_types":{
+      "request_users_providers_payment_types": {
         "type": "object",
         "properties": {
           "payment_types": {
             "type": "array",
             "items": {
               "type": "string",
-              "enum": ["money","credit","pix","debit"]
+              "enum": [
+                "money",
+                "credit",
+                "pix",
+                "debit"
+              ]
             }
           }
         }
@@ -2224,4 +2285,3 @@
     }
   }
 }
-
