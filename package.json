@@ -60,7 +60,7 @@
     "seeds:create": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create -c seeds -n",
     "seeds:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -c seed && ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -c seeds",
     "seeds:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -c seeds",
-    "start:prod": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:run && node ./dist/shared/infra/http/server.js --experimental-modules",
+    "start:prod": "node ./node_modules/.bin/typeorm migration:run && ./node_modules/typeorm/cli.js migration:run -c seed && node ./dist/shared/infra/http/server.js --experimental-modules",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli",
     "test:unit": "set ENVIRONMENT=test&&jest --config ./jest.config.unit.ts --runInBand --detectOpenHandles",
     "test:integration": "set ENVIRONMENT=test&&set QUEUE_PROVIDER=test&&jest -i --config ./jest.config.integration.ts --runInBand --detectOpenHandles"

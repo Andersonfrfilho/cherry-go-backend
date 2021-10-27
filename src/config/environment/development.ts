@@ -11,10 +11,10 @@ export const development: interface_config = {
     ),
   },
   providers: {
-    max_images_quantity: 5,
+    max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),
   },
   password: {
-    time_token_expires: 30,
+    time_token_expires: Number(process.env.PASSWORD_TIME_TOKEN_EXPIRED || 30),
   },
   storage: {
     base_url:

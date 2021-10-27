@@ -1,6 +1,6 @@
 const rootDir = process.env.ENVIRONMENT === 'development'?'./src':'./dist';
 const extension = process.env.ENVIRONMENT === 'development'?'ts':'js';
-console.log(process.env.ENVIRONMENT)
+
 module.exports = [
   {
     name: "default",
@@ -8,7 +8,7 @@ module.exports = [
     port: Number(process.env.POSTGRES_PORT) || 5432,
     host: process.env.POSTGRES_HOST || "localhost",
     username: process.env.POSTGRES_USER || "postgres",
-    password: process.env.POSTGRES_PASSWORD || "102030",
+    password: process.env.POSTGRES_PASSWORD || "cherry_go_pwd",
     database: process.env.POSTGRES_DB || "cherry_go",
     migrations: [`${rootDir}/shared/infra/typeorm/migrations/*.${extension}`],
     entities: [`${rootDir}/modules/**/entities/*.${extension}`],
@@ -22,7 +22,7 @@ module.exports = [
     port: Number(process.env.POSTGRES_PORT) || 5432,
     host: process.env.POSTGRES_HOST || "localhost",
     username: process.env.POSTGRES_USER || "postgres",
-    password: process.env.POSTGRES_PASSWORD || "102030",
+    password: process.env.POSTGRES_PASSWORD || "cherry_go_pwd",
     database: process.env.POSTGRES_DB || "cherry_go",
     migrations: [`${rootDir}/shared/infra/typeorm/seed/*.${extension}`],
     entities: [`${rootDir}/modules/**/entities/*.${extension}`],
@@ -36,7 +36,7 @@ module.exports = [
     port: Number(process.env.POSTGRES_PORT) || 5432,
     host: process.env.POSTGRES_HOST || "localhost",
     username: process.env.POSTGRES_USER || "postgres",
-    password: process.env.POSTGRES_PASSWORD || "102030",
+    password: process.env.POSTGRES_PASSWORD || "cherry_go_pwd",
     database: process.env.POSTGRES_DB || "cherry_go",
     migrations: [`${rootDir}/shared/infra/typeorm/seeds/*.${extension}`],
     entities: [`${rootDir}/modules/**/entities/*.${extension}`],

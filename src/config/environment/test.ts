@@ -9,16 +9,16 @@ export const test: interface_config = {
     base_url:
       process.env.STORAGE_URL || `http://localhost:${process.env.PORT || 3333}`,
   },
+  providers: {
+    max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),
+  },
   password: {
-    time_token_expires: 30,
+    time_token_expires: Number(process.env.PASSWORD_TIME_TOKEN_EXPIRED || 30),
   },
   appointment: {
     hour_allowed_cancellation: Number(
       process.env.HOUR_ALLOWED_CANCELLATION || 1
     ),
-  },
-  providers: {
-    max_images_quantity: 5,
   },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,

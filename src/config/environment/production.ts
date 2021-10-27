@@ -5,8 +5,11 @@ export const production: interface_config = {
   application: {
     name: "Cherry-go",
   },
+  providers: {
+    max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),
+  },
   password: {
-    time_token_expires: 30,
+    time_token_expires: Number(process.env.PASSWORD_TIME_TOKEN_EXPIRED || 30),
   },
   storage: {
     base_url:
@@ -16,9 +19,6 @@ export const production: interface_config = {
     hour_allowed_cancellation: Number(
       process.env.HOUR_ALLOWED_CANCELLATION || 1
     ),
-  },
-  providers: {
-    max_images_quantity: 5,
   },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,
