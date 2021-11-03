@@ -5,6 +5,8 @@ import {
   toDate,
   addMinutes,
   subHours,
+  isAfter,
+  isEqual,
 } from "date-fns";
 
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
@@ -12,6 +14,12 @@ import { DateProviderInterface } from "@shared/container/providers/DateProvider/
 import { SubHoursDTO } from "../dtos/SubHours.dto";
 
 export class DateFnsProvider implements DateProviderInterface {
+  compareIfEqual(start_date: Date, end_date: Date): boolean {
+    return isEqual(start_date, end_date);
+  }
+  compareIfAfter(start_date: Date, end_date: Date): boolean {
+    return isAfter(start_date, end_date);
+  }
   subHours({ date, hours }: SubHoursDTO): Date {
     return subHours(date, hours);
   }

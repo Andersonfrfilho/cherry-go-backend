@@ -48,8 +48,14 @@ export class CreateProvidersAvailabilityTime1623717297782
             referencedTableName: "users",
             referencedColumnNames: ["id"],
             columnNames: ["provider_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
+            onDelete: "CASCADE",
+            onUpdate: "CASCADE",
+          },
+        ],
+        indices: [
+          {
+            columnNames: ["provider_id", "start_time", "end_time"],
+            isUnique: true,
           },
         ],
       })

@@ -1,3 +1,4 @@
+import { classToClass } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -6,18 +7,19 @@ import { CreateProviderTimesAvailabilitiesService } from "@modules/accounts/useC
 class CreateProviderTimesAvailabilitiesController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const { times } = request.body;
+    const { start_hour, end_hour } = request.body;
 
     const createProviderTimesAvailabilityService = container.resolve(
       CreateProviderTimesAvailabilitiesService
     );
 
-    await createProviderTimesAvailabilityService.execute({
+    const hour = await createProviderTimesAvailabilityService.execute({
       provider_id: id,
-      times,
+      start_hour,
+      end_hour,
     });
 
-    return response.status(204).send();
+    return response.json(hour);
   }
 }
 export { CreateProviderTimesAvailabilitiesController };

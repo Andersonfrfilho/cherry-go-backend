@@ -1,5 +1,6 @@
 import { Exclude } from "class-transformer";
 import {
+  AfterLoad,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -167,6 +168,24 @@ class Provider {
   @DeleteDateColumn()
   @Exclude()
   deleted_at?: Date;
+
+  @AfterLoad()
+  sortAttributes() {
+    if (this?.hours?.length) {
+      this.hours.sort((hour_before, hour_after) => {
+        const startDate = new Date();
+        const [startDateHour, startDateMinute] = hour_before.start_time.split(
+          ":"
+        );
+        startDate.setHours(Number(startDateHour), Number(startDateMinute), 0);
+
+        const endDate = new Date();
+        const [endDateHour, endDateMinute] = hour_after.start_time.split(":");
+        endDate.setHours(Number(endDateHour), Number(endDateMinute), 0);
+        return startDate.valueOf() - endDate.valueOf();
+      });
+    }
+  }
 }
 
 export { Provider };

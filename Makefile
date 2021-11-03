@@ -34,16 +34,16 @@ setup-env:
 	cp .example.env env
 .PHONY: setup-env
 
-postgres-migration:
-	yarn migration:run
-.PHONY: postgres-migration
-
 app-dev:
 	yarn start:dev
 .PHONY: app-dev
 
-all:
-	$(MAKE) kafka databases postgres-migration app-dev
+all-dev:
+	$(MAKE) kafka databases app-dev
+.PHONY: all
+
+all-prod:
+	$(MAKE) kafka databases app-dev
 .PHONY: all
 
 down:

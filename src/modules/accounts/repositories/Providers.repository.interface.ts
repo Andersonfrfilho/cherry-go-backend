@@ -11,12 +11,14 @@ import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
 import { CreateUserProviderRepositoryDTO } from "../dtos/repositories/CreateUserProviderType.repository.dto";
+import { DeleteAllDaysProviderAvailableRepositoryDTO } from "../dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import {
   PaginationPropsDTO,
   PaginationPropsGenericDTO,
   PaginationResponseAppointmentsDTO,
   PaginationResponsePropsDTO,
 } from "../dtos/repositories/PaginationProps.dto";
+import { ProviderAvailabilityTime } from "../infra/typeorm/entities/ProviderAvailabilityTime";
 
 export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
@@ -30,6 +32,9 @@ export interface ProvidersRepositoryInterface {
   createDaysAvailable(
     data: CreateProviderDaysAvailabilityServiceDTO
   ): Promise<void>;
+  deleteAllDaysProviderAvailable({
+    provider_id,
+  }: DeleteAllDaysProviderAvailableRepositoryDTO): Promise<void>;
   createTimesAvailable(
     data: CreateProviderTimesAvailabilityProviderDTO
   ): Promise<void>;
@@ -48,4 +53,11 @@ export interface ProvidersRepositoryInterface {
   findAppointments(
     data: PaginationPropsGenericDTO<Appointment>
   ): Promise<PaginationResponseAppointmentsDTO<Appointment>>;
+  findByProviderHoursAvailable(
+    provider_id: string
+  ): Promise<ProviderAvailabilityTime[]>;
+  excludeProviderHourAvailable(
+    provider_id: string | Array<string>
+  ): Promise<void>;
+  updateProviderHourAvailable(data: ProviderAvailabilityTime): Promise<void>;
 }

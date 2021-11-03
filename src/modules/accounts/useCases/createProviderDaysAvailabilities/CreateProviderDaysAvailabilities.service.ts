@@ -20,6 +20,9 @@ class CreateProviderDaysAvailabilitiesService {
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
     }
+    await this.providersRepository.deleteAllDaysProviderAvailable({
+      provider_id: provider.id,
+    });
 
     await this.providersRepository.createDaysAvailable({
       provider_id,

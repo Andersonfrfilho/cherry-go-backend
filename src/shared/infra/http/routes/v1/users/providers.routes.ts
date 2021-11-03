@@ -18,6 +18,9 @@ import { CreateUserProviderController } from "@modules/accounts/useCases/createU
 import { schemaCreateUserProvider } from "@modules/accounts/useCases/createUserProvider/createUserProvider.schema";
 import { CreateUsersTypeProvidersController } from "@modules/accounts/useCases/createUsersTypeProviders/CreateUsersTypeProviders.controller";
 import { DeletePhotosProviderController } from "@modules/accounts/useCases/deletePhotosProvider/DeletePhotosProvider.controller";
+import { DeleteProviderTimesAvailabilitiesController } from "@modules/accounts/useCases/deleteProviderTimesAvailabilities/DeleteProviderTimesAvailabilities.controller";
+import { schemaDeleteProviderTimesAvailabilities } from "@modules/accounts/useCases/deleteProviderTimesAvailabilities/deleteProviderTimesAvailabilities.schema";
+import { GetAvailabilitiesOptionsProviderWorkController } from "@modules/accounts/useCases/getAvailabilitiesOptionsProviderWork/GetAvailabilitiesOptionsProviderWork.controller";
 import { MeProfileUserProviderController } from "@modules/accounts/useCases/meProfileUserProvider/MeProfileUserProvider.controller";
 import { UpdatePhotosProviderController } from "@modules/accounts/useCases/updatePhotosProvider/UpdatePhotosProvider.controller";
 import { UploadPhotosProviderController } from "@modules/accounts/useCases/uploadPhotosProvider/UploadPhotosUserProvider.controller";
@@ -35,6 +38,7 @@ const authenticateUserProviderController = new AuthenticateUserProviderControlle
 const meProfileUserProviderController = new MeProfileUserProviderController();
 const createProviderTimesAvailabilitiesController = new CreateProviderTimesAvailabilitiesController();
 const createProviderDaysAvailabilitiesController = new CreateProviderDaysAvailabilitiesController();
+const getAvailabilitiesOptionsProviderWorkController = new GetAvailabilitiesOptionsProviderWorkController();
 const createServiceProviderController = new CreateServiceProviderController();
 const createProvidersPaymentsTypesController = new CreateProvidersPaymentsTypesController();
 const createProviderTransportTypesAvailabilitiesController = new CreateProviderTransportTypesAvailabilitiesController();
@@ -43,6 +47,7 @@ const rejectAppointmentProviderController = new RejectAppointmentProviderControl
 const uploadPhotosProviderController = new UploadPhotosProviderController();
 const updatePhotosProviderController = new UpdatePhotosProviderController();
 const deletePhotosProviderController = new DeletePhotosProviderController();
+const deleteProviderTimesAvailabilitiesController = new DeleteProviderTimesAvailabilitiesController();
 const uploadImages = multer(uploadConfig);
 
 providersRoutes.post(
@@ -76,11 +81,24 @@ providersRoutes.patch(
   createProviderDaysAvailabilitiesController.handle
 );
 
+providersRoutes.get(
+  "/availabilities",
+  ensureAuthenticatedProvider,
+  getAvailabilitiesOptionsProviderWorkController.handle
+);
+
 providersRoutes.patch(
   "/hours",
   ensureAuthenticatedProvider,
   schemaCreateProviderTimesAvailabilities,
   createProviderTimesAvailabilitiesController.handle
+);
+
+providersRoutes.delete(
+  "/hours",
+  ensureAuthenticatedProvider,
+  schemaDeleteProviderTimesAvailabilities,
+  deleteProviderTimesAvailabilitiesController.handle
 );
 
 providersRoutes.patch(

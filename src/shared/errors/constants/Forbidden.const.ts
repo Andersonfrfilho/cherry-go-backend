@@ -33,4 +33,9 @@ export const FORBIDDEN = {
     status_code,
     code: "3006",
   },
+  PERIOD_BELONGS_TO_ANOTHER_PROVIDER: {
+    message: "Period belongs to another provider",
+    status_code,
+    code: "3007",
+  },
 };

@@ -4,5 +4,6 @@ export interface Hour {
 }
 export interface CreateProviderTimesAvailabilityServiceDTO {
   provider_id: string;
-  times: Hour[];
+  start_hour: string;
+  end_hour: string;
 }

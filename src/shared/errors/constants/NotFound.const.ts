@@ -43,4 +43,9 @@ export const NOT_FOUND = {
     status_code,
     code: "4008",
   },
+  PERIOD_NOT_FOUND: {
+    message: "Period not found!",
+    status_code,
+    code: "4009",
+  },
 };

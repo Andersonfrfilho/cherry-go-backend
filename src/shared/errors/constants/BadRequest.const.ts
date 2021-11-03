@@ -29,4 +29,9 @@ export const BAD_REQUEST = {
     status_code,
     code: "0005",
   },
+  INITIAL_DATE_GREATER_THAN_END_DATE: {
+    message: "Initial date greater than final date!",
+    status_code,
+    code: "0006",
+  },
 };

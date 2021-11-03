@@ -29,7 +29,7 @@ docker-compose up -d && yarn migration:run
 goto :eof
 
 :all
-docker-compose up -d && docker-compose -f .\apache-kafka\docker-compose.yaml up -d && yarn migration:run
+docker-compose -f .\apache-kafka\docker-compose.yaml up -d&&docker-compose up -d&&yarn start:dev
 goto :eof
 
 :down

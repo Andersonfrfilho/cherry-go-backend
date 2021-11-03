@@ -2,5 +2,6 @@ import { Hour } from "@modules/accounts/dtos/services/CreateProviderTimesAvailab
 
 export interface CreateProviderTimesAvailabilityProviderDTO {
   provider_id: string;
-  times: Hour[];
+  end_hour: string;
+  start_hour: string;
 }

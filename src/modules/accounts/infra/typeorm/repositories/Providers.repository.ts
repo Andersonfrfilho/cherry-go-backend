@@ -10,6 +10,7 @@ import {
   CreateTransportTypesAvailableRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProviderType.repository.dto";
+import { DeleteAllDaysProviderAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import {
   PaginationPropsGenericDTO,
   PaginationResponseAppointmentsDTO,
@@ -73,6 +74,25 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
     this.repository_appointments = getRepository(Appointment);
     this.repository_appointments_providers = getRepository(AppointmentProvider);
+  }
+  async updateProviderHourAvailable(
+    data: ProviderAvailabilityTime
+  ): Promise<void> {
+    await this.repository_available_times.update(data.id, data);
+  }
+  async excludeProviderHourAvailable(provider_id: string): Promise<void> {
+    await this.repository_available_times.delete(provider_id);
+  }
+
+  async findByProviderHoursAvailable(
+    provider_id: string
+  ): Promise<ProviderAvailabilityTime[]> {
+    const hours = await this.repository_available_times.find({
+      where: { provider_id },
+      order: { start_time: "ASC" },
+    });
+
+    return hours;
   }
 
   async findAppointments({
@@ -302,18 +322,37 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     await this.repository_available_days.save(days_created);
   }
 
+  async deleteAllDaysProviderAvailable({
+    provider_id,
+  }: DeleteAllDaysProviderAvailableRepositoryDTO): Promise<void> {
+    const days_selects = await this.repository_available_days.find({
+      where: {
+        provider_id,
+      },
+    });
+    await this.repository_available_days.delete(
+      days_selects.map((day) => day.id)
+    );
+  }
+
   async createTimesAvailable({
     provider_id,
-    times,
+    end_hour,
+    start_hour,
   }: CreateProviderTimesAvailabilityProviderDTO): Promise<void> {
-    const times_created = this.repository_available_times.create(
-      times.map((time) => ({ ...time, provider_id }))
-    );
+    const times_created = this.repository_available_times.create({
+      provider_id,
+      start_time: start_hour,
+      end_time: end_hour,
+    });
+
     await this.repository_available_times.save(times_created);
   }
 
   async findById(id: string): Promise<Provider> {
-    return this.repository.findOne(id);
+    const user = await this.repository.findOne(id);
+
+    return user;
   }
 }
 export { ProvidersRepository };
