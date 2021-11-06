@@ -12,6 +12,7 @@ import { DateProviderInterface } from "@shared/container/providers/DateProvider/
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
+import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/Queue.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { CONFLICT } from "@shared/errors/constants";
@@ -30,7 +31,9 @@ export class CreateUserProviderService {
     @inject("DateProvider")
     private dateProvider: DateProviderInterface,
     @inject("QueueProvider")
-    private queueProvider: QueueProviderInterface
+    private queueProvider: QueueProviderInterface,
+    @inject("PaymentProvider")
+    private paymentProvider: PaymentProviderInterface
   ) {}
   async execute({
     name,
@@ -57,6 +60,12 @@ export class CreateUserProviderService {
 
     const password_hash = await this.hashProvider.generateHash(password);
 
+    const user_bank = await this.paymentProvider.createAccountClient({
+      email,
+      name,
+      cpf,
+    });
+
     const user = await this.providersRepository.createUserProviderType({
       name,
       last_name,
@@ -64,12 +73,19 @@ export class CreateUserProviderService {
       rg,
       email,
       gender,
-      details,
       password: password_hash,
       birth_date,
       active: false,
       term,
       term_provider,
+      details: {
+        stripe: {
+          customer: {
+            id: user_bank.id,
+          },
+        },
+        ...details,
+      },
     });
 
     const refresh_token = uuidV4();

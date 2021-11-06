@@ -6,3 +6,4 @@ import "@shared/container/providers/HashProvider";
 import "@shared/container/providers/JwtProvider";
 import "@shared/container/providers/QueueProvider";
 import "@shared/container/providers/SmsProvider";
+import "@shared/container/providers/PaymentProvider";

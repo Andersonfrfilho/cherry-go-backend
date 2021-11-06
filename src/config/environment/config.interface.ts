@@ -21,6 +21,14 @@ interface mail {
 interface broker {
   base_url: string;
 }
+interface stripe {
+  public_key: string;
+  secret_key: string;
+}
+interface payment {
+  provider: "local" | "stripe";
+  stripe: stripe;
+}
 interface queue {
   broker: broker;
 }
@@ -48,6 +56,7 @@ export interface interface_config {
   storage: storage;
   appointment: appointment;
   providers: providers;
+  payment: payment;
 }
 export interface InterfaceConfig {
   development: interface_config;

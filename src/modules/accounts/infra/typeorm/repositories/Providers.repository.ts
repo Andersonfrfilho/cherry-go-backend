@@ -9,6 +9,7 @@ import {
   CreateAddressUsersProvidersRepositoryDTO,
   CreateTransportTypesAvailableRepositoryDTO,
 } from "@modules/accounts/dtos";
+import { CreateProviderAddressRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateProviderAddressRepository.dto";
 import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import {
@@ -74,6 +75,39 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
     this.repository_appointments = getRepository(Appointment);
     this.repository_appointments_providers = getRepository(AppointmentProvider);
+  }
+  async deleteProviderAddress(ids: string[]): Promise<void> {
+    await this.repository_provider_addresses.delete(ids);
+  }
+
+  async createProviderAddress({
+    provider_id,
+    address_id,
+    amount,
+    active,
+  }: CreateProviderAddressRepositoryDTO): Promise<void> {
+    await this.repository_provider_addresses.save({
+      provider_id,
+      address_id,
+      amount,
+      active,
+    });
+  }
+
+  async getAllAddressByProviders(id: string): Promise<ProviderAddress[]> {
+    return this.repository_provider_addresses.find({
+      where: { provider_id: id },
+    });
+  }
+
+  async getAllPaymentTypes(id: string): Promise<ProviderPaymentType[]> {
+    return this.repository_provider_payment_type.find({
+      where: { provider_id: id },
+    });
+  }
+
+  async deletePaymentTypes(data: string[]): Promise<void> {
+    await this.repository_provider_payment_type.delete(data);
   }
   async updateProviderHourAvailable(
     data: ProviderAvailabilityTime

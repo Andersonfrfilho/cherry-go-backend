@@ -4,6 +4,8 @@ import multer from "multer";
 import uploadConfig from "@config/upload";
 import { AuthenticateUserProviderController } from "@modules/accounts/useCases/authenticateUserProvider/AuthenticateUserProvider.controller";
 import { schemaAuthenticateProvider } from "@modules/accounts/useCases/authenticateUserProvider/authenticateUserProvider.schema";
+import { CreateLocalProvidersController } from "@modules/accounts/useCases/createLocalProviders/CreateLocalProviders.controller";
+import { schemaCreateLocalProviders } from "@modules/accounts/useCases/createLocalProviders/createLocalsProviders.schema";
 import { CreateProviderDaysAvailabilitiesController } from "@modules/accounts/useCases/createProviderDaysAvailabilities/CreateProviderDaysAvailabilities.controller";
 import { schemaCreateProviderDaysAvailabilities } from "@modules/accounts/useCases/createProviderDaysAvailabilities/createProviderDaysAvailabilities.schema";
 import { CreateProvidersPaymentsTypesController } from "@modules/accounts/useCases/createProvidersPaymentsTypes/CreateProvidersPaymentsTypes.controller";
@@ -17,9 +19,13 @@ import { schemaCreateServiceProvider } from "@modules/accounts/useCases/createSe
 import { CreateUserProviderController } from "@modules/accounts/useCases/createUserProvider/CreateUserProvider.controller";
 import { schemaCreateUserProvider } from "@modules/accounts/useCases/createUserProvider/createUserProvider.schema";
 import { CreateUsersTypeProvidersController } from "@modules/accounts/useCases/createUsersTypeProviders/CreateUsersTypeProviders.controller";
+import { DeleteLocalsProvidersController } from "@modules/accounts/useCases/deleteLocalsProviders/DeleteLocalsProviders.controller";
+import { schemaDeleteLocalsProviders } from "@modules/accounts/useCases/deleteLocalsProviders/deleteLocalsProviders.schema";
 import { DeletePhotosProviderController } from "@modules/accounts/useCases/deletePhotosProvider/DeletePhotosProvider.controller";
 import { DeleteProviderTimesAvailabilitiesController } from "@modules/accounts/useCases/deleteProviderTimesAvailabilities/DeleteProviderTimesAvailabilities.controller";
 import { schemaDeleteProviderTimesAvailabilities } from "@modules/accounts/useCases/deleteProviderTimesAvailabilities/deleteProviderTimesAvailabilities.schema";
+import { GetAllLocalsProvidersController } from "@modules/accounts/useCases/getAllLocalsProviders/GetAllLocalsProviders.controller";
+import { GetAllPaymentTypeController } from "@modules/accounts/useCases/getAllPaymentType/GetAllPaymentType.controller";
 import { GetAvailabilitiesOptionsProviderWorkController } from "@modules/accounts/useCases/getAvailabilitiesOptionsProviderWork/GetAvailabilitiesOptionsProviderWork.controller";
 import { MeProfileUserProviderController } from "@modules/accounts/useCases/meProfileUserProvider/MeProfileUserProvider.controller";
 import { UpdatePhotosProviderController } from "@modules/accounts/useCases/updatePhotosProvider/UpdatePhotosProvider.controller";
@@ -48,6 +54,11 @@ const uploadPhotosProviderController = new UploadPhotosProviderController();
 const updatePhotosProviderController = new UpdatePhotosProviderController();
 const deletePhotosProviderController = new DeletePhotosProviderController();
 const deleteProviderTimesAvailabilitiesController = new DeleteProviderTimesAvailabilitiesController();
+const getAllPaymentTypeController = new GetAllPaymentTypeController();
+const getAllLocalsController = new GetAllLocalsProvidersController();
+const deleteLocalsProvidersController = new DeleteLocalsProvidersController();
+const createLocalProvidersControllerController = new CreateLocalProvidersController();
+
 const uploadImages = multer(uploadConfig);
 
 providersRoutes.post(
@@ -153,6 +164,32 @@ providersRoutes.delete(
   "/photos",
   ensureAuthenticatedProvider,
   deletePhotosProviderController.handle
+);
+
+providersRoutes.get(
+  "/payments_types",
+  ensureAuthenticatedProvider,
+  getAllPaymentTypeController.handle
+);
+
+providersRoutes.post(
+  "/locals",
+  ensureAuthenticatedProvider,
+  schemaCreateLocalProviders,
+  createLocalProvidersControllerController.handle
+);
+
+providersRoutes.get(
+  "/locals",
+  ensureAuthenticatedProvider,
+  getAllLocalsController.handle
+);
+
+providersRoutes.delete(
+  "/locals",
+  ensureAuthenticatedProvider,
+  schemaDeleteLocalsProviders,
+  deleteLocalsProvidersController.handle
 );
 
 export { providersRoutes };

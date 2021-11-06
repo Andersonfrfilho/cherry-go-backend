@@ -7,9 +7,11 @@ import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/U
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
+import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import {
   METHOD_NOT_ALLOWED,
+  NOT_FOUND,
   UNAUTHORIZED,
   UNPROCESSABLE_ENTITY,
 } from "@shared/errors/constants";
@@ -26,7 +28,9 @@ class ConfirmAccountPhoneUserService {
     @inject("JwtProvider")
     private jwtProvider: JwtProviderInterface,
     @inject("HashProvider")
-    private hashProvider: HashProviderInterface
+    private hashProvider: HashProviderInterface,
+    @inject("PaymentProvider")
+    private paymentProvider: PaymentProviderInterface
   ) {}
   async execute({
     code,
@@ -62,6 +66,21 @@ class ConfirmAccountPhoneUserService {
     await this.usersRepository.updateActivePhoneUser({
       id: sub.user.id,
       active: passed,
+    });
+
+    const user = await this.usersRepository.findById(user_token.user_id);
+
+    if (!user) {
+      throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
+    }
+
+    if (!user.details.stripe.customer.id) {
+      throw new AppError(NOT_FOUND.ACCOUNT_PAYMENT_PROVIDER_DOES_NOT_EXIST);
+    }
+
+    await this.paymentProvider.updateAccountClient({
+      stripe_id: user.details.stripe.customer.id,
+      phone: `${user.phones[0].country_code}${user.phones[0].ddd}${user.phones[0].number}`,
     });
   }
 }

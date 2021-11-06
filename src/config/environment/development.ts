@@ -1,6 +1,8 @@
 import { interface_config } from "@config/environment/config.interface";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 
+import { PAYMENT_PROVIDER_ENUM } from "./config.enum";
+
 export const development: interface_config = {
   application: {
     name: "Cherry-go",
@@ -12,6 +14,13 @@ export const development: interface_config = {
   },
   providers: {
     max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),
+  },
+  payment: {
+    provider: PAYMENT_PROVIDER_ENUM[process.env.PAYMENT_PROVIDER] || "local",
+    stripe: {
+      public_key: process.env.STRIPE_PUBLIC_KEY || "",
+      secret_key: process.env.STRIPE_SECRET_KEY || "",
+    },
   },
   password: {
     time_token_expires: Number(process.env.PASSWORD_TIME_TOKEN_EXPIRED || 30),

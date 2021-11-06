@@ -38,4 +38,9 @@ export const FORBIDDEN = {
     status_code,
     code: "3007",
   },
+  LOCALS_BELONGS_TO_ANOTHER_PROVIDER: {
+    message: "Locas belongs to another provider",
+    status_code,
+    code: "3008",
+  },
 };

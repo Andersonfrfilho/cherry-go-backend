@@ -29,6 +29,7 @@ import { AppointmentsProvidersRepository } from "@modules/appointments/infra/typ
 import { AppointmentsUsersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsers.repository";
 import { AppointmentsUsersTransactionsRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsersTransactions.repository";
 import { AppointmentTransactionsItensRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentTransactionsItens.repository";
+import { PaymentTypeRepository } from "@modules/appointments/infra/typeorm/repositories/PaymentType.repository";
 import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/Appointments.repository.interface";
 import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddresses.repository.interface";
 import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProviders.repository.interface";
@@ -36,6 +37,7 @@ import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appoi
 import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsers.repository.interface";
 import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactions.repository.interface";
 import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItens.repository.interface";
+import { PaymentTypeRepositoryInterface } from "@modules/appointments/repositories/PaymentType.repository.interface";
 import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/Images.repository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
 import { NotificationsRepository } from "@modules/notifications/infra/typeorm/repositories/Notifications.repository";
@@ -143,6 +145,11 @@ container.registerSingleton<ProvidersImagesRepositoryInterface>(
 container.registerSingleton<ProvidersAvailabilityTimeRepositoryInterface>(
   "ProvidersAvailabilityTimeRepository",
   ProvidersAvailabilityTimeRepository
+);
+
+container.registerSingleton<PaymentTypeRepositoryInterface>(
+  "PaymentTypeRepository",
+  PaymentTypeRepository
 );
 
 container.registerSingleton<NotificationsRepositoryInterface>(

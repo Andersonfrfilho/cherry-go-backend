@@ -48,4 +48,9 @@ export const NOT_FOUND = {
     status_code,
     code: "4009",
   },
+  ACCOUNT_PAYMENT_PROVIDER_DOES_NOT_EXIST: {
+    message: "Account payment provider not exist!",
+    status_code,
+    code: "4010",
+  },
 };

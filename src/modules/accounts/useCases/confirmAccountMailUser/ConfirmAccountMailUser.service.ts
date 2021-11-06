@@ -3,8 +3,14 @@ import { inject, injectable } from "tsyringe";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
+import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import { FORBIDDEN, NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
+import {
+  BAD_REQUEST,
+  FORBIDDEN,
+  NOT_FOUND,
+  UNAUTHORIZED,
+} from "@shared/errors/constants";
 
 @injectable()
 class ConfirmAccountMailUserService {
@@ -14,7 +20,9 @@ class ConfirmAccountMailUserService {
     @inject("UsersTokensRepository")
     private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("DateProvider")
-    private dateProvider: DateProviderInterface
+    private dateProvider: DateProviderInterface,
+    @inject("PaymentProvider")
+    private paymentProvider: PaymentProviderInterface
   ) {}
   async execute(token: string): Promise<void> {
     const user_token = await this.usersTokensRepository.findByRefreshToken(
@@ -34,6 +42,21 @@ class ConfirmAccountMailUserService {
     await this.usersRepository.updateActiveUser({
       id: user_token.user_id,
       active: true,
+    });
+
+    const user = await this.usersRepository.findById(user_token.user_id);
+
+    if (!user) {
+      throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
+    }
+
+    if (!user.details.stripe.customer.id) {
+      throw new AppError(NOT_FOUND.ACCOUNT_PAYMENT_PROVIDER_DOES_NOT_EXIST);
+    }
+
+    await this.paymentProvider.updateAccountClient({
+      stripe_id: user.details.stripe.customer.id,
+      email: user.email,
     });
   }
 }

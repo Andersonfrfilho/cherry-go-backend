@@ -1,3 +1,4 @@
+import { classToClass } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -11,12 +12,14 @@ class CreateProvidersPaymentsTypesController {
       CreateProvidersPaymentsTypesService
     );
 
-    await createProvidersPaymentsTypesService.execute({
-      provider_id: id,
-      payments_types,
-    });
+    const provider_payments_types = await createProvidersPaymentsTypesService.execute(
+      {
+        provider_id: id,
+        payments_types,
+      }
+    );
 
-    return response.status(204).send();
+    return response.json(classToClass(provider_payments_types));
   }
 }
 export { CreateProvidersPaymentsTypesController };

@@ -1,6 +1,8 @@
 import { interface_config } from "@config/environment/config.interface";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 
+import { PAYMENT_PROVIDER_ENUM } from "./config.enum";
+
 export const test: interface_config = {
   application: {
     name: "Cherry-go",
@@ -19,6 +21,13 @@ export const test: interface_config = {
     hour_allowed_cancellation: Number(
       process.env.HOUR_ALLOWED_CANCELLATION || 1
     ),
+  },
+  payment: {
+    provider: PAYMENT_PROVIDER_ENUM[process.env.PAYMENT_PROVIDER] || "local",
+    stripe: {
+      public_key: process.env.STRIPE_PUBLIC_KEY,
+      secret_key: process.env.STRIPE_SECRET_KEY,
+    },
   },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,
