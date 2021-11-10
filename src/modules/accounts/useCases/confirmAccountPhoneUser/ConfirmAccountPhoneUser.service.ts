@@ -79,9 +79,18 @@ class ConfirmAccountPhoneUserService {
     }
 
     await this.paymentProvider.updateAccountClient({
-      stripe_id: user.details.stripe.customer.id,
+      external_id: user.details.stripe.customer.id,
       phone: `${user.phones[0].country_code}${user.phones[0].ddd}${user.phones[0].number}`,
     });
+
+    if (user?.details?.stripe?.account?.id) {
+      await this.paymentProvider.updateAccount({
+        external_id: user.details.stripe.account.id,
+        business_profile: {
+          support_phone: `${user.phones[0].country_code}${user.phones[0].ddd}${user.phones[0].number}`,
+        },
+      });
+    }
   }
 }
 export { ConfirmAccountPhoneUserService };

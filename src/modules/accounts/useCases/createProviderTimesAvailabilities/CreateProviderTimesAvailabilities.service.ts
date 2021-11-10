@@ -83,7 +83,6 @@ class CreateProviderTimesAvailabilitiesService {
     });
 
     if (excludesIntervalsHours.length > 0) {
-      console.log("add hour - exclude");
       await this.providersRepository.excludeProviderHourAvailable(
         excludesIntervalsHours.map((hour) => hour.id)
       );

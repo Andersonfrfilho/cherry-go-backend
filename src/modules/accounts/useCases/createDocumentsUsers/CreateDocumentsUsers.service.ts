@@ -1,10 +1,13 @@
 import { inject, injectable } from "tsyringe";
 
+import upload from "@config/upload";
 import { CreateDocumentsUsersServiceDTO } from "@modules/accounts/dtos";
 import { USER_DOCUMENT_VALUE_ENUM } from "@modules/accounts/enums/UserDocumentValue.enum";
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImage.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
+import { STRIPE_PURPOSE_DOCUMENT } from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
+import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
 import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/Storage.provider.interface";
 
@@ -18,7 +21,9 @@ export class CreateDocumentsUsersService {
     @inject("StorageProvider")
     private storageProvider: StorageProviderInterface,
     @inject("ImagesRepository")
-    private imagesRepository: ImagesRepositoryInterface
+    private imagesRepository: ImagesRepositoryInterface,
+    @inject("PaymentProvider")
+    private paymentProvider: PaymentProviderInterface
   ) {}
   async execute({
     document_file,
@@ -48,6 +53,10 @@ export class CreateDocumentsUsersService {
         document_side[description].image_id
       );
     }
+    const file_stripe = await this.paymentProvider.uploadAccountDocument({
+      file_name: document_file,
+      purpose: STRIPE_PURPOSE_DOCUMENT.identity_document,
+    });
 
     const name = await this.storageProvider.save(
       document_file,
@@ -62,5 +71,23 @@ export class CreateDocumentsUsersService {
       value: user.cpf,
       description: USER_DOCUMENT_VALUE_ENUM[description],
     });
+    // await this.paymentProvider.updateAccountClient({
+    //   external_id: user.details.stripe.customer.id,
+    //   email: user.email,
+    // });
+
+    if (user?.details?.stripe?.account?.id) {
+      await this.paymentProvider.updateAccount({
+        external_id: user.details.stripe.account.id,
+        individual: {
+          verification: {
+            document: {
+              front: file_stripe.id,
+              details: user.cpf,
+            },
+          },
+        },
+      });
+    }
   }
 }

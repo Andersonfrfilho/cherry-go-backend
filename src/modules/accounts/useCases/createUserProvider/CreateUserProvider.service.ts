@@ -60,7 +60,13 @@ export class CreateUserProviderService {
 
     const password_hash = await this.hashProvider.generateHash(password);
 
-    const user_bank = await this.paymentProvider.createAccountClient({
+    const user_client_bank = await this.paymentProvider.createAccountClient({
+      email,
+      name,
+      cpf,
+    });
+
+    const user_account_bank = await this.paymentProvider.createAccount({
       email,
       name,
       cpf,
@@ -81,11 +87,20 @@ export class CreateUserProviderService {
       details: {
         stripe: {
           customer: {
-            id: user_bank.id,
+            id: user_client_bank.id,
+          },
+          account: {
+            id: user_account_bank.id,
           },
         },
         ...details,
       },
+    });
+
+    // PEGAR O IP
+    await this.paymentProvider.updateAccount({
+      external_id: user_account_bank.id,
+      tos_acceptance: { date: Math.round(Date.now() / 1000), ip: "8.8.8.8" },
     });
 
     const refresh_token = uuidV4();

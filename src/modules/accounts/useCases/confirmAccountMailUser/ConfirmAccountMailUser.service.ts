@@ -55,9 +55,16 @@ class ConfirmAccountMailUserService {
     }
 
     await this.paymentProvider.updateAccountClient({
-      stripe_id: user.details.stripe.customer.id,
+      external_id: user.details.stripe.customer.id,
       email: user.email,
     });
+
+    if (user?.details?.stripe?.account?.id) {
+      await this.paymentProvider.updateAccount({
+        external_id: user.details.stripe.account.id,
+        email: user.email,
+      });
+    }
   }
 }
 export { ConfirmAccountMailUserService };

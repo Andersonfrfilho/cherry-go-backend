@@ -8,7 +8,7 @@ interface Address {
 }
 
 export interface UpdateAccountClientPaymentDTO {
-  stripe_id: string;
+  external_id: string;
   email?: string;
   name?: string;
   phone?: string;

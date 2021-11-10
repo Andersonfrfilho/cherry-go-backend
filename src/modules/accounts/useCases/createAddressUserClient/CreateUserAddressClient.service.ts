@@ -60,9 +60,17 @@ export class CreateUserAddressClientService {
     };
 
     await this.paymentProvider.updateAccountClient({
-      stripe_id: user.details.stripe.customer.id,
+      external_id: user.details.stripe.customer.id,
       address,
     });
+
+    if (user.details?.stripe?.account?.id) {
+      await this.paymentProvider.updateAccount({
+        external_id: user.details.stripe.account.id,
+        company: { address },
+      });
+    }
+
     return user;
   }
 }
