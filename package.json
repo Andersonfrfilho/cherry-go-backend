@@ -14,6 +14,7 @@
     "@types/faker": "^5.5.3",
     "@vonage/server-sdk": "^2.10.8",
     "aws-sdk": "^2.888.0",
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "celebrate": "^14.0.0",
     "class-transformer": "^0.4.0",

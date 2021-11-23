@@ -4,6 +4,7 @@ import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
 import { CreateUserProviderServiceDTO } from "@modules/accounts/dtos/services/CreateUserProviderType.service.dto";
+import { GENDERS_ENUM } from "@modules/accounts/enums/GendersUsers.enum";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -70,6 +71,10 @@ export class CreateUserProviderService {
       email,
       name,
       cpf,
+      gender: GENDERS_ENUM[gender],
+      last_name,
+      rg,
+      birth_date,
     });
 
     const user = await this.providersRepository.createUserProviderType({

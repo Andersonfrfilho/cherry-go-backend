@@ -1,6 +1,8 @@
 import { celebrate, Joi, Segments } from "celebrate";
 import { differenceInYears } from "date-fns";
 
+import { config } from "@config/environment";
+
 export const schemaCreateUserProvider = celebrate({
   [Segments.BODY]: {
     name: Joi.string().lowercase().required(),
@@ -20,7 +22,10 @@ export const schemaCreateUserProvider = celebrate({
       .iso()
       .required()
       .custom((value, helper) => {
-        if (differenceInYears(new Date(), value) < 18) {
+        if (
+          differenceInYears(new Date(), value) <
+          config.application.minimum_age_required
+        ) {
           return helper.message({
             custom: "invalid date_birth, you are a minor",
           });

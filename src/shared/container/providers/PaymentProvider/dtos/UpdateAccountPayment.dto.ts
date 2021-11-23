@@ -32,6 +32,7 @@ export interface UpdateAccountPaymentDTO {
     verification?: {
       document?: {
         front?: string;
+        back?: string;
         details?: string;
       };
     };

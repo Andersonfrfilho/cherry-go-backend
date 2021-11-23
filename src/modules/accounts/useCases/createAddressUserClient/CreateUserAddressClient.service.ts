@@ -3,6 +3,10 @@ import { inject, injectable } from "tsyringe";
 import { CreateUserAddressClientServiceDTO } from "@modules/accounts/dtos";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { User } from "@sentry/node";
+import {
+  NATIONALITY_ISO_3166_2,
+  STRIPE_BUSINESS_TYPE,
+} from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
 import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
@@ -52,7 +56,7 @@ export class CreateUserAddressClientService {
 
     const address = {
       city,
-      country: "BR",
+      country: NATIONALITY_ISO_3166_2.BR,
       line1: street,
       line2: number,
       postal_code: zipcode,

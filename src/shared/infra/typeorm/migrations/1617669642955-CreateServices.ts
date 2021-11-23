@@ -30,6 +30,11 @@ export class CreateServices1617669642955 implements MigrationInterface {
             type: "uuid",
           },
           {
+            name: "details",
+            type: "jsonb",
+            isNullable: true,
+          },
+          {
             name: "active",
             type: "boolean",
           },

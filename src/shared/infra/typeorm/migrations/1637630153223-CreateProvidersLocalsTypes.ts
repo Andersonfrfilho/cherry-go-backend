@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateProvidersTransporteAcceptType1624409789268
+export class CreateProvidersLocalsTypes1637630153223
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "providers_transports_types",
+        name: "providers_locals_types",
         columns: [
           {
             name: "id",
@@ -19,17 +19,12 @@ export class CreateProvidersTransporteAcceptType1624409789268
             type: "uuid",
           },
           {
-            name: "transport_type_id",
-            type: "uuid",
+            name: "local_type",
+            type: "varchar",
           },
           {
             name: "active",
             type: "boolean",
-          },
-          {
-            name: "amount",
-            type: "bigint",
-            isNullable: true,
           },
           {
             name: "created_at",
@@ -49,20 +44,18 @@ export class CreateProvidersTransporteAcceptType1624409789268
         ],
         foreignKeys: [
           {
-            name: "FKProviderTransportsTypes",
+            name: "FKProviderLocalsTypes",
             referencedTableName: "users",
             referencedColumnNames: ["id"],
             columnNames: ["provider_id"],
             onDelete: "SET NULL",
             onUpdate: "SET NULL",
           },
+        ],
+        indices: [
           {
-            name: "FKTransportsTypesProvider",
-            referencedTableName: "transports_types",
-            referencedColumnNames: ["id"],
-            columnNames: ["transport_type_id"],
-            onDelete: "SET NULL",
-            onUpdate: "SET NULL",
+            columnNames: ["provider_id", "local_type"],
+            isUnique: true,
           },
         ],
       })
@@ -70,6 +63,6 @@ export class CreateProvidersTransporteAcceptType1624409789268
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("providers_transports_types");
+    await queryRunner.dropTable("providers_locals_types");
   }
 }

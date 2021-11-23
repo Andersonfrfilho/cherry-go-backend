@@ -39,7 +39,12 @@ export const FORBIDDEN = {
     code: "3007",
   },
   LOCALS_BELONGS_TO_ANOTHER_PROVIDER: {
-    message: "Locas belongs to another provider",
+    message: "Locals belongs to another provider",
+    status_code,
+    code: "3008",
+  },
+  LOCALS_TYPE_BELONGS_TO_ANOTHER_PROVIDER: {
+    message: "Locals type belongs to another provider",
     status_code,
     code: "3008",
   },

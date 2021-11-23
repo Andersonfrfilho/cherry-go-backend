@@ -66,7 +66,7 @@ export class InsertInfos1622165715932 implements MigrationInterface {
         birth_date: new Date(2021, 5, 1),
         password_hash: process.env.PASSWORD_USER_SEED_HASH,
         active: true,
-        gender: GENDERS_ENUM.MALE,
+        gender: GENDERS_ENUM.male,
         quantity: 1,
       });
       const user_saved = await getConnection("seed")

@@ -11,11 +11,14 @@ import { passwordRoutes } from "@shared/infra/http/routes/v1/users/password.rout
 import { profileRoutes } from "@shared/infra/http/routes/v1/users/profile.routes";
 import { providersRoutes } from "@shared/infra/http/routes/v1/users/providers.routes";
 
+import { banksRoutes } from "./banks.routes";
+
 const usersRoutes = Router();
 const getUsersController = new GetUsersController();
 const showUsersController = new ShowUsersController();
 
 usersRoutes.get("/", getUsersController.handle);
+usersRoutes.use("/banks", banksRoutes);
 usersRoutes.get("/:id", showUsersController.handle);
 usersRoutes.use("/clients", clientsRoutes);
 usersRoutes.use("/insides", insidesRoutes);

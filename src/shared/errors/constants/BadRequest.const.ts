@@ -34,4 +34,15 @@ export const BAD_REQUEST = {
     status_code,
     code: "0006",
   },
+  ACCOUNT_NUMBERS_EXCEEDED: {
+    message: "Account numbers exceeded!",
+    status_code,
+    code: "0007",
+  },
+  ACCOUNT_NUMBERS_MINIMAL_FOR_EXCLUSION: {
+    message:
+      "the number of for deletion are two accounts add one to be able to delete the main one!",
+    status_code,
+    code: "0008",
+  },
 };

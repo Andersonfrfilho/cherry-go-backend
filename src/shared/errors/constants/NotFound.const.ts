@@ -53,4 +53,14 @@ export const NOT_FOUND = {
     status_code,
     code: "4010",
   },
+  BANK_ISPB_DOES_NOT_EXIST: {
+    message: "Bank ISPB not exist!",
+    status_code,
+    code: "4011",
+  },
+  BANK_DOES_NOT_EXIST: {
+    message: "Bank not exist!",
+    status_code,
+    code: "4012",
+  },
 };

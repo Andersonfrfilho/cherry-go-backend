@@ -22,9 +22,39 @@ import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
+import { Bank } from "@shared/container/providers/BankProvider/dtos/GetAll.dto";
 
 import { UserTypeUser } from "./UserTypeUser";
 
+interface DataBank {
+  name: string;
+  id: string;
+}
+interface StripeAccount {
+  id: string;
+  bank_accounts: Array<DataBank>;
+}
+interface Stripe {
+  account: StripeAccount;
+  customer: StripeAccount;
+}
+
+interface BankAccount {
+  name: string;
+}
+export interface Details {
+  stripe?: Stripe;
+  bank_account?: BankAccount;
+  fantasy_name?: string;
+  color_hair?: string;
+  nuance_hair?: string;
+  style_hair?: string;
+  height?: number;
+  weight?: number;
+  description?: string;
+  ethnicity?: string;
+  color_eye?: string;
+}
 @Entity("users")
 class User {
   @PrimaryColumn()
@@ -53,7 +83,7 @@ class User {
   gender: string;
 
   @Column({ type: "jsonb" })
-  details?: any;
+  details?: Details;
 
   @Column()
   @Exclude()

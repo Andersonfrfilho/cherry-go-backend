@@ -75,18 +75,28 @@ export class CreateDocumentsUsersService {
     //   external_id: user.details.stripe.customer.id,
     //   email: user.email,
     // });
-
+    const data_document =
+      USER_DOCUMENT_VALUE_ENUM[description] === "front"
+        ? {
+            verification: {
+              document: {
+                front: file_stripe.id,
+                details: user.cpf,
+              },
+            },
+          }
+        : {
+            verification: {
+              document: {
+                back: file_stripe.id,
+                details: user.cpf,
+              },
+            },
+          };
     if (user?.details?.stripe?.account?.id) {
       await this.paymentProvider.updateAccount({
         external_id: user.details.stripe.account.id,
-        individual: {
-          verification: {
-            document: {
-              front: file_stripe.id,
-              details: user.cpf,
-            },
-          },
-        },
+        individual: data_document,
       });
     }
   }

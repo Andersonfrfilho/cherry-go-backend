@@ -11,8 +11,10 @@ import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
 import { CreateProviderAddressRepositoryDTO } from "../dtos/repositories/CreateProviderAddressRepository.dto";
+import { CreateProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/CreateProviderLocalsTypesRepository.dto";
 import { CreateUserProviderRepositoryDTO } from "../dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "../dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
+import { DeleteProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
 import {
   PaginationPropsDTO,
   PaginationPropsGenericDTO,
@@ -21,6 +23,7 @@ import {
 } from "../dtos/repositories/PaginationProps.dto";
 import { ProviderAddress } from "../infra/typeorm/entities/ProviderAddress";
 import { ProviderAvailabilityTime } from "../infra/typeorm/entities/ProviderAvailabilityTime";
+import { ProviderLocalType } from "../infra/typeorm/entities/ProviderLocalType";
 import { ProviderPaymentType } from "../infra/typeorm/entities/ProviderPaymentType";
 
 export interface ProvidersRepositoryInterface {
@@ -35,9 +38,9 @@ export interface ProvidersRepositoryInterface {
   createDaysAvailable(
     data: CreateProviderDaysAvailabilityServiceDTO
   ): Promise<void>;
-  deleteAllDaysProviderAvailable({
-    provider_id,
-  }: DeleteAllDaysProviderAvailableRepositoryDTO): Promise<void>;
+  deleteAllDaysProviderAvailable(
+    data: DeleteAllDaysProviderAvailableRepositoryDTO
+  ): Promise<void>;
   createTimesAvailable(
     data: CreateProviderTimesAvailabilityProviderDTO
   ): Promise<void>;
@@ -69,5 +72,11 @@ export interface ProvidersRepositoryInterface {
   deleteProviderAddress(ids: Array<string>): Promise<void>;
   createProviderAddress(
     data: CreateProviderAddressRepositoryDTO
+  ): Promise<void>;
+  createProviderLocalsTypes(
+    data: CreateProviderLocalsTypesRepositoryDTO
+  ): Promise<ProviderLocalType[]>;
+  deleteProviderLocalsTypes(
+    data: DeleteProviderLocalsTypesRepositoryDTO
   ): Promise<void>;
 }

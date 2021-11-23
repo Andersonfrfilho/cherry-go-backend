@@ -1,15 +1,22 @@
 import { interface_config } from "@config/environment/config.interface";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 
-import { PAYMENT_PROVIDER_ENUM } from "./config.enum";
+import { BANK_PROVIDER_ENUM, PAYMENT_PROVIDER_ENUM } from "./config.enum";
 
 export const test: interface_config = {
   application: {
     name: "Cherry-go",
+    minimum_age_required:
+      Number(process.env.MINIMUM_AGE_REQUIRED || 18) >= 18
+        ? Number(process.env.MINIMUM_AGE_REQUIRED || 18)
+        : 18,
   },
   storage: {
     base_url:
       process.env.STORAGE_URL || `http://localhost:${process.env.PORT || 3333}`,
+  },
+  bank: {
+    provider: BANK_PROVIDER_ENUM[process.env.BANK_PROVIDER || "local"],
   },
   providers: {
     max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),

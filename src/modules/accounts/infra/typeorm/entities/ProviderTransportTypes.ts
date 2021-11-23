@@ -37,6 +37,9 @@ export class ProviderTransportType {
   @Column()
   active: boolean;
 
+  @Column({ type: "jsonb" })
+  details?: any;
+
   @Column()
   amount: number;
 

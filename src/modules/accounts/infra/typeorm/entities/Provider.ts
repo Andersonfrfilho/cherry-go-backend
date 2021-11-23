@@ -27,6 +27,8 @@ import { PaymentType } from "@modules/appointments/infra/typeorm/entities/Paymen
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 import { ProviderImage } from "./ProviderImage";
+import { ProviderLocalType } from "./ProviderLocalType";
+import { Details } from "./User";
 import { UserProfileImage } from "./UserProfileImage";
 import { UserTypeUser } from "./UserTypeUser";
 
@@ -65,7 +67,7 @@ class Provider {
   gender: string;
 
   @Column({ type: "jsonb" })
-  details?: any;
+  details?: Details;
 
   @ManyToMany(() => Phone, { cascade: true, eager: true })
   @JoinTable({
@@ -98,6 +100,14 @@ class Provider {
   //   ],
   // })
   // appointments: Appointment[];
+  @OneToMany(
+    () => ProviderLocalType,
+    (provider_local_type) => provider_local_type.provider,
+    {
+      eager: true,
+    }
+  )
+  locals_types?: ProviderLocalType[];
 
   @OneToMany(
     () => ProviderTransportType,

@@ -10,8 +10,10 @@ import {
   CreateTransportTypesAvailableRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { CreateProviderAddressRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateProviderAddressRepository.dto";
+import { CreateProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateProviderLocalsTypesRepository.dto";
 import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
+import { DeleteProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
 import {
   PaginationPropsGenericDTO,
   PaginationResponseAppointmentsDTO,
@@ -33,6 +35,7 @@ import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entitie
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
+import { ProviderLocalType } from "../entities/ProviderLocalType";
 import { TypeUser } from "../entities/TypeUser";
 import { UserTermsAccept } from "../entities/UserTermsAccept";
 import { UserTypeUser } from "../entities/UserTypeUser";
@@ -56,6 +59,7 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
   private repository_users_terms_accepts: Repository<UserTermsAccept>;
   private repository_appointments: Repository<Appointment>;
   private repository_appointments_providers: Repository<AppointmentProvider>;
+  private repository_provider_local_type: Repository<ProviderLocalType>;
 
   constructor() {
     this.repository = getRepository(Provider);
@@ -75,6 +79,28 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_users_terms_accepts = getRepository(UserTermsAccept);
     this.repository_appointments = getRepository(Appointment);
     this.repository_appointments_providers = getRepository(AppointmentProvider);
+    this.repository_provider_local_type = getRepository(ProviderLocalType);
+  }
+  async deleteProviderLocalsTypes({
+    provider_locals_types_ids,
+  }: DeleteProviderLocalsTypesRepositoryDTO): Promise<void> {
+    await this.repository_provider_local_type.delete(provider_locals_types_ids);
+  }
+
+  async createProviderLocalsTypes({
+    locals_types,
+    provider_id,
+  }: CreateProviderLocalsTypesRepositoryDTO): Promise<ProviderLocalType[]> {
+    const locals = locals_types.map((local_type) =>
+      this.repository_provider_local_type.create({
+        active: true,
+        provider_id,
+        local_type,
+      })
+    );
+    await this.repository_provider_local_type.save(locals);
+
+    return locals;
   }
   async deleteProviderAddress(ids: string[]): Promise<void> {
     await this.repository_provider_addresses.delete(ids);

@@ -1,3 +1,5 @@
+import { Bank } from "@shared/container/providers/BankProvider/dtos/GetAll.dto";
+
 interface expiration_token {
   expiration_time: number;
 }
@@ -40,12 +42,16 @@ interface providers {
 }
 interface app {
   name: string;
+  minimum_age_required: number;
 }
 interface password {
   time_token_expires: number;
 }
 interface storage {
   base_url: string;
+}
+interface bank {
+  provider: "local" | "brasilApi";
 }
 export interface interface_config {
   application: app;
@@ -57,7 +63,9 @@ export interface interface_config {
   appointment: appointment;
   providers: providers;
   payment: payment;
+  bank: bank;
 }
+
 export interface InterfaceConfig {
   development: interface_config;
   staging: interface_config;

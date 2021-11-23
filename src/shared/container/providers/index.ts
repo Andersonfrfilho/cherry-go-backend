@@ -7,3 +7,4 @@ import "@shared/container/providers/JwtProvider";
 import "@shared/container/providers/QueueProvider";
 import "@shared/container/providers/SmsProvider";
 import "@shared/container/providers/PaymentProvider";
+import "@shared/container/providers/BankProvider";

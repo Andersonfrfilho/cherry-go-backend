@@ -34,6 +34,9 @@ export class Service {
   @Column()
   active: boolean;
 
+  @Column({ type: "jsonb" })
+  details?: any;
+
   @Column()
   provider_id: string;
 

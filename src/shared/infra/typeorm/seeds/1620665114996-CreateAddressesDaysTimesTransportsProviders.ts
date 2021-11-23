@@ -2,6 +2,7 @@ import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { DAYS_WEEK_ENUM } from "@modules/accounts/enums/DaysProviders.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes.enum";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
@@ -56,11 +57,31 @@ export class CreateAddressesDaysTimesTransportsProviders1620665114995
       .getRepository("providers_availabilities_days")
       .save(related_days_providers);
 
+    related = 0;
+    const related_providers_locals_types = [];
+    while (related < providers.length && !!providers[related]) {
+      Object.values(LOCALS_TYPES_ENUM).forEach((local_type) => {
+        related_providers_locals_types.push({
+          provider_id: providers[related].id,
+          local_type,
+          active: true,
+        });
+      });
+      related += 1;
+    }
+
+    await getConnection("seeds")
+      .getRepository("providers_locals_types")
+      .save(related_providers_locals_types);
+
     const transports_types = (await getConnection("seeds")
       .getRepository("transports_types")
       .find()) as TransportType[];
+
     related = 0;
+
     const related_transports_types_providers = [];
+
     while (related < providers.length && !!providers[related]) {
       transports_types.forEach((transport_type, index) => {
         related_transports_types_providers.push({

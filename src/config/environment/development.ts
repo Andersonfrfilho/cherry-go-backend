@@ -1,11 +1,18 @@
 import { interface_config } from "@config/environment/config.interface";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 
-import { PAYMENT_PROVIDER_ENUM } from "./config.enum";
+import { BANK_PROVIDER_ENUM, PAYMENT_PROVIDER_ENUM } from "./config.enum";
 
 export const development: interface_config = {
   application: {
     name: "Cherry-go",
+    minimum_age_required:
+      Number(process.env.MINIMUM_AGE_REQUIRED || 18) >= 18
+        ? Number(process.env.MINIMUM_AGE_REQUIRED || 18)
+        : 18,
+  },
+  bank: {
+    provider: BANK_PROVIDER_ENUM[process.env.BANK_PROVIDER || "local"],
   },
   appointment: {
     hour_allowed_cancellation: Number(

@@ -40,6 +40,9 @@ export class ProviderAddress {
   @Column()
   amount: number;
 
+  @Column({ type: "jsonb" })
+  details?: any;
+
   @CreateDateColumn()
   @Exclude()
   created_at?: Date;

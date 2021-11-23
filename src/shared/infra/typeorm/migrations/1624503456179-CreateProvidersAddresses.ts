@@ -32,6 +32,11 @@ export class CreateProvidersAddresses1624503456179
             isNullable: true,
           },
           {
+            name: "details",
+            type: "jsonb",
+            isNullable: true,
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",
