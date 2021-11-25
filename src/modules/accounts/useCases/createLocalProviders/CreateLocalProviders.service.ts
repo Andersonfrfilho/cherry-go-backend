@@ -11,8 +11,8 @@ interface Params {
 @injectable()
 export class CreateLocalProvidersService {
   constructor(
-    @inject("ProviderRepository")
-    private providerRepository: ProvidersRepositoryInterface
+    @inject("ProvidersRepository")
+    private providersRepository: ProvidersRepositoryInterface
   ) {}
   async execute({
     provider_id,

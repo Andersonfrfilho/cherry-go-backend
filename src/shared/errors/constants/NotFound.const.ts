@@ -63,4 +63,9 @@ export const NOT_FOUND = {
     status_code,
     code: "4012",
   },
+  CEP_NOT_FOUND: {
+    message: "Cep not found!",
+    status_code,
+    code: "4013",
+  },
 };

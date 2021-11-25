@@ -1,7 +1,12 @@
 import { interface_config } from "@config/environment/config.interface";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 
-import { BANK_PROVIDER_ENUM, PAYMENT_PROVIDER_ENUM } from "./config.enum";
+import {
+  ADDRESS_PROVIDER_ENUM,
+  BANK_PROVIDER_ENUM,
+  GEOLOCATION_PROVIDER_ENUM,
+  PAYMENT_PROVIDER_ENUM,
+} from "./config.enum";
 
 export const development: interface_config = {
   application: {
@@ -59,6 +64,15 @@ export const development: interface_config = {
         Number(process.env.TOKEN_EXPIRATION_TIME_SMS_CONFIRMATION) || 30,
     },
   },
+  address: {
+    provider: ADDRESS_PROVIDER_ENUM[process.env.ADDRESS_PROVIDER || "local"],
+  },
+  geolocation: {
+    provider:
+      GEOLOCATION_PROVIDER_ENUM[process.env.GEOLOCATION_PROVIDER || "local"],
+    api_key: process.env.GOOGLE_MAPS_API_KEY || "",
+  },
+
   queue: {
     broker: {
       base_url:

@@ -8,16 +8,16 @@ import { NOT_FOUND } from "@shared/errors/constants";
 @injectable()
 export class GetAllLocalsProvidersService {
   constructor(
-    @inject("ProviderRepository")
-    private providerRepository: ProvidersRepositoryInterface
+    @inject("ProvidersRepository")
+    private providersRepository: ProvidersRepositoryInterface
   ) {}
   async execute(provider_id: string): Promise<ProviderAddress[]> {
-    const provider = await this.providerRepository.findById(provider_id);
+    const provider = await this.providersRepository.findById(provider_id);
 
     if (provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
     }
 
-    return this.providerRepository.getAllAddressByProviders(provider_id);
+    return this.providersRepository.getAllAddressByProviders(provider_id);
   }
 }

@@ -8,3 +8,5 @@ import "@shared/container/providers/QueueProvider";
 import "@shared/container/providers/SmsProvider";
 import "@shared/container/providers/PaymentProvider";
 import "@shared/container/providers/BankProvider";
+import "@shared/container/providers/GeolocationProvider";
+import "@shared/container/providers/AddressProvider";

@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
 import { ProviderLocalType } from "@modules/accounts/infra/typeorm/entities/ProviderLocalType";
 import { ProviderPaymentType } from "@modules/accounts/infra/typeorm/entities/ProviderPaymentType";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
@@ -12,18 +13,21 @@ interface ParamsDTO {
   provider_id: string;
   locals_types: Array<LOCALS_TYPES_ENUM>;
 }
+
+interface ParamsResponseDTO {
+  locals_types: ProviderLocalType[];
+  locals: ProviderAddress[];
+}
 @injectable()
 class CreateProvidersLocalsTypesService {
   constructor(
     @inject("ProvidersRepository")
-    private providersRepository: ProvidersRepositoryInterface,
-    @inject("PaymentTypeRepository")
-    private paymentTypeRepository: PaymentTypeRepositoryInterface
+    private providersRepository: ProvidersRepositoryInterface
   ) {}
   async execute({
     provider_id,
     locals_types,
-  }: ParamsDTO): Promise<ProviderLocalType[]> {
+  }: ParamsDTO): Promise<ParamsResponseDTO> {
     const provider = await this.providersRepository.findById(provider_id);
 
     if (!provider) {
@@ -35,8 +39,12 @@ class CreateProvidersLocalsTypesService {
         (local_type) => local_type.local_type !== local
       )
     );
+
     if (local_types_exist.length === 0) {
-      return provider.locals_types;
+      return {
+        locals_types: provider.locals_types,
+        locals: provider.locals,
+      };
     }
 
     await this.providersRepository.createProviderLocalsTypes({
@@ -48,7 +56,14 @@ class CreateProvidersLocalsTypesService {
       provider_id
     );
 
-    return provider_new_infos.locals_types;
+    const locals = await this.providersRepository.getAllAddressByProviders(
+      provider_id
+    );
+
+    return {
+      locals_types: provider_new_infos.locals_types,
+      locals,
+    };
   }
 }
 export { CreateProvidersLocalsTypesService };

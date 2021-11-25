@@ -30,7 +30,7 @@ export class ProviderAddress {
   @Column()
   address_id: string;
 
-  @ManyToOne(() => Address)
+  @ManyToOne(() => Address, { eager: true })
   @JoinColumn({ name: "address_id", referencedColumnName: "id" })
   address: Address;
 

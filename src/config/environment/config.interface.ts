@@ -1,3 +1,4 @@
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Bank } from "@shared/container/providers/BankProvider/dtos/GetAll.dto";
 
 interface expiration_token {
@@ -53,6 +54,14 @@ interface storage {
 interface bank {
   provider: "local" | "brasilApi";
 }
+
+interface geolocation {
+  provider: "local" | "google";
+  api_key: string;
+}
+interface address {
+  provider: "local" | "brasilApi";
+}
 export interface interface_config {
   application: app;
   mail: mail;
@@ -64,6 +73,8 @@ export interface interface_config {
   providers: providers;
   payment: payment;
   bank: bank;
+  geolocation: geolocation;
+  address: address;
 }
 
 export interface InterfaceConfig {
