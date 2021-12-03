@@ -3,13 +3,9 @@ import { container } from "tsyringe";
 import { config } from "@config/environment";
 
 import { AddressProviderInterface } from "./Address.provider.interface";
-import { BrasilApiAddress } from "./implementations/BrasilApiAddress.provider";
+import { AddressProvider } from "./implementations/Address.provider";
 
-const addressProvider = {
-  brasilApi: container.resolve(BrasilApiAddress),
-};
-
-container.registerInstance<AddressProviderInterface>(
+container.registerSingleton<AddressProviderInterface>(
   "AddressProvider",
-  addressProvider[config.address.provider]
+  AddressProvider
 );

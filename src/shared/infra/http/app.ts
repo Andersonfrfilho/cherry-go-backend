@@ -43,6 +43,7 @@ if (process.env.ENVIRONMENT === "production") {
 app.use(errors());
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
+    console.log(err);
     if (err instanceof AppError) {
       return response.status(err.status_code).json({
         status: "error",

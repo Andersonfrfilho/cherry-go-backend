@@ -27,15 +27,18 @@ export class CreateAddressesDaysTimesTransportsProviders1620665114995
     const providers_addresses = address_factory.generate({
       quantity: providers.length,
     });
+
     const addresses = await getConnection("seeds")
       .getRepository("addresses")
       .save(providers_addresses);
+
     const related_addresses = providers.map((provider, index) => ({
       provider_id: provider.id,
       address_id: addresses[index].id,
       active: true,
       amount: faker.datatype.number({ min: 10, max: 999 }),
     }));
+
     await getConnection("seeds")
       .getRepository("providers_addresses")
       .save(related_addresses);

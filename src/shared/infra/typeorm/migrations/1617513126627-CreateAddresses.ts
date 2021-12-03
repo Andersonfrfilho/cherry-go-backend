@@ -77,12 +77,6 @@ export class CreateAddresses1617513126627 implements MigrationInterface {
             isNullable: true,
           },
         ],
-        indices: [
-          {
-            columnNames: ["street", "number", "zipcode", "city"],
-            isUnique: true,
-          },
-        ],
       })
     );
   }

@@ -8,4 +8,6 @@ export interface CreateAddressesRepositoryDTO {
   country: string;
   longitude: string;
   latitude: string;
+  complement?: string;
+  reference?: string;
 }

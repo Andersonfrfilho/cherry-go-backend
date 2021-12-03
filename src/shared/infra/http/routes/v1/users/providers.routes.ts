@@ -4,8 +4,8 @@ import multer from "multer";
 import uploadConfig from "@config/upload";
 import { AuthenticateUserProviderController } from "@modules/accounts/useCases/authenticateUserProvider/AuthenticateUserProvider.controller";
 import { schemaAuthenticateProvider } from "@modules/accounts/useCases/authenticateUserProvider/authenticateUserProvider.schema";
-import { CreateLocalProvidersController } from "@modules/accounts/useCases/createLocalProviders/CreateLocalProviders.controller";
-import { schemaCreateLocalProviders } from "@modules/accounts/useCases/createLocalProviders/createLocalsProviders.schema";
+import { CreateLocalProviderController } from "@modules/accounts/useCases/createLocalProvider/CreateLocalProvider.controller";
+import { schemaCreateLocalProviders } from "@modules/accounts/useCases/createLocalProvider/createLocalsProviders.schema";
 import { CreateProviderDaysAvailabilitiesController } from "@modules/accounts/useCases/createProviderDaysAvailabilities/CreateProviderDaysAvailabilities.controller";
 import { schemaCreateProviderDaysAvailabilities } from "@modules/accounts/useCases/createProviderDaysAvailabilities/createProviderDaysAvailabilities.schema";
 import { CreateProvidersLocalsTypesController } from "@modules/accounts/useCases/createProvidersLocalsTypes/CreateProvidersLocalsTypes.controller";
@@ -21,14 +21,14 @@ import { schemaCreateServiceProvider } from "@modules/accounts/useCases/createSe
 import { CreateUserProviderController } from "@modules/accounts/useCases/createUserProvider/CreateUserProvider.controller";
 import { schemaCreateUserProvider } from "@modules/accounts/useCases/createUserProvider/createUserProvider.schema";
 import { CreateUsersTypeProvidersController } from "@modules/accounts/useCases/createUsersTypeProviders/CreateUsersTypeProviders.controller";
-import { DeleteLocalsProvidersController } from "@modules/accounts/useCases/deleteLocalsProviders/DeleteLocalsProviders.controller";
-import { schemaDeleteLocalsProviders } from "@modules/accounts/useCases/deleteLocalsProviders/deleteLocalsProviders.schema";
+import { DeleteLocalsProviderController } from "@modules/accounts/useCases/deleteLocalsProvider/DeleteLocalsProvider.controller";
+import { schemaDeleteLocalsProviders } from "@modules/accounts/useCases/deleteLocalsProvider/deleteLocalsProvider.schema";
 import { DeleteProvidersLocalsTypesController } from "@modules/accounts/useCases/deleteLocalsTypesProviders/DeleteLocalsTypesProviders.controller";
 import { schemaDeleteLocalsTypesProviders } from "@modules/accounts/useCases/deleteLocalsTypesProviders/deleteLocalsTypesProviders.schema";
 import { DeletePhotosProviderController } from "@modules/accounts/useCases/deletePhotosProvider/DeletePhotosProvider.controller";
 import { DeleteProviderTimesAvailabilitiesController } from "@modules/accounts/useCases/deleteProviderTimesAvailabilities/DeleteProviderTimesAvailabilities.controller";
 import { schemaDeleteProviderTimesAvailabilities } from "@modules/accounts/useCases/deleteProviderTimesAvailabilities/deleteProviderTimesAvailabilities.schema";
-import { GetAllLocalsProvidersController } from "@modules/accounts/useCases/getAllLocalsProviders/GetAllLocalsProviders.controller";
+import { GetAllLocalsProvidersController } from "@modules/accounts/useCases/getAllLocalsProvider/GetAllLocalsProvider.controller";
 import { GetAllPaymentTypeController } from "@modules/accounts/useCases/getAllPaymentType/GetAllPaymentType.controller";
 import { GetAllProvidersLocalsTypesController } from "@modules/accounts/useCases/getAllProviderLocalsTypes/GetAllProviderLocalsTypes.controller";
 import { GetAvailabilitiesOptionsProviderWorkController } from "@modules/accounts/useCases/getAvailabilitiesOptionsProviderWork/GetAvailabilitiesOptionsProviderWork.controller";
@@ -61,10 +61,10 @@ const uploadPhotosProviderController = new UploadPhotosProviderController();
 const updatePhotosProviderController = new UpdatePhotosProviderController();
 const deletePhotosProviderController = new DeletePhotosProviderController();
 const deleteProviderTimesAvailabilitiesController = new DeleteProviderTimesAvailabilitiesController();
-const getAllPaymentTypeController = new GetAllPaymentTypeController();
 const getAllLocalsController = new GetAllLocalsProvidersController();
-const deleteLocalsProvidersController = new DeleteLocalsProvidersController();
-const createLocalProvidersControllerController = new CreateLocalProvidersController();
+const createLocalProviderController = new CreateLocalProviderController();
+const deleteLocalsProviderController = new DeleteLocalsProviderController();
+const getAllPaymentTypeController = new GetAllPaymentTypeController();
 const updatePaymentAccountPersonController = new UpdatePaymentAccountPersonController();
 const verifyPaymentAccountInfosController = new VerifyPaymentAccountInfosController();
 const createProvidersLocalsTypesController = new CreateProvidersLocalsTypesController();
@@ -208,7 +208,7 @@ providersRoutes.post(
   "/locals",
   ensureAuthenticatedProvider,
   schemaCreateLocalProviders,
-  createLocalProvidersControllerController.handle
+  createLocalProviderController.handle
 );
 
 providersRoutes.get(
@@ -221,7 +221,7 @@ providersRoutes.delete(
   "/locals",
   ensureAuthenticatedProvider,
   schemaDeleteLocalsProviders,
-  deleteLocalsProvidersController.handle
+  deleteLocalsProviderController.handle
 );
 
 providersRoutes.put(

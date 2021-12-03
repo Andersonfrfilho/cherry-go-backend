@@ -59,8 +59,15 @@ interface geolocation {
   provider: "local" | "google";
   api_key: string;
 }
+interface cache {
+  invalidade: {
+    // in milisseconds
+    time: number;
+  };
+}
 interface address {
   provider: "local" | "brasilApi";
+  cache: cache;
 }
 export interface interface_config {
   application: app;

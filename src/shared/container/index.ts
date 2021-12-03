@@ -22,6 +22,8 @@ import { TypesUsersRepositoryInterface } from "@modules/accounts/repositories/Ty
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImage.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
+import { AddressesRepository } from "@modules/addresses/infra/typeorm/repositories/Addresses.repository";
+import { AddressesRepositoryInterface } from "@modules/addresses/repositories/Addresses.repository.interface";
 import { AppointmentsProvidersServicesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentProviderService.repository";
 import { AppointmentsRepository } from "@modules/appointments/infra/typeorm/repositories/Appointments.repository";
 import { AppointmentsAddressesRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsAddresses.repository";
@@ -44,6 +46,14 @@ import { NotificationsRepository } from "@modules/notifications/infra/typeorm/re
 import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/Notifications.repository.interface";
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/Tags.repository";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
+import {
+  TarifeServiceRepository,
+  TariffsServicesRepository,
+} from "@modules/tariffs/infra/typeorm/repositories/Tarife.repository";
+import {
+  TarifeServiceRepositoryInterface,
+  TariffsServicesRepositoryInterface,
+} from "@modules/tariffs/repositories/TarifeService.repository.interface";
 import { TransportsRepository } from "@modules/transports/infra/typeorm/repositories/Transports.repository";
 import { TransportsRepositoryInterface } from "@modules/transports/repositories/Transports.repository.interface";
 
@@ -55,6 +65,11 @@ container.registerSingleton<ProvidersRepositoryInterface>(
 container.registerSingleton<UsersRepositoryInterface>(
   "UsersRepository",
   UsersRepository
+);
+
+container.registerSingleton<AddressesRepositoryInterface>(
+  "AddressesRepository",
+  AddressesRepository
 );
 
 container.registerSingleton<TypesUsersRepositoryInterface>(
@@ -150,6 +165,11 @@ container.registerSingleton<ProvidersAvailabilityTimeRepositoryInterface>(
 container.registerSingleton<PaymentTypeRepositoryInterface>(
   "PaymentTypeRepository",
   PaymentTypeRepository
+);
+
+container.registerSingleton<TariffsServicesRepositoryInterface>(
+  "TariffsServicesRepository",
+  TariffsServicesRepository
 );
 
 container.registerSingleton<NotificationsRepositoryInterface>(

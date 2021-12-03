@@ -53,6 +53,11 @@ export const staging: interface_config = {
   },
   address: {
     provider: ADDRESS_PROVIDER_ENUM[process.env.ADDRESS_PROVIDER || "local"],
+    cache: {
+      invalidade: {
+        time: Number(process.env.ADDRESS_CACHE_INVALIDATE_TIME || 2629800000),
+      },
+    },
   },
   geolocation: {
     provider:

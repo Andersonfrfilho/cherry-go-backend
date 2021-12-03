@@ -1,4 +1,5 @@
 import { hash, compare } from "bcryptjs";
+import uuid from "uuid";
 
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 

@@ -6,7 +6,7 @@ import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-export class GetAllLocalsProvidersService {
+export class GetAllLocalsProviderService {
   constructor(
     @inject("ProvidersRepository")
     private providersRepository: ProvidersRepositoryInterface
@@ -18,6 +18,6 @@ export class GetAllLocalsProvidersService {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
     }
 
-    return this.providersRepository.getAllAddressByProviders(provider_id);
+    return this.providersRepository.getProviderLocals(provider_id);
   }
 }

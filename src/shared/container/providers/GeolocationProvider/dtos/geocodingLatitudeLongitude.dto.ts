@@ -1,4 +1,4 @@
-export interface GeocodingLatitudeLongitudeDTO {
+export interface GeocodingByAddressDTO {
   latitude: string;
   longitude: string;
 }

@@ -10,6 +10,7 @@ import {
   CreateTransportTypesAvailableRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { CreateProviderAddressRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateProviderAddressRepository.dto";
+import { CreateProviderLocalProviderAddressDTO } from "@modules/accounts/dtos/repositories/CreateProviderLocalProviderAddress.dto";
 import { CreateProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateProviderLocalsTypesRepository.dto";
 import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
@@ -81,6 +82,20 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_appointments_providers = getRepository(AppointmentProvider);
     this.repository_provider_local_type = getRepository(ProviderLocalType);
   }
+  async createProviderLocals(
+    data: CreateProviderLocalProviderAddressDTO
+  ): Promise<void> {
+    await this.repository_provider_addresses.save(data);
+  }
+
+  async getProviderLocals(provider_id: string): Promise<ProviderAddress[]> {
+    return this.repository_provider_addresses.find({ where: { provider_id } });
+  }
+
+  async deleteProviderLocals(ids: string[]): Promise<void> {
+    await this.repository_provider_addresses.delete(ids);
+  }
+
   async deleteProviderLocalsTypes({
     provider_locals_types_ids,
   }: DeleteProviderLocalsTypesRepositoryDTO): Promise<void> {

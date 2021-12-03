@@ -68,4 +68,9 @@ export const NOT_FOUND = {
     status_code,
     code: "4013",
   },
+  STRIPE_DETAILS_NOT_FOUND: {
+    message: "Stripe details not found!",
+    status_code,
+    code: "4013",
+  },
 };

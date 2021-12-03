@@ -2,7 +2,9 @@ import { ConfirmAccountPaymentDTO } from "./dtos/ConfirmAccountPayment.dto";
 import { CreateAccountBankAccountDTO } from "./dtos/CreateAccountBankAccount.dto";
 import { CreateAccountClientPaymentDTO } from "./dtos/CreateAccountClientPayment.dto";
 import { CreateAccountPaymentDTO } from "./dtos/CreateAccountPayment.dto";
+import { CreateProductDTO } from "./dtos/CreateProduct.dto";
 import { DeleteAccountBankAccountDTO } from "./dtos/DeleteAccountBankAccount.dto";
+import { DeleteProductDTO } from "./dtos/DeleteProduct.dto";
 import { UpdateAccountClientPaymentDTO } from "./dtos/UpdateAccountClientPayment.dto";
 import { UpdateAccountPaymentDTO } from "./dtos/UpdateAccountPayment.dto";
 import { UpdatePersonAccountPaymentDTO } from "./dtos/UpdatePersonAccountPayment.dto";
@@ -18,5 +20,7 @@ export interface PaymentProviderInterface {
   updateAccountClient(data: UpdateAccountClientPaymentDTO): Promise<void>;
   createAccountBankAccount(data: CreateAccountBankAccountDTO): Promise<any>;
   deleteAccountBankAccount(data: DeleteAccountBankAccountDTO): Promise<any>;
+  createProduct<T>(data: CreateProductDTO): Promise<T>;
+  deleteProduct(data: DeleteProductDTO): Promise<void>;
   getAccount(id: string): Promise<any>;
 }

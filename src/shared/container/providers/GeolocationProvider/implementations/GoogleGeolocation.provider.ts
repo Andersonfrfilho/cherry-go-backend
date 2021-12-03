@@ -3,17 +3,15 @@ import { injectable } from "tsyringe";
 import { config } from "@config/environment";
 import {
   Client,
-  ReverseGeocodeResponse,
   Language,
   AddressComponent,
   AddressType,
   GeocodingAddressComponentType,
 } from "@googlemaps/google-maps-services-js";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
+import { onlyNumber } from "@utils/onlyNumber";
 
-import { GeocodingLatitudeLongitudeDTO } from "../dtos/geocodingLatitudeLongitude.dto";
 import { ReverseGeocodingLatitudeLongitudeDTO } from "../dtos/reverseGeocodingLatitudeLongitude.dto copy";
-import { GOOGLE_LANGUAGE_CODES_ENUM } from "../enums/geolocation.google.enum";
 import { GeolocationProviderInterface } from "../Geolocation.provider.interface";
 
 interface ParamsDTO {
@@ -35,10 +33,64 @@ class GoogleGeolocationProvider implements GeolocationProviderInterface {
     this.client = new Client({});
   }
 
-  geocodingByLatitudeLongitude(
-    data: GeocodingLatitudeLongitudeDTO
-  ): Promise<any> {
-    throw new Error("Method not implemented.");
+  async geocodingByAddress(address: string): Promise<any> {
+    const googleMapClient = this.client;
+    const { data } = await googleMapClient.geocode({
+      params: {
+        key: config.geolocation.api_key,
+        address,
+        language: Language.pt_BR,
+      },
+    });
+
+    const street_number = getInformationResultMaps({
+      name_type: "street_number",
+      array_components: data.results[0].address_components,
+    });
+    const street = getInformationResultMaps({
+      name_type: "route",
+      array_components: data.results[0].address_components,
+    });
+    const district = getInformationResultMaps({
+      name_type: "sublocality_level_1",
+      array_components: data.results[0].address_components,
+    });
+    const city = getInformationResultMaps({
+      name_type: "administrative_area_level_2",
+      array_components: data.results[0].address_components,
+    });
+    const state = getInformationResultMaps({
+      name_type: "administrative_area_level_1",
+      array_components: data.results[0].address_components,
+    });
+    const country = getInformationResultMaps({
+      name_type: "country",
+      array_components: data.results[0].address_components,
+    });
+    const zipcode = getInformationResultMaps({
+      name_type: "postal_code",
+      array_components: data.results[0].address_components,
+    });
+    const { formatted_address } = data.results[0];
+    const google_latitude = data.results[0].geometry.location.lat;
+    const google_longitude = data.results[0].geometry.location.lng;
+
+    const addressResult: Address = {} as Address;
+
+    Object.assign(addressResult, {
+      number: street_number && onlyNumber(street_number),
+      street,
+      district,
+      city,
+      state,
+      country,
+      zipcode: zipcode && onlyNumber(zipcode),
+      formatted_address,
+      latitude: google_latitude,
+      longitude: google_longitude,
+    });
+
+    return addressResult;
   }
   async reverseGeocodingByLatitudeLongitude({
     latitude,
@@ -78,7 +130,7 @@ class GoogleGeolocationProvider implements GeolocationProviderInterface {
       name_type: "country",
       array_components: data.results[0].address_components,
     });
-    const zip_code = getInformationResultMaps({
+    const zipcode = getInformationResultMaps({
       name_type: "postal_code",
       array_components: data.results[0].address_components,
     });
@@ -89,13 +141,13 @@ class GoogleGeolocationProvider implements GeolocationProviderInterface {
     const address: Address = {} as Address;
 
     Object.assign(address, {
-      street_number,
+      number: street_number && onlyNumber(street_number),
       street,
       district,
       city,
       state,
       country,
-      zip_code,
+      zipcode: zipcode && onlyNumber(zipcode),
       formatted_address,
       latitude: google_latitude,
       longitude: google_longitude,

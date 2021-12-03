@@ -13,6 +13,9 @@ export class AddressesRepository implements AddressesRepositoryInterface {
   constructor() {
     this.repository = getRepository(Address);
   }
+  async delete(address_ids: string[]): Promise<void> {
+    await this.repository.delete(address_ids);
+  }
 
   async findIndices({
     city,
@@ -36,12 +39,6 @@ export class AddressesRepository implements AddressesRepositoryInterface {
     street,
     zipcode,
   }: CreateAddressesRepositoryDTO): Promise<Address> {
-    const address = await this.repository.findOne({
-      where: { street, number, zipcode, city },
-    });
-
-    if (address) return address;
-
     return this.repository.save({
       city,
       country,

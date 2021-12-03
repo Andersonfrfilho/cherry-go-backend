@@ -11,6 +11,7 @@ import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
 import { CreateProviderAddressRepositoryDTO } from "../dtos/repositories/CreateProviderAddressRepository.dto";
+import { CreateProviderLocalProviderAddressDTO } from "../dtos/repositories/CreateProviderLocalProviderAddress.dto";
 import { CreateProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/CreateProviderLocalsTypesRepository.dto";
 import { CreateUserProviderRepositoryDTO } from "../dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "../dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
@@ -79,4 +80,9 @@ export interface ProvidersRepositoryInterface {
   deleteProviderLocalsTypes(
     data: DeleteProviderLocalsTypesRepositoryDTO
   ): Promise<void>;
+  createProviderLocals(
+    data: CreateProviderLocalProviderAddressDTO
+  ): Promise<void>;
+  getProviderLocals(provider_id: string): Promise<ProviderAddress[]>;
+  deleteProviderLocals(ids: string[]): Promise<void>;
 }

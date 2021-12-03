@@ -9,7 +9,9 @@ import { ConfirmAccountPaymentDTO } from "../dtos/ConfirmAccountPayment.dto";
 import { CreateAccountBankAccountDTO } from "../dtos/CreateAccountBankAccount.dto";
 import { CreateAccountClientPaymentDTO } from "../dtos/CreateAccountClientPayment.dto";
 import { CreateAccountPaymentDTO } from "../dtos/CreateAccountPayment.dto";
+import { CreateLocalProductDTO } from "../dtos/CreateLocalProduct.dto";
 import { DeleteAccountBankAccountDTO } from "../dtos/DeleteAccountBankAccount.dto";
+import { DeleteProductDTO } from "../dtos/DeleteProduct.dto";
 import { UpdateAccountClientPaymentDTO } from "../dtos/UpdateAccountClientPayment.dto";
 import { UpdateAccountPaymentDTO } from "../dtos/UpdateAccountPayment.dto";
 import { UpdatePersonAccountPaymentDTO } from "../dtos/UpdatePersonAccountPayment.dto";
@@ -28,6 +30,10 @@ import {
 } from "../enums/stripe.enums";
 import { PaymentProviderInterface } from "../Payment.provider.interface";
 
+export interface CreateProductStripeInterface {
+  product: Stripe.Response<Stripe.Product>;
+  price: Stripe.Response<Stripe.Price>;
+}
 export async function getStripeJS(): Promise<Stripe> {
   const stripe = new Stripe(config.payment.stripe.secret_key, {
     apiVersion: "2020-08-27",
@@ -36,6 +42,43 @@ export async function getStripeJS(): Promise<Stripe> {
 }
 
 export class StripeProvider implements PaymentProviderInterface {
+  async deleteProduct<T>({
+    product_id,
+    price_id,
+  }: DeleteProductDTO): Promise<void> {
+    const stripe = await getStripeJS();
+    await stripe.products.update(product_id, { active: false });
+    await stripe.prices.update(price_id, { active: false });
+  }
+
+  async createProduct({
+    amount,
+    active,
+    name,
+    description,
+    service_type,
+  }: CreateLocalProductDTO): Promise<any> {
+    const stripe = await getStripeJS();
+
+    const product = await stripe.products.create({
+      active,
+      name,
+      statement_descriptor: `${service_type} - cherry-go`,
+      description,
+    });
+
+    const price = await stripe.prices.create({
+      unit_amount: amount,
+      currency: STRIPE_CURRENCY_ENUM.brl,
+      product: product.id,
+    });
+
+    return {
+      product,
+      price,
+    };
+  }
+
   async deleteAccountBankAccount({
     account_id,
     bank_account_id,
@@ -169,8 +212,7 @@ export class StripeProvider implements PaymentProviderInterface {
   }: UpdateAccountPaymentDTO): Promise<void> {
     const stripe = await getStripeJS();
 
-    const account = await stripe.accounts.update(external_id, rest);
-    console.log(account);
+    await stripe.accounts.update(external_id, rest);
   }
 
   async confirmAccount({
