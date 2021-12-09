@@ -85,8 +85,8 @@ export class CreateLocalProviderService {
 
     const details = {
       stripe: {
-        product_id: product.id,
-        price_id: price.id,
+        product: { id: product.id },
+        price: { id: price.id },
       },
     };
 

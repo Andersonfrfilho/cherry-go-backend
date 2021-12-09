@@ -9,6 +9,9 @@ import {
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/CreateAppointment.service.dto";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
+import { CreateProviderTransportTypesDTO } from "@modules/transports/dtos/repositories/CreateProviderTransportTypes.repository.dto";
+import { DisableProviderTransportTypeRepositoryDTO } from "@modules/transports/dtos/repositories/DisableProviderTransportType.repository.dto";
+import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
 import { CreateProviderAddressRepositoryDTO } from "../dtos/repositories/CreateProviderAddressRepository.dto";
 import { CreateProviderLocalProviderAddressDTO } from "../dtos/repositories/CreateProviderLocalProviderAddress.dto";
@@ -16,16 +19,19 @@ import { CreateProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/Cre
 import { CreateUserProviderRepositoryDTO } from "../dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "../dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import { DeleteProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
+import { GetAllByActiveProviderTransportTypeRepositoryDTO } from "../dtos/repositories/GetAllByActiveProviderTransportTypeRepository.dto";
 import {
   PaginationPropsDTO,
   PaginationPropsGenericDTO,
   PaginationResponseAppointmentsDTO,
   PaginationResponsePropsDTO,
 } from "../dtos/repositories/PaginationProps.dto";
+import { UpdateTransportTypeAvailableRepositoryDTO } from "../dtos/repositories/UpdateTransportTypeAvailableRepository.dto";
 import { ProviderAddress } from "../infra/typeorm/entities/ProviderAddress";
 import { ProviderAvailabilityTime } from "../infra/typeorm/entities/ProviderAvailabilityTime";
 import { ProviderLocalType } from "../infra/typeorm/entities/ProviderLocalType";
 import { ProviderPaymentType } from "../infra/typeorm/entities/ProviderPaymentType";
+import { ProviderTransportType } from "../infra/typeorm/entities/ProviderTransportTypes";
 
 export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
@@ -85,4 +91,16 @@ export interface ProvidersRepositoryInterface {
   ): Promise<void>;
   getProviderLocals(provider_id: string): Promise<ProviderAddress[]>;
   deleteProviderLocals(ids: string[]): Promise<void>;
+  createProviderTransportType(
+    data: CreateProviderTransportTypesDTO
+  ): Promise<ProviderTransportType[]>;
+  deleteProviderTransportType(
+    provider_transport_type_ids: string[]
+  ): Promise<void>;
+  getAllByActiveProviderTransportType(
+    data: GetAllByActiveProviderTransportTypeRepositoryDTO
+  ): Promise<ProviderTransportType[]>;
+  updateTransportTypesAvailable(
+    data: UpdateTransportTypeAvailableRepositoryDTO
+  ): Promise<void>;
 }

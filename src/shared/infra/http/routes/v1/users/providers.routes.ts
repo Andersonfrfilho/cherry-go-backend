@@ -139,7 +139,7 @@ providersRoutes.patch(
 );
 
 providersRoutes.patch(
-  "/transport_types",
+  "/transports/types",
   ensureAuthenticatedProvider,
   schemaCreateProviderTransportTypesAvailabilities,
   createProviderTransportTypesAvailabilitiesController.handle

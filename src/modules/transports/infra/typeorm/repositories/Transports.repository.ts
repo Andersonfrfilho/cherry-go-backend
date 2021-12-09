@@ -7,12 +7,26 @@ import {
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 import { TransportsRepositoryInterface } from "@modules/transports/repositories/Transports.repository.interface";
 
+import { TransportType } from "../entities/TransportType";
+
 export class TransportsRepository implements TransportsRepositoryInterface {
   private repository: Repository<Transport>;
+  private repository_transport_type: Repository<TransportType>;
 
   constructor() {
     this.repository = getRepository(Transport);
+    this.repository_transport_type = getRepository(TransportType);
   }
+  createTransportType(): Promise<TransportType[]> {
+    throw new Error("Method not implemented.");
+  }
+  disableTransportType(): Promise<TransportType[]> {
+    throw new Error("Method not implemented.");
+  }
+  async getAllByActiveTransportType(active: boolean): Promise<TransportType[]> {
+    return this.repository_transport_type.find({ where: { active } });
+  }
+
   async createAppointmentsTransport({
     appointment_id,
     providers,

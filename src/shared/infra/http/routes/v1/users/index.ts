@@ -15,6 +15,7 @@ import { addressesRoutes } from "./addresses.routes";
 import { banksRoutes } from "./banks.routes";
 import { localsRoutes } from "./locals.routes";
 import { tariffsRoutes } from "./tariffs.routes";
+import { transportsRoutes } from "./transports.routes";
 
 const usersRoutes = Router();
 const getUsersController = new GetUsersController();
@@ -22,6 +23,7 @@ const showUsersController = new ShowUsersController();
 
 usersRoutes.get("/", getUsersController.handle);
 usersRoutes.use("/banks", banksRoutes);
+usersRoutes.use("/transports", transportsRoutes);
 usersRoutes.use("/tariffs", tariffsRoutes);
 usersRoutes.use("/addresses", addressesRoutes);
 usersRoutes.use("/locals", localsRoutes);

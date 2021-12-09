@@ -46,7 +46,8 @@ export class DeleteLocalsProviderService {
     if (
       !locals_remove.every(
         (local) =>
-          local?.details?.stripe?.product_id && local?.details?.stripe?.price_id
+          local?.details?.stripe?.product?.id &&
+          local?.details?.stripe?.price?.id
       )
     ) {
       throw new AppError(NOT_FOUND.STRIPE_DETAILS_NOT_FOUND);
@@ -54,8 +55,8 @@ export class DeleteLocalsProviderService {
 
     const remove_stripe = locals.map(async (local) =>
       this.paymentProvider.deleteProduct({
-        product_id: local.details.stripe.product_id,
-        price_id: local.details.stripe.price_id,
+        product_id: local.details.stripe.product?.id,
+        price_id: local.details.stripe.price?.id,
       })
     );
 

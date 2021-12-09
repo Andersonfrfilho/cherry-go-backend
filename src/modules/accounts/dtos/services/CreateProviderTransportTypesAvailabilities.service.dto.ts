@@ -1,6 +1,6 @@
-import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
+import { transport_types } from "../repositories/CreateTransportTypesAvailable.repository.dto";
 
 export interface CreateProviderTransportTypesAvailabilitiesServiceDTO {
   provider_id: string;
-  transport_types: Partial<TransportType>[];
+  transports_types: Partial<transport_types>[];
 }

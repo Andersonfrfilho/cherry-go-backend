@@ -14,6 +14,17 @@ import {
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
+interface ObjectId {
+  id: string;
+}
+interface StripeProviderTransportType {
+  product: ObjectId;
+  price: ObjectId;
+}
+
+export interface DetailsProviderTransportType {
+  stripe: StripeProviderTransportType;
+}
 @Entity("providers_transports_types")
 export class ProviderTransportType {
   @PrimaryColumn()
@@ -38,10 +49,10 @@ export class ProviderTransportType {
   active: boolean;
 
   @Column({ type: "jsonb" })
-  details?: any;
+  details?: DetailsProviderTransportType;
 
   @Column()
-  amount: number;
+  amount?: number;
 
   @CreateDateColumn()
   @Exclude()

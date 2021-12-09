@@ -63,7 +63,7 @@ export class StripeProvider implements PaymentProviderInterface {
     const product = await stripe.products.create({
       active,
       name,
-      statement_descriptor: `${service_type} - cherry-go`,
+      statement_descriptor: `${service_type} - cherry-go`.substring(0, 22),
       description,
     });
 

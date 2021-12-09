@@ -46,14 +46,8 @@ import { NotificationsRepository } from "@modules/notifications/infra/typeorm/re
 import { NotificationsRepositoryInterface } from "@modules/notifications/repositories/Notifications.repository.interface";
 import { TagsRepository } from "@modules/tags/infra/typeorm/repositories/Tags.repository";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
-import {
-  TarifeServiceRepository,
-  TariffsServicesRepository,
-} from "@modules/tariffs/infra/typeorm/repositories/Tarife.repository";
-import {
-  TarifeServiceRepositoryInterface,
-  TariffsServicesRepositoryInterface,
-} from "@modules/tariffs/repositories/TarifeService.repository.interface";
+import { TariffsServicesRepository } from "@modules/tariffs/infra/typeorm/repositories/Tarife.repository";
+import { TariffsServicesRepositoryInterface } from "@modules/tariffs/repositories/TarifeService.repository.interface";
 import { TransportsRepository } from "@modules/transports/infra/typeorm/repositories/Transports.repository";
 import { TransportsRepositoryInterface } from "@modules/transports/repositories/Transports.repository.interface";
 

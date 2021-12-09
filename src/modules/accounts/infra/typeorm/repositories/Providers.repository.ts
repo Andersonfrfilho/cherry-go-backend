@@ -15,11 +15,13 @@ import { CreateProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/r
 import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import { DeleteProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
+import { GetAllByActiveProviderTransportTypeRepositoryDTO } from "@modules/accounts/dtos/repositories/GetAllByActiveProviderTransportTypeRepository.dto";
 import {
   PaginationPropsGenericDTO,
   PaginationResponseAppointmentsDTO,
   PaginationResponsePropsDTO,
 } from "@modules/accounts/dtos/repositories/PaginationProps.dto";
+import { UpdateTransportTypeAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateTransportTypeAvailableRepository.dto";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
@@ -34,6 +36,7 @@ import { STATUS_PROVIDERS_APPOINTMENT } from "@modules/appointments/enums/Status
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProviders";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
+import { CreateProviderTransportTypesDTO } from "@modules/transports/dtos/repositories/CreateProviderTransportTypes.repository.dto";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 
 import { ProviderLocalType } from "../entities/ProviderLocalType";
@@ -41,9 +44,6 @@ import { TypeUser } from "../entities/TypeUser";
 import { UserTermsAccept } from "../entities/UserTermsAccept";
 import { UserTypeUser } from "../entities/UserTypeUser";
 
-interface CustomAppointmentFound {
-  provider_id: string;
-}
 class ProvidersRepository implements ProvidersRepositoryInterface {
   private repository: Repository<Provider>;
   private repository_available_days: Repository<ProviderAvailabilityDay>;
@@ -82,6 +82,64 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_appointments_providers = getRepository(AppointmentProvider);
     this.repository_provider_local_type = getRepository(ProviderLocalType);
   }
+  getAllByActiveProviderTransportType(
+    data: GetAllByActiveProviderTransportTypeRepositoryDTO
+  ): Promise<ProviderTransportType[]> {
+    throw new Error("Method not implemented.");
+  }
+  async updateTransportTypesAvailable({
+    amount,
+    transport_type_provider_id,
+    details,
+  }: UpdateTransportTypeAvailableRepositoryDTO): Promise<void> {
+    await this.repository_provider_transport_type.update(
+      transport_type_provider_id,
+      { amount, details }
+    );
+  }
+  async createProviderTransportType({
+    amount,
+    transport_type_id,
+    provider_id,
+    active,
+  }: CreateProviderTransportTypesDTO): Promise<ProviderTransportType[]> {
+    await this.repository_provider_transport_type.save({
+      amount,
+      transport_type_id,
+      provider_id,
+      active,
+    });
+
+    const provider_transport_types = this.repository_provider_transport_type.find(
+      {
+        where: { provider_id },
+      }
+    );
+
+    return provider_transport_types;
+  }
+
+  async deleteProviderTransportType(
+    provider_transport_type_ids: string[]
+  ): Promise<void> {
+    await this.repository_transport_type.delete(provider_transport_type_ids);
+  }
+
+  async getAllActiveProviderTransportType({
+    active,
+    provider_id,
+  }: GetAllByActiveProviderTransportTypeRepositoryDTO): Promise<
+    ProviderTransportType[]
+  > {
+    const provider_transport_types = this.repository_provider_transport_type.find(
+      {
+        where: { active, provider_id },
+      }
+    );
+
+    return provider_transport_types;
+  }
+
   async createProviderLocals(
     data: CreateProviderLocalProviderAddressDTO
   ): Promise<void> {
@@ -323,21 +381,15 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
 
   async createTransportTypesAvailable({
     provider_id,
-    transport_types,
+    transports_types,
   }: CreateTransportTypesAvailableRepositoryDTO): Promise<void> {
-    const transport_types_found = await this.repository_transport_type.find({
-      where: {
-        name: In(transport_types.map((transport_type) => transport_type.name)),
-        active: true,
-      },
-    });
-
     await this.repository_provider_transport_type.save(
-      transport_types_found.map((transport_type, index) => ({
+      transports_types.map((transport_type) => ({
         provider_id,
-        transport_type_id: transport_type.id,
+        transport_type_id: transport_type.transport_type_id,
         active: true,
-        amount: transport_types[index].amount,
+        amount: transport_type.amount,
+        details: transport_type?.details,
       }))
     );
   }

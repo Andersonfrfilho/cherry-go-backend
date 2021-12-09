@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -35,12 +36,15 @@ export class TransportType {
   @OneToMany(() => Provider, (provider) => provider.transports_types)
   providers?: Provider[];
 
+  @Exclude()
   @CreateDateColumn()
   created_at?: Date;
 
+  @Exclude()
   @UpdateDateColumn()
   updated_at?: Date;
 
+  @Exclude()
   @DeleteDateColumn()
   deleted_at?: Date;
 }
