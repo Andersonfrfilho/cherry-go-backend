@@ -6,17 +6,41 @@ import {
   PaginationResponsePropsDTO,
 } from "@modules/accounts/dtos/repositories/PaginationProps.dto";
 import { ClientTag } from "@modules/accounts/infra/typeorm/entities/ClientTag";
+import { TagService } from "@modules/accounts/infra/typeorm/entities/ServiceTag";
 import { CreateUserRepositoryDTO } from "@modules/tags/dtos";
+import { CreateTagsServiceRepositoryDTO } from "@modules/tags/dtos/repositories/CreateTagsServices.repository.dto";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
 
 export class TagsRepository implements TagsRepositoryInterface {
   private repository: Repository<Tag>;
   private repository_clients_tags: Repository<ClientTag>;
+  private repository_service_tags: Repository<TagService>;
 
   constructor() {
     this.repository = getRepository(Tag);
     this.repository_clients_tags = getRepository(ClientTag);
+    this.repository_service_tags = getRepository(TagService);
+  }
+
+  async getTagsByService(service_id: string): Promise<TagService[]> {
+    const tags_services = await this.repository_service_tags.find({
+      where: { service_id },
+    });
+    return tags_services;
+  }
+
+  async deleteTagsService(tag_service_ids: string[]): Promise<void> {
+    await this.repository_service_tags.delete(tag_service_ids);
+  }
+
+  async createTagService({
+    service_id,
+    tags_id,
+  }: CreateTagsServiceRepositoryDTO): Promise<void> {
+    await this.repository_service_tags.save(
+      tags_id.map((tag_id) => ({ tag_id, service_id }))
+    );
   }
 
   async findTagsWithPages({

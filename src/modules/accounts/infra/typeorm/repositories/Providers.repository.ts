@@ -82,6 +82,9 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_appointments_providers = getRepository(AppointmentProvider);
     this.repository_provider_local_type = getRepository(ProviderLocalType);
   }
+  async deleteServiceProvider(service_id: string): Promise<void> {
+    await this.repository_service.delete(service_id);
+  }
   getAllByActiveProviderTransportType(
     data: GetAllByActiveProviderTransportTypeRepositoryDTO
   ): Promise<ProviderTransportType[]> {
@@ -425,14 +428,17 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     name,
     duration,
     active,
-  }: CreateServiceProviderRepositoryDTO): Promise<void> {
-    await this.repository_service.save({
+    details,
+  }: CreateServiceProviderRepositoryDTO): Promise<Service> {
+    const service = await this.repository_service.save({
       provider_id,
       amount,
       name,
       duration,
       active,
+      details,
     });
+    return service;
   }
 
   async findByEmail(email: string): Promise<Provider> {

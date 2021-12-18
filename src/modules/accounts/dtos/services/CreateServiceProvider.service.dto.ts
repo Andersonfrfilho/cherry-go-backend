@@ -3,4 +3,5 @@ export interface CreateServiceProviderServiceDTO {
   name: string;
   amount: number;
   duration: number;
+  tags_id: string[];
 }

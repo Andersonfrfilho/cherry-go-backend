@@ -17,6 +17,17 @@ import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { AppointmentProviderService } from "@modules/appointments/infra/typeorm/entities/AppointmentsProvidersServices";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
+interface ObjectId {
+  id: string;
+}
+interface StripeProviderTransportType {
+  product: ObjectId;
+  price: ObjectId;
+}
+
+export interface InterfaceDetailsService {
+  stripe: StripeProviderTransportType;
+}
 @Entity("services")
 export class Service {
   @PrimaryGeneratedColumn("uuid")
@@ -35,7 +46,7 @@ export class Service {
   active: boolean;
 
   @Column({ type: "jsonb" })
-  details?: any;
+  details?: InterfaceDetailsService;
 
   @Column()
   provider_id: string;
@@ -44,7 +55,7 @@ export class Service {
   @JoinColumn({ name: "provider_id", referencedColumnName: "id" })
   provider?: Provider;
 
-  @ManyToMany(() => Tag, { cascade: true })
+  @ManyToMany(() => Tag, { cascade: true, eager: true })
   @JoinTable({
     name: "tags_services",
     joinColumns: [{ name: "service_id", referencedColumnName: "id" }],

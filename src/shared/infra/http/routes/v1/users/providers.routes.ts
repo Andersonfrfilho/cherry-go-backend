@@ -28,6 +28,8 @@ import { schemaDeleteLocalsTypesProviders } from "@modules/accounts/useCases/del
 import { DeletePhotosProviderController } from "@modules/accounts/useCases/deletePhotosProvider/DeletePhotosProvider.controller";
 import { DeleteProviderTimesAvailabilitiesController } from "@modules/accounts/useCases/deleteProviderTimesAvailabilities/DeleteProviderTimesAvailabilities.controller";
 import { schemaDeleteProviderTimesAvailabilities } from "@modules/accounts/useCases/deleteProviderTimesAvailabilities/deleteProviderTimesAvailabilities.schema";
+import { DeleteServiceProviderController } from "@modules/accounts/useCases/deleteServiceProvider/DeleteServiceProvider.controller";
+import { schemaDeleteServiceProvider } from "@modules/accounts/useCases/deleteServiceProvider/deleteServiceProvider.schema";
 import { GetAllLocalsProvidersController } from "@modules/accounts/useCases/getAllLocalsProvider/GetAllLocalsProvider.controller";
 import { GetAllPaymentTypeController } from "@modules/accounts/useCases/getAllPaymentType/GetAllPaymentType.controller";
 import { GetAllProvidersLocalsTypesController } from "@modules/accounts/useCases/getAllProviderLocalsTypes/GetAllProviderLocalsTypes.controller";
@@ -53,6 +55,7 @@ const createProviderTimesAvailabilitiesController = new CreateProviderTimesAvail
 const createProviderDaysAvailabilitiesController = new CreateProviderDaysAvailabilitiesController();
 const getAvailabilitiesOptionsProviderWorkController = new GetAvailabilitiesOptionsProviderWorkController();
 const createServiceProviderController = new CreateServiceProviderController();
+const deleteServiceProviderController = new DeleteServiceProviderController();
 const createProvidersPaymentsTypesController = new CreateProvidersPaymentsTypesController();
 const createProviderTransportTypesAvailabilitiesController = new CreateProviderTransportTypesAvailabilitiesController();
 const confirmAppointmentProviderController = new ConfirmAppointmentProviderController();
@@ -124,11 +127,18 @@ providersRoutes.delete(
   deleteProviderTimesAvailabilitiesController.handle
 );
 
-providersRoutes.patch(
+providersRoutes.post(
   "/services",
   ensureAuthenticatedProvider,
   schemaCreateServiceProvider,
   createServiceProviderController.handle
+);
+
+providersRoutes.delete(
+  "/services",
+  ensureAuthenticatedProvider,
+  schemaDeleteServiceProvider,
+  deleteServiceProviderController.handle
 );
 
 providersRoutes.patch(

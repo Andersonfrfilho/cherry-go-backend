@@ -32,6 +32,7 @@ import { ProviderAvailabilityTime } from "../infra/typeorm/entities/ProviderAvai
 import { ProviderLocalType } from "../infra/typeorm/entities/ProviderLocalType";
 import { ProviderPaymentType } from "../infra/typeorm/entities/ProviderPaymentType";
 import { ProviderTransportType } from "../infra/typeorm/entities/ProviderTransportTypes";
+import { Service } from "../infra/typeorm/entities/Services";
 
 export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
@@ -53,7 +54,8 @@ export interface ProvidersRepositoryInterface {
   ): Promise<void>;
   createServiceProvider(
     data: CreateServiceProviderRepositoryDTO
-  ): Promise<void>;
+  ): Promise<Service>;
+  deleteServiceProvider(service_id: string): Promise<void>;
   createPaymentTypesAvailable(
     data: CreatePaymentTypesAvailableRepositoryDTO
   ): Promise<void>;

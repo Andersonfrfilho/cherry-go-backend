@@ -6,7 +6,7 @@ import { CreateServiceProviderService } from "@modules/accounts/useCases/createS
 class CreateServiceProviderController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const { name, amount, duration } = request.body;
+    const { name, amount, duration, tags_id } = request.body;
     const createServiceProviderService = container.resolve(
       CreateServiceProviderService
     );
@@ -16,6 +16,7 @@ class CreateServiceProviderController {
       name,
       amount,
       duration,
+      tags_id,
     });
 
     return response.status(204).send();
