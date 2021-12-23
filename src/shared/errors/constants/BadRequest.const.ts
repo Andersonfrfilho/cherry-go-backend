@@ -45,4 +45,9 @@ export const BAD_REQUEST = {
     status_code,
     code: "0008",
   },
+  ACCOUNT_NOT_RATING_IN_SAME_ACCOUNT: {
+    message: "the account not rating same account provider!",
+    status_code,
+    code: "0009",
+  },
 };

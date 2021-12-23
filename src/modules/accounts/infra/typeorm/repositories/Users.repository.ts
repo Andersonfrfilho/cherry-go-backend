@@ -19,6 +19,7 @@ import {
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
 } from "@modules/accounts/dtos/repositories/PaginationProps.dto";
+import { RatingProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/RatingProviderRepository.dto";
 import { UpdateUserRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateUser.repository.dto";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { ClientTag } from "@modules/accounts/infra/typeorm/entities/ClientTag";
@@ -32,6 +33,7 @@ import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.r
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
+import { ProviderClientRating } from "../entities/ProviderRating";
 import { UserTokens } from "../entities/UserTokens";
 
 export class UsersRepository implements UsersRepositoryInterface {
@@ -45,6 +47,7 @@ export class UsersRepository implements UsersRepositoryInterface {
   private repository_tag: Repository<Tag>;
   private repository_clients_tags: Repository<ClientTag>;
   private repository_users_tokens: Repository<UserTokens>;
+  private repository_clients_providers_ratings: Repository<ProviderClientRating>;
 
   constructor() {
     this.repository = getRepository(User);
@@ -57,6 +60,23 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_tag = getRepository(Tag);
     this.repository_clients_tags = getRepository(ClientTag);
     this.repository_users_tokens = getRepository(UserTokens);
+    this.repository_clients_providers_ratings = getRepository(
+      ProviderClientRating
+    );
+  }
+
+  async ratingProvider({
+    provider_id,
+    client_id,
+    value,
+    details,
+  }: RatingProviderRepositoryDTO): Promise<void> {
+    await this.repository_clients_providers_ratings.save({
+      provider_id,
+      client_id,
+      value,
+      details,
+    });
   }
   async updateUser({
     user_id,

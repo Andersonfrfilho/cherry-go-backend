@@ -21,6 +21,7 @@ import {
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
 } from "../dtos/repositories/PaginationProps.dto";
+import { RatingProviderRepositoryDTO } from "../dtos/repositories/RatingProviderRepository.dto";
 import { UpdateUserRepositoryDTO } from "../dtos/repositories/UpdateUser.repository.dto";
 import { UserTokens } from "../infra/typeorm/entities/UserTokens";
 
@@ -86,4 +87,9 @@ export interface UsersRepositoryInterface {
     last_name,
     user_id,
   }: UpdateUserRepositoryDTO): Promise<void>;
+  ratingProvider({
+    provider_id,
+    client_id,
+    value,
+  }: RatingProviderRepositoryDTO): Promise<void>;
 }

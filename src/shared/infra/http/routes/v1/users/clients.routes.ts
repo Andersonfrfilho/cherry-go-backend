@@ -12,6 +12,8 @@ import { CreateUserClientController } from "@modules/accounts/useCases/createUse
 import { schemaCreateUserClient } from "@modules/accounts/useCases/createUserClient/createUserClient.schema";
 import { GetProvidersController } from "@modules/accounts/useCases/getProviders/GetProviders.controller";
 import { schemaGetProviders } from "@modules/accounts/useCases/getProviders/getProviders.schema";
+import { RatingProvidersController } from "@modules/accounts/useCases/ratingProviders/RatingProviders.controller";
+import { schemaRatingProviders } from "@modules/accounts/useCases/ratingProviders/ratingProviders.schema";
 import { ResendPhonesUserClientController } from "@modules/accounts/useCases/resendPhoneCodeUserClient/ResendPhonesUserClient.controller";
 import { schemaResendPhoneCodeUserClient } from "@modules/accounts/useCases/resendPhoneCodeUserClient/resendPhonesUserClient.schema";
 import { UpdateUserDetailsController } from "@modules/accounts/useCases/updateUserDetails/UpdateUserDetails.controller";
@@ -28,6 +30,7 @@ const createUserPhoneClientController = new CreateUserPhoneClientController();
 const createTagsUsersController = new CreateTagsUsersController();
 const activeUserClientController = new ActiveUserClientController();
 const getProvidersController = new GetProvidersController();
+const ratingProvidersController = new RatingProvidersController();
 
 clientsRoutes.post(
   "/",
@@ -78,6 +81,13 @@ clientsRoutes.get(
   ensureAuthenticated,
   // schemaGetProviders,
   getProvidersController.handle
+);
+
+clientsRoutes.post(
+  "/providers/rating",
+  ensureAuthenticated,
+  schemaRatingProviders,
+  ratingProvidersController.handle
 );
 
 export { clientsRoutes };

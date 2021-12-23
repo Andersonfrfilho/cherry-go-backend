@@ -28,6 +28,7 @@ import { Transport } from "@modules/transports/infra/typeorm/entities/Transport"
 
 import { ProviderImage } from "./ProviderImage";
 import { ProviderLocalType } from "./ProviderLocalType";
+import { ProviderClientRating } from "./ProviderRating";
 import { Details } from "./User";
 import { UserProfileImage } from "./UserProfileImage";
 import { UserTypeUser } from "./UserTypeUser";
@@ -122,6 +123,11 @@ class Provider {
     eager: true,
   })
   services?: Service[];
+
+  @OneToMany(() => ProviderClientRating, (rating) => rating.provider, {
+    eager: true,
+  })
+  ratings?: ProviderClientRating;
 
   @OneToMany(() => ProviderAvailabilityDay, (day) => day.provider, {
     eager: true,
