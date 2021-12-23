@@ -72,6 +72,15 @@ export const test = {
       GEOLOCATION_PROVIDER_ENUM[process.env.GEOLOCATION_PROVIDER || "local"],
     api_key: process.env.GOOGLE_MAPS_API_KEY || "",
   },
+  client: {
+    cache: {
+      invalidade: {
+        time: Number(
+          process.env.ADDRESS_CACHE_INVALIDATE_TIME || 1000 * 60 * 60 * 24 * 30
+        ),
+      },
+    },
+  },
   sms: {
     active: Boolean(process.env.SMS_COMMUNICATION) || false,
     provider: process.env.SMS_PROVIDER || "vonage",

@@ -16,6 +16,8 @@ import { RatingProvidersController } from "@modules/accounts/useCases/ratingProv
 import { schemaRatingProviders } from "@modules/accounts/useCases/ratingProviders/ratingProviders.schema";
 import { ResendPhonesUserClientController } from "@modules/accounts/useCases/resendPhoneCodeUserClient/ResendPhonesUserClient.controller";
 import { schemaResendPhoneCodeUserClient } from "@modules/accounts/useCases/resendPhoneCodeUserClient/resendPhonesUserClient.schema";
+import { SetProvidersFavoriteController } from "@modules/accounts/useCases/setProvidersFavorite/SetProvidersFavorite.controller";
+import { schemaSetProvidersFavorite } from "@modules/accounts/useCases/setProvidersFavorite/setProvidersFavorite.schema";
 import { UpdateUserDetailsController } from "@modules/accounts/useCases/updateUserDetails/UpdateUserDetails.controller";
 import { schemaUpdateUserDetails } from "@modules/accounts/useCases/updateUserDetails/updateUserDetails.schema";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
@@ -31,6 +33,7 @@ const createTagsUsersController = new CreateTagsUsersController();
 const activeUserClientController = new ActiveUserClientController();
 const getProvidersController = new GetProvidersController();
 const ratingProvidersController = new RatingProvidersController();
+const setProvidersFavoriteController = new SetProvidersFavoriteController();
 
 clientsRoutes.post(
   "/",
@@ -88,6 +91,13 @@ clientsRoutes.post(
   ensureAuthenticated,
   schemaRatingProviders,
   ratingProvidersController.handle
+);
+
+clientsRoutes.post(
+  "/providers/favorite",
+  ensureAuthenticated,
+  schemaSetProvidersFavorite,
+  setProvidersFavoriteController.handle
 );
 
 export { clientsRoutes };

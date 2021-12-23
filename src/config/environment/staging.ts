@@ -60,6 +60,15 @@ export const staging = {
       },
     },
   },
+  client: {
+    cache: {
+      invalidade: {
+        time: Number(
+          process.env.ADDRESS_CACHE_INVALIDATE_TIME || 1000 * 60 * 60 * 24 * 30
+        ),
+      },
+    },
+  },
   geolocation: {
     cache: {
       invalidade: {

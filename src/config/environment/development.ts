@@ -18,6 +18,15 @@ export const development = {
   bank: {
     provider: BANK_PROVIDER_ENUM[process.env.BANK_PROVIDER || "local"],
   },
+  client: {
+    cache: {
+      invalidade: {
+        time: Number(
+          process.env.ADDRESS_CACHE_INVALIDATE_TIME || 1000 * 60 * 60 * 24 * 30
+        ),
+      },
+    },
+  },
   appointment: {
     hour_allowed_cancellation: Number(
       process.env.HOUR_ALLOWED_CANCELLATION || 1
