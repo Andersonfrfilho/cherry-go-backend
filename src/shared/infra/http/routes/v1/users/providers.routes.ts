@@ -35,6 +35,8 @@ import { GetAllPaymentTypeController } from "@modules/accounts/useCases/getAllPa
 import { GetAllProvidersLocalsTypesController } from "@modules/accounts/useCases/getAllProviderLocalsTypes/GetAllProviderLocalsTypes.controller";
 import { GetAvailabilitiesOptionsProviderWorkController } from "@modules/accounts/useCases/getAvailabilitiesOptionsProviderWork/GetAvailabilitiesOptionsProviderWork.controller";
 import { MeProfileUserProviderController } from "@modules/accounts/useCases/meProfileUserProvider/MeProfileUserProvider.controller";
+import { SetLocationCacheProvidersController } from "@modules/accounts/useCases/setLocationCacheProviders/SetLocationCacheProviders.controller";
+import { schemaSetLocationCacheProviders } from "@modules/accounts/useCases/setLocationCacheProviders/setLocationCacheProviders.schema";
 import { UpdatePaymentAccountPersonController } from "@modules/accounts/useCases/updatePaymentAccountPerson/UpdatePaymentAccountPerson.controller";
 import { UpdatePhotosProviderController } from "@modules/accounts/useCases/updatePhotosProvider/UpdatePhotosProvider.controller";
 import { UploadPhotosProviderController } from "@modules/accounts/useCases/uploadPhotosProvider/UploadPhotosUserProvider.controller";
@@ -73,6 +75,7 @@ const verifyPaymentAccountInfosController = new VerifyPaymentAccountInfosControl
 const createProvidersLocalsTypesController = new CreateProvidersLocalsTypesController();
 const getAllProvidersLocalsTypesController = new GetAllProvidersLocalsTypesController();
 const deleteProvidersLocalsTypesController = new DeleteProvidersLocalsTypesController();
+const setLocationCacheProvidersController = new SetLocationCacheProvidersController();
 
 const uploadImages = multer(uploadConfig);
 
@@ -244,6 +247,13 @@ providersRoutes.get(
   "/verify/payment/infos",
   ensureAuthenticatedProvider,
   verifyPaymentAccountInfosController.handle
+);
+
+providersRoutes.post(
+  "/geolocation",
+  ensureAuthenticatedProvider,
+  schemaSetLocationCacheProviders,
+  setLocationCacheProvidersController.handle
 );
 
 export { providersRoutes };

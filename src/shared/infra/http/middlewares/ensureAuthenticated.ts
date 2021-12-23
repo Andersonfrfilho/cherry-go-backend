@@ -27,8 +27,8 @@ export async function ensureAuthenticated(
   } catch (err) {
     throw new AppError(UNAUTHORIZED.TOKEN_IS_INVALID);
   }
-
   const { sub } = verify(token, auth.secret.token) as IPayload;
+
   const {
     user: { id, active },
   } = JSON.parse(sub);

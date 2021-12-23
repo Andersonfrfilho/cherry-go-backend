@@ -1,4 +1,3 @@
-import { interface_config } from "@config/environment/config.interface";
 import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 
 import {
@@ -8,7 +7,7 @@ import {
   PAYMENT_PROVIDER_ENUM,
 } from "./config.enum";
 
-export const staging: interface_config = {
+export const staging = {
   application: {
     name: "Cherry-go",
     minimum_age_required:
@@ -55,11 +54,20 @@ export const staging: interface_config = {
     provider: ADDRESS_PROVIDER_ENUM[process.env.ADDRESS_PROVIDER || "local"],
     cache: {
       invalidade: {
-        time: Number(process.env.ADDRESS_CACHE_INVALIDATE_TIME || 2629800000),
+        time: Number(
+          process.env.ADDRESS_CACHE_INVALIDATE_TIME || 1000 * 60 * 60 * 24 * 30
+        ),
       },
     },
   },
   geolocation: {
+    cache: {
+      invalidade: {
+        time: Number(
+          process.env.ADDRESS_CACHE_INVALIDATE_TIME || 1000 * 60 * 60 * 3
+        ),
+      },
+    },
     provider:
       GEOLOCATION_PROVIDER_ENUM[process.env.GEOLOCATION_PROVIDER || "local"],
     api_key: process.env.GOOGLE_MAPS_API_KEY || "",

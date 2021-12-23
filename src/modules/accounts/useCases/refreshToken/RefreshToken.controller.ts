@@ -5,14 +5,14 @@ import { RefreshTokenService } from "@modules/accounts/useCases/refreshToken/Ref
 
 class RefreshTokenController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const token =
-      request.body.token ||
-      request.headers["x-access-tokens"] ||
-      request.query.token;
+    const refresh_token =
+      request.body.refresh_token ||
+      request.headers["x-access-refresh-token"] ||
+      request.query.refresh_token;
     const refreshTokenService = container.resolve(RefreshTokenService);
-    const refresh_token = await refreshTokenService.execute(token);
+    const new_tokens = await refreshTokenService.execute(refresh_token);
 
-    return response.json(refresh_token);
+    return response.json(new_tokens);
   }
 }
 export { RefreshTokenController };

@@ -40,6 +40,7 @@ export class AuthenticateUserService {
     if (!user) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
+
     const passwordHash = await this.hashProvider.compareHash(
       password,
       user.password_hash
@@ -59,9 +60,10 @@ export class AuthenticateUserService {
         expiresIn: expires_in.token,
       },
     });
+
     const refresh_token = this.jwtProvider.assign({
       payload: { email },
-      secretOrPrivateKey: secret.refresh,
+      secretOrPrivateKey: auth.secret.refresh,
       options: {
         subject: {
           user: { id: user.id, active: user.active, types: user.types },
@@ -69,9 +71,11 @@ export class AuthenticateUserService {
         expiresIn: expires_in.refresh,
       },
     });
+
     const refresh_token_expires_date = this.dateProvider.addDays(
       expires_in.refresh_days
     );
+
     await this.usersTokensRepository.create({
       user_id: user.id,
       expires_date: refresh_token_expires_date,

@@ -14,12 +14,14 @@ import {
   UpdateUserDetailsRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 
 import { UserTags } from "../dtos/repositories/CreateTagsUsersClient.repository.dto";
 import {
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
 } from "../dtos/repositories/PaginationProps.dto";
+import { UpdateUserRepositoryDTO } from "../dtos/repositories/UpdateUser.repository.dto";
 import { UserTokens } from "../infra/typeorm/entities/UserTokens";
 
 export interface UsersRepositoryInterface {
@@ -78,4 +80,10 @@ export interface UsersRepositoryInterface {
     id,
     details,
   }: UpdateUserDetailsRepositoryDTO): Promise<void>;
+  updateUser({
+    email,
+    name,
+    last_name,
+    user_id,
+  }: UpdateUserRepositoryDTO): Promise<void>;
 }

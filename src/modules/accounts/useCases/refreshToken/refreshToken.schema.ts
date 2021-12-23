@@ -2,13 +2,13 @@ import { celebrate, Joi, Segments } from "celebrate";
 
 const schemaRefreshToken = celebrate({
   [Segments.BODY]: {
-    token: Joi.string().optional(),
+    refresh_token: Joi.string().optional(),
   },
   [Segments.QUERY]: {
-    token: Joi.string().optional(),
+    refresh_token: Joi.string().optional(),
   },
   [Segments.HEADERS]: Joi.object({
-    "x-access-tokens": Joi.string().optional(),
+    "x-access-refresh-token": Joi.string().optional(),
   }).unknown(),
 });
 

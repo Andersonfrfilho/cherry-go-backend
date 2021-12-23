@@ -15,6 +15,7 @@ import { CreateProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/r
 import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import { DeleteProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
+import { FindByAreaRepositoryDTO } from "@modules/accounts/dtos/repositories/FindByArea.dto";
 import { GetAllByActiveProviderTransportTypeRepositoryDTO } from "@modules/accounts/dtos/repositories/GetAllByActiveProviderTransportTypeRepository.dto";
 import {
   PaginationPropsGenericDTO,
@@ -38,6 +39,7 @@ import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entitie
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { CreateProviderTransportTypesDTO } from "@modules/transports/dtos/repositories/CreateProviderTransportTypes.repository.dto";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
+import { distanceRadiusCalculation } from "@utils/distanceByRadius";
 
 import { ProviderLocalType } from "../entities/ProviderLocalType";
 import { TypeUser } from "../entities/TypeUser";
@@ -82,9 +84,77 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     this.repository_appointments_providers = getRepository(AppointmentProvider);
     this.repository_provider_local_type = getRepository(ProviderLocalType);
   }
+  async findByIds(ids: string[]): Promise<Provider[]> {
+    return this.repository.findByIds(ids);
+  }
+
+  async findByArea({
+    city,
+    latitude,
+    longitude,
+    distance,
+    user_id,
+  }: FindByAreaRepositoryDTO): Promise<Provider[]> {
+    const providersQuery = await this.repository
+      .createQueryBuilder("foundProviders")
+      .andWhere("foundProviders.id <> :user_id", { user_id })
+      .andWhere("foundProviders.active = :active", { active: true })
+      .leftJoinAndSelect("foundProviders.addresses", "addresses")
+      .andWhere("addresses.city like :city", { city })
+      .getMany();
+
+    let providers_by_address = providersQuery;
+
+    // address by latitude and longitude
+    if (latitude && longitude && distance) {
+      providers_by_address = providers_by_address.filter(
+        (provider) =>
+          provider.addresses[0].latitude &&
+          provider.addresses[0].longitude &&
+          distanceRadiusCalculation({
+            distance: Number(distance),
+            latitude: Number(provider.addresses[0].latitude),
+            longitude: Number(provider.addresses[0].longitude),
+            currentLatitude: Number(latitude),
+            currentLongitude: Number(longitude),
+          })
+      );
+    }
+
+    // locals
+    let providers_by_locals = providersQuery;
+    providers_by_locals = providers_by_locals.filter(
+      (provider) =>
+        provider.locals &&
+        provider.locals.length > 0 &&
+        provider.locals.some(
+          (local) =>
+            local.address.latitude &&
+            local.address.longitude &&
+            distanceRadiusCalculation({
+              distance: Number(distance),
+              latitude: Number(local.address.latitude),
+              longitude: Number(local.address.longitude),
+              currentLatitude: Number(latitude),
+              currentLongitude: Number(longitude),
+            })
+        )
+    );
+
+    const providers_available_by_address = providers_by_address.filter(
+      (provider_by_address) =>
+        !providers_by_locals.some(
+          (provider_local) => provider_local.id === provider_by_address.id
+        )
+    );
+
+    return [...providers_available_by_address, ...providers_by_locals];
+  }
+
   async deleteServiceProvider(service_id: string): Promise<void> {
     await this.repository_service.delete(service_id);
   }
+
   getAllByActiveProviderTransportType(
     data: GetAllByActiveProviderTransportTypeRepositoryDTO
   ): Promise<ProviderTransportType[]> {

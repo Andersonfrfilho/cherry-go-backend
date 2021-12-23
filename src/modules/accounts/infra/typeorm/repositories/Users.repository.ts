@@ -19,6 +19,7 @@ import {
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
 } from "@modules/accounts/dtos/repositories/PaginationProps.dto";
+import { UpdateUserRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateUser.repository.dto";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { ClientTag } from "@modules/accounts/infra/typeorm/entities/ClientTag";
 import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
@@ -56,6 +57,12 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_tag = getRepository(Tag);
     this.repository_clients_tags = getRepository(ClientTag);
     this.repository_users_tokens = getRepository(UserTokens);
+  }
+  async updateUser({
+    user_id,
+    ...rest
+  }: UpdateUserRepositoryDTO): Promise<void> {
+    await this.repository.update(user_id, { ...rest });
   }
   async updateDetailsUser({
     id,

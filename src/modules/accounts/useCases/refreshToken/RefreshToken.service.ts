@@ -5,7 +5,7 @@ import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/U
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import { FORBIDDEN, NOT_FOUND } from "@shared/errors/constants";
+import { NOT_FOUND } from "@shared/errors/constants";
 
 interface ITokenResponse {
   token: string;
@@ -21,23 +21,22 @@ class RefreshTokenService {
     @inject("JwtProvider")
     private jwtProvider: JwtProviderInterface
   ) {}
-  async execute(token: string): Promise<ITokenResponse> {
+  async execute(refresh_token: string): Promise<ITokenResponse> {
     const { email, sub } = this.jwtProvider.verifyJwt({
       auth_secret: auth.secret.refresh,
-      token,
+      token: refresh_token,
     });
-
-    const userToken = await this.usersTokensRepository.findByUserIdAndRefreshToken(
-      { user_id: sub.user.id, refresh_token: token }
+    const user_refresh_token = await this.usersTokensRepository.findByUserIdAndRefreshToken(
+      { user_id: sub.user.id, refresh_token }
     );
 
-    if (!userToken) {
+    if (!user_refresh_token) {
       throw new AppError(NOT_FOUND.REFRESH_TOKEN_DOES_NOT_EXIST);
     }
 
-    await this.usersTokensRepository.deleteById(userToken.id);
+    await this.usersTokensRepository.deleteById(user_refresh_token.id);
 
-    const refresh_token = this.jwtProvider.assign({
+    const new_refresh_token = this.jwtProvider.assign({
       payload: { email },
       secretOrPrivateKey: auth.secret.refresh,
       options: {
@@ -52,7 +51,7 @@ class RefreshTokenService {
 
     await this.usersTokensRepository.create({
       expires_date,
-      refresh_token,
+      refresh_token: new_refresh_token,
       user_id: sub.user.id,
     });
 
@@ -64,10 +63,9 @@ class RefreshTokenService {
         subject: sub,
       },
     });
-
     return {
-      refresh_token: new_token,
-      token,
+      refresh_token: new_refresh_token,
+      token: new_token,
     };
   }
 }

@@ -7,6 +7,7 @@ import {
   CreateTransportTypesAvailableRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { CreateAppointmentProviders } from "@modules/appointments/dtos/services/CreateAppointment.service.dto";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { CreateProviderTransportTypesDTO } from "@modules/transports/dtos/repositories/CreateProviderTransportTypes.repository.dto";
@@ -19,6 +20,7 @@ import { CreateProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/Cre
 import { CreateUserProviderRepositoryDTO } from "../dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "../dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import { DeleteProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
+import { FindByAreaRepositoryDTO } from "../dtos/repositories/FindByArea.dto";
 import { GetAllByActiveProviderTransportTypeRepositoryDTO } from "../dtos/repositories/GetAllByActiveProviderTransportTypeRepository.dto";
 import {
   PaginationPropsDTO,
@@ -36,6 +38,7 @@ import { Service } from "../infra/typeorm/entities/Services";
 
 export interface ProvidersRepositoryInterface {
   findById(id: string): Promise<Provider>;
+  findByIds(ids: string[]): Promise<Provider[]>;
   createAddressProviders(
     data: CreateAddressUsersProvidersRepositoryDTO
   ): Promise<void>;
@@ -105,4 +108,5 @@ export interface ProvidersRepositoryInterface {
   updateTransportTypesAvailable(
     data: UpdateTransportTypeAvailableRepositoryDTO
   ): Promise<void>;
+  findByArea(data: FindByAreaRepositoryDTO): Promise<Provider[]>;
 }

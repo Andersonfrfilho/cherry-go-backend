@@ -5,7 +5,8 @@ export default {
       process.env.HASH_REFRESH_TOKEN || "a7e071b3de48cec1dd24de6cbe6c7bf1",
   },
   expires_in: {
-    token: "15m",
+    // token: "15m",
+    token: "10s",
     refresh: "30d",
     refresh_days: 30,
   },
