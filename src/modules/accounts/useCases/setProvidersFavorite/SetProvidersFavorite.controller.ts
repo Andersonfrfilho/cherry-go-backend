@@ -6,7 +6,7 @@ import { SetProvidersFavoriteService } from "./SetProvidersFavorite.service";
 export class SetProvidersFavoriteController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const { provider_id } = request.body;
+    const { provider_id, distance, latitude, longitude } = request.body;
     const setProvidersFavoriteService = container.resolve(
       SetProvidersFavoriteService
     );
@@ -14,6 +14,9 @@ export class SetProvidersFavoriteController {
     const providers = await setProvidersFavoriteService.execute({
       user_id: id,
       provider_id,
+      distance,
+      latitude,
+      longitude,
     });
 
     return response.json(providers);

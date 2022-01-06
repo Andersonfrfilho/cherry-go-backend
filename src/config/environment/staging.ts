@@ -17,6 +17,9 @@ export const staging = {
   },
   providers: {
     max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),
+    ratings: {
+      number_max: Number(process.env.PROVIDERS_RATINGS_NUMBER_MAX || 5),
+    },
   },
   bank: {
     provider: BANK_PROVIDER_ENUM[process.env.BANK_PROVIDER || "local"],

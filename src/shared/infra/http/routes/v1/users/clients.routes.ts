@@ -12,12 +12,14 @@ import { CreateUserClientController } from "@modules/accounts/useCases/createUse
 import { schemaCreateUserClient } from "@modules/accounts/useCases/createUserClient/createUserClient.schema";
 import { GetProvidersController } from "@modules/accounts/useCases/getProviders/GetProviders.controller";
 import { schemaGetProviders } from "@modules/accounts/useCases/getProviders/getProviders.schema";
+import { GetStageAppointmentClientController } from "@modules/accounts/useCases/getStageAppointmentClient/GetStageAppointmentClient.controller";
 import { RatingProvidersController } from "@modules/accounts/useCases/ratingProviders/RatingProviders.controller";
 import { schemaRatingProviders } from "@modules/accounts/useCases/ratingProviders/ratingProviders.schema";
 import { ResendPhonesUserClientController } from "@modules/accounts/useCases/resendPhoneCodeUserClient/ResendPhonesUserClient.controller";
 import { schemaResendPhoneCodeUserClient } from "@modules/accounts/useCases/resendPhoneCodeUserClient/resendPhonesUserClient.schema";
 import { SetProvidersFavoriteController } from "@modules/accounts/useCases/setProvidersFavorite/SetProvidersFavorite.controller";
 import { schemaSetProvidersFavorite } from "@modules/accounts/useCases/setProvidersFavorite/setProvidersFavorite.schema";
+import { SetStageAppointmentClientController } from "@modules/accounts/useCases/setStageAppointmentClient/SetStageAppointmentClient.controller";
 import { UpdateUserDetailsController } from "@modules/accounts/useCases/updateUserDetails/UpdateUserDetails.controller";
 import { schemaUpdateUserDetails } from "@modules/accounts/useCases/updateUserDetails/updateUserDetails.schema";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
@@ -34,6 +36,8 @@ const activeUserClientController = new ActiveUserClientController();
 const getProvidersController = new GetProvidersController();
 const ratingProvidersController = new RatingProvidersController();
 const setProvidersFavoriteController = new SetProvidersFavoriteController();
+const setStageAppointmentClientController = new SetStageAppointmentClientController();
+const getStageAppointmentClientController = new GetStageAppointmentClientController();
 
 clientsRoutes.post(
   "/",
@@ -98,6 +102,18 @@ clientsRoutes.post(
   ensureAuthenticated,
   schemaSetProvidersFavorite,
   setProvidersFavoriteController.handle
+);
+
+clientsRoutes.post(
+  "/appointment/stage",
+  ensureAuthenticated,
+  setStageAppointmentClientController.handle
+);
+
+clientsRoutes.get(
+  "/appointment/stage",
+  ensureAuthenticated,
+  getStageAppointmentClientController.handle
 );
 
 export { clientsRoutes };

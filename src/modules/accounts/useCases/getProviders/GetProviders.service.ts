@@ -1,6 +1,7 @@
 import { classToClass } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
+import { config } from "@config/environment";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
@@ -10,7 +11,7 @@ import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 import { distanceRadiusCalculation } from "@utils/distanceByRadius";
 
-interface ProviderGeolocationCache {
+export interface ProviderGeolocationCache {
   provider_id: string;
   latitude: string;
   longitude: string;
@@ -84,6 +85,32 @@ export class GetProvidersService {
       );
     }
 
-    return classToClass([...providers_found, ...providers_by_location]);
+    const providers_favorites_cache =
+      (await this.cacheProvider.recover<string[]>(
+        `providers:${user_id}:favorites`
+      )) || [];
+
+    const formatted_providers = [
+      ...providers_found,
+      ...providers_by_location,
+    ].map((provider) => ({
+      ...provider,
+      favorite: providers_favorites_cache.some(
+        (provider_favorite_id) => provider_favorite_id === provider.id
+      ),
+      ratings:
+        provider.ratings.length > 0
+          ? Number.parseInt(
+              provider.ratings.reduce(
+                (previousValue, currentValue) =>
+                  Number(previousValue) + Number(currentValue.value),
+                0
+              ) / provider.ratings.length,
+              10
+            )
+          : 0,
+    }));
+
+    return classToClass(formatted_providers);
   }
 }

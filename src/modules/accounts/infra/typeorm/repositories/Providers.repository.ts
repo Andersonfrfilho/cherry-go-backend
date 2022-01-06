@@ -101,12 +101,32 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       .andWhere("foundProviders.active = :active", { active: true })
       .leftJoinAndSelect("foundProviders.addresses", "addresses")
       .andWhere("addresses.city like :city", { city })
+      .leftJoinAndSelect("foundProviders.locals_types", "locals_types")
+      .leftJoinAndSelect("foundProviders.transports_types", "transports_types")
+      .leftJoinAndSelect("transports_types.transport_type", "transport_type")
+      .leftJoinAndSelect("foundProviders.services", "services")
+      .leftJoinAndSelect("foundProviders.ratings", "ratings")
+      .leftJoinAndSelect("foundProviders.days", "days")
+      .leftJoinAndSelect("foundProviders.hours", "hours")
+      .leftJoinAndSelect("foundProviders.locals", "locals")
+      .leftJoinAndSelect("locals.address", "address")
+      .leftJoinAndSelect("foundProviders.payments_types", "payments_types")
+      .leftJoinAndSelect("payments_types.payment", "payment_type")
+      .leftJoinAndSelect("foundProviders.image_profile", "image_profile")
+      .leftJoinAndSelect("foundProviders.images", "images")
+      .leftJoinAndSelect("images.image", "image")
       .getMany();
 
     let providers_by_address = providersQuery;
-
+    // order
+    // price
+    // filters
+    // days
+    // hours
+    // tags
+    // ratings
     // address by latitude and longitude
-    if (latitude && longitude && distance) {
+    if (!!latitude && !!longitude && !!distance) {
       providers_by_address = providers_by_address.filter(
         (provider) =>
           provider.addresses[0].latitude &&

@@ -24,6 +24,9 @@ export const test = {
   },
   providers: {
     max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),
+    ratings: {
+      number_max: Number(process.env.PROVIDERS_RATINGS_NUMBER_MAX || 5),
+    },
   },
   password: {
     time_token_expires: Number(process.env.PASSWORD_TIME_TOKEN_EXPIRED || 30),
