@@ -331,12 +331,6 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       "foundAppointment"
     );
 
-    if (created_date) {
-      providerQuery.andWhere("foundAppointment.created_at > :created_date", {
-        created_date,
-      });
-    }
-
     providerQuery
       .leftJoinAndSelect("foundAppointment.providers", "providers")
       .andWhere("providers.provider_id = :provider_id", { provider_id })
@@ -353,6 +347,11 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       .leftJoinAndSelect("foundAppointment.transactions", "transactions")
       .leftJoinAndSelect("transactions.itens", "itens");
 
+    if (created_date) {
+      providerQuery.andWhere("foundAppointment.initial_date >= :initial_date", {
+        initial_date: created_date,
+      });
+    }
     const [results, total] = await providerQuery
       .orderBy("foundAppointment.initial_date", "DESC")
       .getManyAndCount();

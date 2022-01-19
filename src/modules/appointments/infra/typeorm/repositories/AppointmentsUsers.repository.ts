@@ -21,10 +21,11 @@ export class AppointmentsUsersRepository
       users.map((user) => ({
         active,
         appointment_id,
-        user_id: user.id,
+        client_id: user.id,
       }))
     );
   }
+
   async delete(id: string) {
     await this.repository.delete(id);
   }

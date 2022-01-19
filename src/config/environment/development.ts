@@ -37,6 +37,9 @@ export const development = {
     ratings: {
       number_max: Number(process.env.PROVIDERS_RATINGS_NUMBER_MAX || 5),
     },
+    post_appointment_time: Number(
+      process.env.PROVIDER_POST_APPOINTMENT_TIME || 1
+    ),
   },
   payment: {
     provider: PAYMENT_PROVIDER_ENUM[process.env.PAYMENT_PROVIDER] || "local",

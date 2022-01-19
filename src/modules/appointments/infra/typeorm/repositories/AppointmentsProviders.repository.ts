@@ -36,13 +36,13 @@ export class AppointmentsProvidersRepository
   }
 
   async create({
-    active,
+    status,
     appointment_id,
     providers,
   }: CreateAppointmentProvidersRepositoryDTO): Promise<AppointmentProvider[]> {
     return this.repository.save(
       providers.map((provider) => ({
-        active,
+        status,
         appointment_id,
         provider_id: provider.id,
       }))

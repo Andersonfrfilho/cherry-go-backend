@@ -27,6 +27,9 @@ export const test = {
     ratings: {
       number_max: Number(process.env.PROVIDERS_RATINGS_NUMBER_MAX || 5),
     },
+    post_appointment_time: Number(
+      process.env.PROVIDER_POST_APPOINTMENT_TIME || 1
+    ),
   },
   password: {
     time_token_expires: Number(process.env.PASSWORD_TIME_TOKEN_EXPIRED || 30),

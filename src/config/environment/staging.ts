@@ -20,6 +20,9 @@ export const staging = {
     ratings: {
       number_max: Number(process.env.PROVIDERS_RATINGS_NUMBER_MAX || 5),
     },
+    post_appointment_time: Number(
+      process.env.PROVIDER_POST_APPOINTMENT_TIME || 1
+    ),
   },
   bank: {
     provider: BANK_PROVIDER_ENUM[process.env.BANK_PROVIDER || "local"],

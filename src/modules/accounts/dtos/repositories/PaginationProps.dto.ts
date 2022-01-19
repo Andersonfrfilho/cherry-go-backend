@@ -18,8 +18,8 @@ export interface PaginationPropsGenericDTO<T> {
   fields?: Partial<T>;
   page?: string;
   order?: Order;
-  created_date?: string;
-  updated_date?: string;
+  created_date?: Date;
+  updated_date?: Date;
   [propName: string]: any;
 }
 export interface PaginationResponsePropsDTO<T> {

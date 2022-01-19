@@ -10,6 +10,8 @@ import { CreateTagsUsersController } from "@modules/accounts/useCases/createTags
 import { schemaCreateTagsUsersClient } from "@modules/accounts/useCases/createTagsUsersClient/createTagsUsersClient.schema";
 import { CreateUserClientController } from "@modules/accounts/useCases/createUserClient/CreateUserClient.controller";
 import { schemaCreateUserClient } from "@modules/accounts/useCases/createUserClient/createUserClient.schema";
+import { GetAllHoursAvailableProviderController } from "@modules/accounts/useCases/getAllHoursAvailableProvider/GetAllHoursAvailableProvider.controller";
+import { schemaGetAllHoursAvailableProvider } from "@modules/accounts/useCases/getAllHoursAvailableProvider/getAllHoursAvailableProvider.schema";
 import { GetProvidersController } from "@modules/accounts/useCases/getProviders/GetProviders.controller";
 import { schemaGetProviders } from "@modules/accounts/useCases/getProviders/getProviders.schema";
 import { GetStageAppointmentClientController } from "@modules/accounts/useCases/getStageAppointmentClient/GetStageAppointmentClient.controller";
@@ -20,6 +22,7 @@ import { schemaResendPhoneCodeUserClient } from "@modules/accounts/useCases/rese
 import { SetProvidersFavoriteController } from "@modules/accounts/useCases/setProvidersFavorite/SetProvidersFavorite.controller";
 import { schemaSetProvidersFavorite } from "@modules/accounts/useCases/setProvidersFavorite/setProvidersFavorite.schema";
 import { SetStageAppointmentClientController } from "@modules/accounts/useCases/setStageAppointmentClient/SetStageAppointmentClient.controller";
+import { TesteController } from "@modules/accounts/useCases/teste/Teste.controller";
 import { UpdateUserDetailsController } from "@modules/accounts/useCases/updateUserDetails/UpdateUserDetails.controller";
 import { schemaUpdateUserDetails } from "@modules/accounts/useCases/updateUserDetails/updateUserDetails.schema";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
@@ -38,6 +41,8 @@ const ratingProvidersController = new RatingProvidersController();
 const setProvidersFavoriteController = new SetProvidersFavoriteController();
 const setStageAppointmentClientController = new SetStageAppointmentClientController();
 const getStageAppointmentClientController = new GetStageAppointmentClientController();
+const getAllHoursAvailableProviderController = new GetAllHoursAvailableProviderController();
+const testeController = new TesteController();
 
 clientsRoutes.post(
   "/",
@@ -115,5 +120,14 @@ clientsRoutes.get(
   ensureAuthenticated,
   getStageAppointmentClientController.handle
 );
+
+clientsRoutes.get(
+  "/provider/available/hours",
+  ensureAuthenticated,
+  schemaGetAllHoursAvailableProvider,
+  getAllHoursAvailableProviderController.handle
+);
+
+clientsRoutes.get("/test", testeController.handle);
 
 export { clientsRoutes };

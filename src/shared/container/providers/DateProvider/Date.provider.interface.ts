@@ -1,3 +1,11 @@
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
+
+import {
+  AvailableHoursParamsDTO,
+  FilterDurationIntervalsParamsDTO,
+  hours,
+  Hours_Unavailable,
+} from "./dtos/Hours.dto";
 import { SubHoursDTO } from "./dtos/SubHours.dto";
 
 export interface DateProviderInterface {
@@ -5,8 +13,17 @@ export interface DateProviderInterface {
   addDays(days: number): Date;
   compareIfBefore(start_date: Date, end_date: Date): boolean;
   compareIfAfter(start_date: Date, end_date: Date): boolean;
+  compareIfBetween(date: Date, start_date: Date, end_date: Date): boolean;
   compareIfEqual(start_date: Date, end_date: Date): boolean;
   addMinutes(minutes: number): Date;
   dateNow(): Date;
   subHours(data: SubHoursDTO): Date;
+  getDay(data: Date): number;
+  getHour(data: Date): string;
+  getMinute(data: Date): string;
+  formattedDateToCompare(hour: string, minute: string): Date;
+  reduceHours(hours: Array<hours>): Array<hours>;
+  availableHours(data: AvailableHoursParamsDTO): Array<hours>;
+  unavailableHours(array_hours: Appointment[]): Hours_Unavailable[];
+  filterDurationIntervals(data: FilterDurationIntervalsParamsDTO): hours[];
 }

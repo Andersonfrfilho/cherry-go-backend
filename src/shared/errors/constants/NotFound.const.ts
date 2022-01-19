@@ -73,4 +73,9 @@ export const NOT_FOUND = {
     status_code,
     code: "4013",
   },
+  DAY_NOT_FOUND: {
+    message: "Day not found!",
+    status_code,
+    code: "4013",
+  },
 };

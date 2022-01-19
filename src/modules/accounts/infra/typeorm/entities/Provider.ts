@@ -23,6 +23,7 @@ import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
+import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProviders";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
@@ -92,15 +93,13 @@ class Provider {
   types?: UserTypeUser[];
 
   // // TODO:: refatorar relacionamento
-  // @ManyToMany(() => Appointment, { cascade: true, eager: true })
-  // @JoinTable({
-  //   name: "appointments_providers",
-  //   joinColumns: [{ name: "provider_id", referencedColumnName: "id" }],
-  //   inverseJoinColumns: [
-  //     { name: "appointment_id", referencedColumnName: "id" },
-  //   ],
-  // })
-  // appointments: Appointment[];
+  @OneToMany(
+    () => AppointmentProvider,
+    (appointment_provider) => appointment_provider.provider,
+    { eager: true }
+  )
+  appointments_all: AppointmentProvider[];
+
   @OneToMany(
     () => ProviderLocalType,
     (provider_local_type) => provider_local_type.provider,

@@ -50,4 +50,9 @@ export const BAD_REQUEST = {
     status_code,
     code: "0009",
   },
+  DAY_NOT_AVAILABLE: {
+    message: "day not available!",
+    status_code,
+    code: "0010",
+  },
 };
