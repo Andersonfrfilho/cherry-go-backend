@@ -14,6 +14,7 @@ import {
 } from "date-fns";
 
 import { config } from "@config/environment";
+import { HOURS_DAYS_ENUM } from "@modules/accounts/enums/HoursProviders.enum";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 
@@ -21,6 +22,8 @@ import { DAYS_WEEK_DATE } from "../constants/days.constant";
 import {
   AvailableHoursParamsDTO,
   FilterDurationIntervalsParamsDTO,
+  FormattedHoursByPeriodParamsDTO,
+  FormattedHoursSelected,
   hours,
   Hours_Unavailable,
 } from "../dtos/Hours.dto";
@@ -64,6 +67,14 @@ export class DateFnsProvider implements DateProviderInterface {
 
   compareIfBetween(date: Date, start_date: Date, end_date: Date): boolean {
     return isAfter(date, start_date) && isBefore(date, end_date);
+  }
+
+  compareIfBetweenEqual(date: Date, start_date: Date, end_date: Date): boolean {
+    return (
+      (isAfter(date, start_date) && isBefore(date, end_date)) ||
+      isEqual(date, start_date) ||
+      isEqual(date, end_date)
+    );
   }
 
   addDays(days: number) {
@@ -333,11 +344,12 @@ export class DateFnsProvider implements DateProviderInterface {
         };
       });
   }
+
   filterDurationIntervals({
-    hoursParam,
+    hours_param,
     duration,
   }: FilterDurationIntervalsParamsDTO): hours[] {
-    return hoursParam.filter((hour) => {
+    return hours_param.filter((hour) => {
       const [
         hour_start_available,
         minutes_start_available,
@@ -357,5 +369,57 @@ export class DateFnsProvider implements DateProviderInterface {
 
       return differenceInMilliseconds(endHour, startHour) >= duration;
     });
+  }
+
+  formattedByPeriod({
+    hours_param,
+    days,
+  }: FormattedHoursByPeriodParamsDTO): FormattedHoursSelected[] {
+    return days
+      .map((day) => {
+        return HOURS_DAYS_ENUM.map((hour_param) => {
+          const [hour_day_enum, minute_day_enum] = hour_param.split(":");
+          const date_format_enum = this.formattedDateToCompare(
+            hour_day_enum,
+            minute_day_enum
+          );
+          const verify_date_between = hours_param.some(
+            (hour_param_available) => {
+              const [
+                hour_initial_available,
+                minute_initial_available,
+              ] = hour_param_available.initial_date.split(":");
+              const date_initial_available = this.formattedDateToCompare(
+                hour_initial_available,
+                minute_initial_available
+              );
+              const [
+                hour_final_available,
+                minute_final_available,
+              ] = hour_param_available.final_date.split(":");
+              const date_final_available = this.formattedDateToCompare(
+                hour_final_available,
+                minute_final_available
+              );
+
+              return this.compareIfBetweenEqual(
+                date_format_enum,
+                date_initial_available,
+                date_final_available
+              );
+            }
+          );
+
+          return {
+            hour: hour_param,
+            selected: false,
+            day,
+            available: verify_date_between,
+          };
+        });
+      })
+      .reduce((accumulator, current_value) => [...accumulator, current_value]);
+
+    // return data;
   }
 }

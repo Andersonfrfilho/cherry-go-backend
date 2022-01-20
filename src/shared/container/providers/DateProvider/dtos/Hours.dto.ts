@@ -19,6 +19,18 @@ export interface AvailableHoursParamsDTO {
 }
 
 export interface FilterDurationIntervalsParamsDTO {
-  hoursParam: hours[];
+  hours_param: hours[];
   duration: number;
+}
+
+export interface FormattedHoursByPeriodParamsDTO {
+  hours_param: hours[];
+  days: string[];
+}
+
+export interface FormattedHoursSelected {
+  hour: string;
+  selected: boolean;
+  day: string;
+  available: boolean;
 }

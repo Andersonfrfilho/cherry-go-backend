@@ -6,7 +6,10 @@ import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Pro
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { DAYS_WEEK_DATE } from "@shared/container/providers/DateProvider/constants/days.constant";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
-import { hours } from "@shared/container/providers/DateProvider/dtos/Hours.dto";
+import {
+  FormattedHoursSelected,
+  hours,
+} from "@shared/container/providers/DateProvider/dtos/Hours.dto";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST, NOT_FOUND } from "@shared/errors/constants";
 
@@ -30,7 +33,7 @@ export class GetAllHoursAvailableProviderService {
     user_id,
     provider_id,
     duration,
-  }: ParamsDTO): Promise<hours[]> {
+  }: ParamsDTO): Promise<FormattedHoursSelected[]> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
@@ -92,9 +95,14 @@ export class GetAllHoursAvailableProviderService {
       unavailable_hours: reduce_unavailable_hours,
     });
 
-    return this.dateProvider.filterDurationIntervals({
-      hoursParam: rest_available_hours,
+    const filtered_hours = this.dateProvider.filterDurationIntervals({
+      hours_param: rest_available_hours,
       duration,
+    });
+
+    return this.dateProvider.formattedByPeriod({
+      hours_param: filtered_hours,
+      days: days_available.map((day) => day.day),
     });
   }
 }

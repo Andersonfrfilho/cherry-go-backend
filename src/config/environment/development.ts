@@ -31,6 +31,7 @@ export const development = {
     hour_allowed_cancellation: Number(
       process.env.HOUR_ALLOWED_CANCELLATION || 1
     ),
+    period_for_selected: Number(process.env.PERIOD_FOR_SELECTED || 15),
   },
   providers: {
     max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),

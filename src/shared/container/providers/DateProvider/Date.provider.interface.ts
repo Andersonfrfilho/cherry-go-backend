@@ -3,6 +3,8 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 import {
   AvailableHoursParamsDTO,
   FilterDurationIntervalsParamsDTO,
+  FormattedHoursByPeriodParamsDTO,
+  FormattedHoursSelected,
   hours,
   Hours_Unavailable,
 } from "./dtos/Hours.dto";
@@ -26,4 +28,7 @@ export interface DateProviderInterface {
   availableHours(data: AvailableHoursParamsDTO): Array<hours>;
   unavailableHours(array_hours: Appointment[]): Hours_Unavailable[];
   filterDurationIntervals(data: FilterDurationIntervalsParamsDTO): hours[];
+  formattedByPeriod(
+    data: FormattedHoursByPeriodParamsDTO
+  ): FormattedHoursSelected[];
 }

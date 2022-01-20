@@ -38,6 +38,7 @@ export const staging = {
     hour_allowed_cancellation: Number(
       process.env.HOUR_ALLOWED_CANCELLATION || 1
     ),
+    period_for_selected: Number(process.env.PERIOD_FOR_SELECTED || 15),
   },
   payment: {
     provider: PAYMENT_PROVIDER_ENUM[process.env.PAYMENT_PROVIDER] || "local",
