@@ -1,4 +1,4 @@
-import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
+import { TOPICS_QUEUE_ENUM } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 
 import {
   ADDRESS_PROVIDER_ENUM,
@@ -63,7 +63,7 @@ export const development = {
         Number(process.env.TOKEN_EXPIRATION_TIME_MAIL_CONFIRMATION) || 30,
     },
     queue: {
-      topic: TopicsQueueEnum.SEND_MAIL || "",
+      topic: TOPICS_QUEUE_ENUM.SEND_MAIL || "",
     },
   },
   sms: {
@@ -72,7 +72,7 @@ export const development = {
     api_key: process.env.SMS_API_KEY || "",
     api_secret: process.env.SMS_API_SECRET || "",
     queue: {
-      topic: TopicsQueueEnum.SEND_SMS || "",
+      topic: TOPICS_QUEUE_ENUM.SEND_SMS || "",
     },
     token: {
       expiration_time:

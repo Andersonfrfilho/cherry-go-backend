@@ -1,14 +1,12 @@
 import { inject, injectable } from "tsyringe";
 
-import { config } from "@config/environment";
-import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { DAYS_WEEK_DATE } from "@shared/container/providers/DateProvider/constants/days.constant";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import {
-  FormattedHoursSelected,
-  hours,
+  FormattedHoursDays,
+  FormattedHoursSelectedByPeriod,
 } from "@shared/container/providers/DateProvider/dtos/Hours.dto";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST, NOT_FOUND } from "@shared/errors/constants";
@@ -33,7 +31,7 @@ export class GetAllHoursAvailableProviderService {
     user_id,
     provider_id,
     duration,
-  }: ParamsDTO): Promise<FormattedHoursSelected[]> {
+  }: ParamsDTO): Promise<FormattedHoursDays[]> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
@@ -76,12 +74,12 @@ export class GetAllHoursAvailableProviderService {
     }
 
     const available_hours = days_available
-      .map((day) =>
+      .map((dayParam) =>
         hours.map((hour) => ({
           hour_id: hour.id,
           initial_date: hour.start_time,
           final_date: hour.end_time,
-          day: day.day,
+          day: dayParam.day,
         }))
       )
       .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
@@ -100,9 +98,14 @@ export class GetAllHoursAvailableProviderService {
       duration,
     });
 
-    return this.dateProvider.formattedByPeriod({
+    const hours_formatted_by_period = this.dateProvider.formattedByPeriod({
       hours_param: filtered_hours,
-      days: days_available.map((day) => day.day),
+      days: days_available.map((dayParam) => dayParam.day),
+    });
+
+    return this.dateProvider.unavailableByDuration({
+      duration,
+      days_hours_formatted: hours_formatted_by_period,
     });
   }
 }

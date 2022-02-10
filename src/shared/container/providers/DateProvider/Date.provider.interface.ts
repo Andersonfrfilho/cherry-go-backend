@@ -4,8 +4,11 @@ import {
   AvailableHoursParamsDTO,
   FilterDurationIntervalsParamsDTO,
   FormattedHoursByPeriodParamsDTO,
+  FormattedHoursDays,
   FormattedHoursSelected,
-  hours,
+  FormattedHoursSelectedByPeriod,
+  FormattedUnavailableHoursByDurationParamsDTO,
+  Hours,
   Hours_Unavailable,
 } from "./dtos/Hours.dto";
 import { SubHoursDTO } from "./dtos/SubHours.dto";
@@ -24,11 +27,14 @@ export interface DateProviderInterface {
   getHour(data: Date): string;
   getMinute(data: Date): string;
   formattedDateToCompare(hour: string, minute: string): Date;
-  reduceHours(hours: Array<hours>): Array<hours>;
-  availableHours(data: AvailableHoursParamsDTO): Array<hours>;
+  reduceHours(hours: Array<Hours>): Array<Hours>;
+  availableHours(data: AvailableHoursParamsDTO): Array<Hours>;
   unavailableHours(array_hours: Appointment[]): Hours_Unavailable[];
-  filterDurationIntervals(data: FilterDurationIntervalsParamsDTO): hours[];
+  filterDurationIntervals(data: FilterDurationIntervalsParamsDTO): Hours[];
   formattedByPeriod(
     data: FormattedHoursByPeriodParamsDTO
-  ): FormattedHoursSelected[];
+  ): FormattedHoursDays[];
+  unavailableByDuration(
+    data: FormattedUnavailableHoursByDurationParamsDTO
+  ): FormattedHoursDays[];
 }

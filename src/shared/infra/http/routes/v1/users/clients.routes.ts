@@ -12,6 +12,8 @@ import { CreateUserClientController } from "@modules/accounts/useCases/createUse
 import { schemaCreateUserClient } from "@modules/accounts/useCases/createUserClient/createUserClient.schema";
 import { GetAllHoursAvailableProviderController } from "@modules/accounts/useCases/getAllHoursAvailableProvider/GetAllHoursAvailableProvider.controller";
 import { schemaGetAllHoursAvailableProvider } from "@modules/accounts/useCases/getAllHoursAvailableProvider/getAllHoursAvailableProvider.schema";
+import { GetDistanceByLocalsController } from "@modules/accounts/useCases/getDistanceByLocals/GetDistanceByLocals.controller";
+import { schemaGetDistanceByLocals } from "@modules/accounts/useCases/getDistanceByLocals/getDistanceByLocals.schema";
 import { GetProvidersController } from "@modules/accounts/useCases/getProviders/GetProviders.controller";
 import { schemaGetProviders } from "@modules/accounts/useCases/getProviders/getProviders.schema";
 import { GetStageAppointmentClientController } from "@modules/accounts/useCases/getStageAppointmentClient/GetStageAppointmentClient.controller";
@@ -42,6 +44,7 @@ const setProvidersFavoriteController = new SetProvidersFavoriteController();
 const setStageAppointmentClientController = new SetStageAppointmentClientController();
 const getStageAppointmentClientController = new GetStageAppointmentClientController();
 const getAllHoursAvailableProviderController = new GetAllHoursAvailableProviderController();
+const getDistanceByLocalsController = new GetDistanceByLocalsController();
 const testeController = new TesteController();
 
 clientsRoutes.post(
@@ -128,6 +131,12 @@ clientsRoutes.get(
   getAllHoursAvailableProviderController.handle
 );
 
+clientsRoutes.post(
+  "/provider/locals/types/distances",
+  ensureAuthenticated,
+  schemaGetDistanceByLocals,
+  getDistanceByLocalsController.handle
+);
 clientsRoutes.get("/test", testeController.handle);
 
 export { clientsRoutes };

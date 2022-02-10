@@ -10,7 +10,7 @@ import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks
 import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos/SendMail.dto";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
 import { queueProviderMock } from "@shared/container/providers/QueueProvider/mocks/Queue.provider.mock";
-import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
+import { TOPICS_QUEUE_ENUM } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 import {
@@ -105,7 +105,7 @@ describe("SendForgotPasswordMailService", () => {
       expires_date: mocked_date,
     });
     expect(queueProviderMock.sendMessage).toHaveBeenCalledWith({
-      topic: TopicsQueueEnum.SEND_MAIL,
+      topic: TOPICS_QUEUE_ENUM.SEND_MAIL,
       messages,
     });
   });

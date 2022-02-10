@@ -22,7 +22,7 @@ export class ServicesFactory {
         id: id ? faker.datatype.uuid() : undefined,
         name: name || faker.name.jobTitle(),
         amount: amount || faker.datatype.number(),
-        duration: duration || faker.datatype.number({ min: 10000, max: 99999 }),
+        duration: duration || Number(faker.phone.phoneNumber("#######")),
         active: typeof active === "boolean" ? active : faker.datatype.boolean(),
       })
     );

@@ -140,7 +140,7 @@ export class SetProvidersFavoriteService {
             )
           : 0,
     }));
-    // console.log(formatted_providers);
+
     return classToClass(formatted_providers);
   }
 }

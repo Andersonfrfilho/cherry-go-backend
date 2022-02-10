@@ -9,7 +9,7 @@ import { DateProviderInterface } from "@shared/container/providers/DateProvider/
 import { SendMailDTO } from "@shared/container/providers/MailProvider/dtos";
 import { MailContent } from "@shared/container/providers/MailProvider/enums/MailType.enum";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/Queue.provider.interface";
-import { TopicsQueueEnum } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
+import { TOPICS_QUEUE_ENUM } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
@@ -59,7 +59,7 @@ class SendForgotPasswordMailService {
     messages.push({ value: JSON.stringify(message) });
 
     await this.queueProvider.sendMessage({
-      topic: TopicsQueueEnum.SEND_MAIL, // platform?:
+      topic: TOPICS_QUEUE_ENUM.SEND_MAIL, // platform?:
       messages,
     });
   }

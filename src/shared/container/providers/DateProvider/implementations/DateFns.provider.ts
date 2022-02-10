@@ -23,8 +23,11 @@ import {
   AvailableHoursParamsDTO,
   FilterDurationIntervalsParamsDTO,
   FormattedHoursByPeriodParamsDTO,
+  FormattedHoursDays,
   FormattedHoursSelected,
-  hours,
+  FormattedHoursSelectedByPeriod,
+  FormattedUnavailableHoursByDurationParamsDTO,
+  Hours,
   Hours_Unavailable,
 } from "../dtos/Hours.dto";
 import { SubHoursDTO } from "../dtos/SubHours.dto";
@@ -90,7 +93,7 @@ export class DateFnsProvider implements DateProviderInterface {
     );
   }
 
-  reduceHours(hours: Array<hours>): Array<hours> {
+  reduceHours(hours: Array<Hours>): Array<Hours> {
     let clone_hours = hours;
     let index = 0;
     while (index < clone_hours.length) {
@@ -158,7 +161,7 @@ export class DateFnsProvider implements DateProviderInterface {
   availableHours({
     available_hours,
     unavailable_hours,
-  }: AvailableHoursParamsDTO): Array<hours> {
+  }: AvailableHoursParamsDTO): Array<Hours> {
     const clone_hours_available = available_hours;
     const clone_hours_unavailable = unavailable_hours;
     let index_unavailable = 0;
@@ -348,7 +351,7 @@ export class DateFnsProvider implements DateProviderInterface {
   filterDurationIntervals({
     hours_param,
     duration,
-  }: FilterDurationIntervalsParamsDTO): hours[] {
+  }: FilterDurationIntervalsParamsDTO): Hours[] {
     return hours_param.filter((hour) => {
       const [
         hour_start_available,
@@ -374,10 +377,11 @@ export class DateFnsProvider implements DateProviderInterface {
   formattedByPeriod({
     hours_param,
     days,
-  }: FormattedHoursByPeriodParamsDTO): FormattedHoursSelected[] {
-    return days
-      .map((day) => {
-        return HOURS_DAYS_ENUM.map((hour_param) => {
+  }: FormattedHoursByPeriodParamsDTO): FormattedHoursDays[] {
+    return days.map((day) => {
+      return {
+        day,
+        hours: HOURS_DAYS_ENUM.map((hour_param) => {
           const [hour_day_enum, minute_day_enum] = hour_param.split(":");
           const date_format_enum = this.formattedDateToCompare(
             hour_day_enum,
@@ -416,10 +420,86 @@ export class DateFnsProvider implements DateProviderInterface {
             day,
             available: verify_date_between,
           };
+        }),
+      };
+    });
+  }
+
+  unavailableByDuration({
+    duration,
+    days_hours_formatted,
+  }: FormattedUnavailableHoursByDurationParamsDTO): FormattedHoursDays[] {
+    const hours_available: FormattedHoursSelected[][] = [];
+    const hours_available_formatted: FormattedHoursSelected[] = [];
+    days_hours_formatted.forEach((day) => {
+      day.hours.forEach((hour) => {
+        if (hour.available) {
+          hours_available_formatted.push(hour);
+        } else if (hours_available_formatted.length > 0) {
+          hours_available.push([...hours_available_formatted]);
+          hours_available_formatted.splice(0, hours_available_formatted.length);
+        }
+      });
+    });
+
+    const hours_available_period: FormattedHoursSelectedByPeriod[] = hours_available
+      .map((hoursParam) => {
+        const [hour_final, minute_final] = hoursParam[
+          hoursParam.length - 1
+        ].hour.split(":");
+        const date_finally_available = this.formattedDateToCompare(
+          hour_final,
+          minute_final
+        );
+        return hoursParam.map((hourParam) => {
+          const [hour_initial, minute_initial] = hourParam.hour.split(":");
+          const date_initial_available = this.formattedDateToCompare(
+            hour_initial,
+            minute_initial
+          );
+          return {
+            ...hourParam,
+            available_period:
+              differenceInMilliseconds(
+                date_finally_available,
+                date_initial_available
+              ) >= duration,
+          };
         });
       })
-      .reduce((accumulator, current_value) => [...accumulator, current_value]);
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
 
-    // return data;
+    const days_hours_formatted_all = days_hours_formatted.map(
+      (day_hour_formatted) => {
+        return {
+          day: day_hour_formatted.day,
+          hours: day_hour_formatted.hours.map((hour_param) => {
+            const hour_available_period = hours_available_period.find(
+              (hourParamAvailable) =>
+                hourParamAvailable.day === hour_param.day &&
+                hourParamAvailable.hour === hour_param.hour
+            );
+            return (
+              hour_available_period || {
+                ...hour_param,
+                available_period: false,
+              }
+            );
+          }),
+        };
+      }
+    );
+
+    return days_hours_formatted_all.map((day_hour_formatted) => {
+      return {
+        day: day_hour_formatted.day,
+        hours: day_hour_formatted.hours.map((hour_param) => {
+          return {
+            ...hour_param,
+            time_blocked: false,
+          };
+        }),
+      };
+    });
   }
 }

@@ -5,7 +5,7 @@ export type Hours_Unavailable = {
   day: any;
 };
 
-export type hours = {
+export type Hours = {
   appointment_id?: string;
   hour_id?: string;
   initial_date: string;
@@ -14,17 +14,17 @@ export type hours = {
 };
 
 export interface AvailableHoursParamsDTO {
-  available_hours: Array<hours>;
-  unavailable_hours: Array<hours>;
+  available_hours: Array<Hours>;
+  unavailable_hours: Array<Hours>;
 }
 
 export interface FilterDurationIntervalsParamsDTO {
-  hours_param: hours[];
+  hours_param: Hours[];
   duration: number;
 }
 
 export interface FormattedHoursByPeriodParamsDTO {
-  hours_param: hours[];
+  hours_param: Hours[];
   days: string[];
 }
 
@@ -33,4 +33,23 @@ export interface FormattedHoursSelected {
   selected: boolean;
   day: string;
   available: boolean;
+}
+
+export interface FormattedHoursDays {
+  day: string;
+  hours: FormattedHoursSelected[];
+}
+
+export interface FormattedHoursSelectedByPeriod {
+  hour: string;
+  selected: boolean;
+  day: string;
+  available: boolean;
+  available_period: boolean;
+  time_blocked?: boolean;
+}
+
+export interface FormattedUnavailableHoursByDurationParamsDTO {
+  days_hours_formatted: FormattedHoursDays[];
+  duration: number;
 }

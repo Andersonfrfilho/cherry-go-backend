@@ -7,11 +7,20 @@ import {
   AddressComponent,
   AddressType,
   GeocodingAddressComponentType,
+  TrafficModel,
+  TransitMode,
+  UnitSystem,
+  TravelMode,
+  DirectionsResponse,
+  DirectionsResponseData,
 } from "@googlemaps/google-maps-services-js";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { onlyNumber } from "@utils/onlyNumber";
 
-import { ReverseGeocodingLatitudeLongitudeDTO } from "../dtos/reverseGeocodingLatitudeLongitude.dto copy";
+import {
+  GetDistanceTwoAddressDTO,
+  ReverseGeocodingLatitudeLongitudeDTO,
+} from "../dtos/geolocation.dto";
 import { GeolocationProviderInterface } from "../Geolocation.provider.interface";
 
 interface ParamsDTO {
@@ -31,6 +40,71 @@ class GoogleGeolocationProvider implements GeolocationProviderInterface {
 
   constructor() {
     this.client = new Client({});
+  }
+  async getDistanceTwoAddress({
+    local_initial,
+    local_destination,
+    departure_time,
+  }: GetDistanceTwoAddressDTO): Promise<any> {
+    const parameters = {
+      params: {
+        key: config.geolocation.api_key,
+        traffic_model: TrafficModel.best_guess,
+        units: UnitSystem.metric,
+        mode: TravelMode.driving,
+        language: Language.pt_BR,
+        departure_time,
+      },
+    };
+    let distance_between: DirectionsResponseData;
+    try {
+      if (
+        !!local_initial.latitude &&
+        !!local_initial.longitude &&
+        !!local_destination.latitude &&
+        !!local_destination.longitude
+      ) {
+        const { data } = await this.client.directions({
+          params: {
+            origin: {
+              latitude: Number(local_initial.latitude),
+              longitude: Number(local_initial.longitude),
+            },
+            destination: {
+              latitude: Number(local_destination.latitude),
+              longitude: Number(local_destination.longitude),
+            },
+            ...parameters.params,
+          },
+        });
+        distance_between = data;
+      } else {
+        const initial_address_google = await this.geocodingByAddress(
+          `${local_initial.street}, ${local_initial.number}`
+        );
+        const destination_address_google = await this.geocodingByAddress(
+          `${local_destination.street}, ${local_destination.number}`
+        );
+
+        const { data } = await this.client.directions({
+          params: {
+            origin: {
+              latitude: Number(initial_address_google.latitude),
+              longitude: Number(initial_address_google.longitude),
+            },
+            destination: {
+              latitude: Number(destination_address_google.latitude),
+              longitude: Number(destination_address_google.longitude),
+            },
+            ...parameters.params,
+          },
+        });
+        distance_between = data;
+      }
+      return distance_between;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async geocodingByAddress(address: string): Promise<any> {
