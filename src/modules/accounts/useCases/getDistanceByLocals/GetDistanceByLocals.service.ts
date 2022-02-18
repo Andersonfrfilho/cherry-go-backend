@@ -28,7 +28,7 @@ export class GetDistanceByLocalsService {
     user_id,
     provider_id,
     departure_time,
-  }: ParamsDTO): Promise<Address> {
+  }: ParamsDTO): Promise<any> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
@@ -48,7 +48,7 @@ export class GetDistanceByLocalsService {
     );
 
     let distance_client_local;
-    console.log(provider.addresses[0].id, user.addresses[0].id);
+
     if (local_client) {
       distance_client_local = await this.geolocationProvider.getDistanceTwoAddress(
         {
@@ -58,33 +58,30 @@ export class GetDistanceByLocalsService {
         }
       );
     }
-    console.log("distance_client_local");
-    console.log(distance_client_local.routes[0].legs);
 
-    // const local_provider = provider.locals_types.find(
-    //   (local_type) =>
-    //     local_type.local_type.toLowerCase() ===
-    //     LOCALS_TYPES_ENUM.own.toLowerCase()
-    // );
+    const local_provider = provider.locals_types.find(
+      (local_type) =>
+        local_type.local_type.toLowerCase() ===
+        LOCALS_TYPES_ENUM.own.toLowerCase()
+    );
 
-    // let distance_provider_local;
-    // console.log(provider.locals[0]);
-    // if (local_provider) {
-    //   distance_provider_local = provider.locals.map(async (local) => {
-    //     return this.geolocationProvider.getDistanceTwoAddress({
-    //       local_destination: local.address,
-    //       local_initial: user.addresses[0],
-    //     });
-    //   });
-    //   distance_provider_local = await Promise.all(distance_provider_local);
-    // }
-    // console.log("distance_provider_local[0]");
-    // console.log(distance_provider_local[0]);
-    // console.log(distance_provider_local, distance_client_local);
-    // // const address_result = await this.geolocationProvider.geocodingByAddress(
-    // //   address
-    // // );
+    let distance_provider_locals;
 
-    // return address_result;
+    if (local_provider) {
+      distance_provider_locals = provider.locals.map(async (local) => {
+        return this.geolocationProvider.getDistanceTwoAddress({
+          local_destination_identification: local.id,
+          local_destination: local.address,
+          local_initial: user.addresses[0],
+          departure_time,
+        });
+      });
+      distance_provider_locals = await Promise.all(distance_provider_locals);
+    }
+
+    return {
+      distance_client_local,
+      distance_provider_locals,
+    };
   }
 }

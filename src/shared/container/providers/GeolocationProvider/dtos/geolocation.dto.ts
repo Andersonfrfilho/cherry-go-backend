@@ -9,6 +9,7 @@ export interface ReverseGeocodingLatitudeLongitudeDTO {
   longitude: string;
 }
 export interface GetDistanceTwoAddressDTO {
+  local_destination_identification?: string;
   local_initial: Address;
   local_destination: Address;
   departure_time: number;

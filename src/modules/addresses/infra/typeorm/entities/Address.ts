@@ -68,6 +68,9 @@ class Address {
   @Column()
   reference?: string;
 
+  @Column({ type: "jsonb" })
+  details?: any;
+
   @CreateDateColumn()
   @Exclude()
   created_at?: Date;

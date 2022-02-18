@@ -62,6 +62,11 @@ export class CreateAddresses1617513126627 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: "details",
+            type: "jsonb",
+            isNullable: true,
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

@@ -33,7 +33,7 @@ export class CreateProvidersTransportAcceptType1624409789268
           },
           {
             name: "amount",
-            type: "bigint",
+            type: "float8",
             isNullable: true,
           },
           {

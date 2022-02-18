@@ -45,6 +45,7 @@ class GoogleGeolocationProvider implements GeolocationProviderInterface {
     local_initial,
     local_destination,
     departure_time,
+    local_destination_identification,
   }: GetDistanceTwoAddressDTO): Promise<any> {
     const parameters = {
       params: {
@@ -101,7 +102,12 @@ class GoogleGeolocationProvider implements GeolocationProviderInterface {
         });
         distance_between = data;
       }
-      return distance_between;
+      return {
+        local_initial,
+        local_destination,
+        local_destination_identification,
+        distance_between,
+      };
     } catch (error) {
       console.log(error);
     }

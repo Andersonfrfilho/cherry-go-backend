@@ -31,9 +31,9 @@ export class AddressesFactory {
         number: number || faker.phone.phoneNumber("####"),
         state: state || faker.address.state(),
         street: street || faker.address.streetName(),
-        zipcode: zipcode || faker.phone.phoneNumber("########"),
-        latitude: latitude || faker.phone.phoneNumber("##.######"),
-        longitude: longitude || faker.phone.phoneNumber("##.######"),
+        zipcode: zipcode || faker.address.zipCode(),
+        latitude: latitude || faker.address.latitude(),
+        longitude: longitude || faker.address.longitude(),
       })
     );
   }
