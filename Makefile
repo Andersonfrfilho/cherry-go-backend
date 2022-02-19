@@ -1,9 +1,9 @@
 kafka:
-	docker-compose -f ./apache-kafka/docker-compose.yaml up -d
+	docker-compose -f ./apache-kafka/docker-compose.yaml -p cherry-go-compose up -d
 .PHONY: kafka
 
 kafka-down:
-	docker-compose -f ./apache-kafka/docker-compose.yaml up -d
+	docker-compose -f ./apache-kafka/docker-compose.yaml -p cherry-go-compose up -d
 .PHONY: kafka-down
 
 queue:
@@ -11,19 +11,19 @@ queue:
 .PHONY: queue
 
 database-postgres:
-	docker-compose up -d database-postgres
+	docker-compose -p cherry-go-compose up -d database_postgres
 .PHONY: database-postgres
 
 database-redis:
-	docker-compose up -d database-redis
+	docker-compose -p cherry-go-compose up -d database_redis
 .PHONY: database-redis
 
 database-mongo:
-	docker-compose up -d database-mongo
+	docker-compose -p cherry-go-compose up -d database_mongo
 .PHONY: database-mongo
 
 databases:
-	docker-compose up -d
+	docker-compose -p cherry-go-compose up -d database_postgres
 .PHONY: databases
 
 databases-down:
