@@ -23,7 +23,7 @@ export class CreateAddressUserProviderService {
     latitude,
     longitude,
   }: CreateAddressUsersProvidersServiceDTO): Promise<void> {
-    const provider_exist = await this.providersRepository.findById(provider_id);
+    const provider_exist = await this.providersRepository.findById({id:provider_id});
 
     if (!provider_exist) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);

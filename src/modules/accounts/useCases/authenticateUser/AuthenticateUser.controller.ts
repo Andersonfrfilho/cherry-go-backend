@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -15,7 +15,7 @@ class AuthenticatedUserController {
       password,
     });
 
-    return response.json(classToClass(authenticateInfo));
+    return response.json(instanceToInstance(authenticateInfo));
   }
 }
 export { AuthenticatedUserController };

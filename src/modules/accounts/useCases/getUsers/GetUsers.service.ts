@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstancestancestance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import {
@@ -27,6 +27,6 @@ export class GetUsersService {
       per_page,
     });
 
-    return classToClass(users);
+    return instanceToInstancestancestance(users);
   }
 }

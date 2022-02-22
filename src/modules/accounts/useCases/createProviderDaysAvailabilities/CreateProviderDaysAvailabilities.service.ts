@@ -15,7 +15,7 @@ class CreateProviderDaysAvailabilitiesService {
     provider_id,
     days,
   }: CreateProviderDaysAvailabilityServiceDTO): Promise<void> {
-    const provider = await this.providersRepository.findById(provider_id);
+    const provider = await this.providersRepository.findById({id:provider_id});
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);

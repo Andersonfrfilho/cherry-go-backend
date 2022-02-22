@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstancestance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
@@ -115,6 +115,6 @@ export class CreateUserClientService {
       messages,
     });
 
-    return classToClass(user);
+    return instanceToInstancestance(user);
   }
 }

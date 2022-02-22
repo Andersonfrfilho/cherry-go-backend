@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -19,6 +19,6 @@ export class CreateProviderTransportTypesAvailabilitiesController {
       }
     );
 
-    return response.json(classToClass(transports_available));
+    return response.json(instanceToInstance(transports_available));
   }
 }

@@ -22,7 +22,7 @@ export class SetLocationCacheProvidersService {
     private cacheProvider: CacheProviderInterface
   ) {}
   async execute({ provider_id, longitude, latitude }: ParamDTO): Promise<void> {
-    const provider = await this.providersRepository.findById(provider_id);
+    const provider = await this.providersRepository.findById({id:provider_id});
 
     if (!provider) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);

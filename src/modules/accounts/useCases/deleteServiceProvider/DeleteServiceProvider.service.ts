@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 import * as uuid from "uuid";
 
@@ -24,7 +24,7 @@ class DeleteServiceProviderService {
     private paymentProvider: PaymentProviderInterface
   ) {}
   async execute({ provider_id, service_id }: ParamsDTO): Promise<Service[]> {
-    const provider = await this.providersRepository.findById(provider_id);
+    const provider = await this.providersRepository.findById({id:provider_id});
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
@@ -60,9 +60,9 @@ class DeleteServiceProviderService {
 
     await this.providersRepository.deleteServiceProvider(service_found.id);
 
-    const new_provider = await this.providersRepository.findById(provider_id);
+    const new_provider = await this.providersRepository.findById({id:provider_id});
 
-    return classToClass(new_provider.services);
+    return instanceToInstance(new_provider.services);
   }
 }
 export { DeleteServiceProviderService };

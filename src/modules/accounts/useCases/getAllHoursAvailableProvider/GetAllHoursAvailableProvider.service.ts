@@ -38,7 +38,10 @@ export class GetAllHoursAvailableProviderService {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    const provider = await this.providersRepository.findById(provider_id);
+    const provider = await this.providersRepository.findById({
+      id: provider_id,
+      relations: ["days", "hours"],
+    });
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
@@ -50,7 +53,8 @@ export class GetAllHoursAvailableProviderService {
       provider_id: provider.id,
       created_date: new Date(),
     });
-
+    console.log("########provider");
+    console.log(provider);
     const { hours } = provider;
     const { days } = provider;
 
@@ -84,9 +88,8 @@ export class GetAllHoursAvailableProviderService {
       )
       .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
 
-    const reduce_unavailable_hours = this.dateProvider.reduceHours(
-      unavailable_hours
-    );
+    const reduce_unavailable_hours =
+      this.dateProvider.reduceHours(unavailable_hours);
 
     const rest_available_hours = this.dateProvider.availableHours({
       available_hours,

@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
@@ -91,7 +91,7 @@ export class MeProfileUserProviderService {
     });
 
     return {
-      provider: { ...classToClass(provider), appointments: results },
+      provider: { ...instanceToInstance(provider), appointments: results },
       token,
       refresh_token,
     };

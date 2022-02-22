@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { CreateImageServiceDTO } from "@modules/images/dtos";
@@ -21,6 +21,6 @@ export class CreateImageService {
       name: image_name,
     });
 
-    return classToClass(image);
+    return instanceToInstance(image);
   }
 }

@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -12,14 +12,13 @@ class CreateProvidersLocalsTypesController {
       CreateProvidersLocalsTypesService
     );
 
-    const locals_types_response = await createProvidersLocalsTypesService.execute(
-      {
+    const locals_types_response =
+      await createProvidersLocalsTypesService.execute({
         provider_id: id,
         locals_types,
-      }
-    );
+      });
 
-    return response.json(classToClass(locals_types_response));
+    return response.json(instanceToInstance(locals_types_response));
   }
 }
 export { CreateProvidersLocalsTypesController };

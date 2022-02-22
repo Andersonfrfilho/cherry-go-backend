@@ -1,0 +1,18 @@
+export const RELATIONS_PROVIDER_DEFAULT = [
+  "phones",
+  "addresses",
+  "types",
+  "appointments_all",
+  "locals_types",
+  "transports_types",
+  "services",
+  "ratings",
+  "days",
+  "hours",
+  "locals",
+  "terms",
+  "payments_types",
+  "image_profile",
+  "images",
+  "transports",
+];

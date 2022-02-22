@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import {
@@ -32,7 +32,7 @@ export class GetTagsService {
       tags = await this.cacheProvider.recover("tags");
 
       if (tags) {
-        return classToClass(tags);
+        return instanceToInstance(tags);
       }
     }
 

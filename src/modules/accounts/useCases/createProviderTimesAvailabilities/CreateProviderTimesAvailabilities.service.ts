@@ -35,7 +35,7 @@ class CreateProviderTimesAvailabilitiesService {
       throw new AppError(BAD_REQUEST.INITIAL_DATE_GREATER_THAN_END_DATE);
     }
 
-    const provider = await this.providersRepository.findById(provider_id);
+    const provider = await this.providersRepository.findById({id:provider_id});
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);

@@ -1,11 +1,11 @@
-import { classToClass } from "class-transformer";
-import { getRepository, In, Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 
 import { ProviderAvailabilityTime } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityTime";
 import { ProvidersAvailabilityTimeRepositoryInterface } from "@modules/accounts/repositories/ProviderAvailabilityTime.repository.interface";
 
 export class ProvidersAvailabilityTimeRepository
-  implements ProvidersAvailabilityTimeRepositoryInterface {
+  implements ProvidersAvailabilityTimeRepositoryInterface
+{
   private repository: Repository<ProviderAvailabilityTime>;
 
   constructor() {

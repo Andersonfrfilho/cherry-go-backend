@@ -32,7 +32,7 @@ class ProviderPaymentType {
 
   @ManyToOne(() => PaymentType, { eager: true })
   @JoinColumn({ name: "payment_type_id", referencedColumnName: "id" })
-  payment: PaymentType;
+  payment_type: PaymentType;
 
   @Column()
   active: boolean;

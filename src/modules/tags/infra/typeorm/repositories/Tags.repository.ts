@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { getRepository, Repository } from "typeorm";
 
 import {
@@ -96,7 +96,7 @@ export class TagsRepository implements TagsRepositoryInterface {
     }
 
     return {
-      results: classToClass(results),
+      results: instanceToInstance(results),
       total,
     };
   }

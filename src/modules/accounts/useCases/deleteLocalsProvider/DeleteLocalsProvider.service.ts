@@ -25,7 +25,7 @@ export class DeleteLocalsProviderService {
     provider_id,
     provider_addresses_ids,
   }: Params): Promise<ProviderAddress[]> {
-    const provider = await this.providersRepository.findById(provider_id);
+    const provider = await this.providersRepository.findById({id:provider_id});
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);

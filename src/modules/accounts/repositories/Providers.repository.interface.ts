@@ -21,6 +21,7 @@ import { CreateUserProviderRepositoryDTO } from "../dtos/repositories/CreateUser
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "../dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import { DeleteProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
 import { FindByAreaRepositoryDTO } from "../dtos/repositories/FindByArea.dto";
+import { FindByIdProviderRepositoryDTO } from "../dtos/repositories/FindByIdProviderRepository.dto";
 import { GetAllByActiveProviderTransportTypeRepositoryDTO } from "../dtos/repositories/GetAllByActiveProviderTransportTypeRepository.dto";
 import {
   PaginationPropsDTO,
@@ -37,7 +38,7 @@ import { ProviderTransportType } from "../infra/typeorm/entities/ProviderTranspo
 import { Service } from "../infra/typeorm/entities/Services";
 
 export interface ProvidersRepositoryInterface {
-  findById(id: string): Promise<Provider>;
+  findById(data: FindByIdProviderRepositoryDTO): Promise<Provider>;
   findByIds(ids: string[]): Promise<Provider[]>;
   createAddressProviders(
     data: CreateAddressUsersProvidersRepositoryDTO

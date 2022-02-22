@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -19,7 +19,7 @@ class CreateProvidersPaymentsTypesController {
       }
     );
 
-    return response.json(classToClass(provider_payments_types));
+    return response.json(instanceToInstance(provider_payments_types));
   }
 }
 export { CreateProvidersPaymentsTypesController };

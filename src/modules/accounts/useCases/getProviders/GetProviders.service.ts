@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstancestance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { config } from "@config/environment";
@@ -111,6 +111,6 @@ export class GetProvidersService {
           : 0,
     }));
 
-    return classToClass(formatted_providers);
+    return instanceToInstancestance(formatted_providers);
   }
 }

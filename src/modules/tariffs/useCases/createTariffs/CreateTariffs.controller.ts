@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -16,6 +16,6 @@ export class CreateTariffsController {
       percent,
       user_id: id,
     });
-    return response.json(classToClass(tag));
+    return response.json(instanceToInstance(tag));
   }
 }

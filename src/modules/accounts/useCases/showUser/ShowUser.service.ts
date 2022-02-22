@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
@@ -13,6 +13,6 @@ export class ShowUsersService {
   async execute(id: string): Promise<User> {
     const users = await this.usersRepository.findById(id);
 
-    return classToClass(users);
+    return instanceToInstance(users);
   }
 }

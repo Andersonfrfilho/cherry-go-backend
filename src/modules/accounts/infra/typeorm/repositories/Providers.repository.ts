@@ -1,6 +1,7 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { getRepository, In, Repository } from "typeorm";
 
+import { RELATIONS_PROVIDER_DEFAULT } from "@modules/accounts/constants/relationsProviderDefault.const";
 import {
   CreatePaymentTypesAvailableRepositoryDTO,
   CreateProviderDaysAvailabilityProviderRepositoryDTO,
@@ -16,6 +17,7 @@ import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/reposito
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import { DeleteProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
 import { FindByAreaRepositoryDTO } from "@modules/accounts/dtos/repositories/FindByArea.dto";
+import { FindByIdProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/FindByIdProviderRepository.dto";
 import { GetAllByActiveProviderTransportTypeRepositoryDTO } from "@modules/accounts/dtos/repositories/GetAllByActiveProviderTransportTypeRepository.dto";
 import {
   PaginationPropsGenericDTO,
@@ -203,11 +205,10 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       active,
     });
 
-    const provider_transport_types = this.repository_provider_transport_type.find(
-      {
+    const provider_transport_types =
+      this.repository_provider_transport_type.find({
         where: { provider_id },
-      }
-    );
+      });
 
     return provider_transport_types;
   }
@@ -224,11 +225,10 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
   }: GetAllByActiveProviderTransportTypeRepositoryDTO): Promise<
     ProviderTransportType[]
   > {
-    const provider_transport_types = this.repository_provider_transport_type.find(
-      {
+    const provider_transport_types =
+      this.repository_provider_transport_type.find({
         where: { active, provider_id },
-      }
-    );
+      });
 
     return provider_transport_types;
   }
@@ -327,9 +327,8 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
   }: PaginationPropsGenericDTO<Appointment>): Promise<
     PaginationResponseAppointmentsDTO<Appointment>
   > {
-    const providerQuery = this.repository_appointments.createQueryBuilder(
-      "foundAppointment"
-    );
+    const providerQuery =
+      this.repository_appointments.createQueryBuilder("foundAppointment");
 
     providerQuery
       .leftJoinAndSelect("foundAppointment.providers", "providers")
@@ -371,9 +370,9 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     );
     return {
       results: {
-        opens: classToClass(appointment_open),
-        rejected: classToClass(appointment_rejected),
-        confirmed: classToClass(appointment_accepted),
+        opens: instanceToInstance(appointment_open),
+        rejected: instanceToInstance(appointment_rejected),
+        confirmed: instanceToInstance(appointment_accepted),
       },
       total,
     };
@@ -571,10 +570,13 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     await this.repository_available_times.save(times_created);
   }
 
-  async findById(id: string): Promise<Provider> {
-    const user = await this.repository.findOne(id);
-
-    return user;
+  async findById({
+    id,
+    relations = RELATIONS_PROVIDER_DEFAULT,
+  }: FindByIdProviderRepositoryDTO): Promise<Provider> {
+    return this.repository.findOne(id, {
+      relations,
+    });
   }
 }
 export { ProvidersRepository };

@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -16,7 +16,7 @@ class CreateTagsController {
       active,
       image_id,
     });
-    return response.json(classToClass(tag));
+    return response.json(instanceToInstance(tag));
   }
 }
 export { CreateTagsController };

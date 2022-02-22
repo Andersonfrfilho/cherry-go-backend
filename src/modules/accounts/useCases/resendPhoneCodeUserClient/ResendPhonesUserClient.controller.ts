@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -15,7 +15,7 @@ class ResendPhonesUserClientController {
       user_id,
     });
 
-    return response.json(classToClass(user_phones));
+    return response.json(instanceToInstance(user_phones));
   }
 }
 export { ResendPhonesUserClientController };

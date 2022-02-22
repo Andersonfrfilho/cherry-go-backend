@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -12,6 +12,6 @@ export class MeUserProfileController {
 
     const meUserInfoProfile = await meUserProfileService.execute(id);
 
-    return response.json(classToClass(meUserInfoProfile));
+    return response.json(instanceToInstance(meUserInfoProfile));
   }
 }

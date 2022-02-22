@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { config } from "@config/environment";
@@ -44,7 +44,7 @@ export class SetProvidersFavoriteService {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    const provider = await this.providersRepository.findById(provider_id);
+    const provider = await this.providersRepository.findById({id:provider_id});
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
@@ -141,6 +141,6 @@ export class SetProvidersFavoriteService {
           : 0,
     }));
 
-    return classToClass(formatted_providers);
+    return instanceToInstance(formatted_providers);
   }
 }

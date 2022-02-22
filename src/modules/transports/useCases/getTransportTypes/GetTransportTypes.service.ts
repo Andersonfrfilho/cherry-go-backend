@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { config } from "@config/environment";
@@ -46,11 +46,11 @@ export class GetTransportTypesService {
 
     await this.cacheProvider.save(
       "transport:types",
-      classToClass(transport_types_format),
+      instanceToInstance(transport_types_format),
       IOREDIS_EXPIRED_ENUM.EX,
       config.address.cache.invalidade.time
     );
 
-    return classToClass(transport_types_format);
+    return instanceToInstance(transport_types_format);
   }
 }

@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { CreateTagsServiceDTO } from "@modules/tags/dtos";
@@ -37,6 +37,6 @@ export class CreateTagsService {
 
     await this.cacheProvider.invalidate("tags");
 
-    return classToClass(tag_saved);
+    return instanceToInstance(tag_saved);
   }
 }

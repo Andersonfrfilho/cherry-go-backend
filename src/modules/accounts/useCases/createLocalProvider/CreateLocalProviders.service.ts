@@ -51,7 +51,7 @@ export class CreateLocalProviderService {
     latitude,
     longitude,
   }: ParamsDTO): Promise<ProviderAddress[]> {
-    const provider = await this.providersRepository.findById(provider_id);
+    const provider = await this.providersRepository.findById({id:provider_id});
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);

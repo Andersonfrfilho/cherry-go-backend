@@ -71,7 +71,10 @@ class Provider {
   @Column({ type: "jsonb" })
   details?: Details;
 
-  @ManyToMany(() => Phone, { cascade: true, eager: true })
+  @ManyToMany(() => Phone, {
+    cascade: true,
+    // eager: true
+  })
   @JoinTable({
     name: "users_phones",
     joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
@@ -79,7 +82,10 @@ class Provider {
   })
   phones?: Phone[];
 
-  @ManyToMany(() => Address, { cascade: true, eager: true })
+  @ManyToMany(() => Address, {
+    cascade: true,
+    // eager: true
+  })
   @JoinTable({
     name: "users_addresses",
     joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
@@ -88,53 +94,53 @@ class Provider {
   addresses?: Address[];
 
   @OneToMany(() => UserTypeUser, (userTypesUser) => userTypesUser.user, {
-    eager: true,
+    // eager: true,
   })
   types?: UserTypeUser[];
 
   // // TODO:: refatorar relacionamento
   @OneToMany(
     () => AppointmentProvider,
-    (appointment_provider) => appointment_provider.provider,
-    { eager: true }
+    (appointment_provider) => appointment_provider.provider
+    // { eager: true }
   )
   appointments_all: AppointmentProvider[];
 
   @OneToMany(
     () => ProviderLocalType,
-    (provider_local_type) => provider_local_type.provider,
-    {
-      eager: true,
-    }
+    (provider_local_type) => provider_local_type.provider
+    // {
+    //   eager: true,
+    // }
   )
   locals_types?: ProviderLocalType[];
 
   @OneToMany(
     () => ProviderTransportType,
-    (transport_types) => transport_types.provider,
-    {
-      eager: true,
-    }
+    (transport_types) => transport_types.provider
+    // {
+    //   eager: true,
+    // }
   )
   transports_types?: ProviderTransportType[];
 
   @OneToMany(() => Service, (service) => service.provider, {
-    eager: true,
+    // eager: true,
   })
   services?: Service[];
 
   @OneToMany(() => ProviderClientRating, (rating) => rating.provider, {
-    eager: true,
+    // eager: true,
   })
   ratings?: ProviderClientRating;
 
   @OneToMany(() => ProviderAvailabilityDay, (day) => day.provider, {
-    eager: true,
+    // eager: true,
   })
   days?: ProviderAvailabilityDay[];
 
   @OneToMany(() => ProviderAvailabilityTime, (time) => time.provider, {
-    eager: true,
+    // eager: true,
   })
   hours?: ProviderAvailabilityTime[];
 
@@ -142,30 +148,34 @@ class Provider {
     () => ProviderAddress,
     (provider_address) => provider_address.provider,
     {
-      eager: true,
+      // eager: true,
     }
   )
   locals?: ProviderAddress[];
 
-  @OneToMany(() => UserTermsAccept, (term) => term.user, { eager: true })
+  @OneToMany(
+    () => UserTermsAccept,
+    (term) => term.user
+    // { eager: true }
+  )
   terms: UserTermsAccept[];
 
   @OneToMany(
     () => ProviderPaymentType,
-    (payment_type) => payment_type.provider,
-    { eager: true }
+    (payment_type) => payment_type.provider
+    // { eager: true }
   )
   payments_types: ProviderPaymentType[];
 
   @OneToMany(
     () => UserProfileImage,
-    (user_profile_image) => user_profile_image.provider,
-    { eager: true }
+    (user_profile_image) => user_profile_image.provider
+    // { eager: true }
   )
   image_profile?: UserProfileImage[];
 
   @OneToMany(() => ProviderImage, (provider_image) => provider_image.provider, {
-    eager: true,
+    // eager: true,
   })
   images?: ProviderImage[];
 
@@ -189,9 +199,8 @@ class Provider {
     if (this?.hours?.length) {
       this.hours.sort((hour_before, hour_after) => {
         const startDate = new Date();
-        const [startDateHour, startDateMinute] = hour_before.start_time.split(
-          ":"
-        );
+        const [startDateHour, startDateMinute] =
+          hour_before.start_time.split(":");
         startDate.setHours(Number(startDateHour), Number(startDateMinute), 0);
 
         const endDate = new Date();

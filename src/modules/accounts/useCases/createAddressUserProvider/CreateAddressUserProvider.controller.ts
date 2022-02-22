@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
@@ -35,6 +35,6 @@ export class CreateAddressUserProviderController {
       latitude,
     });
 
-    return response.json(classToClass(provider_address));
+    return response.json(instanceToInstance(provider_address));
   }
 }
