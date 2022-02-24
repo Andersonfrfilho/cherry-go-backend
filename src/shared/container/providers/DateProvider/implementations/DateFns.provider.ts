@@ -11,7 +11,16 @@ import {
   getHours,
   getMinutes,
   differenceInMilliseconds,
+  setHours,
+  setMinutes,
+  setSeconds,
+  setMilliseconds,
+  setDay,
+  setMonth,
+  setYear,
+  setDayOfYear,
 } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 import { config } from "@config/environment";
 import { HOURS_DAYS_ENUM } from "@modules/accounts/enums/HoursProviders.enum";
@@ -21,6 +30,7 @@ import { DateProviderInterface } from "@shared/container/providers/DateProvider/
 import { DAYS_WEEK_DATE } from "../constants/days.constant";
 import {
   AvailableHoursParamsDTO,
+  DefineHourMinutesSecondsMillisecondsDTO,
   FilterDurationIntervalsParamsDTO,
   FormattedHoursByPeriodParamsDTO,
   FormattedHoursDays,
@@ -72,6 +82,19 @@ export class DateFnsProvider implements DateProviderInterface {
     return isAfter(date, start_date) && isBefore(date, end_date);
   }
 
+  defineHourMinutesSecondsMilliseconds({
+    date = new Date(),
+    hour,
+    minutes,
+    seconds,
+    milliseconds,
+  }: DefineHourMinutesSecondsMillisecondsDTO): Date {
+    return setMilliseconds(
+      setSeconds(setMinutes(setHours(date, hour), minutes), seconds),
+      milliseconds
+    );
+  }
+
   compareIfBetweenEqual(date: Date, start_date: Date, end_date: Date): boolean {
     return (
       (isAfter(date, start_date) && isBefore(date, end_date)) ||
@@ -87,9 +110,18 @@ export class DateFnsProvider implements DateProviderInterface {
   }
 
   formattedDateToCompare(hour: string, minute: string): Date {
-    const dateStartCompare = new Date(2000, 0, 1);
-    return new Date(
-      dateStartCompare.setHours(Number(hour), Number(minute), 0, 0)
+    return setMilliseconds(
+      setSeconds(
+        setMinutes(
+          setHours(
+            setDayOfYear(setMonth(setYear(new Date(), 2000), 0), 1),
+            Number(hour)
+          ),
+          Number(minute)
+        ),
+        0
+      ),
+      0
     );
   }
 
@@ -99,26 +131,22 @@ export class DateFnsProvider implements DateProviderInterface {
     while (index < clone_hours.length) {
       let index_two = index + 1;
       while (index_two > index && index_two < clone_hours.length) {
-        const [hour_start, minutes_start] = clone_hours[
-          index
-        ].initial_date.split(":");
+        const [hour_start, minutes_start] =
+          clone_hours[index].initial_date.split(":");
         const dateStartCompare = this.formattedDateToCompare(
           hour_start,
           minutes_start
         );
-        const [hour_end, minutes_end] = clone_hours[index].final_date.split(
-          ":"
-        );
+        const [hour_end, minutes_end] =
+          clone_hours[index].final_date.split(":");
         const dateEndCompare = this.formattedDateToCompare(
           hour_end,
           minutes_end
         );
-        const [hour_start_other, minutes_start_other] = clone_hours[
-          index_two
-        ].initial_date.split(":");
-        const [hour_final_other, minutes_final_other] = clone_hours[
-          index_two
-        ].final_date.split(":");
+        const [hour_start_other, minutes_start_other] =
+          clone_hours[index_two].initial_date.split(":");
+        const [hour_final_other, minutes_final_other] =
+          clone_hours[index_two].final_date.split(":");
         const dateStartOtherCompare = this.formattedDateToCompare(
           hour_start_other,
           minutes_start_other
@@ -166,28 +194,23 @@ export class DateFnsProvider implements DateProviderInterface {
     const clone_hours_unavailable = unavailable_hours;
     let index_unavailable = 0;
     while (index_unavailable < clone_hours_unavailable.length) {
-      const [
-        hour_start_unavailable,
-        minutes_start_unavailable,
-      ] = clone_hours_unavailable[index_unavailable].initial_date.split(":");
+      const [hour_start_unavailable, minutes_start_unavailable] =
+        clone_hours_unavailable[index_unavailable].initial_date.split(":");
       const dateStartUnavailableCompare = this.formattedDateToCompare(
         hour_start_unavailable,
         minutes_start_unavailable
       );
-      const [
-        hour_final_unavailable,
-        minutes_final_unavailable,
-      ] = clone_hours_unavailable[index_unavailable].final_date.split(":");
+      const [hour_final_unavailable, minutes_final_unavailable] =
+        clone_hours_unavailable[index_unavailable].final_date.split(":");
       const dateEndUnavailableCompare = this.formattedDateToCompare(
         hour_final_unavailable,
         minutes_final_unavailable
       );
+      console.log(dateStartUnavailableCompare, dateEndUnavailableCompare);
       const dateStartIndex = clone_hours_available.findIndex(
         (hourParam, indexParam) => {
-          const [
-            hour_start_available,
-            minutes_start_available,
-          ] = hourParam.initial_date.split(":");
+          const [hour_start_available, minutes_start_available] =
+            hourParam.initial_date.split(":");
           const dateStartAvailableCompare = this.formattedDateToCompare(
             hour_start_available,
             minutes_start_available
@@ -203,18 +226,14 @@ export class DateFnsProvider implements DateProviderInterface {
       );
 
       if (dateStartIndex !== -1) {
-        const [
-          hour_start_available_between,
-          minutes_start_available_between,
-        ] = clone_hours_available[dateStartIndex].initial_date.split(":");
+        const [hour_start_available_between, minutes_start_available_between] =
+          clone_hours_available[dateStartIndex].initial_date.split(":");
         const dateStartAvailableBetweenCompare = this.formattedDateToCompare(
           hour_start_available_between,
           minutes_start_available_between
         );
-        const [
-          hour_end_available_between,
-          minutes_end_available_between,
-        ] = clone_hours_available[dateStartIndex].final_date.split(":");
+        const [hour_end_available_between, minutes_end_available_between] =
+          clone_hours_available[dateStartIndex].final_date.split(":");
         const dateEndAvailableBetweenCompare = this.formattedDateToCompare(
           hour_end_available_between,
           minutes_end_available_between
@@ -233,10 +252,8 @@ export class DateFnsProvider implements DateProviderInterface {
       }
 
       const dateEndIndex = clone_hours_available.findIndex((hourParam) => {
-        const [
-          hour_final_available,
-          minutes_final_available,
-        ] = hourParam.final_date.split(":");
+        const [hour_final_available, minutes_final_available] =
+          hourParam.final_date.split(":");
         const dateEndAvailableCompare = this.formattedDateToCompare(
           hour_final_available,
           minutes_final_available
@@ -278,9 +295,25 @@ export class DateFnsProvider implements DateProviderInterface {
           clone_hours_available[dateEndIndex].final_date =
             clone_hours_unavailable[index_unavailable].initial_date;
         }
+        // verificar
+        const is_equal = this.compareIfEqual(
+          dateStartUnavailableCompare,
+          dateStartAvailableBetweenCompareTwo
+        );
+
+        const final_date_is_before = this.compareIfBefore(
+          dateEndUnavailableCompare,
+          dateEndAvailableBetweenCompareTwo
+        );
+
+        if (is_equal && final_date_is_before) {
+          clone_hours_available[dateEndIndex].initial_date =
+            clone_hours_unavailable[index_unavailable].final_date;
+        }
       }
       index_unavailable += 1;
     }
+
     return clone_hours_available;
   }
 
@@ -308,9 +341,8 @@ export class DateFnsProvider implements DateProviderInterface {
             config.providers.post_appointment_time >
           24
         ) {
-          tomorrow_add_hour.day = DAYS_WEEK_DATE[
-            this.getDay(appointment.initial_date)
-          ].toLowerCase();
+          tomorrow_add_hour.day =
+            DAYS_WEEK_DATE[this.getDay(appointment.initial_date)].toLowerCase();
           tomorrow_add_hour.hours = (
             Number(this.getHour(appointment.final_date)) +
             config.providers.post_appointment_time -
@@ -353,18 +385,14 @@ export class DateFnsProvider implements DateProviderInterface {
     duration,
   }: FilterDurationIntervalsParamsDTO): Hours[] {
     return hours_param.filter((hour) => {
-      const [
-        hour_start_available,
-        minutes_start_available,
-      ] = hour.initial_date.split(":");
+      const [hour_start_available, minutes_start_available] =
+        hour.initial_date.split(":");
       const startHour = this.formattedDateToCompare(
         hour_start_available,
         minutes_start_available
       );
-      const [
-        hour_final_available,
-        minutes_final_available,
-      ] = hour.final_date.split(":");
+      const [hour_final_available, minutes_final_available] =
+        hour.final_date.split(":");
       const endHour = this.formattedDateToCompare(
         hour_final_available,
         minutes_final_available
@@ -377,6 +405,7 @@ export class DateFnsProvider implements DateProviderInterface {
   formattedByPeriod({
     hours_param,
     days,
+    available_hours,
   }: FormattedHoursByPeriodParamsDTO): FormattedHoursDays[] {
     return days.map((day) => {
       return {
@@ -387,38 +416,47 @@ export class DateFnsProvider implements DateProviderInterface {
             hour_day_enum,
             minute_day_enum
           );
+
           const verify_date_between = hours_param.some(
             (hour_param_available) => {
-              const [
-                hour_initial_available,
-                minute_initial_available,
-              ] = hour_param_available.initial_date.split(":");
-              const date_initial_available = this.formattedDateToCompare(
-                hour_initial_available,
-                minute_initial_available
-              );
-              const [
-                hour_final_available,
-                minute_final_available,
-              ] = hour_param_available.final_date.split(":");
-              const date_final_available = this.formattedDateToCompare(
-                hour_final_available,
-                minute_final_available
-              );
+              if (day.day === hour_param_available.day) {
+                const [hour_initial_available, minute_initial_available] =
+                  hour_param_available.initial_date.split(":");
+                const date_initial_available = this.formattedDateToCompare(
+                  hour_initial_available,
+                  minute_initial_available
+                );
+                const [hour_final_available, minute_final_available] =
+                  hour_param_available.final_date.split(":");
+                const date_final_available = this.formattedDateToCompare(
+                  hour_final_available,
+                  minute_final_available
+                );
 
-              return this.compareIfBetweenEqual(
-                date_format_enum,
-                date_initial_available,
-                date_final_available
-              );
+                return this.compareIfBetweenEqual(
+                  date_format_enum,
+                  date_initial_available,
+                  date_final_available
+                );
+              }
+              return false;
             }
           );
 
           return {
             hour: hour_param,
             selected: false,
-            day,
-            available: verify_date_between,
+            day: day.day,
+            available: available_hours
+              ? verify_date_between
+              : !verify_date_between,
+            date: this.defineHourMinutesSecondsMilliseconds({
+              hour: Number(hour_day_enum),
+              milliseconds: 0,
+              minutes: Number(minute_day_enum),
+              seconds: 0,
+              date: new Date(day.date),
+            }).getTime(),
           };
         }),
       };
@@ -442,32 +480,35 @@ export class DateFnsProvider implements DateProviderInterface {
       });
     });
 
-    const hours_available_period: FormattedHoursSelectedByPeriod[] = hours_available
-      .map((hoursParam) => {
-        const [hour_final, minute_final] = hoursParam[
-          hoursParam.length - 1
-        ].hour.split(":");
-        const date_finally_available = this.formattedDateToCompare(
-          hour_final,
-          minute_final
-        );
-        return hoursParam.map((hourParam) => {
-          const [hour_initial, minute_initial] = hourParam.hour.split(":");
-          const date_initial_available = this.formattedDateToCompare(
-            hour_initial,
-            minute_initial
+    const hours_available_period: FormattedHoursSelectedByPeriod[] =
+      hours_available
+        .map((hoursParam) => {
+          const [hour_final, minute_final] =
+            hoursParam[hoursParam.length - 1].hour.split(":");
+          const date_finally_available = this.formattedDateToCompare(
+            hour_final,
+            minute_final
           );
-          return {
-            ...hourParam,
-            available_period:
-              differenceInMilliseconds(
-                date_finally_available,
-                date_initial_available
-              ) >= duration,
-          };
-        });
-      })
-      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
+          return hoursParam.map((hourParam) => {
+            const [hour_initial, minute_initial] = hourParam.hour.split(":");
+            const date_initial_available = this.formattedDateToCompare(
+              hour_initial,
+              minute_initial
+            );
+            return {
+              ...hourParam,
+              available_period:
+                differenceInMilliseconds(
+                  date_finally_available,
+                  date_initial_available
+                ) >= duration,
+            };
+          });
+        })
+        .reduce((accumulator, currentValue) => [
+          ...accumulator,
+          ...currentValue,
+        ]);
 
     const days_hours_formatted_all = days_hours_formatted.map(
       (day_hour_formatted) => {

@@ -4,6 +4,7 @@ import { ActiveUserClientController } from "@modules/accounts/useCases/activeAcc
 import { schemaActiveUser } from "@modules/accounts/useCases/activeAccount/activeAccount.schema";
 import { CreateUserAddressClientController } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.controller";
 import { schemaCreateUserAddressClient } from "@modules/accounts/useCases/createAddressUserClient/createUserAddressClient.schema";
+import { CreateAppointmentPaymentCardController } from "@modules/accounts/useCases/createAppointmentPaymentCard/CreateAppointmentPaymentCard.controller";
 import { schemaCreateUserPhoneClient } from "@modules/accounts/useCases/createPhonesUserClient/createUserPhoneClient.schema";
 import { CreateUserPhoneClientController } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhonesClient.controller";
 import { CreateTagsUsersController } from "@modules/accounts/useCases/createTagsUsersClient/CreateTagsUsersClient.controller";
@@ -15,8 +16,8 @@ import { schemaGetAllHoursAvailableProvider } from "@modules/accounts/useCases/g
 import { GetDistanceByLocalsController } from "@modules/accounts/useCases/getDistanceByLocals/GetDistanceByLocals.controller";
 import { schemaGetDistanceByLocals } from "@modules/accounts/useCases/getDistanceByLocals/getDistanceByLocals.schema";
 import { GetProvidersController } from "@modules/accounts/useCases/getProviders/GetProviders.controller";
-import { schemaGetProviders } from "@modules/accounts/useCases/getProviders/getProviders.schema";
 import { GetStageAppointmentClientController } from "@modules/accounts/useCases/getStageAppointmentClient/GetStageAppointmentClient.controller";
+import { InvalidateStageAppointmentClientController } from "@modules/accounts/useCases/invalidateStageAppointmentClient/InvalidateStageAppointmentClient.controller";
 import { RatingProvidersController } from "@modules/accounts/useCases/ratingProviders/RatingProviders.controller";
 import { schemaRatingProviders } from "@modules/accounts/useCases/ratingProviders/ratingProviders.schema";
 import { ResendPhonesUserClientController } from "@modules/accounts/useCases/resendPhoneCodeUserClient/ResendPhonesUserClient.controller";
@@ -34,17 +35,25 @@ const clientsRoutes = Router();
 const createUserClientController = new CreateUserClientController();
 const updateUserDetailsController = new UpdateUserDetailsController();
 const resendPhonesUserClientController = new ResendPhonesUserClientController();
-const createUserAddressClientController = new CreateUserAddressClientController();
+const createUserAddressClientController =
+  new CreateUserAddressClientController();
 const createUserPhoneClientController = new CreateUserPhoneClientController();
 const createTagsUsersController = new CreateTagsUsersController();
 const activeUserClientController = new ActiveUserClientController();
 const getProvidersController = new GetProvidersController();
 const ratingProvidersController = new RatingProvidersController();
 const setProvidersFavoriteController = new SetProvidersFavoriteController();
-const setStageAppointmentClientController = new SetStageAppointmentClientController();
-const getStageAppointmentClientController = new GetStageAppointmentClientController();
-const getAllHoursAvailableProviderController = new GetAllHoursAvailableProviderController();
+const setStageAppointmentClientController =
+  new SetStageAppointmentClientController();
+const invalidateStageAppointmentClientController =
+  new InvalidateStageAppointmentClientController();
+const getStageAppointmentClientController =
+  new GetStageAppointmentClientController();
+const getAllHoursAvailableProviderController =
+  new GetAllHoursAvailableProviderController();
 const getDistanceByLocalsController = new GetDistanceByLocalsController();
+const createAppointmentPaymentCardController =
+  new CreateAppointmentPaymentCardController();
 const testeController = new TesteController();
 
 clientsRoutes.post(
@@ -118,6 +127,18 @@ clientsRoutes.post(
   setStageAppointmentClientController.handle
 );
 
+clientsRoutes.post(
+  "/appointment/payment/cards",
+  ensureAuthenticated,
+  createAppointmentPaymentCardController.handle
+);
+
+clientsRoutes.delete(
+  "/appointment/stage",
+  ensureAuthenticated,
+  invalidateStageAppointmentClientController.handle
+);
+
 clientsRoutes.get(
   "/appointment/stage",
   ensureAuthenticated,
@@ -137,6 +158,7 @@ clientsRoutes.post(
   schemaGetDistanceByLocals,
   getDistanceByLocalsController.handle
 );
+
 clientsRoutes.get("/test", testeController.handle);
 
 export { clientsRoutes };

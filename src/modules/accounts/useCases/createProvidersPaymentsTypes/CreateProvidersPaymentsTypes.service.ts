@@ -19,13 +19,16 @@ class CreateProvidersPaymentsTypesService {
     provider_id,
     payments_types,
   }: CreateProvidersPaymentsTypesServiceDTO): Promise<ProviderPaymentType[]> {
-    const provider = await this.providersRepository.findById({id:provider_id});
+    const provider = await this.providersRepository.findById({
+      id: provider_id,
+    });
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
     }
 
-    const payments_types_all = await this.paymentTypeRepository.getAllPaymentTypes();
+    const payments_types_all =
+      await this.paymentTypeRepository.getAllPaymentTypes();
     // checa os existentes
     const payments_types_excludes = payments_types_all.filter((payment_type) =>
       payments_types.some(
@@ -37,7 +40,7 @@ class CreateProvidersPaymentsTypesService {
       .filter((payment_type_user) =>
         payments_types_excludes.some(
           (payment_type_exclude) =>
-            payment_type_exclude.name === payment_type_user.payment.name
+            payment_type_exclude.name === payment_type_user.payment_type.name
         )
       )
       .map((payment_type_user) => payment_type_user.id);
@@ -48,7 +51,8 @@ class CreateProvidersPaymentsTypesService {
 
     const payments_types_includes = payments_types.filter((payment_type) =>
       provider.payments_types.some(
-        (payment_type_user) => payment_type_user.payment.name !== payment_type
+        (payment_type_user) =>
+          payment_type_user.payment_type.name !== payment_type
       )
     );
 
@@ -59,9 +63,8 @@ class CreateProvidersPaymentsTypesService {
       });
     }
 
-    const provider_payments_types = await this.providersRepository.getAllPaymentTypes(
-      provider_id
-    );
+    const provider_payments_types =
+      await this.providersRepository.getAllPaymentTypes(provider_id);
 
     return provider_payments_types;
   }

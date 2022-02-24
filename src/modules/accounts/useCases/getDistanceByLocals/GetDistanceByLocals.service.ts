@@ -35,7 +35,10 @@ export class GetDistanceByLocalsService {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    const provider = await this.providersRepository.findById({id:provider_id});
+    const provider = await this.providersRepository.findById({
+      id: provider_id,
+      relations: ["locals_types", "addresses", "locals"],
+    });
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
@@ -50,13 +53,12 @@ export class GetDistanceByLocalsService {
     let distance_client_local;
 
     if (local_client) {
-      distance_client_local = await this.geolocationProvider.getDistanceTwoAddress(
-        {
+      distance_client_local =
+        await this.geolocationProvider.getDistanceTwoAddress({
           local_destination: provider.addresses[0],
           local_initial: user.addresses[0],
           departure_time,
-        }
-      );
+        });
     }
 
     const local_provider = provider.locals_types.find(

@@ -14,6 +14,16 @@ import {
 import { DAYS_WEEK_ENUM } from "@modules/accounts/enums/DaysProviders.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 
+export interface DaysAvailable {
+  date: Date;
+  id?: string;
+  day: string;
+  provider_id: string;
+  provider?: Provider;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+}
 @Entity("providers_availabilities_days")
 class ProviderAvailabilityDay {
   @PrimaryColumn()

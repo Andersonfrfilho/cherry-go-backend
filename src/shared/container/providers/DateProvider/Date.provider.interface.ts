@@ -2,6 +2,7 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 
 import {
   AvailableHoursParamsDTO,
+  DefineHourMinutesSecondsMillisecondsDTO,
   FilterDurationIntervalsParamsDTO,
   FormattedHoursByPeriodParamsDTO,
   FormattedHoursDays,
@@ -37,4 +38,7 @@ export interface DateProviderInterface {
   unavailableByDuration(
     data: FormattedUnavailableHoursByDurationParamsDTO
   ): FormattedHoursDays[];
+  defineHourMinutesSecondsMilliseconds(
+    data: DefineHourMinutesSecondsMillisecondsDTO
+  ): Date;
 }

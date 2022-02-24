@@ -1,3 +1,5 @@
+import { DaysAvailable } from "@modules/accounts/infra/typeorm/entities/ProviderAvailabilityDay";
+
 export type Hours_Unavailable = {
   appointment_id: string;
   initial_date: string;
@@ -25,7 +27,8 @@ export interface FilterDurationIntervalsParamsDTO {
 
 export interface FormattedHoursByPeriodParamsDTO {
   hours_param: Hours[];
-  days: string[];
+  days: DaysAvailable[];
+  available_hours?: boolean;
 }
 
 export interface FormattedHoursSelected {
@@ -33,10 +36,11 @@ export interface FormattedHoursSelected {
   selected: boolean;
   day: string;
   available: boolean;
+  date: number;
 }
 
 export interface FormattedHoursDays {
-  day: string;
+  day: DaysAvailable;
   hours: FormattedHoursSelected[];
 }
 
@@ -52,4 +56,12 @@ export interface FormattedHoursSelectedByPeriod {
 export interface FormattedUnavailableHoursByDurationParamsDTO {
   days_hours_formatted: FormattedHoursDays[];
   duration: number;
+}
+
+export interface DefineHourMinutesSecondsMillisecondsDTO {
+  date?: Date;
+  hour: number;
+  minutes: number;
+  seconds: number;
+  milliseconds: number;
 }

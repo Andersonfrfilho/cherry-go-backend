@@ -3,19 +3,16 @@ import { container } from "tsyringe";
 
 import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums";
 
-import { SetStageAppointmentClientService } from "./SetStageAppointmentClient.service";
+import { InvalidateStageAppointmentClientService } from "./InvalidateStageAppointmentClient.service";
 
-export class SetStageAppointmentClientController {
+export class InvalidateStageAppointmentClientController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const setStageAppointmentClientService = container.resolve(
-      SetStageAppointmentClientService
+    const invalidateStageAppointmentClientService = container.resolve(
+      InvalidateStageAppointmentClientService
     );
 
-    await setStageAppointmentClientService.execute({
-      user_id: id,
-      data: { ...request.body },
-    });
+    await invalidateStageAppointmentClientService.execute(id);
 
     return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();
   }

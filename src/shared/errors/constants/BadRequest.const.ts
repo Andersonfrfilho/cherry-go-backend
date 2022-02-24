@@ -55,4 +55,9 @@ export const BAD_REQUEST = {
     status_code,
     code: "0010",
   },
+  APPOINTMENT_INITIAL_DATE_BEFORE_DATE_NOW: {
+    message: "Appointment with date start before date now!",
+    status_code,
+    code: "0012",
+  },
 };

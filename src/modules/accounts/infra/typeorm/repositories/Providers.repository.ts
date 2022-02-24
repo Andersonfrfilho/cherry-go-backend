@@ -113,7 +113,7 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       .leftJoinAndSelect("foundProviders.locals", "locals")
       .leftJoinAndSelect("locals.address", "address")
       .leftJoinAndSelect("foundProviders.payments_types", "payments_types")
-      .leftJoinAndSelect("payments_types.payment", "payment_type")
+      .leftJoinAndSelect("payments_types.payment_type", "payment_type")
       .leftJoinAndSelect("foundProviders.image_profile", "image_profile")
       .leftJoinAndSelect("foundProviders.images", "images")
       .leftJoinAndSelect("images.image", "image")

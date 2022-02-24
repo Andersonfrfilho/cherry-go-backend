@@ -3,19 +3,17 @@ import { container } from "tsyringe";
 
 import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums";
 
-import { SetStageAppointmentClientService } from "./SetStageAppointmentClient.service";
+import { CreateAppointmentPaymentCardService } from "./CreateAppointmentPaymentCard.service";
 
-export class SetStageAppointmentClientController {
+export class CreateAppointmentPaymentCardController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
-    const setStageAppointmentClientService = container.resolve(
-      SetStageAppointmentClientService
+
+    const createAppointmentPaymentCardService = container.resolve(
+      CreateAppointmentPaymentCardService
     );
 
-    await setStageAppointmentClientService.execute({
-      user_id: id,
-      data: { ...request.body },
-    });
+    await createAppointmentPaymentCardService.execute(id);
 
     return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();
   }
