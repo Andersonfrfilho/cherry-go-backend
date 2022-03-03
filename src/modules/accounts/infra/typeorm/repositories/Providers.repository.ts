@@ -35,9 +35,9 @@ import { ProviderTransportType } from "@modules/accounts/infra/typeorm/entities/
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
-import { STATUS_PROVIDERS_APPOINTMENT } from "@modules/appointments/enums/StatusProvidersAppointment.enum";
+import { STATUS_PROVIDERS_APPOINTMENT_ENUM } from "@modules/appointments/enums/StatusProvidersAppointment.enum";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
-import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProviders";
+import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProvider";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { CreateProviderTransportTypesDTO } from "@modules/transports/dtos/repositories/CreateProviderTransportTypes.repository.dto";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
@@ -356,17 +356,18 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       .getManyAndCount();
     const appointment_open = results.filter(
       (appointment) =>
-        appointment.providers[0].status === STATUS_PROVIDERS_APPOINTMENT.OPEN
+        appointment.providers[0].status ===
+        STATUS_PROVIDERS_APPOINTMENT_ENUM.OPEN
     );
     const appointment_rejected = results.filter(
       (appointment) =>
         appointment.providers[0].status ===
-        STATUS_PROVIDERS_APPOINTMENT.REJECTED
+        STATUS_PROVIDERS_APPOINTMENT_ENUM.REJECTED
     );
     const appointment_accepted = results.filter(
       (appointment) =>
         appointment.providers[0].status ===
-        STATUS_PROVIDERS_APPOINTMENT.ACCEPTED
+        STATUS_PROVIDERS_APPOINTMENT_ENUM.ACCEPTED
     );
     return {
       results: {

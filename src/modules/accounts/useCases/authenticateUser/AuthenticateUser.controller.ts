@@ -1,10 +1,9 @@
-import { instanceToInstance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
 import { AuthenticateUserService } from "@modules/accounts/useCases/authenticateUser/AuthenticateUser.service";
 
-class AuthenticatedUserController {
+export class AuthenticatedUserController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { password, email } = request.body;
 
@@ -15,7 +14,6 @@ class AuthenticatedUserController {
       password,
     });
 
-    return response.json(instanceToInstance(authenticateInfo));
+    return response.json(authenticateInfo);
   }
 }
-export { AuthenticatedUserController };

@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { STATUS_PROVIDERS_APPOINTMENT } from "@modules/appointments/enums/StatusProvidersAppointment.enum";
+import { STATUS_PROVIDERS_APPOINTMENT_ENUM } from "@modules/appointments/enums/StatusProvidersAppointment.enum";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
 @Entity("appointments_providers")
@@ -32,7 +32,7 @@ export class AppointmentProvider {
   @JoinColumn({ name: "appointment_id", referencedColumnName: "id" })
   appointment: Appointment;
 
-  @Column({ type: "enum", enum: STATUS_PROVIDERS_APPOINTMENT })
+  @Column({ type: "enum", enum: STATUS_PROVIDERS_APPOINTMENT_ENUM })
   status: string;
 
   @CreateDateColumn()

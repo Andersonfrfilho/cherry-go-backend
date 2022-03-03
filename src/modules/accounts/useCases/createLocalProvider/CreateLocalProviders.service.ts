@@ -51,7 +51,9 @@ export class CreateLocalProviderService {
     latitude,
     longitude,
   }: ParamsDTO): Promise<ProviderAddress[]> {
-    const provider = await this.providersRepository.findById({id:provider_id});
+    const provider = await this.providersRepository.findById({
+      id: provider_id,
+    });
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
@@ -72,21 +74,20 @@ export class CreateLocalProviderService {
 
     const code = uuid.v4();
 
-    const {
-      product,
-      price,
-    } = await this.paymentProvider.createProduct<CreateProductStripeInterface>({
-      active: true,
-      amount,
-      description: `${street}, ${number} - ${zipcode}`,
-      name: code,
-      service_type: ServicesProviderTypesEnum.local,
-    });
+    const { product, price, sku } =
+      await this.paymentProvider.createProduct<CreateProductStripeInterface>({
+        active: true,
+        amount,
+        description: `${street}, ${number} - ${zipcode}`,
+        name: code,
+        service_type: ServicesProviderTypesEnum.local,
+      });
 
     const details = {
       stripe: {
         product: { id: product.id },
         price: { id: price.id },
+        sku: { id: sku.id },
       },
     };
 

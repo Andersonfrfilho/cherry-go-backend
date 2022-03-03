@@ -1,7 +1,8 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class CreateAppointmentsAddresses1624507098232
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -21,6 +22,16 @@ export class CreateAppointmentsAddresses1624507098232
           {
             name: "address_id",
             type: "uuid",
+          },
+          {
+            name: "amount",
+            type: "bigint",
+            isNullable: true,
+          },
+          {
+            name: "details",
+            type: "jsonb",
+            isNullable: true,
           },
           {
             name: "created_at",

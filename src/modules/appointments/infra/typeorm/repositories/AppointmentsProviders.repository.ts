@@ -3,11 +3,12 @@ import { getRepository, Repository } from "typeorm";
 import { ChangeStatusAppointmentRepositoryDTO } from "@modules/accounts/dtos/repositories/ChangeStatusAppointment.repository.dto";
 import { FindByIdsAppointmentProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/FindByIdsAppointmentProvider.repository.dto";
 import { CreateAppointmentProvidersRepositoryDTO } from "@modules/appointments/dtos";
-import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProviders";
+import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProvider";
 import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProviders.repository.interface";
 
 export class AppointmentsProvidersRepository
-  implements AppointmentsProvidersRepositoryInterface {
+  implements AppointmentsProvidersRepositoryInterface
+{
   private repository: Repository<AppointmentProvider>;
 
   constructor() {

@@ -30,7 +30,7 @@ import { AppointmentsAddressesRepository } from "@modules/appointments/infra/typ
 import { AppointmentsProvidersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsProviders.repository";
 import { AppointmentsUsersRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsers.repository";
 import { AppointmentsUsersTransactionsRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentsUsersTransactions.repository";
-import { AppointmentTransactionsItensRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentTransactionsItens.repository";
+import { AppointmentTransactionItemRepository } from "@modules/appointments/infra/typeorm/repositories/AppointmentTransactionItem.repository";
 import { PaymentTypeRepository } from "@modules/appointments/infra/typeorm/repositories/PaymentType.repository";
 import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/Appointments.repository.interface";
 import { AppointmentsAddressesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsAddresses.repository.interface";
@@ -38,7 +38,7 @@ import { AppointmentsProvidersRepositoryInterface } from "@modules/appointments/
 import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServices.repository.interface";
 import { AppointmentsUsersRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsers.repository.interface";
 import { AppointmentsUsersTransactionsRepositoryInterface } from "@modules/appointments/repositories/AppointmentsUsersTransactions.repository.interface";
-import { AppointmentTransactionsItensRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionsItens.repository.interface";
+import { AppointmentTransactionItemRepositoryInterface } from "@modules/appointments/repositories/AppointmentTransactionItem.repository.interface";
 import { PaymentTypeRepositoryInterface } from "@modules/appointments/repositories/PaymentType.repository.interface";
 import { ImagesRepository } from "@modules/images/infra/typeorm/repositories/Images.repository";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
@@ -136,9 +136,9 @@ container.registerSingleton<AppointmentsUsersTransactionsRepositoryInterface>(
   AppointmentsUsersTransactionsRepository
 );
 
-container.registerSingleton<AppointmentTransactionsItensRepositoryInterface>(
-  "AppointmentTransactionsItensRepository",
-  AppointmentTransactionsItensRepository
+container.registerSingleton<AppointmentTransactionItemRepositoryInterface>(
+  "AppointmentTransactionItemRepository",
+  AppointmentTransactionItemRepository
 );
 
 container.registerSingleton<AppointmentsProvidersServicesRepositoryInterface>(

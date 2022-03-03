@@ -60,9 +60,8 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_tag = getRepository(Tag);
     this.repository_clients_tags = getRepository(ClientTag);
     this.repository_users_tokens = getRepository(UserTokens);
-    this.repository_clients_providers_ratings = getRepository(
-      ProviderClientRating
-    );
+    this.repository_clients_providers_ratings =
+      getRepository(ProviderClientRating);
   }
 
   async ratingProvider({

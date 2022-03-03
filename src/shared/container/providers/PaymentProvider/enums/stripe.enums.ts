@@ -48,6 +48,11 @@ export enum STRIPE_PERSON_GENDER_ENUM {
   male = "male",
   female = "female",
 }
+export enum STRIPE_INVENTORY_TYPE_SKU_ENUM {
+  finite = "finite",
+  bucket = "bucket",
+  infinite = "infinite",
+}
 
 export enum STRIPE_CURRENCY_ENUM {
   brl = "brl",

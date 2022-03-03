@@ -17,9 +17,10 @@ import { TransportType } from "@modules/transports/infra/typeorm/entities/Transp
 interface ObjectId {
   id: string;
 }
-interface StripeProviderTransportType {
+export interface StripeProviderTransportType {
   product: ObjectId;
   price: ObjectId;
+  sku: ObjectId;
 }
 
 export interface DetailsProviderTransportType {

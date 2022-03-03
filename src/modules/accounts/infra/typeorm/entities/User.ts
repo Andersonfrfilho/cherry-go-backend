@@ -147,7 +147,10 @@ class User {
   })
   transactions?: Transaction[];
 
-  @OneToMany(() => DocumentUserImage, (document) => document.user)
+  @Exclude()
+  @OneToMany(() => DocumentUserImage, (document) => document.user, {
+    eager: true,
+  })
   documents?: DocumentUserImage[];
 
   @CreateDateColumn()

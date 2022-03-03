@@ -1,6 +1,8 @@
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
+import { DocumentUserImage } from "@modules/accounts/infra/typeorm/entities/DocumentUserImage";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -8,10 +10,17 @@ import { DateProviderInterface } from "@shared/container/providers/DateProvider/
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import { NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
+import { FORBIDDEN, NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
 
+interface DocumentsAuthResponse {
+  front: boolean;
+  back: boolean;
+}
+interface UserAuthResponse extends User {
+  documents: DocumentUserImage[] | DocumentsAuthResponse;
+}
 interface IResponse {
-  user: User;
+  user: UserAuthResponse;
   token: string;
   refresh_token: string;
 }
@@ -41,6 +50,10 @@ export class AuthenticateUserService {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
+    if (!user.active) {
+      throw new AppError(FORBIDDEN.USER_IS_NOT_ACTIVE);
+    }
+
     const passwordHash = await this.hashProvider.compareHash(
       password,
       user.password_hash
@@ -55,7 +68,11 @@ export class AuthenticateUserService {
       secretOrPrivateKey: secret.token,
       options: {
         subject: {
-          user: { id: user.id, active: user.active, types: user.types },
+          user: {
+            id: user.id,
+            active: user.active,
+            types: user.types.filter((type) => type.active),
+          },
         },
         expiresIn: expires_in.token,
       },
@@ -66,7 +83,11 @@ export class AuthenticateUserService {
       secretOrPrivateKey: auth.secret.refresh,
       options: {
         subject: {
-          user: { id: user.id, active: user.active, types: user.types },
+          user: {
+            id: user.id,
+            active: user.active,
+            types: user.types.filter((type) => type.active),
+          },
         },
         expiresIn: expires_in.refresh,
       },
@@ -83,7 +104,14 @@ export class AuthenticateUserService {
     });
 
     return {
-      user,
+      user: {
+        ...instanceToInstance(user),
+        types: user.types.filter((type) => type.active),
+        documents: {
+          front: user.documents.length > 0,
+          back: user.documents.length > 0,
+        },
+      },
       token,
       refresh_token,
     };

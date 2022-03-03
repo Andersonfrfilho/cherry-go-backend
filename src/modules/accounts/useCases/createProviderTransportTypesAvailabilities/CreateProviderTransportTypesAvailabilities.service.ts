@@ -28,7 +28,9 @@ export class CreateProviderTransportTypesAvailabilitiesService {
   }: CreateProviderTransportTypesAvailabilitiesServiceDTO): Promise<
     ProviderTransportType[]
   > {
-    const provider = await this.providersRepository.findById({id:provider_id});
+    const provider = await this.providersRepository.findById({
+      id: provider_id,
+    });
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
@@ -69,9 +71,8 @@ export class CreateProviderTransportTypesAvailabilitiesService {
       )
     );
 
-    const transports_types_available = await this.transportsRepository.getAllByActiveTransportType(
-      true
-    );
+    const transports_types_available =
+      await this.transportsRepository.getAllByActiveTransportType(true);
 
     if (update_transport_type.length > 0) {
       const provider_transport_type = provider.transports_types.find(
@@ -92,23 +93,20 @@ export class CreateProviderTransportTypesAvailabilitiesService {
 
       const code = uuid.v4();
 
-      const {
-        product,
-        price,
-      } = await this.paymentProvider.createProduct<CreateProductStripeInterface>(
-        {
+      const { product, price, sku } =
+        await this.paymentProvider.createProduct<CreateProductStripeInterface>({
           active: true,
           amount: update_transport_type[0].amount,
           description: `${update_transport_type[0].amount}/km`,
           name: code,
           service_type: ServicesProviderTypesEnum.transports,
-        }
-      );
+        });
 
       Object.assign(details, {
         stripe: {
           product: { id: product.id },
           price: { id: price.id },
+          sku: { id: sku.id },
         },
       });
 
@@ -131,23 +129,22 @@ export class CreateProviderTransportTypesAvailabilitiesService {
       if (product_transport_type) {
         const code = uuid.v4();
 
-        const {
-          product,
-          price,
-        } = await this.paymentProvider.createProduct<CreateProductStripeInterface>(
-          {
-            active: true,
-            amount: product_transport_type.amount,
-            description: `${product_transport_type.amount}/km`,
-            name: code,
-            service_type: ServicesProviderTypesEnum.transports,
-          }
-        );
+        const { product, price, sku } =
+          await this.paymentProvider.createProduct<CreateProductStripeInterface>(
+            {
+              active: true,
+              amount: product_transport_type.amount,
+              description: `${product_transport_type.amount}/km`,
+              name: code,
+              service_type: ServicesProviderTypesEnum.transports,
+            }
+          );
 
         Object.assign(details, {
           stripe: {
             product: { id: product.id },
             price: { id: price.id },
+            sku: { id: sku.id },
           },
         });
       }

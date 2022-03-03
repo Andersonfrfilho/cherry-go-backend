@@ -68,10 +68,10 @@ export class Transport {
   departure_time: Date;
 
   @Column()
-  arrival_time_destination: Date;
+  arrival_time_destination?: Date;
 
   @Column()
-  arrival_time_return: Date;
+  arrival_time_return?: Date;
 
   @Column()
   return_time: Date;

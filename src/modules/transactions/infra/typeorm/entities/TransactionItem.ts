@@ -10,6 +10,10 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+import {
+  LocalCacheData,
+  TransporTypeProviderCacheData,
+} from "@modules/accounts/dtos/services/CreateAppointmentPaymentCard.service.dto";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { ITENS_TYPES_TRANSACTIONS_ENUM } from "@modules/transactions/enums/ItensTypesTransactions.enum";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
@@ -28,7 +32,9 @@ export class TransactionItem {
   transaction?: Transaction;
 
   @Column({ type: "jsonb" })
-  elements?: Partial<Service | Transport>;
+  elements?: Partial<
+    Service | Transport | TransporTypeProviderCacheData | LocalCacheData
+  >;
 
   @Column()
   reference_key?: string;

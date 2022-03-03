@@ -19,7 +19,7 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 import { TransactionItem } from "./TransactionItem";
 
 @Entity("transactions")
-class Transaction {
+export class Transaction {
   @PrimaryGeneratedColumn("uuid")
   id?: string;
 
@@ -66,5 +66,3 @@ class Transaction {
   @DeleteDateColumn()
   deleted_at?: Date;
 }
-
-export { Transaction };

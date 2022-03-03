@@ -2,7 +2,7 @@ import { ChangeStatusAppointmentRepositoryDTO } from "@modules/accounts/dtos/rep
 import { FindByIdsAppointmentProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/FindByIdsAppointmentProvider.repository.dto";
 import { CreateAppointmentProvidersRepositoryDTO } from "@modules/appointments/dtos";
 
-import { AppointmentProvider } from "../infra/typeorm/entities/AppointmentProviders";
+import { AppointmentProvider } from "../infra/typeorm/entities/AppointmentProvider";
 
 export interface AppointmentsProvidersRepositoryInterface {
   create(

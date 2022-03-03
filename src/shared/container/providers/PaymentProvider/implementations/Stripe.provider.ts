@@ -9,9 +9,11 @@ import { ConfirmAccountPaymentDTO } from "../dtos/ConfirmAccountPayment.dto";
 import { CreateAccountBankAccountDTO } from "../dtos/CreateAccountBankAccount.dto";
 import { CreateAccountClientPaymentDTO } from "../dtos/CreateAccountClientPayment.dto";
 import { CreateAccountPaymentDTO } from "../dtos/CreateAccountPayment.dto";
-import { CreateLocalProductDTO } from "../dtos/CreateLocalProduct.dto";
+import { CreateOrderDTO } from "../dtos/CreateOrder.dto";
+import { CreateProductDTO } from "../dtos/CreateProduct.dto";
 import { DeleteAccountBankAccountDTO } from "../dtos/DeleteAccountBankAccount.dto";
 import { DeleteProductDTO } from "../dtos/DeleteProduct.dto";
+import { PaymentOrderDTO } from "../dtos/PaymentOrder.dto";
 import { UpdateAccountClientPaymentDTO } from "../dtos/UpdateAccountClientPayment.dto";
 import { UpdateAccountPaymentDTO } from "../dtos/UpdateAccountPayment.dto";
 import { UpdatePersonAccountPaymentDTO } from "../dtos/UpdatePersonAccountPayment.dto";
@@ -24,6 +26,7 @@ import {
   STRIPE_BUSINESS_PROFILE_CODE_MCC_ENUM,
   STRIPE_BUSINESS_TYPE_ENUM,
   STRIPE_CURRENCY_ENUM,
+  STRIPE_INVENTORY_TYPE_SKU_ENUM,
   STRIPE_PERSON_GENDER_ENUM,
   STRIPE_POLITICAL_EXPOSURE_ENUM,
   STRIPE_TAX_ID_VALUE_ENUM,
@@ -33,6 +36,7 @@ import { PaymentProviderInterface } from "../Payment.provider.interface";
 export interface CreateProductStripeInterface {
   product: Stripe.Response<Stripe.Product>;
   price: Stripe.Response<Stripe.Price>;
+  sku: Stripe.Response<Stripe.Sku>;
 }
 export async function getStripeJS(): Promise<Stripe> {
   const stripe = new Stripe(config.payment.stripe.secret_key, {
@@ -42,6 +46,41 @@ export async function getStripeJS(): Promise<Stripe> {
 }
 
 export class StripeProvider implements PaymentProviderInterface {
+  async paymentOrder<T>({
+    order_stripe_id,
+    card,
+  }: PaymentOrderDTO): Promise<T> {
+    const stripe = await getStripeJS();
+    const token = await stripe.tokens.create({
+      card,
+    });
+
+    const order = await stripe.orders.pay(order_stripe_id, {
+      source: token.id,
+    });
+    return order;
+  }
+
+  async createOrder({
+    customer_stripe_id,
+    itens,
+  }: CreateOrderDTO): Promise<void> {
+    const stripe_itens = itens.map((item) => ({
+      type: "sku",
+      parent: item.stripe.sku.id,
+      currency: STRIPE_CURRENCY_ENUM.brl,
+      amount: item.amount,
+    }));
+
+    const stripe = await getStripeJS();
+
+    await stripe.orders.create({
+      currency: STRIPE_CURRENCY_ENUM.brl,
+      customer: customer_stripe_id,
+      items: stripe_itens,
+    });
+  }
+
   async deleteProduct<T>({
     product_id,
     price_id,
@@ -57,7 +96,7 @@ export class StripeProvider implements PaymentProviderInterface {
     name,
     description,
     service_type,
-  }: CreateLocalProductDTO): Promise<any> {
+  }: CreateProductDTO): Promise<any> {
     const stripe = await getStripeJS();
 
     const product = await stripe.products.create({
@@ -73,9 +112,17 @@ export class StripeProvider implements PaymentProviderInterface {
       product: product.id,
     });
 
+    const sku = await stripe.skus.create({
+      price: amount,
+      currency: STRIPE_CURRENCY_ENUM.brl,
+      inventory: { type: STRIPE_INVENTORY_TYPE_SKU_ENUM.infinite },
+      product: product.id,
+    });
+
     return {
       product,
       price,
+      sku,
     };
   }
 

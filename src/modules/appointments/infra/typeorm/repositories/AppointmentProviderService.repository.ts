@@ -3,10 +3,11 @@ import { getRepository, Repository } from "typeorm";
 import { CreateAppointmentProvidersServiceRepositoryDTO } from "@modules/appointments/dtos";
 import { AppointmentsProvidersServicesRepositoryInterface } from "@modules/appointments/repositories/AppointmentsProvidersServices.repository.interface";
 
-import { AppointmentProviderService } from "../entities/AppointmentsProvidersServices";
+import { AppointmentProviderService } from "../entities/AppointmentsProviderService";
 
 export class AppointmentsProvidersServicesRepository
-  implements AppointmentsProvidersServicesRepositoryInterface {
+  implements AppointmentsProvidersServicesRepositoryInterface
+{
   private repository: Repository<AppointmentProviderService>;
 
   constructor() {

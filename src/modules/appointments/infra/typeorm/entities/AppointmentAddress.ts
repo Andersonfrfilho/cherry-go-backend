@@ -31,6 +31,12 @@ export class AppointmentAddress {
   @JoinColumn({ name: "address_id", referencedColumnName: "id" })
   address: Address;
 
+  @Column()
+  amount: number;
+
+  @Column({ type: "jsonb" })
+  details?: any;
+
   @CreateDateColumn()
   created_at?: Date;
 

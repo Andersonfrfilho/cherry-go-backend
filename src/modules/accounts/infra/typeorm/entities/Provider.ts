@@ -23,7 +23,7 @@ import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
-import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProviders";
+import { AppointmentProvider } from "@modules/appointments/infra/typeorm/entities/AppointmentProvider";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 

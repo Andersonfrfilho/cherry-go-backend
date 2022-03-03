@@ -9,4 +9,5 @@ export enum STATUS_EVENTS_TRANSACTIONS_ENUM {
   PAYMENT = "payment",
   REFUND = "refund",
   PARTIAL = "partial",
+  CREATE = "create",
 }

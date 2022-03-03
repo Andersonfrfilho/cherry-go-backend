@@ -12,7 +12,7 @@ interface TransportDiscount extends Transport {
   increment_amount: number;
 }
 
-export interface CreateAppointmentTransactionsItensRepositoryDTO {
+export interface CreateAppointmentTransactionItemRepositoryDTO {
   transaction_id: string;
   elements: Partial<ServiceDiscount | TransportDiscount>;
   reference_key: string;

@@ -14,19 +14,20 @@ import {
 } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { AppointmentProviderService } from "@modules/appointments/infra/typeorm/entities/AppointmentsProvidersServices";
+import { AppointmentProviderService } from "@modules/appointments/infra/typeorm/entities/AppointmentsProviderService";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 interface ObjectId {
   id: string;
 }
-interface StripeProviderTransportType {
+export interface StripeProviderService {
   product: ObjectId;
   price: ObjectId;
+  sku: ObjectId;
 }
 
 export interface InterfaceDetailsService {
-  stripe: StripeProviderTransportType;
+  stripe: StripeProviderService;
 }
 @Entity("services")
 export class Service {

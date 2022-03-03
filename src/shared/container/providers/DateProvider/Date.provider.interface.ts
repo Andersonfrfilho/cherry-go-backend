@@ -41,4 +41,5 @@ export interface DateProviderInterface {
   defineHourMinutesSecondsMilliseconds(
     data: DefineHourMinutesSecondsMillisecondsDTO
   ): Date;
+  compareIfBetweenEqual(date: Date, start_date: Date, end_date: Date): boolean;
 }

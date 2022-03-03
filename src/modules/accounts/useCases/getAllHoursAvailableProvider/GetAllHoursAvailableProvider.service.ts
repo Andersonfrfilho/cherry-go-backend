@@ -109,7 +109,7 @@ export class GetAllHoursAvailableProviderService {
     }
 
     const available_hours = days_available
-      .map((dayParam, index) =>
+      .map((dayParam) =>
         hours.map((hour) => {
           return {
             hour_id: hour.id,

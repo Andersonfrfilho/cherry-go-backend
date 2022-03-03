@@ -15,7 +15,7 @@ import { Transport } from "@modules/transports/infra/typeorm/entities/Transport"
 
 import { AppointmentAddress } from "./AppointmentAddress";
 import { AppointmentClient } from "./AppointmentClient";
-import { AppointmentProvider } from "./AppointmentProviders";
+import { AppointmentProvider } from "./AppointmentProvider";
 
 @Entity("appointments")
 export class Appointment {

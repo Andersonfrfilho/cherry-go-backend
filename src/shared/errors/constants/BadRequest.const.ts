@@ -60,4 +60,34 @@ export const BAD_REQUEST = {
     status_code,
     code: "0012",
   },
+  PROVIDER_LOCAL_TYPE_NOT_AVAILABLE: {
+    message: "Provider local type not available!",
+    status_code,
+    code: "0013",
+  },
+  PROVIDER_LOCAL_NOT_AVAILABLE: {
+    message: "Provider local not available!",
+    status_code,
+    code: "0014",
+  },
+  PROVIDER_TRANSPORT_TYPE_NOT_AVAILABLE: {
+    message: "Provider transport type not available!",
+    status_code,
+    code: "0015",
+  },
+  PROVIDER_TRANSPORT_NOT_AVAILABLE: {
+    message: "Provider transport not available!",
+    status_code,
+    code: "0016",
+  },
+  PROVIDER_PAYMENT_TYPE_NOT_AVAILABLE: {
+    message: "Provider payment not available!",
+    status_code,
+    code: "0017",
+  },
+  PROVIDER_HOUR_PERIOD_NOT_AVAILABLE: {
+    message: "Provider hour period not available!",
+    status_code,
+    code: "0018",
+  },
 };

@@ -14,6 +14,19 @@ import {
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 
+interface ObjectId {
+  id: string;
+}
+export interface StripeProviderLocal {
+  product: ObjectId;
+  price: ObjectId;
+  sku: ObjectId;
+}
+
+export interface InterfaceDetailsProviderLocal {
+  stripe: StripeProviderLocal;
+}
+
 @Entity("providers_addresses")
 export class ProviderAddress {
   @PrimaryColumn()
@@ -41,7 +54,7 @@ export class ProviderAddress {
   amount: number;
 
   @Column({ type: "jsonb" })
-  details?: any;
+  details?: InterfaceDetailsProviderLocal;
 
   @CreateDateColumn()
   @Exclude()
