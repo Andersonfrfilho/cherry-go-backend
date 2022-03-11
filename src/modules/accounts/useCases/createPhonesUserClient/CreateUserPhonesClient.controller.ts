@@ -18,7 +18,7 @@ class CreateUserPhoneClientController {
       number,
     });
 
-    return response.json(instanceToInstance(user_phones));
+    return response.json(user_phones);
   }
 }
 export { CreateUserPhoneClientController };

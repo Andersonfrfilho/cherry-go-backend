@@ -18,4 +18,9 @@ export const CONFLICT = {
     status_code,
     code: "9003",
   },
+  USER_ALREADY_HAS_A_LINKED_PHONE: {
+    message: "user already has a linked phone!",
+    status_code,
+    code: "9004",
+  },
 };

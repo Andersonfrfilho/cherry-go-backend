@@ -9,14 +9,14 @@ import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthen
 
 const authenticateUsersRoutes = Router();
 
-const createSpecificationController = new AuthenticatedUserController();
+const authenticatedUserController = new AuthenticatedUserController();
 const refreshTokenController = new RefreshTokenController();
 const meUserProfileController = new MeUserProfileController();
 
 authenticateUsersRoutes.post(
   "/sessions",
   schemaAuthenticate,
-  createSpecificationController.handle
+  authenticatedUserController.handle
 );
 
 authenticateUsersRoutes.post(

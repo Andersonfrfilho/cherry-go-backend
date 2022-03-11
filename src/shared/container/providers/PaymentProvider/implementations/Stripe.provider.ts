@@ -312,7 +312,7 @@ export class StripeProvider implements PaymentProviderInterface {
     //     owner: true,
     //   },
     //   gender: STRIPE_PERSON_GENDER[gender],
-    //   nationality: NATIONALITY_ISO_3166_2.BR,
+    //   nationality: NATIONALITY_ISO_3166_2_ENUM.BR,
     //   political_exposure: STRIPE_POLITICAL_EXPOSURE.none,
     //   dob: {
     //     // The day of birth, between 1 and 31.

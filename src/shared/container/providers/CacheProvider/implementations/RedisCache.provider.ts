@@ -41,7 +41,7 @@ class RedisCacheProvider implements CacheProviderInterface {
   }
 
   async invalidate(key: string): Promise<void> {
-    console.log(key);
+    await this.client.unlink(key);
   }
 
   async invalidatePrefix(prefix: string): Promise<void> {

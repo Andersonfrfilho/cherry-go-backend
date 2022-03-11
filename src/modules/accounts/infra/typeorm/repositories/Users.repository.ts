@@ -34,6 +34,7 @@ import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 import { ProviderClientRating } from "../entities/ProviderRating";
+import { UserAddress } from "../entities/UsersAddress";
 import { UserTokens } from "../entities/UserTokens";
 
 export class UsersRepository implements UsersRepositoryInterface {
@@ -43,6 +44,7 @@ export class UsersRepository implements UsersRepositoryInterface {
   private repository_users_types_users: Repository<UserTypeUser>;
   private repository_phones: Repository<Phone>;
   private repository_users_phones: Repository<UserPhone>;
+  private repository_users_addresses: Repository<UserAddress>;
   private repository_users_terms_accepts: Repository<UserTermsAccept>;
   private repository_tag: Repository<Tag>;
   private repository_clients_tags: Repository<ClientTag>;
@@ -62,6 +64,23 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_users_tokens = getRepository(UserTokens);
     this.repository_clients_providers_ratings =
       getRepository(ProviderClientRating);
+  }
+  async deleteUserPhones({
+    country_code,
+    ddd,
+    id,
+    number,
+  }: CreateUserPhonesClientRepositoryDTO): Promise<void> {
+    const user_phone = await this.repository_users_phones.findOne({
+      where: { user_id: id },
+    });
+    await this.repository_users_phones.remove(user_phone);
+    const phone = await this.repository_phones.findOne({
+      country_code,
+      ddd,
+      number,
+    });
+    await this.repository_phones.remove(phone);
   }
 
   async ratingProvider({
@@ -250,12 +269,20 @@ export class UsersRepository implements UsersRepositoryInterface {
     active,
   }: UpdateActiveUserRepositoryDTO): Promise<void> {
     const {
-      phones: [{ id: phone_id }],
+      phones: [
+        {
+          phone: { id: phone_id },
+        },
+      ],
     } = await this.repository.findOne(id, {
       relations: ["phones"],
     });
 
-    await this.repository_users_phones.update({ phone_id }, { active });
+    const [phone_user] = await this.repository_users_phones.find({
+      where: { phone_id },
+    });
+
+    await this.repository_users_phones.update(phone_user.id, { active });
   }
 
   async createUserPhones({
@@ -263,32 +290,17 @@ export class UsersRepository implements UsersRepositoryInterface {
     ddd,
     number,
     id,
-  }: CreateUserPhonesClientRepositoryDTO): Promise<User> {
-    const phone_exist = await this.repository_phones.findOne({
-      where: { country_code, ddd, number },
-    });
-
-    const user = await this.repository.findOne(id);
-
-    if (phone_exist) {
-      user.phones = [phone_exist];
-
-      const user_phone = await this.repository.save(user);
-
-      return user_phone;
-    }
-
-    const phone = this.repository_phones.create({
+  }: CreateUserPhonesClientRepositoryDTO): Promise<void> {
+    const phone_create = await this.repository_phones.save({
       country_code,
       ddd,
       number,
     });
 
-    user.phones = [phone];
-
-    await this.repository.save(user);
-
-    return user;
+    await this.repository_users_phones.save({
+      phone_id: phone_create.id,
+      user_id: id,
+    });
   }
 
   async createUserAddress({
@@ -300,21 +312,12 @@ export class UsersRepository implements UsersRepositoryInterface {
     district,
     country,
     city,
-  }: CreateUserAddressClientRepositoryDTO): Promise<User> {
-    const address_exist = await this.repository_address.findOne({
-      where: { street, number, zipcode, city },
-    });
-
-    if (address_exist) {
-      const user_addresses = user;
-      user_addresses.addresses = [address_exist];
-
-      const user_saved = await this.repository.save(user_addresses);
-
-      return user_saved;
-    }
-
-    const address = this.repository_address.create({
+    complement,
+    latitude,
+    longitude,
+    reference,
+  }: CreateUserAddressClientRepositoryDTO): Promise<void> {
+    const address = await this.repository_address.save({
       zipcode,
       street,
       state,
@@ -322,16 +325,16 @@ export class UsersRepository implements UsersRepositoryInterface {
       district,
       country,
       city,
+      complement,
+      latitude,
+      longitude,
+      reference,
     });
 
-    const user_address = this.repository.create({
-      ...user,
-      addresses: [address],
+    await this.repository_users_addresses.save({
+      address_id: address.id,
+      user_id: user.id,
     });
-
-    const user_saved = await this.repository.save(user_address);
-
-    return user_saved;
   }
 
   async createUserClientType({
@@ -408,18 +411,37 @@ export class UsersRepository implements UsersRepositoryInterface {
   }
 
   async findByEmail(email: string): Promise<User> {
-    const [user] = await this.repository.find({
-      where: {
-        email,
-      },
-      take: 1,
-    });
-
-    return user;
+    return this.repository
+      .createQueryBuilder("foundUsers")
+      .andWhere("foundUsers.email like :email", { email })
+      .leftJoinAndSelect("foundUsers.types", "types", "types.active = true")
+      .leftJoinAndSelect("types.user_type", "user_type")
+      .leftJoinAndSelect("foundUsers.phones", "phones")
+      .leftJoinAndSelect("phones.phone", "phone")
+      .leftJoinAndSelect("foundUsers.addresses", "addresses")
+      .leftJoinAndSelect("addresses.address", "address")
+      .leftJoinAndSelect("foundUsers.image_profile", "image_profile")
+      .leftJoinAndSelect("foundUsers.terms", "terms")
+      .leftJoinAndSelect("foundUsers.transactions", "transactions")
+      .leftJoinAndSelect("foundUsers.documents", "documents")
+      .getOne();
   }
 
   async findById(id: string): Promise<User> {
-    return this.repository.findOne(id);
+    return this.repository
+      .createQueryBuilder("foundUsers")
+      .andWhere("foundUsers.id = :id", { id })
+      .leftJoinAndSelect("foundUsers.types", "types", "types.active = true")
+      .leftJoinAndSelect("types.user_type", "user_type")
+      .leftJoinAndSelect("foundUsers.phones", "phones")
+      .leftJoinAndSelect("phones.phone", "phone")
+      .leftJoinAndSelect("foundUsers.addresses", "addresses")
+      .leftJoinAndSelect("addresses.address", "address")
+      .leftJoinAndSelect("foundUsers.image_profile", "image_profile")
+      .leftJoinAndSelect("foundUsers.terms", "terms")
+      .leftJoinAndSelect("foundUsers.transactions", "transactions")
+      .leftJoinAndSelect("foundUsers.documents", "documents")
+      .getOne();
   }
 
   async findByIdWithDocument(id: string): Promise<User> {

@@ -23,15 +23,15 @@ class UserPhone {
   @Column()
   user_id: string;
 
-  @ManyToOne(() => User, { eager: true })
-  @JoinColumn({ name: "user_id" })
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
   user: User;
 
   @Column()
   phone_id: string;
 
   @ManyToOne(() => Phone, { eager: true })
-  @JoinColumn({ name: "phone_id" })
+  @JoinColumn({ name: "phone_id", referencedColumnName: "id" })
   phone: Phone;
 
   @Column("boolean", { default: false })

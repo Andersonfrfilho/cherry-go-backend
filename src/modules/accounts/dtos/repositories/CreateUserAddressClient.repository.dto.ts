@@ -9,4 +9,8 @@ export interface CreateUserAddressClientRepositoryDTO {
   city: string;
   state: string;
   country: string;
+  latitude: string;
+  longitude: string;
+  complement: string;
+  reference: string;
 }

@@ -1,9 +1,10 @@
-import { Exclude } from "class-transformer";
+import { Exclude, Expose } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  getRepository,
   Index,
   JoinTable,
   ManyToMany,
@@ -12,6 +13,7 @@ import {
 } from "typeorm";
 
 import { User } from "./User";
+import { UserPhone } from "./UserPhone";
 
 @Entity("phones")
 @Index(["country_code", "ddd", "number"])
@@ -47,6 +49,14 @@ class Phone {
   @DeleteDateColumn()
   @Exclude()
   deleted_at?: Date;
+
+  @Expose({ name: "active" })
+  async active?(): Promise<boolean> {
+    const phone_user = await getRepository(UserPhone).findOne({
+      where: { phone_id: this.id },
+    });
+    return phone_user ? phone_user.active : false;
+  }
 }
 
 export { Phone };

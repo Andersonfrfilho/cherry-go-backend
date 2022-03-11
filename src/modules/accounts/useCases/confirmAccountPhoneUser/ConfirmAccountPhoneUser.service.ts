@@ -44,17 +44,14 @@ class ConfirmAccountPhoneUserService {
       auth_secret: auth.secret.refresh,
       token: user_token.refresh_token,
     });
-
     if (!(user_id === sub.user.id)) {
       throw new AppError(METHOD_NOT_ALLOWED.NOT_ALLOWED);
     }
-
     if (
       this.dateProvider.compareIfBefore(user_token.expires_date, new Date())
     ) {
       throw new AppError(UNAUTHORIZED.TOKEN_EXPIRED);
     }
-
     await this.usersTokensRepository.deleteById(user_token.id);
 
     const passed = await this.hashProvider.compareHash(code, sub.code_hash);
@@ -62,12 +59,10 @@ class ConfirmAccountPhoneUserService {
     if (!passed) {
       throw new AppError(UNPROCESSABLE_ENTITY.CODE_INCORRECT);
     }
-
     await this.usersRepository.updateActivePhoneUser({
       id: sub.user.id,
       active: passed,
     });
-
     const user = await this.usersRepository.findById(user_token.user_id);
 
     if (!user) {
@@ -80,14 +75,14 @@ class ConfirmAccountPhoneUserService {
 
     await this.paymentProvider.updateAccountClient({
       external_id: user.details.stripe.customer.id,
-      phone: `${user.phones[0].country_code}${user.phones[0].ddd}${user.phones[0].number}`,
+      phone: `${user.phones[0].phone.country_code}${user.phones[0].phone.ddd}${user.phones[0].phone.number}`,
     });
 
     if (user?.details?.stripe?.account?.id) {
       await this.paymentProvider.updateAccount({
         external_id: user.details.stripe.account.id,
         business_profile: {
-          support_phone: `${user.phones[0].country_code}${user.phones[0].ddd}${user.phones[0].number}`,
+          support_phone: `${user.phones[0].phone.country_code}${user.phones[0].phone.ddd}${user.phones[0].phone.number}`,
         },
       });
     }

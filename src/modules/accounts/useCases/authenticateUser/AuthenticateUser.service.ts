@@ -71,7 +71,7 @@ export class AuthenticateUserService {
           user: {
             id: user.id,
             active: user.active,
-            types: user.types.filter((type) => type.active),
+            types: user.types,
           },
         },
         expiresIn: expires_in.token,
@@ -86,7 +86,7 @@ export class AuthenticateUserService {
           user: {
             id: user.id,
             active: user.active,
-            types: user.types.filter((type) => type.active),
+            types: user.types,
           },
         },
         expiresIn: expires_in.refresh,
@@ -106,7 +106,6 @@ export class AuthenticateUserService {
     return {
       user: {
         ...instanceToInstance(user),
-        types: user.types.filter((type) => type.active),
         documents: {
           front: user.documents.length > 0,
           back: user.documents.length > 0,

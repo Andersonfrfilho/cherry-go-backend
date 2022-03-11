@@ -1,4 +1,4 @@
-import { instanceToInstancestance } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import auth from "@config/auth";
@@ -105,7 +105,7 @@ export class AuthenticateUserProviderService {
     });
 
     return {
-      provider: instanceToInstancestance(provider),
+      provider: instanceToInstance(provider),
       token,
       refresh_token,
     };

@@ -1,4 +1,4 @@
-import { instanceToInstancestance } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 import { injectable } from "tsyringe";
 
 import { DAYS_WEEK_ENUM } from "@modules/accounts/enums/DaysProviders.enum";
@@ -16,7 +16,7 @@ export class GetAvailabilitiesOptionsProviderWorkService {
       day: element,
     }));
     const hours = HOURS_DAYS_ENUM;
-    return instanceToInstancestance({
+    return instanceToInstance({
       days,
       hours,
     });

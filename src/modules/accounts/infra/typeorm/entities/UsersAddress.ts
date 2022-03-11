@@ -20,15 +20,15 @@ class UserAddress {
   @Column()
   user_id: string;
 
-  @ManyToOne(() => User, { eager: true })
-  @JoinColumn({ name: "user_id" })
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
   user: User;
 
   @Column()
   address_id: string;
 
   @ManyToOne(() => Address, { eager: true })
-  @JoinColumn({ name: "address_id" })
+  @JoinColumn({ name: "address_id", referencedColumnName: "id" })
   address: Address;
 
   @CreateDateColumn()

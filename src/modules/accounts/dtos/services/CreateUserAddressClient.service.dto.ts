@@ -7,4 +7,8 @@ export interface CreateUserAddressClientServiceDTO {
   city: string;
   state: string;
   country: string;
+  latitude: string;
+  longitude: string;
+  complement: string;
+  reference: string;
 }

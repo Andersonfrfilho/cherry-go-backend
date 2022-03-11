@@ -11,6 +11,8 @@ import { CreateTagsUsersController } from "@modules/accounts/useCases/createTags
 import { schemaCreateTagsUsersClient } from "@modules/accounts/useCases/createTagsUsersClient/createTagsUsersClient.schema";
 import { CreateUserClientController } from "@modules/accounts/useCases/createUserClient/CreateUserClient.controller";
 import { schemaCreateUserClient } from "@modules/accounts/useCases/createUserClient/createUserClient.schema";
+import { DeletePhonesUserClientController } from "@modules/accounts/useCases/deletePhonesUserClient/DeletePhonesUserClient.controller";
+import { schemaDeleteUserPhoneClient } from "@modules/accounts/useCases/deletePhonesUserClient/deletePhonesUserClient.schema";
 import { GetAllHoursAvailableProviderController } from "@modules/accounts/useCases/getAllHoursAvailableProvider/GetAllHoursAvailableProvider.controller";
 import { schemaGetAllHoursAvailableProvider } from "@modules/accounts/useCases/getAllHoursAvailableProvider/getAllHoursAvailableProvider.schema";
 import { GetDistanceByLocalsController } from "@modules/accounts/useCases/getDistanceByLocals/GetDistanceByLocals.controller";
@@ -54,6 +56,7 @@ const getAllHoursAvailableProviderController =
 const getDistanceByLocalsController = new GetDistanceByLocalsController();
 const createAppointmentPaymentCardController =
   new CreateAppointmentPaymentCardController();
+const deletePhonesUserClientController = new DeletePhonesUserClientController();
 const testeController = new TesteController();
 
 clientsRoutes.post(
@@ -72,6 +75,12 @@ clientsRoutes.post(
   "/phones",
   schemaCreateUserPhoneClient,
   createUserPhoneClientController.handle
+);
+
+clientsRoutes.delete(
+  "/phones",
+  schemaDeleteUserPhoneClient,
+  deletePhonesUserClientController.handle
 );
 
 clientsRoutes.post(

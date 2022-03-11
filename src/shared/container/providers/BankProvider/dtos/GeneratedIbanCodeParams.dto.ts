@@ -1,4 +1,4 @@
-import { NATIONALITY_ISO_3166_2 } from "../../PaymentProvider/enums/stripe.enums";
+import { NATIONALITY_ISO_3166_2_ENUM } from "../../PaymentProvider/enums/stripe.enums";
 
 export enum UserBankTypeEnum {
   C = "C",
@@ -13,7 +13,7 @@ interface UserBank {
 }
 
 export interface GeneratedIbanCodeParams {
-  country_code: NATIONALITY_ISO_3166_2;
+  country_code: NATIONALITY_ISO_3166_2_ENUM;
   ispb_bank: string;
   user: UserBank;
 }

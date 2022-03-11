@@ -14,16 +14,14 @@ import {
 } from "typeorm";
 
 import { DocumentUserImage } from "@modules/accounts/infra/typeorm/entities/DocumentUserImage";
-import { Phone } from "@modules/accounts/infra/typeorm/entities/Phone";
-import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { UserProfileImage } from "@modules/accounts/infra/typeorm/entities/UserProfileImage";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
-import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
-import { Bank } from "@shared/container/providers/BankProvider/dtos/GetAll.dto";
 
+import { UserPhone } from "./UserPhone";
+import { UserAddress } from "./UsersAddress";
 import { UserTypeUser } from "./UserTypeUser";
 
 interface DataBank {
@@ -95,21 +93,15 @@ class User {
   @Column("boolean", { default: false })
   active?: boolean;
 
-  @ManyToMany(() => Phone, { cascade: true, eager: true })
-  @JoinTable({
-    name: "users_phones",
-    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "phone_id", referencedColumnName: "id" }],
+  @OneToMany(() => UserPhone, (userPhone) => userPhone.user, {
+    eager: true,
   })
-  phones?: Phone[];
+  phones?: UserPhone[];
 
-  @ManyToMany(() => Address, { cascade: true, eager: true })
-  @JoinTable({
-    name: "users_addresses",
-    joinColumns: [{ name: "user_id", referencedColumnName: "id" }],
-    inverseJoinColumns: [{ name: "address_id", referencedColumnName: "id" }],
+  @OneToMany(() => UserAddress, (userAddress) => userAddress.user, {
+    eager: true,
   })
-  addresses?: Address[];
+  addresses?: UserAddress[];
 
   @OneToMany(
     () => UserProfileImage,

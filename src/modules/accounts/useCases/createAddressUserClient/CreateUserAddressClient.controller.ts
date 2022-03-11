@@ -1,13 +1,24 @@
-import { instanceToInstancestance } from "class-transformer";
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
 import { CreateUserAddressClientService } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.service";
 
-class CreateUserAddressClientController {
+export class CreateUserAddressClientController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { street, number, zipcode, district, city, state, country, user_id } =
-      request.body;
+    const {
+      street,
+      number,
+      zipcode,
+      district,
+      city,
+      state,
+      country,
+      user_id,
+      latitude,
+      longitude,
+      complement,
+      reference,
+    } = request.body;
     const createUserAddressClientService = container.resolve(
       CreateUserAddressClientService
     );
@@ -21,9 +32,12 @@ class CreateUserAddressClientController {
       city,
       state,
       country,
+      latitude,
+      longitude,
+      complement,
+      reference,
     });
 
-    return response.json(instanceToInstancestance(user_address));
+    return response.json(user_address);
   }
 }
-export { CreateUserAddressClientController };

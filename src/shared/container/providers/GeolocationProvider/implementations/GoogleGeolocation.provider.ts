@@ -26,12 +26,24 @@ import { GeolocationProviderInterface } from "../Geolocation.provider.interface"
 interface ParamsDTO {
   array_components: AddressComponent[];
   name_type: AddressType | GeocodingAddressComponentType | string;
+  name?: "short" | "long";
 }
-function getInformationResultMaps({ name_type, array_components }: ParamsDTO) {
+function getInformationResultMaps({
+  name_type,
+  array_components,
+  name = "long",
+}: ParamsDTO) {
   const result = array_components.find((component) =>
     component.types.some((type) => type === name_type)
   );
-  return result && result.long_name;
+
+  if (result) {
+    if (name === "long") {
+      return result.long_name;
+    }
+    return result.short_name;
+  }
+  return undefined;
 }
 
 @injectable()
@@ -205,6 +217,7 @@ class GoogleGeolocationProvider implements GeolocationProviderInterface {
     const state = getInformationResultMaps({
       name_type: "administrative_area_level_1",
       array_components: data.results[0].address_components,
+      name: "short",
     });
     const country = getInformationResultMaps({
       name_type: "country",

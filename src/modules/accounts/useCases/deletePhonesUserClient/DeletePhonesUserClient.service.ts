@@ -19,15 +19,10 @@ import { QueueProviderInterface } from "@shared/container/providers/QueueProvide
 import { SendSmsDTO } from "@shared/container/providers/SmsProvider/dtos/SendSms.dto";
 import { ENVIRONMENT_TYPE_ENUMS } from "@shared/enums/EnvironmentType.enum";
 import { AppError } from "@shared/errors/AppError";
-import {
-  BAD_REQUEST,
-  CONFLICT,
-  FORBIDDEN,
-  NOT_FOUND,
-} from "@shared/errors/constants";
+import { FORBIDDEN, NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-class CreateUserPhonesClientService {
+export class DeletePhonesUserClientService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
@@ -49,15 +44,11 @@ class CreateUserPhonesClientService {
     country_code,
     number,
     ddd,
-  }: CreateUserPhonesClientServiceRequestDTO): Promise<CreateUserPhonesClientServiceResponseDTO> {
+  }: CreateUserPhonesClientServiceRequestDTO): Promise<void> {
     const user_exist = await this.usersRepository.findById(user_id);
 
     if (!user_exist) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
-    }
-
-    if (user_exist.phones.length > 0) {
-      throw new AppError(CONFLICT.USER_ALREADY_HAS_A_LINKED_PHONE);
     }
 
     const phone = await this.phonesRepository.findPhoneUser({
@@ -66,61 +57,17 @@ class CreateUserPhonesClientService {
       number,
     });
 
-    if (phone && phone.users[0].id) {
-      throw new AppError(FORBIDDEN.PHONE_BELONGS_TO_ANOTHER_USER);
+    if (!phone && !phone.users[0].id) {
+      throw new AppError(NOT_FOUND.PHONE_DOES_NOT_EXIST);
     }
 
-    await this.usersRepository.createUserPhones({
+    await this.usersRepository.deleteUserPhones({
       id: user_id,
       country_code,
       number,
       ddd,
     });
 
-    const code = Object.values(ENVIRONMENT_TYPE_ENUMS).includes(
-      process.env.ENVIRONMENT as ENVIRONMENT_TYPE_ENUMS
-    )
-      ? number.slice(CODE_STAGING_TEST)
-      : faker.phone.phoneNumber("####");
-    const code_hash = await this.hashProvider.generateHash(code);
-    const refresh_token = this.jwtProvider.assign({
-      payload: { email: user_exist.email },
-      secretOrPrivateKey: auth.secret.refresh,
-      options: {
-        expiresIn: auth.expires_in.refresh,
-        subject: {
-          user: {
-            id: user_exist.id,
-            active: user_exist.active,
-            types: user_exist.types,
-          },
-          code_hash,
-        },
-      },
-    });
-    const expires_date = this.dateProvider.addMinutes(
-      config.sms.token.expiration_time
-    );
-    await this.usersTokensRepository.create({
-      refresh_token,
-      user_id: user_exist.id,
-      expires_date,
-    });
-    const message: SendSmsDTO = {
-      to: `${country_code}${ddd}${number}`,
-      from: config.application.name,
-      text: `confirme seu numero com o código: ${code}`,
-    };
-
-    const messages = [];
-    messages.push({ value: JSON.stringify(message) });
-    await this.queueProvider.sendMessage({
-      topic: config.sms.queue.topic,
-      messages,
-    });
-    const user_new_event = await this.usersRepository.findById(user_id);
-
-    return { user: instanceToInstance(user_new_event), token: refresh_token };
+    await this.usersTokensRepository.findByUserAndRemoveTokens(user_id);
   }
 }
-export { CreateUserPhonesClientService };

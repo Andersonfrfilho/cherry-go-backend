@@ -27,8 +27,9 @@ import { UserTokens } from "../infra/typeorm/entities/UserTokens";
 
 export interface UsersRepositoryInterface {
   create(data: CreateUserClientRepositoryDTO): Promise<User>;
-  createUserAddress(data: CreateUserAddressClientRepositoryDTO): Promise<User>;
-  createUserPhones(data: CreateUserPhonesClientRepositoryDTO): Promise<User>;
+  createUserAddress(data: CreateUserAddressClientRepositoryDTO): Promise<void>;
+  createUserPhones(data: CreateUserPhonesClientRepositoryDTO): Promise<void>;
+  deleteUserPhones(data: CreateUserPhonesClientRepositoryDTO): Promise<void>;
   findByEmail(email: string): Promise<User>;
   findByRg(rg: string): Promise<User>;
   findByCpf(cpf: string): Promise<User>;

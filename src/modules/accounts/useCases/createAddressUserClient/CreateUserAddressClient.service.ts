@@ -1,12 +1,10 @@
+import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { CreateUserAddressClientServiceDTO } from "@modules/accounts/dtos";
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
-import { User } from "@sentry/node";
-import {
-  NATIONALITY_ISO_3166_2,
-  STRIPE_BUSINESS_TYPE,
-} from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
+import { NATIONALITY_ISO_3166_2_ENUM } from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
 import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
@@ -28,6 +26,10 @@ export class CreateUserAddressClientService {
     state,
     street,
     zipcode,
+    complement,
+    latitude,
+    longitude,
+    reference,
   }: CreateUserAddressClientServiceDTO): Promise<User> {
     const user_exist = await this.usersRepository.findById(user_id);
 
@@ -35,7 +37,7 @@ export class CreateUserAddressClientService {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    const user = await this.usersRepository.createUserAddress({
+    await this.usersRepository.createUserAddress({
       user: user_exist,
       city,
       country,
@@ -44,19 +46,19 @@ export class CreateUserAddressClientService {
       state,
       street,
       zipcode,
+      complement,
+      latitude,
+      longitude,
+      reference,
     });
 
-    if (!user) {
-      throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
-    }
-
-    if (!user.details.stripe.customer.id) {
+    if (!user_exist.details.stripe.customer.id) {
       throw new AppError(NOT_FOUND.ACCOUNT_PAYMENT_PROVIDER_DOES_NOT_EXIST);
     }
 
     const address = {
       city,
-      country: NATIONALITY_ISO_3166_2.BR,
+      country: NATIONALITY_ISO_3166_2_ENUM.BR,
       line1: street,
       line2: number,
       postal_code: zipcode,
@@ -64,17 +66,19 @@ export class CreateUserAddressClientService {
     };
 
     await this.paymentProvider.updateAccountClient({
-      external_id: user.details.stripe.customer.id,
+      external_id: user_exist.details.stripe.customer.id,
       address,
     });
 
-    if (user.details?.stripe?.account?.id) {
+    if (user_exist.details?.stripe?.account?.id) {
       await this.paymentProvider.updateAccount({
-        external_id: user.details.stripe.account.id,
+        external_id: user_exist.details.stripe.account.id,
         company: { address },
       });
     }
 
-    return user;
+    const user_found = await this.usersRepository.findById(user_id);
+
+    return instanceToInstance(user_found);
   }
 }
