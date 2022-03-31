@@ -38,8 +38,9 @@ export class TransactionEvent {
   @JoinColumn({ name: "transaction_id", referencedColumnName: "id" })
   transaction?: Transaction;
 
-  @OneToMany(() => PaymentType, (payment_type) => payment_type)
-  payments_types?: PaymentType[];
+  @ManyToOne(() => PaymentType)
+  @JoinColumn({ name: "payment_type_id", referencedColumnName: "id" })
+  payment_type?: PaymentType;
 
   @CreateDateColumn()
   created_at?: Date;

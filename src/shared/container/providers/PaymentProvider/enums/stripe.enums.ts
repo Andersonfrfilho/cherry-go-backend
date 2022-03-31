@@ -6,7 +6,10 @@ export enum STRIPE_TAX_ID_VALUE_ENUM {
 export enum STRIPE_ACCOUNT_COUNTRY_ENUM {
   br = "br",
 }
-
+export enum STRIPE_PRODUCT_TYPE_ENUM {
+  good = "good",
+  service = "service",
+}
 export enum STRIPE_ACCOUNT_TYPE_ENUM {
   custom = "custom",
   express = "express",

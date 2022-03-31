@@ -35,7 +35,10 @@ export class UpdateUserDetailsService {
     }
 
     await this.usersRepository.updateDetailsUser({
-      details,
+      details: {
+        ...userExist.details,
+        ...details,
+      },
       id: user_id,
     });
   }

@@ -50,32 +50,48 @@ import { ensureAuthenticatedProvider } from "@shared/infra/http/middlewares/ensu
 
 const providersRoutes = Router();
 const createUserProviderController = new CreateUserProviderController();
-const createUsersTypeProvidersController = new CreateUsersTypeProvidersController();
-const authenticateUserProviderController = new AuthenticateUserProviderController();
+const createUsersTypeProvidersController =
+  new CreateUsersTypeProvidersController();
+const authenticateUserProviderController =
+  new AuthenticateUserProviderController();
 const meProfileUserProviderController = new MeProfileUserProviderController();
-const createProviderTimesAvailabilitiesController = new CreateProviderTimesAvailabilitiesController();
-const createProviderDaysAvailabilitiesController = new CreateProviderDaysAvailabilitiesController();
-const getAvailabilitiesOptionsProviderWorkController = new GetAvailabilitiesOptionsProviderWorkController();
+const createProviderTimesAvailabilitiesController =
+  new CreateProviderTimesAvailabilitiesController();
+const createProviderDaysAvailabilitiesController =
+  new CreateProviderDaysAvailabilitiesController();
+const getAvailabilitiesOptionsProviderWorkController =
+  new GetAvailabilitiesOptionsProviderWorkController();
 const createServiceProviderController = new CreateServiceProviderController();
 const deleteServiceProviderController = new DeleteServiceProviderController();
-const createProvidersPaymentsTypesController = new CreateProvidersPaymentsTypesController();
-const createProviderTransportTypesAvailabilitiesController = new CreateProviderTransportTypesAvailabilitiesController();
-const confirmAppointmentProviderController = new ConfirmAppointmentProviderController();
-const rejectAppointmentProviderController = new RejectAppointmentProviderController();
+const createProvidersPaymentsTypesController =
+  new CreateProvidersPaymentsTypesController();
+const createProviderTransportTypesAvailabilitiesController =
+  new CreateProviderTransportTypesAvailabilitiesController();
+const confirmAppointmentProviderController =
+  new ConfirmAppointmentProviderController();
+const rejectAppointmentProviderController =
+  new RejectAppointmentProviderController();
 const uploadPhotosProviderController = new UploadPhotosProviderController();
 const updatePhotosProviderController = new UpdatePhotosProviderController();
 const deletePhotosProviderController = new DeletePhotosProviderController();
-const deleteProviderTimesAvailabilitiesController = new DeleteProviderTimesAvailabilitiesController();
+const deleteProviderTimesAvailabilitiesController =
+  new DeleteProviderTimesAvailabilitiesController();
 const getAllLocalsController = new GetAllLocalsProvidersController();
 const createLocalProviderController = new CreateLocalProviderController();
 const deleteLocalsProviderController = new DeleteLocalsProviderController();
 const getAllPaymentTypeController = new GetAllPaymentTypeController();
-const updatePaymentAccountPersonController = new UpdatePaymentAccountPersonController();
-const verifyPaymentAccountInfosController = new VerifyPaymentAccountInfosController();
-const createProvidersLocalsTypesController = new CreateProvidersLocalsTypesController();
-const getAllProvidersLocalsTypesController = new GetAllProvidersLocalsTypesController();
-const deleteProvidersLocalsTypesController = new DeleteProvidersLocalsTypesController();
-const setLocationCacheProvidersController = new SetLocationCacheProvidersController();
+const updatePaymentAccountPersonController =
+  new UpdatePaymentAccountPersonController();
+const verifyPaymentAccountInfosController =
+  new VerifyPaymentAccountInfosController();
+const createProvidersLocalsTypesController =
+  new CreateProvidersLocalsTypesController();
+const getAllProvidersLocalsTypesController =
+  new GetAllProvidersLocalsTypesController();
+const deleteProvidersLocalsTypesController =
+  new DeleteProvidersLocalsTypesController();
+const setLocationCacheProvidersController =
+  new SetLocationCacheProvidersController();
 
 const uploadImages = multer(uploadConfig);
 

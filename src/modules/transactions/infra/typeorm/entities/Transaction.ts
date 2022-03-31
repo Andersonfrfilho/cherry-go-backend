@@ -16,6 +16,7 @@ import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 
+import { TransactionEvent } from "./TransactionEvent";
 import { TransactionItem } from "./TransactionItem";
 
 @Entity("transactions")
@@ -56,6 +57,15 @@ export class Transaction {
     eager: true,
   })
   itens?: TransactionItem[];
+
+  @OneToMany(
+    () => TransactionEvent,
+    (transaction_events) => transaction_events.transaction,
+    {
+      eager: true,
+    }
+  )
+  events?: TransactionEvent[];
 
   @CreateDateColumn()
   created_at?: Date;

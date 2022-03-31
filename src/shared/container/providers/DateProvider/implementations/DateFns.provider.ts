@@ -49,6 +49,7 @@ export class DateFnsProvider implements DateProviderInterface {
   getMinute(data: Date): string {
     return getMinutes(data).toString().padStart(2, "0");
   }
+
   getDay(data: Date): number {
     return getDay(data);
   }
@@ -206,7 +207,7 @@ export class DateFnsProvider implements DateProviderInterface {
         hour_final_unavailable,
         minutes_final_unavailable
       );
-      console.log(dateStartUnavailableCompare, dateEndUnavailableCompare);
+
       const dateStartIndex = clone_hours_available.findIndex(
         (hourParam, indexParam) => {
           const [hour_start_available, minutes_start_available] =

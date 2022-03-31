@@ -56,7 +56,7 @@ export class GetDistanceByLocalsService {
       distance_client_local =
         await this.geolocationProvider.getDistanceTwoAddress({
           local_destination: provider.addresses[0],
-          local_initial: user.addresses[0],
+          local_initial: user.addresses[0].address,
           departure_time,
         });
     }
@@ -64,7 +64,7 @@ export class GetDistanceByLocalsService {
     const local_provider = provider.locals_types.find(
       (local_type) =>
         local_type.local_type.toLowerCase() ===
-        LOCALS_TYPES_ENUM.own.toLowerCase()
+        LOCALS_TYPES_ENUM.provider.toLowerCase()
     );
 
     let distance_provider_locals;
@@ -74,7 +74,7 @@ export class GetDistanceByLocalsService {
         return this.geolocationProvider.getDistanceTwoAddress({
           local_destination_identification: local.id,
           local_destination: local.address,
-          local_initial: user.addresses[0],
+          local_initial: user.addresses[0].address,
           departure_time,
         });
       });

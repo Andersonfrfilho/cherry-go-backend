@@ -71,11 +71,21 @@ export const NOT_FOUND = {
   STRIPE_DETAILS_NOT_FOUND: {
     message: "Stripe details not found!",
     status_code,
-    code: "4013",
+    code: "4014",
   },
   DAY_NOT_FOUND: {
     message: "Day not found!",
     status_code,
-    code: "4013",
+    code: "4015",
+  },
+  PAYMENT_TYPES_NOT_FOUND: {
+    message: "Payment types not found!",
+    status_code,
+    code: "4016",
+  },
+  STAGE_APPOINTMENT_NOT_FOUND: {
+    message: "Stage appointment not found!",
+    status_code,
+    code: "4017",
   },
 };

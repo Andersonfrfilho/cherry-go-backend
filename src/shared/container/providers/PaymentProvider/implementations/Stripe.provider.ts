@@ -29,6 +29,7 @@ import {
   STRIPE_INVENTORY_TYPE_SKU_ENUM,
   STRIPE_PERSON_GENDER_ENUM,
   STRIPE_POLITICAL_EXPOSURE_ENUM,
+  STRIPE_PRODUCT_TYPE_ENUM,
   STRIPE_TAX_ID_VALUE_ENUM,
 } from "../enums/stripe.enums";
 import { PaymentProviderInterface } from "../Payment.provider.interface";
@@ -96,20 +97,31 @@ export class StripeProvider implements PaymentProviderInterface {
     name,
     description,
     service_type,
+    type_product = STRIPE_PRODUCT_TYPE_ENUM.service,
   }: CreateProductDTO): Promise<any> {
     const stripe = await getStripeJS();
 
-    const product = await stripe.products.create({
+    const data_product = {
       active,
       name,
-      statement_descriptor: `${service_type} - cherry-go`.substring(0, 22),
       description,
-    });
+      type: type_product,
+    };
+
+    Object.assign(
+      data_product,
+      type_product === STRIPE_PRODUCT_TYPE_ENUM.service && {
+        statement_descriptor: `${service_type} - cherry-go`.substring(0, 22),
+      }
+    );
+
+    const product = await stripe.products.create(data_product);
 
     const price = await stripe.prices.create({
       unit_amount: amount,
       currency: STRIPE_CURRENCY_ENUM.brl,
       product: product.id,
+      active: true,
     });
 
     const sku = await stripe.skus.create({

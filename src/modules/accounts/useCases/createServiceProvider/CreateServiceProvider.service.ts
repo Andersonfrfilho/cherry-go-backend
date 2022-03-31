@@ -5,6 +5,7 @@ import { CreateServiceProviderServiceDTO } from "@modules/accounts/dtos";
 import { ServicesProviderTypesEnum } from "@modules/accounts/enums/ServicesProviderTypes.enum";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { TagsRepositoryInterface } from "@modules/tags/repositories/Tags.repository.interface";
+import { STRIPE_PRODUCT_TYPE_ENUM } from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
 import { CreateProductStripeInterface } from "@shared/container/providers/PaymentProvider/implementations/Stripe.provider";
 import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
@@ -44,6 +45,7 @@ class CreateServiceProviderService {
         description: name,
         name: code,
         service_type: ServicesProviderTypesEnum.services,
+        type_product: STRIPE_PRODUCT_TYPE_ENUM.good,
       });
 
     const details = {
@@ -63,10 +65,12 @@ class CreateServiceProviderService {
       details,
     });
 
-    await this.tagsRepository.createTagService({
-      tags_id,
-      service_id: service.id,
-    });
+    if (tags_id && tags_id.length > 0) {
+      await this.tagsRepository.createTagService({
+        tags_id,
+        service_id: service.id,
+      });
+    }
   }
 }
 export { CreateServiceProviderService };

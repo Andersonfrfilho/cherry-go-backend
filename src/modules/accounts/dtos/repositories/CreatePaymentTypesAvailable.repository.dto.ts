@@ -2,5 +2,6 @@ import { PAYMENT_TYPES_ENUM } from "@modules/transactions/enums/PaymentTypes.enu
 
 export interface CreatePaymentTypesAvailableRepositoryDTO {
   provider_id: string;
-  payments_types: PAYMENT_TYPES_ENUM[];
+  payments_types_id: string;
+  active: boolean;
 }

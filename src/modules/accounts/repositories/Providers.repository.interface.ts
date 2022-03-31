@@ -61,7 +61,7 @@ export interface ProvidersRepositoryInterface {
   ): Promise<Service>;
   deleteServiceProvider(service_id: string): Promise<void>;
   createPaymentTypesAvailable(
-    data: CreatePaymentTypesAvailableRepositoryDTO
+    data: CreatePaymentTypesAvailableRepositoryDTO[]
   ): Promise<void>;
   createTransportTypesAvailable(
     data: CreateTransportTypesAvailableRepositoryDTO

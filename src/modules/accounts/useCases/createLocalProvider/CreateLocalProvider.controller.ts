@@ -17,6 +17,8 @@ export class CreateLocalProviderController {
       state,
       street,
       zipcode,
+      latitude,
+      longitude,
     } = request.body;
 
     const createLocalProviderService = container.resolve(
@@ -35,6 +37,8 @@ export class CreateLocalProviderController {
       state,
       street,
       zipcode,
+      latitude,
+      longitude,
     });
 
     return response.json(locals);

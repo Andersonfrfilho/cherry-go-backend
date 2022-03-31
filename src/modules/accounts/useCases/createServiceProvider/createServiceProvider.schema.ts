@@ -5,7 +5,7 @@ const schemaCreateServiceProvider = celebrate({
     name: Joi.string().required(),
     amount: Joi.string().required(),
     duration: Joi.alternatives().try(Joi.string(), Joi.number()),
-    tags_id: Joi.array().required(),
+    tags_id: Joi.array().optional(),
   },
 });
 

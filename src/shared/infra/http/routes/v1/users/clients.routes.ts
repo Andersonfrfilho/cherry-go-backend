@@ -5,6 +5,7 @@ import { schemaActiveUser } from "@modules/accounts/useCases/activeAccount/activ
 import { CreateUserAddressClientController } from "@modules/accounts/useCases/createAddressUserClient/CreateUserAddressClient.controller";
 import { schemaCreateUserAddressClient } from "@modules/accounts/useCases/createAddressUserClient/createUserAddressClient.schema";
 import { CreateAppointmentPaymentCardController } from "@modules/accounts/useCases/createAppointmentPaymentCard/CreateAppointmentPaymentCard.controller";
+import { CreateClientAppointmentController } from "@modules/accounts/useCases/createClientAppointment/CreateClientAppointment.controller";
 import { schemaCreateUserPhoneClient } from "@modules/accounts/useCases/createPhonesUserClient/createUserPhoneClient.schema";
 import { CreateUserPhoneClientController } from "@modules/accounts/useCases/createPhonesUserClient/CreateUserPhonesClient.controller";
 import { CreateTagsUsersController } from "@modules/accounts/useCases/createTagsUsersClient/CreateTagsUsersClient.controller";
@@ -15,9 +16,11 @@ import { DeletePhonesUserClientController } from "@modules/accounts/useCases/del
 import { schemaDeleteUserPhoneClient } from "@modules/accounts/useCases/deletePhonesUserClient/deletePhonesUserClient.schema";
 import { GetAllHoursAvailableProviderController } from "@modules/accounts/useCases/getAllHoursAvailableProvider/GetAllHoursAvailableProvider.controller";
 import { schemaGetAllHoursAvailableProvider } from "@modules/accounts/useCases/getAllHoursAvailableProvider/getAllHoursAvailableProvider.schema";
+import { GetAppointmentsController } from "@modules/accounts/useCases/getAppointments/GetAppointments.controller";
 import { GetDistanceByLocalsController } from "@modules/accounts/useCases/getDistanceByLocals/GetDistanceByLocals.controller";
 import { schemaGetDistanceByLocals } from "@modules/accounts/useCases/getDistanceByLocals/getDistanceByLocals.schema";
 import { GetProvidersController } from "@modules/accounts/useCases/getProviders/GetProviders.controller";
+import { schemaGetProviders } from "@modules/accounts/useCases/getProviders/getProviders.schema";
 import { GetStageAppointmentClientController } from "@modules/accounts/useCases/getStageAppointmentClient/GetStageAppointmentClient.controller";
 import { InvalidateStageAppointmentClientController } from "@modules/accounts/useCases/invalidateStageAppointmentClient/InvalidateStageAppointmentClient.controller";
 import { RatingProvidersController } from "@modules/accounts/useCases/ratingProviders/RatingProviders.controller";
@@ -58,6 +61,9 @@ const createAppointmentPaymentCardController =
   new CreateAppointmentPaymentCardController();
 const deletePhonesUserClientController = new DeletePhonesUserClientController();
 const testeController = new TesteController();
+const createAppointmentClientController =
+  new CreateClientAppointmentController();
+const getAppointmentsController = new GetAppointmentsController();
 
 clientsRoutes.post(
   "/",
@@ -112,7 +118,7 @@ clientsRoutes.put(
 clientsRoutes.get(
   "/providers/available",
   ensureAuthenticated,
-  // schemaGetProviders,
+  schemaGetProviders,
   getProvidersController.handle
 );
 
@@ -154,6 +160,12 @@ clientsRoutes.get(
   getStageAppointmentClientController.handle
 );
 
+clientsRoutes.post(
+  "/appointment",
+  ensureAuthenticated,
+  createAppointmentClientController.handle
+);
+
 clientsRoutes.get(
   "/provider/available/hours",
   ensureAuthenticated,
@@ -168,6 +180,11 @@ clientsRoutes.post(
   getDistanceByLocalsController.handle
 );
 
+clientsRoutes.get(
+  "/appointments",
+  ensureAuthenticated,
+  getAppointmentsController.handle
+);
 clientsRoutes.get("/test", testeController.handle);
 
 export { clientsRoutes };

@@ -7,6 +7,7 @@ class CreateProviderDaysAvailabilitiesController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
     const { days } = request.body;
+
     const createProviderDaysAvailabilityService = container.resolve(
       CreateProviderDaysAvailabilitiesService
     );

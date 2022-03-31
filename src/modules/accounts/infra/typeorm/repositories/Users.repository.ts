@@ -1,3 +1,4 @@
+import { Order } from "aws-sdk/clients/mediaconvert";
 import { getRepository, Repository } from "typeorm";
 
 import {
@@ -16,6 +17,8 @@ import {
 } from "@modules/accounts/dtos";
 import { UserTags } from "@modules/accounts/dtos/repositories/CreateTagsUsersClient.repository.dto";
 import {
+  ORDER_ENUM,
+  PaginationGenericPropsDTO,
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
 } from "@modules/accounts/dtos/repositories/PaginationProps.dto";
@@ -31,11 +34,21 @@ import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTe
 import { UserTypeUser } from "@modules/accounts/infra/typeorm/entities/UserTypeUser";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
+import { AppointmentClient } from "@modules/appointments/infra/typeorm/entities/AppointmentClient";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
 
 import { ProviderClientRating } from "../entities/ProviderRating";
 import { UserAddress } from "../entities/UsersAddress";
 import { UserTokens } from "../entities/UserTokens";
+
+export interface PaginationPropsDTO {
+  per_page?: string;
+  fields?: Partial<User>;
+  page?: string;
+  order?: Order;
+  user_id?: string;
+}
 
 export class UsersRepository implements UsersRepositoryInterface {
   private repository: Repository<User>;
@@ -50,6 +63,8 @@ export class UsersRepository implements UsersRepositoryInterface {
   private repository_clients_tags: Repository<ClientTag>;
   private repository_users_tokens: Repository<UserTokens>;
   private repository_clients_providers_ratings: Repository<ProviderClientRating>;
+  private repository_appointments: Repository<Appointment>;
+  private repository_appointments_clients: Repository<AppointmentClient>;
 
   constructor() {
     this.repository = getRepository(User);
@@ -64,6 +79,45 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_users_tokens = getRepository(UserTokens);
     this.repository_clients_providers_ratings =
       getRepository(ProviderClientRating);
+    this.repository_users_addresses = getRepository(UserAddress);
+    this.repository_appointments = getRepository(Appointment);
+    this.repository_appointments_clients = getRepository(AppointmentClient);
+  }
+  async getAllClientAppointments({
+    id,
+    element_start_position = 0,
+    element_per_page = 20,
+    order = {
+      property: "created_at",
+      ordering: ORDER_ENUM.DESC,
+    },
+  }: PaginationGenericPropsDTO<Appointment>): Promise<[Appointment[], number]> {
+    const providerQuery =
+      this.repository_appointments.createQueryBuilder("foundAppointment");
+
+    providerQuery
+      .leftJoinAndSelect("foundAppointment.clients", "clients")
+      .andWhere("clients.client_id = :client_id", { client_id: id })
+      .leftJoinAndSelect("clients.client", "client")
+      .leftJoinAndSelect("foundAppointment.providers", "providers")
+      .leftJoinAndSelect("providers.provider", "provider")
+      .leftJoinAndSelect("client.image_profile", "image_profile")
+      .leftJoinAndSelect("image_profile.image", "image")
+      .leftJoinAndSelect("foundAppointment.transports", "transports")
+      .leftJoinAndSelect("transports.transport_type", "type")
+      .leftJoinAndSelect("transports.origin_address", "origin")
+      .leftJoinAndSelect("transports.destination_address", "destination")
+      .leftJoinAndSelect("foundAppointment.addresses", "addresses")
+      .leftJoinAndSelect("addresses.address", "address")
+      .leftJoinAndSelect("foundAppointment.transactions", "transactions")
+      .leftJoinAndSelect("transactions.itens", "itens")
+      .leftJoinAndSelect("transactions.events", "events")
+      .leftJoinAndSelect("events.payment_type", "payment_type")
+      .skip(element_start_position)
+      .take(element_per_page)
+      .orderBy(`foundAppointment.${order.property}`, `${order.ordering}`);
+
+    return providerQuery.getManyAndCount();
   }
   async deleteUserPhones({
     country_code,

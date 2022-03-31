@@ -7,6 +7,7 @@ import { ProviderTransportType } from "@modules/accounts/infra/typeorm/entities/
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes.enum";
 import { TransportsRepositoryInterface } from "@modules/transports/repositories/Transports.repository.interface";
+import { STRIPE_PRODUCT_TYPE_ENUM } from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
 import { CreateProductStripeInterface } from "@shared/container/providers/PaymentProvider/implementations/Stripe.provider";
 import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
@@ -100,6 +101,7 @@ export class CreateProviderTransportTypesAvailabilitiesService {
           description: `${update_transport_type[0].amount}/km`,
           name: code,
           service_type: ServicesProviderTypesEnum.transports,
+          type_product: STRIPE_PRODUCT_TYPE_ENUM.good,
         });
 
       Object.assign(details, {
@@ -137,6 +139,7 @@ export class CreateProviderTransportTypesAvailabilitiesService {
               description: `${product_transport_type.amount}/km`,
               name: code,
               service_type: ServicesProviderTypesEnum.transports,
+              type_product: STRIPE_PRODUCT_TYPE_ENUM.good,
             }
           );
 
@@ -170,9 +173,9 @@ export class CreateProviderTransportTypesAvailabilitiesService {
       });
     }
 
-    const provider_new_info = await this.providersRepository.findById(
-      provider_id
-    );
+    const provider_new_info = await this.providersRepository.findById({
+      id: provider_id,
+    });
 
     return provider_new_info.transports_types;
   }

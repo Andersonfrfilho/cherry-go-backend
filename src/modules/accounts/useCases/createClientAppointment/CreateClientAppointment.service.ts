@@ -1,24 +1,18 @@
-import Stripe from "stripe";
 import { inject, injectable } from "tsyringe";
 
 import { AppointmentCacheData } from "@modules/accounts/dtos/services/CreateAppointmentPaymentCard.service.dto";
+import { Appointment } from "@modules/accounts/dtos/services/SetStageAppointmentClient.dto";
 import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
-import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
-import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
-import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
-import { TRANSPORT_TYPES_ENUM } from "@modules/addresses/enums/TransportsTypes.enum";
-import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/Appointments.repository.interface";
 import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
-import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import { BAD_REQUEST, NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
+import { BAD_REQUEST, NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-export class CreateAppointmentPaymentCardService {
+export class CreateClientAppointmentService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
@@ -29,11 +23,9 @@ export class CreateAppointmentPaymentCardService {
     @inject("CacheProvider")
     private cacheProvider: CacheProviderInterface,
     @inject("DateProvider")
-    private dateProvider: DateProviderInterface,
-    @inject("PaymentProvider")
-    private paymentProvider: PaymentProviderInterface
+    private dateProvider: DateProviderInterface
   ) {}
-  async execute(id: string): Promise<void> {
+  async execute(id: string): Promise<Appointment> {
     const client = await this.usersRepository.findById(id);
 
     if (!client) {
@@ -44,6 +36,10 @@ export class CreateAppointmentPaymentCardService {
       await this.cacheProvider.recover<AppointmentCacheData>(
         `clients:${client.id}:appointment`
       );
+
+    if (!appointment_stage_cache) {
+      throw new AppError(NOT_FOUND.STAGE_APPOINTMENT_NOT_FOUND);
+    }
 
     const {
       provider: provider_cache,
@@ -65,6 +61,7 @@ export class CreateAppointmentPaymentCardService {
     if (is_before_now) {
       throw new AppError(BAD_REQUEST.APPOINTMENT_INITIAL_DATE_BEFORE_DATE_NOW);
     }
+
     const provider_found = await this.providersRepository.findById({
       id: provider_cache.id,
       relations: [
@@ -89,13 +86,6 @@ export class CreateAppointmentPaymentCardService {
     if (!services_found) {
       throw new AppError(NOT_FOUND.SERVICE_PROVIDER_DOES_NOT_EXIST);
     }
-
-    const services_stripe = services_cache.map((service) => ({
-      id: service.id,
-      stripe: service.details.stripe,
-    }));
-
-    const stripe_create_order_itens_data = [...services_stripe];
 
     const {
       results: { opens, confirmed },
@@ -156,22 +146,19 @@ export class CreateAppointmentPaymentCardService {
     if (!local_type_found) {
       throw new AppError(BAD_REQUEST.PROVIDER_LOCAL_TYPE_NOT_AVAILABLE);
     }
+
     let local_found;
 
     if (local_type_found.local_type === LOCALS_TYPES_ENUM.provider) {
       local_found = provider_found.locals.some(
         (local_param) => local_param.id === local_cache.id && local_param.active
       );
-      stripe_create_order_itens_data.push({
-        id: local_cache.id,
-        stripe: local_cache.details.stripe,
-        amount: Number(local_cache.amount),
-      });
     } else {
       local_found = client.addresses.some(
         (address_param) => address_param.id === local_cache.id
       );
     }
+
     if (!local_found) {
       throw new AppError(BAD_REQUEST.PROVIDER_LOCAL_NOT_AVAILABLE);
     }
@@ -182,6 +169,7 @@ export class CreateAppointmentPaymentCardService {
         transport_type_param.transport_type.active &&
         transport_type_param.active
     );
+
     if (!transport_type_found) {
       throw new AppError(BAD_REQUEST.PROVIDER_TRANSPORT_NOT_AVAILABLE);
     }
@@ -196,42 +184,20 @@ export class CreateAppointmentPaymentCardService {
       throw new AppError(BAD_REQUEST.PROVIDER_PAYMENT_TYPE_NOT_AVAILABLE);
     }
 
-    // const appointment = await this.appointmentsRepository.transactionCreate({
-    //   initial_date: new Date(hours_cache.start.date),
-    //   final_date: new Date(hours_cache.end.date),
-    //   confirm: false,
-    //   address: local_cache,
-    //   client_id: client.id,
-    //   current_amount: amount,
-    //   original_amount: amount,
-    //   discount_amount: 0,
-    //   increment_amount: 0,
-    //   payment_type: payment_type_cache,
-    //   provider_id: provider_found.id,
-    //   services: services_cache,
-    //   transport_type: transport_type_cache,
-    // });
-
-    if (
-      transport_type_cache.transport_type.name === TRANSPORT_TYPES_ENUM.PROVIDER
-    ) {
-      stripe_create_order_itens_data.push({
-        id: transport_type_cache.id,
-        stripe: transport_type_cache.details.stripe,
-        amount: Number(transport_type_cache.amount),
-      });
-    }
-
-    const order_stripes = await this.paymentProvider.createOrder<
-      Stripe.Response<Stripe.Order>
-    >({
-      itens: stripe_create_order_itens_data,
-      customer_stripe_id: client.details.stripe.customer.id,
+    return this.appointmentsRepository.transactionCreate({
+      initial_date: new Date(hours_cache.start.date),
+      final_date: new Date(hours_cache.end.date),
+      confirm: false,
+      address: local_cache,
+      client_id: client.id,
+      current_amount: amount,
+      original_amount: amount,
+      discount_amount: 0,
+      increment_amount: 0,
+      payment_type: payment_type_cache,
+      provider_id: provider_found.id,
+      services: services_cache,
+      transport_type: transport_type_cache,
     });
-
-    // const order_stripes = await this.paymentProvider.paymentOrder({
-    //   order_stripe_id: order_stripes.id,
-    //   card: JSON.parse(card_cache),
-    // });
   }
 }

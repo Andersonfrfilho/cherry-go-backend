@@ -118,6 +118,7 @@ class CreateUserPhonesClientService {
       topic: config.sms.queue.topic,
       messages,
     });
+
     const user_new_event = await this.usersRepository.findById(user_id);
 
     return { user: instanceToInstance(user_new_event), token: refresh_token };

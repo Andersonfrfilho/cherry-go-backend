@@ -6,6 +6,7 @@ import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
@@ -16,11 +17,14 @@ export interface ProviderGeolocationCache {
   latitude: string;
   longitude: string;
 }
-interface ParamDTO {
-  user_id: string;
+interface GeolocationCurrent {
   latitude: string;
   longitude: string;
-  distance: string;
+}
+interface ParamDTO {
+  user_id: string;
+  distance?: number;
+  location_current?: GeolocationCurrent;
 }
 @injectable()
 export class GetProvidersService {
@@ -32,12 +36,7 @@ export class GetProvidersService {
     @inject("CacheProvider")
     private cacheProvider: CacheProviderInterface
   ) {}
-  async execute({
-    user_id,
-    distance,
-    latitude,
-    longitude,
-  }: ParamDTO): Promise<Provider[]> {
+  async execute({ user_id, distance }: ParamDTO): Promise<Provider[]> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
@@ -45,7 +44,7 @@ export class GetProvidersService {
     }
 
     const providers_found = await this.providersRepository.findByArea({
-      city: user.addresses[0].city,
+      city: user.addresses[0].address.city,
       user_id: user.id,
       distance,
     });

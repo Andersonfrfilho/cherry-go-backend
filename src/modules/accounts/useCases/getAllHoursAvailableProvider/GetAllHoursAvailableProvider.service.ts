@@ -1,3 +1,4 @@
+import getDay from "date-fns/getDay";
 import { inject, injectable } from "tsyringe";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
@@ -63,7 +64,6 @@ export class GetAllHoursAvailableProviderService {
 
     const day = this.dateProvider.getDay(dateFormattedNow);
     const tomorrow = this.dateProvider.getDay(dateFormattedTomorrow);
-
     const appointment_unavailable_hours_now: Appointment = {
       confirm: false,
       initial_date: this.dateProvider.defineHourMinutesSecondsMilliseconds({
@@ -124,17 +124,6 @@ export class GetAllHoursAvailableProviderService {
     const reduce_unavailable_hours =
       this.dateProvider.reduceHours(unavailable_hours);
 
-    // console.log(available_hours);
-    // const rest_available_hours = this.dateProvider.availableHours({
-    //   available_hours,
-    //   unavailable_hours: reduce_unavailable_hours,
-    // });
-    // // paramos aqui
-    // const filtered_hours = this.dateProvider.filterDurationIntervals({
-    //   hours_param: rest_available_hours,
-    //   duration,
-    // });
-    // // console.log(rest_available_hours);
     const hours_available_formatted_by_period =
       this.dateProvider.formattedByPeriod({
         hours_param: available_hours,

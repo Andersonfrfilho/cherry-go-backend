@@ -7,7 +7,7 @@ import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.r
 import { NATIONALITY_ISO_3166_2_ENUM } from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
 import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import { NOT_FOUND } from "@shared/errors/constants";
+import { CONFLICT, NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
 export class CreateUserAddressClientService {
@@ -35,6 +35,10 @@ export class CreateUserAddressClientService {
 
     if (!user_exist) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
+    }
+
+    if (user_exist.addresses && user_exist.addresses.length > 0) {
+      throw new AppError(CONFLICT.USER_ALREADY_HAS_A_LINKED_ADDRESS);
     }
 
     await this.usersRepository.createUserAddress({

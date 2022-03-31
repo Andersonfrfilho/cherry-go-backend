@@ -14,15 +14,16 @@ import {
   UpdateUserDetailsRepositoryDTO,
 } from "@modules/accounts/dtos";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 
 import { UserTags } from "../dtos/repositories/CreateTagsUsersClient.repository.dto";
 import {
+  PaginationGenericPropsDTO,
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
 } from "../dtos/repositories/PaginationProps.dto";
 import { RatingProviderRepositoryDTO } from "../dtos/repositories/RatingProviderRepository.dto";
 import { UpdateUserRepositoryDTO } from "../dtos/repositories/UpdateUser.repository.dto";
+import { Appointment } from "../dtos/services/SetStageAppointmentClient.dto";
 import { UserTokens } from "../infra/typeorm/entities/UserTokens";
 
 export interface UsersRepositoryInterface {
@@ -93,4 +94,7 @@ export interface UsersRepositoryInterface {
     client_id,
     value,
   }: RatingProviderRepositoryDTO): Promise<void>;
+  getAllClientAppointments(
+    data: PaginationGenericPropsDTO<Appointment>
+  ): Promise<[Appointment[], number]>;
 }

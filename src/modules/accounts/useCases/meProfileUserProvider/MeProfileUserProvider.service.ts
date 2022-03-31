@@ -20,8 +20,6 @@ export class MeProfileUserProviderService {
     private providersRepository: ProvidersRepositoryInterface,
     @inject("UsersTokensRepository")
     private usersTokensRepository: UsersTokensRepositoryInterface,
-    @inject("HashProvider")
-    private hashProvider: HashProviderInterface,
     @inject("DateProvider")
     private dateProvider: DateProviderInterface,
     @inject("JwtProvider")
@@ -30,7 +28,7 @@ export class MeProfileUserProviderService {
   async execute(
     id: string
   ): Promise<AuthenticateUserProviderServiceResponseDTO> {
-    const provider = (await this.providersRepository.findById(id)) as Provider;
+    const provider = await this.providersRepository.findById({ id });
 
     const { expires_in, secret } = auth;
 

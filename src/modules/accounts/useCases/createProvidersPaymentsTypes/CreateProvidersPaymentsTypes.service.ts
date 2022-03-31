@@ -4,6 +4,7 @@ import { CreateProvidersPaymentsTypesServiceDTO } from "@modules/accounts/dtos";
 import { ProviderPaymentType } from "@modules/accounts/infra/typeorm/entities/ProviderPaymentType";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { PaymentTypeRepositoryInterface } from "@modules/appointments/repositories/PaymentType.repository.interface";
+import { PAYMENT_TYPES_ENUM } from "@modules/transactions/enums";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
@@ -27,46 +28,56 @@ class CreateProvidersPaymentsTypesService {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
     }
 
-    const payments_types_all =
+    const payments_types_exist_all =
       await this.paymentTypeRepository.getAllPaymentTypes();
-    // checa os existentes
-    const payments_types_excludes = payments_types_all.filter((payment_type) =>
-      payments_types.some(
-        (payment_type_name) => payment_type_name === payment_type.name
-      )
-    );
-    // verificar quais não estão na lista
-    const payments_types_users = provider.payments_types
-      .filter((payment_type_user) =>
-        payments_types_excludes.some(
-          (payment_type_exclude) =>
-            payment_type_exclude.name === payment_type_user.payment_type.name
-        )
-      )
-      .map((payment_type_user) => payment_type_user.id);
 
-    if (payments_types_users.length >= 1) {
-      await this.providersRepository.deletePaymentTypes(payments_types_users);
+    if (!payments_types_exist_all) {
+      throw new AppError(NOT_FOUND.PAYMENT_TYPES_NOT_FOUND);
     }
 
-    const payments_types_includes = payments_types.filter((payment_type) =>
-      provider.payments_types.some(
-        (payment_type_user) =>
-          payment_type_user.payment_type.name !== payment_type
-      )
+    let provider_user_payment_type = payments_types_exist_all.map(
+      (payment_type) => ({
+        payment_type_id: payment_type.id,
+        provider_id: provider.id,
+        active: payments_types.some(
+          (name_payment_type_to_add) =>
+            PAYMENT_TYPES_ENUM[name_payment_type_to_add] === payment_type.name
+        ),
+      })
     );
 
-    if (payments_types_includes.length >= 1) {
-      await this.providersRepository.createPaymentTypesAvailable({
-        provider_id,
-        payments_types,
-      });
+    if (provider.payments_types.length > 0) {
+      provider_user_payment_type = provider.payments_types.map(
+        (payment_type) => {
+          const element = provider_user_payment_type.find(
+            (payment_type_without_provider) =>
+              payment_type_without_provider.payment_type_id ===
+                payment_type.payment_type_id &&
+              payment_type.provider_id ===
+                payment_type_without_provider.provider_id
+          );
+
+          if (element) {
+            return {
+              ...element,
+              id: payment_type.id,
+            };
+          }
+
+          return payment_type;
+        }
+      );
     }
 
-    const provider_payments_types =
-      await this.providersRepository.getAllPaymentTypes(provider_id);
+    await this.providersRepository.createPaymentTypesAvailable(
+      provider_user_payment_type
+    );
 
-    return provider_payments_types;
+    const user_updated = await this.providersRepository.findById({
+      id: provider_id,
+    });
+
+    return user_updated.payments_types;
   }
 }
 export { CreateProvidersPaymentsTypesService };

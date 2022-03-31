@@ -494,21 +494,10 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     });
   }
 
-  async createPaymentTypesAvailable({
-    payments_types,
-    provider_id,
-  }: CreatePaymentTypesAvailableRepositoryDTO): Promise<void> {
-    const payments_types_found = await this.repository_payment_type.find({
-      where: { name: In(payments_types), active: true },
-    });
-
-    await this.repository_provider_payment_type.save(
-      payments_types_found.map((element) => ({
-        payment_type_id: element.id,
-        provider_id,
-        active: true,
-      }))
-    );
+  async createPaymentTypesAvailable(
+    providers_payment_types: CreatePaymentTypesAvailableRepositoryDTO[]
+  ): Promise<void> {
+    await this.repository_provider_payment_type.save(providers_payment_types);
   }
 
   async createServiceProvider({
@@ -552,9 +541,11 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
         provider_id,
       },
     });
-    await this.repository_available_days.delete(
-      days_selects.map((day) => day.id)
-    );
+    if (days_selects.length > 0) {
+      await this.repository_available_days.delete(
+        days_selects.map((day) => day.id)
+      );
+    }
   }
 
   async createTimesAvailable({

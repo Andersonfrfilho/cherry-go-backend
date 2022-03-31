@@ -5,6 +5,7 @@ import { ServicesProviderTypesEnum } from "@modules/accounts/enums/ServicesProvi
 import { ProviderAddress } from "@modules/accounts/infra/typeorm/entities/ProviderAddress";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { AddressesRepositoryInterface } from "@modules/addresses/repositories/Addresses.repository.interface";
+import { STRIPE_PRODUCT_TYPE_ENUM } from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
 import { CreateProductStripeInterface } from "@shared/container/providers/PaymentProvider/implementations/Stripe.provider";
 import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
@@ -81,6 +82,7 @@ export class CreateLocalProviderService {
         description: `${street}, ${number} - ${zipcode}`,
         name: code,
         service_type: ServicesProviderTypesEnum.local,
+        type_product: STRIPE_PRODUCT_TYPE_ENUM.good,
       });
 
     const details = {
