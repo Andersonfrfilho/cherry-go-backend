@@ -19,4 +19,6 @@ export interface TransactionCreateAppointmentRepositoryDTO {
   services: Service[];
   transport_type: TransporTypeProviderCacheData;
   payment_type: PaymentTypeProviderCacheData;
+  duration_total: number;
+  local_type: string;
 }

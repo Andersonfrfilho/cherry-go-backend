@@ -17,6 +17,7 @@ import { TransactionItem } from "@modules/transactions/infra/typeorm/entities/Tr
 import { Transport } from "@modules/transports/infra/typeorm/entities/Transport";
 
 import { AppointmentAddress } from "../entities/AppointmentAddress";
+import { AppointmentLocalType } from "../entities/AppointmentLocalType";
 import { AppointmentProviderService } from "../entities/AppointmentsProviderService";
 
 export class AppointmentsRepository implements AppointmentsRepositoryInterface {
@@ -28,6 +29,8 @@ export class AppointmentsRepository implements AppointmentsRepositoryInterface {
   private repository_transaction_event: Repository<TransactionEvent>;
   private repository_transport: Repository<Transport>;
   private repository_appointment_address: Repository<AppointmentAddress>;
+  private repository_local_type: Repository<AppointmentLocalType>;
+  private repository_appointment_provider_service: Repository<AppointmentProviderService>;
 
   constructor() {
     this.repository = getRepository(Appointment);
@@ -38,6 +41,10 @@ export class AppointmentsRepository implements AppointmentsRepositoryInterface {
     this.repository_transaction_event = getRepository(TransactionEvent);
     this.repository_appointment_address = getRepository(AppointmentAddress);
     this.repository_transport = getRepository(Transport);
+    this.repository_local_type = getRepository(AppointmentLocalType);
+    this.repository_appointment_provider_service = getRepository(
+      AppointmentProviderService
+    );
   }
 
   async findById(id: string): Promise<Appointment> {
@@ -75,12 +82,15 @@ export class AppointmentsRepository implements AppointmentsRepositoryInterface {
     address,
     transport_type,
     payment_type,
+    duration_total,
+    local_type,
   }: TransactionCreateAppointmentRepositoryDTO): Promise<Appointment> {
     return getManager().transaction(async (transactionalEntityManager) => {
       const appointment_entity = this.repository.create({
         confirm,
         initial_date,
         final_date,
+        duration: duration_total,
       });
 
       const appointment = await transactionalEntityManager.save(
@@ -187,6 +197,26 @@ export class AppointmentsRepository implements AppointmentsRepositoryInterface {
       });
 
       await transactionalEntityManager.save(transport_entity);
+
+      const appointment_local_type_entity = this.repository_local_type.create({
+        appointment_id,
+        local_type,
+      });
+
+      await transactionalEntityManager.save(appointment_local_type_entity);
+
+      const appointment_provider_service_entity = services.map((service) => {
+        return this.repository_appointment_provider_service.create({
+          appointment_id,
+          provider_id: service.provider_id,
+          service_id: service.id,
+        });
+      });
+
+      await transactionalEntityManager.save(
+        appointment_provider_service_entity
+      );
+
       return appointment;
     });
   }

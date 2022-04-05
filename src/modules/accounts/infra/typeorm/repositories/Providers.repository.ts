@@ -344,7 +344,9 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       .leftJoinAndSelect("foundAppointment.addresses", "addresses")
       .leftJoinAndSelect("addresses.address", "address")
       .leftJoinAndSelect("foundAppointment.transactions", "transactions")
-      .leftJoinAndSelect("transactions.itens", "itens");
+      .leftJoinAndSelect("transactions.itens", "itens")
+      .leftJoinAndSelect("foundAppointment.services", "services")
+      .leftJoinAndSelect("services.service", "service");
 
     if (created_date) {
       providerQuery.andWhere("foundAppointment.initial_date >= :initial_date", {

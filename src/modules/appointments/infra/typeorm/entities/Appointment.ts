@@ -15,7 +15,9 @@ import { Transport } from "@modules/transports/infra/typeorm/entities/Transport"
 
 import { AppointmentAddress } from "./AppointmentAddress";
 import { AppointmentClient } from "./AppointmentClient";
+import { AppointmentLocalType } from "./AppointmentLocalType";
 import { AppointmentProvider } from "./AppointmentProvider";
+import { AppointmentProviderService } from "./AppointmentsProviderService";
 
 @Entity("appointments")
 export class Appointment {
@@ -27,6 +29,9 @@ export class Appointment {
 
   @Column()
   final_date?: Date;
+
+  @Column()
+  duration?: number;
 
   @Column()
   confirm: boolean;
@@ -48,12 +53,12 @@ export class Appointment {
   @OneToMany(() => Transport, (transports) => transports.appointment)
   transports?: Transport[];
 
-  // @OneToMany(
-  //   () => AppointmentProviderService,
-  //   (appointment_provider_service) => appointment_provider_service.appointment,
-  //   { eager: true }
-  // )
-  // services?: AppointmentProviderService[];
+  @OneToMany(
+    () => AppointmentProviderService,
+    (appointment_provider_service) => appointment_provider_service.appointment,
+    { eager: true }
+  )
+  services?: AppointmentProviderService[];
 
   @OneToMany(
     () => AppointmentAddress,
@@ -66,6 +71,13 @@ export class Appointment {
     eager: true,
   })
   transactions?: Transaction[];
+
+  @OneToMany(
+    () => AppointmentLocalType,
+    (payment_type) => payment_type.appointment,
+    { eager: true }
+  )
+  locals_types: AppointmentLocalType[];
 
   @CreateDateColumn()
   created_at?: Date;

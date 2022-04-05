@@ -86,6 +86,10 @@ export class CreateClientAppointmentService {
     if (!services_found) {
       throw new AppError(NOT_FOUND.SERVICE_PROVIDER_DOES_NOT_EXIST);
     }
+    const duration_total = services_cache.reduce(
+      (accumulator, service) => Number(service.duration) + accumulator,
+      0
+    );
 
     const {
       results: { opens, confirmed },
@@ -198,6 +202,8 @@ export class CreateClientAppointmentService {
       provider_id: provider_found.id,
       services: services_cache,
       transport_type: transport_type_cache,
+      duration_total,
+      local_type: local_type_cache.local_type,
     });
   }
 }
