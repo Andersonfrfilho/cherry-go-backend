@@ -1,6 +1,23 @@
 version: "3.9"
 
 services:
+  cherry-go-api:
+    image: "node"
+    container_name: cherry-go-api
+    command: sh -c "yarn && yarn start:dev"
+    working_dir: /app
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - "3333:3333"
+      - "9231:9229"
+    depends_on:
+      - database_postgres
+      - database_mongo
+      - database_redis
+
   database_postgres:
     image: postgres
     container_name: database_pg

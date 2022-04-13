@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/LocalsTypes.enum";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { PaymentType } from "@modules/appointments/infra/typeorm/entities/PaymentType";

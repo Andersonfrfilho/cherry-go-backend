@@ -1,4 +1,4 @@
-import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/LocalsTypes.enum";
 
 export interface CreateProviderLocalsTypesRepositoryDTO {
   provider_id: string;

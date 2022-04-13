@@ -344,10 +344,18 @@ yarn test:unit "d:/project/cherry-go/src/shared/infra/typeorm/factories/AddressF
  - docker-compose -f .\apache-kafka\docker-compose.yaml up -d
  - docker-compose up -d
 
-
-# Kubernetes
-  -  create a image:
-    -  ```docker build -t cherry-go-backend -f Dockerfile .```
+# Docker
+  - create a image:
+    -  ```docker build -t andersonfrfilho/cherry-go_api_backend:1.0.0 -f Dockerfile .```
+  - create a container:
+    - ```docker run --name cherry-go-backend --network cherry-go-compose_network-cherry-go-local --env-file .env -d andersonfrfilho/cherry-go_api_backend:1.0.0```
+  - push image:
+    - ```docker push andersonfrfilho/cherry-go_api_backend:1.0.0```
   -  docker run cherry-go-backend
-  -  create container --rm remove image
-      - ```docker run -itd --network=cherry-go-backend_network-cherry-go-local -p 3333:3333 --name cherry-go-backend-api andersonfrfilho/cherry-go_api_backend:1.0.0```
+    - ```docker run andersonfrfilho/cherry-go_api_backend:1.0.0```
+# Kubernetes
+
+  -  delete cluster
+      - ``` k3d cluster delete cherry-go-stg-cluster```
+  -  create cluster
+      - ```

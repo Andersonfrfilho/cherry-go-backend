@@ -1,6 +1,6 @@
 import { celebrate, Joi, Segments } from "celebrate";
 
-import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/LocalsTypes.enum";
 
 const schemaCreateProvidersLocalsTypes = celebrate({
   [Segments.BODY]: {

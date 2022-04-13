@@ -1,6 +1,6 @@
 import { DAYS_WEEK_ENUM } from "@modules/accounts/enums/DaysProviders.enum";
 import { GENDERS_ENUM } from "@modules/accounts/enums/GendersUsers.enum";
-import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/LocalsTypes.enum";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { PAYMENT_TYPES_ENUM } from "@modules/transactions/enums";
 

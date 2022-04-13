@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { GetSpecifiesTariffsServices } from "./getSpecifiesTariffs.service";
+import { GetSpecifiesTariffsServices } from "./GetSpecifiesTariffs.service";
 
 export class GetSpecifiesTariffsController {
   async handle(request: Request, response: Response): Promise<Response> {

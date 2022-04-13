@@ -2,7 +2,7 @@ import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { DAYS_WEEK_ENUM } from "@modules/accounts/enums/DaysProviders.enum";
-import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/LocalsTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes.enum";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";

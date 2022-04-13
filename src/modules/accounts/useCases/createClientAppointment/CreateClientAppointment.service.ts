@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { AppointmentCacheData } from "@modules/accounts/dtos/services/CreateAppointmentPaymentCard.service.dto";
 import { Appointment } from "@modules/accounts/dtos/services/SetStageAppointmentClient.dto";
-import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/LocalsTypes.enum";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/Appointments.repository.interface";

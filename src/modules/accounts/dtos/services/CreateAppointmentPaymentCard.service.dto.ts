@@ -1,4 +1,4 @@
-import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/LocalsTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import {
   InterfaceDetailsProviderLocal,

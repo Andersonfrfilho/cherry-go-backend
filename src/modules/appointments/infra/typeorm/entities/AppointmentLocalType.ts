@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/LocalsTypes.enum";
 
 import { Appointment } from "./Appointment";
 

@@ -2,7 +2,7 @@ import Stripe from "stripe";
 import { inject, injectable } from "tsyringe";
 
 import { AppointmentCacheData } from "@modules/accounts/dtos/services/CreateAppointmentPaymentCard.service.dto";
-import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/localsTypes.enum";
+import { LOCALS_TYPES_ENUM } from "@modules/accounts/enums/LocalsTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { Service } from "@modules/accounts/infra/typeorm/entities/Services";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
