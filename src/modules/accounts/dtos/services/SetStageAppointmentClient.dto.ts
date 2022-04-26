@@ -244,7 +244,7 @@ export type ClientAppointment = {
   client: UserClient;
 };
 
-export type Appointment = {
+export type AppointmentSetStage = {
   id: string;
   initial_date: string;
   final_date: string;
@@ -260,9 +260,9 @@ export type Appointment = {
   transactions: Transaction[];
 };
 export type AppointmentsMode = {
-  opens: Appointment[];
-  rejected: Appointment[];
-  confirmed: Appointment[];
+  opens: AppointmentSetStage[];
+  rejected: AppointmentSetStage[];
+  confirmed: AppointmentSetStage[];
 };
 export type Image_Provider = {
   id: string;

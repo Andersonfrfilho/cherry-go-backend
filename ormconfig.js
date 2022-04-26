@@ -1,6 +1,8 @@
 const rootDir = process.env.ENVIRONMENT === 'development'?'./src':'./dist';
 const extension = process.env.ENVIRONMENT === 'development'?'ts':'js';
-
+console.log(rootDir)
+console.log(extension)
+console.log([`${rootDir}/modules/**/infra/typeorm/entities/*.${extension}`])
 module.exports = [
   {
     name: "default",
@@ -11,7 +13,7 @@ module.exports = [
     password: process.env.POSTGRES_PASSWORD || "cherry_go_pwd",
     database: process.env.POSTGRES_DB || "cherry_go",
     migrations: [`${rootDir}/shared/infra/typeorm/migrations/*.${extension}`],
-    entities: [`${rootDir}/modules/**/entities/*.${extension}`],
+    entities: [`${rootDir}/modules/**/infra/typeorm/entities/*.${extension}`],
     cli: {
       migrationsDir: `${rootDir}/shared/infra/typeorm/migrations`,
     },
@@ -25,7 +27,7 @@ module.exports = [
     password: process.env.POSTGRES_PASSWORD || "cherry_go_pwd",
     database: process.env.POSTGRES_DB || "cherry_go",
     migrations: [`${rootDir}/shared/infra/typeorm/seed/*.${extension}`],
-    entities: [`${rootDir}/modules/**/entities/*.${extension}`],
+    entities: [`${rootDir}/modules/**/infra/typeorm/entities/*.${extension}`],
     cli: {
       migrationsDir: `${rootDir}/shared/infra/typeorm/seed`,
     },
@@ -39,7 +41,7 @@ module.exports = [
     password: process.env.POSTGRES_PASSWORD || "cherry_go_pwd",
     database: process.env.POSTGRES_DB || "cherry_go",
     migrations: [`${rootDir}/shared/infra/typeorm/seeds/*.${extension}`],
-    entities: [`${rootDir}/modules/**/entities/*.${extension}`],
+    entities: [`${rootDir}/modules/**/infra/typeorm/entities/*.${extension}`],
     cli: {
       migrationsDir: `${rootDir}/shared/infra/typeorm/seeds`,
     },

@@ -13,17 +13,17 @@ import {
   DeleteTagsUsersClientRepositoryDTO,
   UpdateUserDetailsRepositoryDTO,
 } from "@modules/accounts/dtos";
-import { User } from "@modules/accounts/infra/typeorm/entities/User";
-
-import { UserTags } from "../dtos/repositories/CreateTagsUsersClient.repository.dto";
 import {
   PaginationGenericPropsDTO,
   PaginationPropsDTO,
   PaginationResponsePropsDTO,
-} from "../dtos/repositories/PaginationProps.dto";
+} from "@modules/accounts/dtos/repositories/PaginationProps.dto";
+import { User } from "@modules/accounts/infra/typeorm/entities/User";
+import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
+
+import { UserTags } from "../dtos/repositories/CreateTagsUsersClient.repository.dto";
 import { RatingProviderRepositoryDTO } from "../dtos/repositories/RatingProviderRepository.dto";
 import { UpdateUserRepositoryDTO } from "../dtos/repositories/UpdateUser.repository.dto";
-import { Appointment } from "../dtos/services/SetStageAppointmentClient.dto";
 import { UserTokens } from "../infra/typeorm/entities/UserTokens";
 
 export interface UsersRepositoryInterface {

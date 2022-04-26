@@ -11,5 +11,5 @@ const mailProvider = {
 
 container.registerInstance<MailProviderInterface>(
   "MailProvider",
-  mailProvider[`${process.env.MAIL_PROVIDER}`]
+  container.resolve(EtherealMailProvider)
 );

@@ -1,4 +1,3 @@
-import { Order } from "aws-sdk/clients/mediaconvert";
 import { getRepository, Repository } from "typeorm";
 
 import {
@@ -17,9 +16,9 @@ import {
 } from "@modules/accounts/dtos";
 import { UserTags } from "@modules/accounts/dtos/repositories/CreateTagsUsersClient.repository.dto";
 import {
+  OrderPaginationPropsDTO,
   ORDER_ENUM,
   PaginationGenericPropsDTO,
-  PaginationPropsDTO,
   PaginationResponsePropsDTO,
 } from "@modules/accounts/dtos/repositories/PaginationProps.dto";
 import { RatingProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/RatingProviderRepository.dto";
@@ -46,7 +45,7 @@ export interface PaginationPropsDTO {
   per_page?: string;
   fields?: Partial<User>;
   page?: string;
-  order?: Order;
+  order?: OrderPaginationPropsDTO;
   user_id?: string;
 }
 
@@ -80,17 +79,18 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_clients_providers_ratings =
       getRepository(ProviderClientRating);
     this.repository_users_addresses = getRepository(UserAddress);
-    this.repository_appointments = getRepository(Appointment);
+    this.repository_appointments = getRepository<Appointment>(Appointment);
     this.repository_appointments_clients = getRepository(AppointmentClient);
   }
   async getAllClientAppointments({
     id,
-    element_start_position = 0,
     element_per_page = 20,
+    element_start_position = 0,
     order = {
       property: "created_at",
       ordering: ORDER_ENUM.DESC,
-    },
+    } as OrderPaginationPropsDTO,
+    fields,
   }: PaginationGenericPropsDTO<Appointment>): Promise<[Appointment[], number]> {
     const providerQuery =
       this.repository_appointments.createQueryBuilder("foundAppointment");
@@ -122,6 +122,7 @@ export class UsersRepository implements UsersRepositoryInterface {
 
     return providerQuery.getManyAndCount();
   }
+
   async deleteUserPhones({
     country_code,
     ddd,
@@ -170,7 +171,7 @@ export class UsersRepository implements UsersRepositoryInterface {
     per_page = "10",
     page = "1",
     fields,
-    order = { property: "create_at", ordering: "ASC" },
+    order = { property: "create_at", ordering: ORDER_ENUM.ASC },
   }: PaginationPropsDTO): Promise<PaginationResponsePropsDTO<User>> {
     const page_start = (Number(page) - 1) * Number(per_page);
     const usersQuery = this.repository
