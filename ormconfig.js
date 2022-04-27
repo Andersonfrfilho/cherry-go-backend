@@ -1,8 +1,6 @@
 const rootDir = process.env.ENVIRONMENT === 'development'?'./src':'./dist';
 const extension = process.env.ENVIRONMENT === 'development'?'ts':'js';
-console.log(rootDir)
-console.log(extension)
-console.log([`${rootDir}/modules/**/infra/typeorm/entities/*.${extension}`])
+
 module.exports = [
   {
     name: "default",

@@ -348,7 +348,7 @@ yarn test:unit "d:/project/cherry-go/src/shared/infra/typeorm/factories/AddressF
   - create a image:
     -  ```docker build -t andersonfrfilho/cherry-go_api_backend:1.0.0 -f Dockerfile .```
   - create a container:
-    - ```docker run --name cherry-go-backend --network cherry-go-compose_network-cherry-go-local --env-file .env -d andersonfrfilho/cherry-go_api_backend:1.0.0```
+    - ```docker run --name cherry-go-backend --network cherry-go-compose_network-cherry-go-local --env-file .env -p 192.168.100.12:3333:3333 -d andersonfrfilho/cherry-go_api_backend:1.0.1```
   - push image:
     - ```docker push andersonfrfilho/cherry-go_api_backend:1.0.0```
   -  docker run cherry-go-backend
