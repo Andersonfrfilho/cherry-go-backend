@@ -7,6 +7,7 @@ import { StorageProviderInterface } from "@shared/container/providers/StoragePro
 const diskStorage = {
   local: LocalStorageProvider,
   s3: S3StorageProvider,
+  // digital_ocean: DigitalOceanProvider,
 };
 
 container.registerSingleton<StorageProviderInterface>(

@@ -1,15 +1,15 @@
 import { container } from "tsyringe";
 
-import { EtherealMailProvider } from "@shared/container/providers/MailProvider/implementations/EtherealMail.provider";
-import { SESMailProvider } from "@shared/container/providers/MailProvider/implementations/SESMail.provider";
-import { MailProviderInterface } from "@shared/container/providers/MailProvider/Mail.provider.interface";
+import { IMailProvider } from "@shared/container/providers/MailProvider/IMailProvider";
+import { EtherealMailProvider } from "@shared/container/providers/MailProvider/implementations/EtherealMailProvider";
+import { SESMailProvider } from "@shared/container/providers/MailProvider/implementations/SESMailProvider";
 
 const mailProvider = {
   ethereal: container.resolve(EtherealMailProvider),
   ses: container.resolve(SESMailProvider),
 };
 
-container.registerInstance<MailProviderInterface>(
+container.registerInstance<IMailProvider>(
   "MailProvider",
-  container.resolve(EtherealMailProvider)
+  mailProvider[`${process.env.MAIL_PROVIDER}`]
 );
