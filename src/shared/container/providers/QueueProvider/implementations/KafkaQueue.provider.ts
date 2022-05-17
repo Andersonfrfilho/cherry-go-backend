@@ -1,5 +1,6 @@
 import { Kafka } from "kafkajs";
 
+import { config } from "@config/environment";
 import { QueueSendMessageDTO } from "@shared/container/providers/QueueProvider/dtos";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/Queue.provider.interface";
 
@@ -8,7 +9,7 @@ class KafkaQueueProvider implements QueueProviderInterface {
   constructor() {
     this.client = new Kafka({
       clientId: "api-cherry-go",
-      brokers: ["host.docker.internal:9094"],
+      brokers: [config.queue.broker.base_url],
     });
   }
 
