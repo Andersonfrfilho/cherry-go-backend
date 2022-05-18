@@ -11,19 +11,19 @@ queue:
 .PHONY: queue
 
 database-postgres:
-	docker-compose -p cherry-go-compose up -d database_postgres
+	docker-compose -p cherry-go-compose up -d database-postgres
 .PHONY: database-postgres
 
 database-redis:
-	docker-compose -p cherry-go-compose up -d database_redis
+	docker-compose -p cherry-go-compose up -d database-redis
 .PHONY: database-redis
 
 database-mongo:
-	docker-compose -p cherry-go-compose up -d database_mongo
+	docker-compose -p cherry-go-compose up -d database-mongo
 .PHONY: database-mongo
 
 databases:
-	docker-compose -p cherry-go-compose up -d database_postgres
+	docker-compose -p cherry-go-compose up -d database-postgres
 .PHONY: databases
 
 databases-down:

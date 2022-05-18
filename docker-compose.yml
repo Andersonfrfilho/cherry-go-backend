@@ -18,9 +18,9 @@ services:
       - database_mongo
       - database_redis
 
-  database_postgres:
+  database-postgres:
     image: postgres
-    container_name: database_pg
+    container_name: database-pg
     ports:
       - 5432:5432
     # environment:
@@ -34,9 +34,9 @@ services:
     networks:
       - network-cherry-go-local
 
-  database_mongo:
+  database-mongo:
     image: mongo
-    container_name: database_mongo
+    container_name: database-mongo
     ports:
       - 27017:27017
     volumes:
@@ -44,9 +44,9 @@ services:
     networks:
       - network-cherry-go-local
 
-  database_redis:
+  database-redis:
     image: redis:alpine
-    container_name: database_redis
+    container_name: database-redis
     ports:
       - 6379:6379
     volumes:
