@@ -14,9 +14,9 @@ services:
       - "3333:3333"
       - "9231:9229"
     depends_on:
-      - database_postgres
-      - database_mongo
-      - database_redis
+      - database-postgres
+      - database-mongo
+      - database-redis
 
   database-postgres:
     image: postgres
@@ -31,8 +31,6 @@ services:
       - .env
     volumes:
       - pgdata:/data/postgres
-    networks:
-      - network-cherry-go-local
 
   database-mongo:
     image: mongo
@@ -41,8 +39,6 @@ services:
       - 27017:27017
     volumes:
       - pgmongo:/data/mongo
-    networks:
-      - network-cherry-go-local
 
   database-redis:
     image: redis:alpine
@@ -51,8 +47,6 @@ services:
       - 6379:6379
     volumes:
       - pgredis:/data/redis
-    networks:
-      - network-cherry-go-local
 
 volumes:
   pgdata:
@@ -61,7 +55,3 @@ volumes:
     driver: local
   pgmongo:
     driver: local
-
-networks:
-  network-cherry-go-local:
-      driver: bridge

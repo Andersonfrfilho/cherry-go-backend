@@ -1,5 +1,6 @@
 import { TOPICS_QUEUE_ENUM } from "@shared/container/providers/QueueProvider/topics/sendEmail.topics";
 
+import { version, name } from "../../../package.json";
 import {
   ADDRESS_PROVIDER_ENUM,
   BANK_PROVIDER_ENUM,
@@ -9,11 +10,13 @@ import {
 
 export const production = {
   application: {
-    name: "Cherry-go",
+    name,
+    version,
     minimum_age_required:
       Number(process.env.MINIMUM_AGE_REQUIRED || 18) >= 18
         ? Number(process.env.MINIMUM_AGE_REQUIRED || 18)
         : 18,
+    port: Number(process.env.PORT || 3333),
   },
   providers: {
     max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),

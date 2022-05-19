@@ -54,13 +54,13 @@ export class InsertInfos1622165715932 implements MigrationInterface {
     }
     const user_admin = await getConnection("seed")
       .getRepository(User)
-      .findOne({ where: { email: "admin@cherry-go.love" } });
+      .findOne({ where: { email: "admin@cherry-go.com" } });
     if (!user_admin) {
       const users_factory = new UsersFactory();
       const [user] = users_factory.generate({
         name: "admin",
         last_name: "root",
-        email: "admin@cherry-go.love",
+        email: "admin@cherry-go.com",
         rg: "000000000",
         cpf: "00000000000",
         birth_date: new Date(2021, 5, 1),
