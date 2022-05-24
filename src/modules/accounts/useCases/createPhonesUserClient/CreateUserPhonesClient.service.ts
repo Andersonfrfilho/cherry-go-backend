@@ -19,12 +19,7 @@ import { QueueProviderInterface } from "@shared/container/providers/QueueProvide
 import { SendSmsDTO } from "@shared/container/providers/SmsProvider/dtos/SendSms.dto";
 import { ENVIRONMENT_TYPE_ENUMS } from "@shared/enums/EnvironmentType.enum";
 import { AppError } from "@shared/errors/AppError";
-import {
-  BAD_REQUEST,
-  CONFLICT,
-  FORBIDDEN,
-  NOT_FOUND,
-} from "@shared/errors/constants";
+import { CONFLICT, FORBIDDEN, NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
 class CreateUserPhonesClientService {
@@ -107,13 +102,16 @@ class CreateUserPhonesClientService {
       expires_date,
     });
     const message: SendSmsDTO = {
+      subject: "Confirmação de telefone",
       to: `${country_code}${ddd}${number}`,
       from: config.application.name,
-      text: `confirme seu numero com o código: ${code}`,
+      text: `Cherry-go, confirme seu numero com o código: ${code}`,
     };
 
     const messages = [];
+
     messages.push({ value: JSON.stringify(message) });
+
     await this.queueProvider.sendMessage({
       topic: config.sms.queue.topic,
       messages,

@@ -1,11 +1,11 @@
 import { container } from "tsyringe";
 
 import { config } from "@config/environment";
-import { VonageSmsProvider } from "@shared/container/providers/SmsProvider/implementations/VonageSms.provider";
+import { SnsAwsSmsProvider } from "@shared/container/providers/SmsProvider/implementations/SnsAwsSms.provider";
 import { SmsProviderInterface } from "@shared/container/providers/SmsProvider/Sms.provider.interface";
 
 const smsProvider = {
-  vonage: container.resolve(VonageSmsProvider),
+  sns: container.resolve(SnsAwsSmsProvider),
 };
 
 container.registerInstance<SmsProviderInterface>(

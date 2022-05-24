@@ -71,7 +71,7 @@ export const development = {
   },
   sms: {
     active: Boolean(process.env.SMS_COMMUNICATION) || false,
-    provider: process.env.SMS_PROVIDER || "vonage",
+    provider: process.env.SMS_PROVIDER || "sns",
     api_key: process.env.SMS_API_KEY || "",
     api_secret: process.env.SMS_API_SECRET || "",
     queue: {
