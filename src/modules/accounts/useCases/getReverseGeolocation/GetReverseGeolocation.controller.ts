@@ -5,7 +5,6 @@ import { GetReverseGeolocationService } from "./GetReverseGeolocation.service";
 
 export class GetReverseGeolocationController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { id } = request.user;
     const { latitude, longitude } = request.body;
 
     const getReverseGeolocationService = container.resolve(
@@ -13,7 +12,6 @@ export class GetReverseGeolocationController {
     );
 
     const address = await getReverseGeolocationService.execute({
-      user_id: id,
       latitude,
       longitude,
     });

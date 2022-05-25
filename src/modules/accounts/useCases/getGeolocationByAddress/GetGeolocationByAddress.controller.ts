@@ -5,7 +5,6 @@ import { GetGeolocationByAddressService } from "./GetGeolocationByAddress.servic
 
 export class GetGeolocationByAddressController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { id } = request.user;
     const { address } = request.body;
 
     const getGeolocationByAddressService = container.resolve(
@@ -13,7 +12,6 @@ export class GetGeolocationByAddressController {
     );
 
     const address_result = await getGeolocationByAddressService.execute({
-      user_id: id,
       address,
     });
 

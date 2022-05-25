@@ -11,6 +11,7 @@ import { HashProviderInterface } from "@shared/container/providers/HashProvider/
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN, NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
+import { onlyNumber } from "@utils/onlyNumber";
 
 interface DocumentsAuthResponse {
   front: boolean;
@@ -23,6 +24,8 @@ interface IResponse {
   user: UserAuthResponse;
   token: string;
   refresh_token: string;
+  token_expires_date: number;
+  refresh_token_expires_date: number;
 }
 interface IRequest {
   email: string;
@@ -105,6 +108,9 @@ export class AuthenticateUserService {
       refresh_token,
     });
 
+    const token_day = onlyNumber(expires_in.token);
+    const refresh_token_day = onlyNumber(expires_in.refresh);
+
     return {
       user: {
         ...instanceToInstance(user),
@@ -115,6 +121,8 @@ export class AuthenticateUserService {
       },
       token,
       refresh_token,
+      token_expires_date: Number(token_day) * 24 * 60 * 60,
+      refresh_token_expires_date: Number(refresh_token_day) * 24 * 60 * 60,
     };
   }
 }

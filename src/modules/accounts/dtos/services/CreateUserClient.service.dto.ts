@@ -9,6 +9,6 @@ export interface CreateUserClientServiceDTO {
   gender: string;
   details?: any;
   active?: boolean;
-  term: boolean;
-  term_provider: boolean;
+  term?: boolean;
+  term_provider?: boolean;
 }

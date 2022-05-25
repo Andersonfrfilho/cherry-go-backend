@@ -1,7 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import { verify } from "jsonwebtoken";
 
-import auth from "@config/auth";
+import { config } from "@config/environment";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { AppError } from "@shared/errors/AppError";
 import { FORBIDDEN, UNAUTHORIZED } from "@shared/errors/constants";
@@ -16,7 +16,7 @@ export async function ensureAuthenticatedAdmin(
   next: NextFunction
 ) {
   const authHeader = request.headers.authorization;
-
+  const { auth } = config;
   if (!authHeader) {
     throw new AppError(UNAUTHORIZED.TOKEN_IS_MISSING);
   }

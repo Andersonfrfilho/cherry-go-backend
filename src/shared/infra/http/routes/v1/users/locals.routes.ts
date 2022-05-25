@@ -11,7 +11,8 @@ const localsRoutes = Router();
 
 const getAllLocalsTypesController = new GetAllLocalsTypesController();
 const getReverseGeolocationController = new GetReverseGeolocationController();
-const getGeolocationByAddressController = new GetGeolocationByAddressController();
+const getGeolocationByAddressController =
+  new GetGeolocationByAddressController();
 
 localsRoutes.get(
   "/types",
@@ -21,14 +22,12 @@ localsRoutes.get(
 
 localsRoutes.post(
   "/geolocation/reverse",
-  ensureAuthenticated,
   schemaGetReverseGeolocation,
   getReverseGeolocationController.handle
 );
 
 localsRoutes.post(
   "/geolocation/address",
-  ensureAuthenticated,
   schemaGetGeolocationByAddress,
   getGeolocationByAddressController.handle
 );
