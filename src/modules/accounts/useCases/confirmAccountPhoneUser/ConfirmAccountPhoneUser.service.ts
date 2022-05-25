@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
+import { config } from "@config/environment";
 import { ConfirmAccountPhoneUserServiceDTO } from "@modules/accounts/dtos";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -37,6 +37,7 @@ class ConfirmAccountPhoneUserService {
     token,
     user_id,
   }: ConfirmAccountPhoneUserServiceDTO): Promise<void> {
+    const { auth } = config;
     const user_token = await this.usersTokensRepository.findByRefreshToken(
       token
     );

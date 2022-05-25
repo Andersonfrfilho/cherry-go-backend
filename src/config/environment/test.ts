@@ -25,6 +25,18 @@ export const test = {
   bank: {
     provider: BANK_PROVIDER_ENUM[process.env.BANK_PROVIDER || "local"],
   },
+  auth: {
+    secret: {
+      token: process.env.HASH_TOKEN || "89ba023086e37a345839e0c6a0d272eb",
+      refresh:
+        process.env.HASH_REFRESH_TOKEN || "a7e071b3de48cec1dd24de6cbe6c7bf1",
+    },
+    expires_in: {
+      token: process.env.EXPIRE_IN_TOKEN || "7d",
+      refresh: process.env.EXPIRE_IN_REFRESH_TOKEN || "30d",
+      refresh_days: Number(process.env.DAYS_REFRESH_TOKEN || 30),
+    },
+  },
   providers: {
     max_images_quantity: Number(process.env.PROVIDERS_MAX_IMAGE_QUANTITY || 5),
     ratings: {

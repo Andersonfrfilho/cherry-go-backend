@@ -1,7 +1,6 @@
 import faker from "faker";
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
 import { config } from "@config/environment";
 import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
 import {
@@ -49,7 +48,7 @@ export class CreatePhonesUserInsideService {
       country_code,
       number,
     });
-
+    const { auth } = config;
     if (phone && phone.users[0].id) {
       throw new AppError(FORBIDDEN.PHONE_BELONGS_TO_ANOTHER_USER);
     }

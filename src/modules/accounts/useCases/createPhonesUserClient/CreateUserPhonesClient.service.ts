@@ -2,7 +2,6 @@ import { instanceToInstance } from "class-transformer";
 import faker from "faker";
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
 import { config } from "@config/environment";
 import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
 import {
@@ -46,7 +45,7 @@ class CreateUserPhonesClientService {
     ddd,
   }: CreateUserPhonesClientServiceRequestDTO): Promise<CreateUserPhonesClientServiceResponseDTO> {
     const user_exist = await this.usersRepository.findById(user_id);
-
+    const { auth } = config;
     if (!user_exist) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
@@ -105,7 +104,7 @@ class CreateUserPhonesClientService {
       subject: "Confirmação de telefone",
       to: `${country_code}${ddd}${number}`,
       from: config.application.name,
-      text: `Cherry-go, confirme seu numero com o código: ${code}`,
+      text: `Cherry-go, Confirme seu numero com o código: ${code}`,
     };
 
     const messages = [];

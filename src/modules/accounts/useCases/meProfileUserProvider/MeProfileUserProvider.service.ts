@@ -1,7 +1,7 @@
 import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
+import { config } from "@config/environment";
 import { AuthenticateUserProviderServiceResponseDTO } from "@modules/accounts/dtos";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
@@ -30,7 +30,7 @@ export class MeProfileUserProviderService {
   ): Promise<AuthenticateUserProviderServiceResponseDTO> {
     const provider = await this.providersRepository.findById({ id });
 
-    const { expires_in, secret } = auth;
+    const { expires_in, secret } = config.auth;
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);

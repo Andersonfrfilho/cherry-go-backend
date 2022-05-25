@@ -1,14 +1,6 @@
-import { instanceToInstance } from "class-transformer";
-import faker from "faker";
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
-import { config } from "@config/environment";
-import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
-import {
-  CreateUserPhonesClientServiceRequestDTO,
-  CreateUserPhonesClientServiceResponseDTO,
-} from "@modules/accounts/dtos";
+import { CreateUserPhonesClientServiceRequestDTO } from "@modules/accounts/dtos";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/Phones.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -16,10 +8,8 @@ import { DateProviderInterface } from "@shared/container/providers/DateProvider/
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
 import { QueueProviderInterface } from "@shared/container/providers/QueueProvider/Queue.provider.interface";
-import { SendSmsDTO } from "@shared/container/providers/SmsProvider/dtos/SendSms.dto";
-import { ENVIRONMENT_TYPE_ENUMS } from "@shared/enums/EnvironmentType.enum";
 import { AppError } from "@shared/errors/AppError";
-import { FORBIDDEN, NOT_FOUND } from "@shared/errors/constants";
+import { NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
 export class DeletePhonesUserClientService {

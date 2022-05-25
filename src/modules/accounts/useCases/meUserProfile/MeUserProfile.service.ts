@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
+import { config } from "@config/environment";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -30,7 +30,7 @@ export class MeUserProfileService {
   async execute(id: string): Promise<IResponse> {
     const user = await this.usersRepository.findById(id);
 
-    const { expires_in, secret } = auth;
+    const { expires_in, secret } = config.auth;
 
     if (!user) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);

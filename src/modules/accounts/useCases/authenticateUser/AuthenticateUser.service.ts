@@ -1,7 +1,7 @@
 import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
+import { config } from "@config/environment";
 import { DocumentUserImage } from "@modules/accounts/infra/typeorm/entities/DocumentUserImage";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
@@ -44,7 +44,9 @@ export class AuthenticateUserService {
   ) {}
   async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
-    const { expires_in, secret } = auth;
+    const {
+      auth: { secret, expires_in },
+    } = config;
 
     if (!user) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
@@ -80,7 +82,7 @@ export class AuthenticateUserService {
 
     const refresh_token = this.jwtProvider.assign({
       payload: { email },
-      secretOrPrivateKey: auth.secret.refresh,
+      secretOrPrivateKey: secret.refresh,
       options: {
         subject: {
           user: {

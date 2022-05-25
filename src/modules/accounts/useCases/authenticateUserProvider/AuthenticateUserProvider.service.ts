@@ -1,7 +1,7 @@
 import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
+import { config } from "@config/environment";
 import {
   AuthenticateUserProviderServiceDTO,
   AuthenticateUserProviderServiceResponseDTO,
@@ -43,7 +43,7 @@ export class AuthenticateUserProviderService {
       email
     )) as Provider;
 
-    const { expires_in, secret } = auth;
+    const { expires_in, secret } = config.auth;
 
     if (!provider) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);

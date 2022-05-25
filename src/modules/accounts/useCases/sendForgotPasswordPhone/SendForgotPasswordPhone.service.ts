@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
 import { config } from "@config/environment";
 import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
 import {
@@ -47,7 +46,7 @@ export class SendForgotPasswordPhoneService {
       country_code,
       number,
     });
-
+    const { auth } = config;
     if (!(phone && phone.users[0].id)) {
       throw new AppError(FORBIDDEN.PHONE_BELONGS_TO_ANOTHER_USER);
     }
@@ -88,6 +87,7 @@ export class SendForgotPasswordPhoneService {
       to: `${country_code}${ddd}${number}`,
       from: config.application.name,
       text: `confirme seu numero com o código: ${code}`,
+      subject: "Confirmação de número",
     };
 
     const messages = [];

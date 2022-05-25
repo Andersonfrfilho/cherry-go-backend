@@ -1,7 +1,6 @@
 import faker from "faker";
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
 import { config } from "@config/environment";
 import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
 import {

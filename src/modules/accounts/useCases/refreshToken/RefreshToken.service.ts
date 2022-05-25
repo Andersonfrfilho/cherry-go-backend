@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import auth from "@config/auth";
+import { config } from "@config/environment";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
@@ -22,13 +22,16 @@ class RefreshTokenService {
     private jwtProvider: JwtProviderInterface
   ) {}
   async execute(refresh_token: string): Promise<ITokenResponse> {
+    const { auth } = config;
     const { email, sub } = this.jwtProvider.verifyJwt({
       auth_secret: auth.secret.refresh,
       token: refresh_token,
     });
-    const user_refresh_token = await this.usersTokensRepository.findByUserIdAndRefreshToken(
-      { user_id: sub.user.id, refresh_token }
-    );
+    const user_refresh_token =
+      await this.usersTokensRepository.findByUserIdAndRefreshToken({
+        user_id: sub.user.id,
+        refresh_token,
+      });
 
     if (!user_refresh_token) {
       throw new AppError(NOT_FOUND.REFRESH_TOKEN_DOES_NOT_EXIST);
