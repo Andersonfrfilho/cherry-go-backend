@@ -46,8 +46,12 @@ export const production = {
     time_token_expires: Number(process.env.PASSWORD_TIME_TOKEN_EXPIRED || 30),
   },
   storage: {
-    base_url:
-      process.env.STORAGE_URL || `http://localhost:${process.env.PORT || 3333}`,
+    provider: process.env.STORAGE_PROVIDER || "local",
+    base_url: process.env.STORAGE_URL || `http://localhost:${process.env.PORT}`,
+    api_key: process.env.AWS_BUCKET_ACCESS_KEY_ID || "",
+    api_secret: process.env.AWS_BUCKET_SECRET_ACCESS_KEY || "",
+    bucket_name: process.env.AWS_BUCKET_NAME || "",
+    bucket_region: process.env.AWS_BUCKET_REGION || "",
   },
   appointment: {
     hour_allowed_cancellation: Number(
@@ -64,6 +68,8 @@ export const production = {
   },
   mail: {
     active: Boolean(process.env.MAIL_COMMUNICATION) || false,
+    api_key: process.env.AWS_SMTP_ACCESS_KEY_ID || "",
+    api_secret: process.env.AWS_SMTP_SECRET_ACCESS_KEY || "",
     token: {
       expiration_time:
         Number(process.env.TOKEN_EXPIRATION_TIME_MAIL_CONFIRMATION) || 30,
@@ -105,11 +111,11 @@ export const production = {
   },
   sms: {
     active: Boolean(process.env.SMS_COMMUNICATION) || false,
-    provider: process.env.SMS_PROVIDER || "vonage",
-    api_key: process.env.SMS_API_KEY || "",
-    api_secret: process.env.SMS_API_SECRET || "",
+    provider: process.env.SMS_PROVIDER || "sns",
+    api_key: process.env.AWS_SNS_ACCESS_KEY_ID || "",
+    api_secret: process.env.AWS_SNS_SECRET_ACCESS_KEY || "",
     queue: {
-      topic: TOPICS_QUEUE_ENUM.SEND_SMS || "",
+      topic: TOPICS_QUEUE_ENUM.SEND_SMS || "send-sms",
     },
     token: {
       expiration_time:

@@ -6,7 +6,7 @@ import { USER_DOCUMENT_VALUE_ENUM } from "@modules/accounts/enums/UserDocumentVa
 import { DocumentsUserImageRepositoryInterface } from "@modules/accounts/repositories/DocumentsUserImage.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
-import { STRIPE_PURPOSE_DOCUMENT } from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
+import { STRIPE_PURPOSE_DOCUMENT_ENUM } from "@shared/container/providers/PaymentProvider/enums/stripe.enums";
 import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
 import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/Storage.provider.interface";
@@ -55,7 +55,7 @@ export class CreateDocumentsUsersService {
     }
     const file_stripe = await this.paymentProvider.uploadAccountDocument({
       file_name: document_file,
-      purpose: STRIPE_PURPOSE_DOCUMENT.identity_document,
+      purpose: STRIPE_PURPOSE_DOCUMENT_ENUM.identity_document,
     });
 
     const name = await this.storageProvider.save(
