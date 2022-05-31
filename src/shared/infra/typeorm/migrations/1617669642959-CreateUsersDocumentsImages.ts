@@ -1,7 +1,8 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class CreateUsersDocumentsImages1617669642959
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -65,7 +66,9 @@ export class CreateUsersDocumentsImages1617669642959
             onUpdate: "SET NULL",
           },
         ],
-        indices: [{ columnNames: ["user_id", "value"], isUnique: true }],
+        indices: [
+          { columnNames: ["user_id", "value", "description"], isUnique: true },
+        ],
       })
     );
   }

@@ -31,11 +31,12 @@ export class CreateDocumentsUsersService {
     description,
   }: CreateDocumentsUsersServiceDTO): Promise<void> {
     const user = await this.usersRepository.findByIdWithDocument(user_id);
-    const [front, back] = user.documents;
+    const [front, back, self_front] = user.documents;
 
     const document_side = {
       front,
       back,
+      self_front,
     };
 
     if (document_side[description]) {

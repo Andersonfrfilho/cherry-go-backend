@@ -9,7 +9,7 @@ import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
 @injectable()
-class CreateProfileImageUserService {
+class UpdateProfileImageUserService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
@@ -33,7 +33,11 @@ class CreateProfileImageUserService {
     const [image_profile] = user.image_profile;
 
     if (image_profile) {
-      return;
+      await this.userProfileImageRepository.deleteById(image_profile.id);
+
+      await this.storageProvider.delete(image_profile.image.name, "profiles");
+
+      await this.imagesRepository.deleteById(image_profile.image_id);
     }
 
     const name = await this.storageProvider.save(
@@ -49,4 +53,4 @@ class CreateProfileImageUserService {
     });
   }
 }
-export { CreateProfileImageUserService };
+export { UpdateProfileImageUserService };
