@@ -4,7 +4,7 @@ import { container } from "tsyringe";
 import { UpdateProfileImageUserService } from "@modules/accounts/useCases/updateProfileImageUser/UpdateProfileImageUser.service";
 import { HTTP_STATUS_CODE_SUCCESS_ENUM } from "@shared/infra/http/enums";
 
-export class CreatePhotoProfileUsersController {
+export class UpdateProfileImageUserController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.user;
     const image_profile = request.file.filename;

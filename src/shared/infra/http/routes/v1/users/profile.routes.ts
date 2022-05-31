@@ -3,7 +3,7 @@ import multer from "multer";
 
 import uploadConfig from "@config/upload";
 import { CreatePhotoProfileUsersController } from "@modules/accounts/useCases/createProfileImageUser/CreateProfileImageUser.controller";
-import { UpdatePhotoProfileUsersController } from "@modules/accounts/useCases/updateProfileImageUser/UpdateProfileImageUser.controller";
+import { UpdateProfileImageUserController } from "@modules/accounts/useCases/updateProfileImageUser/UpdateProfileImageUser.controller";
 import { ensureAuthenticated } from "@shared/infra/http/middlewares/ensureAuthenticated";
 
 const uploadDocument = multer(uploadConfig);
@@ -11,7 +11,7 @@ const profileRoutes = Router();
 
 const createPhotoProfileUsersController =
   new CreatePhotoProfileUsersController();
-const updatePhotoProfileUsersController = UpdatePhotoProfileUsersController();
+const updateProfileImageUserController = new UpdateProfileImageUserController();
 
 profileRoutes.use(
   "/images/view",
@@ -30,7 +30,7 @@ profileRoutes.put(
   "/images",
   ensureAuthenticated,
   uploadDocument.single("image_profile"),
-  updatePhotoProfileUsersController.handle
+  updateProfileImageUserController.handle
 );
 
 export { profileRoutes };
