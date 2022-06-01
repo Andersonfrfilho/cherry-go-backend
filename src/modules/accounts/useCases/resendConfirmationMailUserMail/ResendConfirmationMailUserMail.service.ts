@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
@@ -30,7 +31,10 @@ export class ResendConfirmationMailUserMailService {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    await this.usersTokensRepository.findByUserAndRemoveTokens(user.id);
+    await this.usersTokensRepository.deleteByUserIdType({
+      user_id: user.id,
+      type: TYPE_USER_TOKEN_ENUM.PHONE_CONFIRMATION,
+    });
 
     const refresh_token = uuidV4();
 
@@ -38,10 +42,16 @@ export class ResendConfirmationMailUserMailService {
       config.mail.token.expiration_time
     );
 
+    await this.usersTokensRepository.deleteByUserIdType({
+      user_id: user.id,
+      type: TYPE_USER_TOKEN_ENUM.EMAIL_CONFIRMATION,
+    });
+
     await this.usersTokensRepository.create({
       refresh_token,
       user_id: user.id,
       expires_date,
+      type: TYPE_USER_TOKEN_ENUM.EMAIL_CONFIRMATION,
     });
 
     const variables = {

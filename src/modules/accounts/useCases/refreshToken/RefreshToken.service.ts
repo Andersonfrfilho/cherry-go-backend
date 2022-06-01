@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { config } from "@config/environment";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
@@ -56,6 +57,7 @@ class RefreshTokenService {
       expires_date,
       refresh_token: new_refresh_token,
       user_id: sub.user.id,
+      type: TYPE_USER_TOKEN_ENUM.AUTH_SESSION_REFRESH_TOKEN,
     });
 
     const new_token = this.jwtProvider.assign({
@@ -66,6 +68,7 @@ class RefreshTokenService {
         subject: sub,
       },
     });
+
     return {
       refresh_token: new_refresh_token,
       token: new_token,

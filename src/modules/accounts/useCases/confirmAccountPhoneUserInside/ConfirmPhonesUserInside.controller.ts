@@ -10,7 +10,6 @@ export class ConfirmPhonesUserInsideController {
     const confirmAccountPhoneUserInsideService = container.resolve(
       ConfirmPhonesUserInsideService
     );
-
     await confirmAccountPhoneUserInsideService.execute({
       token,
       code,

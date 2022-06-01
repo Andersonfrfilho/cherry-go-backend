@@ -1,8 +1,6 @@
 import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 
-export interface CreateUserTokenRepositoryDTO {
-  user_id?: string;
-  expires_date: Date;
-  refresh_token: string;
+export interface deleteByUserIdType {
   type: TYPE_USER_TOKEN_ENUM;
+  user_id: string;
 }

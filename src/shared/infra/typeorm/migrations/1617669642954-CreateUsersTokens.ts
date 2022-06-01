@@ -18,6 +18,10 @@ export class CreateUsersTokens1617669642954 implements MigrationInterface {
             type: "varchar",
           },
           {
+            name: "type",
+            type: "varchar",
+          },
+          {
             name: "user_id",
             type: "uuid",
           },

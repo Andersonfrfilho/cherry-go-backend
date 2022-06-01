@@ -4,6 +4,7 @@ import { v4 as uuidV4 } from "uuid";
 
 import { config } from "@config/environment";
 import { CreateUserInsideServiceDTO } from "@modules/accounts/dtos";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 import { User } from "@sentry/node";
@@ -50,6 +51,7 @@ export class ResendConfirmationMailUserService {
       refresh_token,
       user_id: user.id,
       expires_date,
+      type: TYPE_USER_TOKEN_ENUM.EMAIL_CONFIRMATION,
     });
 
     const variables = {

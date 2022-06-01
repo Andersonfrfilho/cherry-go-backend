@@ -26,6 +26,13 @@ export const test = {
     bucket_name: process.env.AWS_BUCKET_NAME || "",
     bucket_region: process.env.AWS_BUCKET_REGION || "",
   },
+  phone: {
+    cache: {
+      invalidade: {
+        time: Number(process.env.PHONE_CACHE_INVALIDADE_TIME || 1000 * 60 * 2),
+      },
+    },
+  },
   bank: {
     provider: BANK_PROVIDER_ENUM[process.env.BANK_PROVIDER || "local"],
   },

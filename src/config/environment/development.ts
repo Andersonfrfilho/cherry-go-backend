@@ -18,6 +18,13 @@ export const development = {
         : 18,
     port: Number(process.env.PORT || 3333),
   },
+  phone: {
+    cache: {
+      invalidade: {
+        time: Number(process.env.PHONE_CACHE_INVALIDADE_TIME || 1000 * 60 * 2),
+      },
+    },
+  },
   auth: {
     secret: {
       token: process.env.HASH_TOKEN || "89ba023086e37a345839e0c6a0d272eb",

@@ -45,6 +45,13 @@ export const staging = {
   password: {
     time_token_expires: Number(process.env.PASSWORD_TIME_TOKEN_EXPIRED || 30),
   },
+  phone: {
+    cache: {
+      invalidade: {
+        time: Number(process.env.PHONE_CACHE_INVALIDADE_TIME || 1000 * 60 * 5),
+      },
+    },
+  },
   storage: {
     provider: process.env.STORAGE_PROVIDER || "local",
     base_url: process.env.STORAGE_URL || `http://localhost:${process.env.PORT}`,

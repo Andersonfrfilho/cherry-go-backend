@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { config } from "@config/environment";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -66,6 +67,7 @@ export class MeUserProfileService {
       user_id: user.id,
       expires_date: refresh_token_expires_date,
       refresh_token,
+      type: TYPE_USER_TOKEN_ENUM.AUTH_SESSION_TOKEN,
     });
 
     return {

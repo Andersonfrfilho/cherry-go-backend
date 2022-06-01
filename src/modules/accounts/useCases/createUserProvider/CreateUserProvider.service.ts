@@ -5,6 +5,7 @@ import { v4 as uuidV4 } from "uuid";
 import { config } from "@config/environment";
 import { CreateUserProviderServiceDTO } from "@modules/accounts/dtos/services/CreateUserProviderType.service.dto";
 import { GENDERS_ENUM } from "@modules/accounts/enums/GendersUsers.enum";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -118,6 +119,7 @@ export class CreateUserProviderService {
       refresh_token,
       user_id: user.id,
       expires_date,
+      type: TYPE_USER_TOKEN_ENUM.CREATE_USER_PROVIDER,
     });
 
     const variables = {

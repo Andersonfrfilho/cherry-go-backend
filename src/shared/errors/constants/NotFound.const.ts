@@ -88,4 +88,9 @@ export const NOT_FOUND = {
     status_code,
     code: "4017",
   },
+  PHONE_DOES_RECOVER: {
+    message: "Phone does not recover!",
+    status_code,
+    code: "4018",
+  },
 };

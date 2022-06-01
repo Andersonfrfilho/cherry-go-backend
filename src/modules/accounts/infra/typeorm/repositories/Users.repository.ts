@@ -348,6 +348,7 @@ export class UsersRepository implements UsersRepositoryInterface {
     ddd,
     number,
     id,
+    active = false,
   }: CreateUserPhonesClientRepositoryDTO): Promise<void> {
     const phone_create = await this.repository_phones.save({
       country_code,
@@ -358,6 +359,7 @@ export class UsersRepository implements UsersRepositoryInterface {
     await this.repository_users_phones.save({
       phone_id: phone_create.id,
       user_id: id,
+      active,
     });
   }
 

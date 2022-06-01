@@ -8,17 +8,12 @@ import { DeletePhonesUserClientService } from "./DeletePhonesUserClient.service"
 
 export class DeletePhonesUserClientController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { country_code, ddd, number, user_id } = request.body;
+    const { user_id } = request.body;
     const deletePhonesUserClientService = container.resolve(
       DeletePhonesUserClientService
     );
 
-    await deletePhonesUserClientService.execute({
-      user_id,
-      country_code,
-      ddd,
-      number,
-    });
+    await deletePhonesUserClientService.execute(user_id);
 
     return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();
   }

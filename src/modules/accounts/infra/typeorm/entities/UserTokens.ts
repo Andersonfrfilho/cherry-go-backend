@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
 @Entity("users_tokens")
@@ -23,6 +24,9 @@ class UserTokens {
 
   @Column()
   refresh_token: string;
+
+  @Column({ enum: TYPE_USER_TOKEN_ENUM })
+  type: string;
 
   @Column()
   expires_date: Date;

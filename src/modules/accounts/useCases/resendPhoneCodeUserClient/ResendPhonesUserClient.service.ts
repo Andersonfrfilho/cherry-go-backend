@@ -4,12 +4,16 @@ import { inject, injectable } from "tsyringe";
 import { config } from "@config/environment";
 import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
 import {
+  CreateUserPhonesClientServiceRequestDTO,
   CreateUserPhonesClientServiceResponseDTO,
   ResendPhoneCodeUserClientServiceDTO,
 } from "@modules/accounts/dtos";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/Phones.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
+import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
+import { CLIENT_PHONE_CACHE_KEY } from "@shared/container/providers/CacheProvider/keys/keys.const";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
@@ -35,7 +39,9 @@ class ResendPhoneCodeUserClientService {
     @inject("JwtProvider")
     private jwtProvider: JwtProviderInterface,
     @inject("DateProvider")
-    private dateProvider: DateProviderInterface
+    private dateProvider: DateProviderInterface,
+    @inject("CacheProvider")
+    private cacheProvider: CacheProviderInterface
   ) {}
   async execute({
     user_id,
@@ -46,11 +52,17 @@ class ResendPhoneCodeUserClientService {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
-    if (!(user.phones && user.phones[0] && user.phones[0].number)) {
-      throw new AppError(NOT_FOUND.PHONE_DOES_NOT_EXIST);
+    const key = CLIENT_PHONE_CACHE_KEY(user.id);
+
+    const phone = await this.cacheProvider.recover<
+      Partial<CreateUserPhonesClientServiceRequestDTO>
+    >(key);
+
+    if (!phone) {
+      throw new AppError(NOT_FOUND.PHONE_DOES_RECOVER);
     }
 
-    const { number, country_code, ddd } = user.phones[0];
+    const { number, country_code, ddd } = phone;
 
     const code = Object.values(ENVIRONMENT_TYPE_ENUMS).includes(
       process.env.ENVIRONMENT as ENVIRONMENT_TYPE_ENUMS
@@ -60,7 +72,12 @@ class ResendPhoneCodeUserClientService {
 
     const code_hash = await this.hashProvider.generateHash(code);
 
-    await this.usersTokensRepository.findByUserAndRemoveTokens(user.id);
+    await this.usersTokensRepository.deleteByUserIdType({
+      user_id: user.id,
+      type: TYPE_USER_TOKEN_ENUM.PHONE_CONFIRMATION,
+    });
+
+    const { auth } = config;
 
     const refresh_token = this.jwtProvider.assign({
       payload: { email: user.email },
@@ -82,12 +99,14 @@ class ResendPhoneCodeUserClientService {
       refresh_token,
       user_id: user.id,
       expires_date,
+      type: TYPE_USER_TOKEN_ENUM.PHONE_CONFIRMATION,
     });
 
     const message: SendSmsDTO = {
+      subject: "Confirmação de telefone",
       to: `${country_code}${ddd}${number}`,
       from: config.application.name,
-      text: `confirme seu numero com o código: ${code}`,
+      text: `Cherry-go, confirme seu numero com o código: ${code}`,
     };
 
     const messages = [];

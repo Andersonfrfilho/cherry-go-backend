@@ -4,6 +4,8 @@ import {
   CreateUserTokenRepositoryDTO,
   FindByUserIdAndRefreshTokenRepositoryDTO,
 } from "@modules/accounts/dtos";
+import { deleteByUserIdType } from "@modules/accounts/dtos/repositories/DeleteByUserIdType.repository.interface";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { UserTokens } from "@modules/accounts/infra/typeorm/entities/UserTokens";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
 
@@ -13,6 +15,14 @@ class UsersTokensRepository implements UsersTokensRepositoryInterface {
   constructor() {
     this.repository = getRepository(UserTokens);
   }
+  async deleteByUserIdType({
+    type,
+    user_id,
+  }: deleteByUserIdType): Promise<void> {
+    const user_tokens = await this.repository.find({ type, user_id });
+    await this.repository.remove(user_tokens);
+  }
+
   async findByUserAndRemoveTokens(id: string): Promise<void> {
     const user_tokens = await this.repository.find({ where: { user_id: id } });
 
@@ -42,11 +52,13 @@ class UsersTokensRepository implements UsersTokensRepositoryInterface {
     expires_date,
     refresh_token,
     user_id,
+    type,
   }: CreateUserTokenRepositoryDTO): Promise<UserTokens> {
     const user_token = this.repository.create({
       expires_date,
       refresh_token,
       user_id,
+      type,
     });
     await this.repository.save(user_token);
     return user_token;

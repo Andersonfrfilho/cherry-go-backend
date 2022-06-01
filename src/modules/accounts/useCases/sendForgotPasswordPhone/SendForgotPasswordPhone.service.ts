@@ -6,6 +6,7 @@ import {
   SendForgotPasswordPhoneServiceDTO,
   SendForgotPasswordPhoneServiceResponseDTO,
 } from "@modules/accounts/dtos";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { PhonesRepositoryInterface } from "@modules/accounts/repositories/Phones.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
@@ -81,6 +82,7 @@ export class SendForgotPasswordPhoneService {
       refresh_token,
       user_id: user.id,
       expires_date,
+      type: TYPE_USER_TOKEN_ENUM.FORGOT_PASSWORD,
     });
 
     const message: SendSmsDTO = {

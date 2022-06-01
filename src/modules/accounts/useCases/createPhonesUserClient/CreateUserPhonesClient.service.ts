@@ -8,9 +8,13 @@ import {
   CreateUserPhonesClientServiceRequestDTO,
   CreateUserPhonesClientServiceResponseDTO,
 } from "@modules/accounts/dtos";
-import { PhonesRepositoryInterface } from "@modules/accounts/repositories/Phones.repository.interface";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
+import { UserPhone } from "@modules/accounts/infra/typeorm/entities/UserPhone";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/UsersTokens.repository.interface";
+import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
+import { IOREDIS_EXPIRED_ENUM } from "@shared/container/providers/CacheProvider/ioredis.cache.enums";
+import { CLIENT_PHONE_CACHE_KEY } from "@shared/container/providers/CacheProvider/keys/keys.const";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { HashProviderInterface } from "@shared/container/providers/HashProvider/Hash.provider.interface";
 import { JwtProviderInterface } from "@shared/container/providers/JwtProvider/Jwt.provider.interface";
@@ -25,8 +29,8 @@ class CreateUserPhonesClientService {
   constructor(
     @inject("UsersRepository")
     private usersRepository: UsersRepositoryInterface,
-    @inject("PhonesRepository")
-    private phonesRepository: PhonesRepositoryInterface,
+    @inject("CacheProvider")
+    private cacheProvider: CacheProviderInterface,
     @inject("UsersTokensRepository")
     private usersTokensRepository: UsersTokensRepositoryInterface,
     @inject("QueueProvider")
@@ -45,7 +49,9 @@ class CreateUserPhonesClientService {
     ddd,
   }: CreateUserPhonesClientServiceRequestDTO): Promise<CreateUserPhonesClientServiceResponseDTO> {
     const user_exist = await this.usersRepository.findById(user_id);
+
     const { auth } = config;
+
     if (!user_exist) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
@@ -54,29 +60,29 @@ class CreateUserPhonesClientService {
       throw new AppError(CONFLICT.USER_ALREADY_HAS_A_LINKED_PHONE);
     }
 
-    const phone = await this.phonesRepository.findPhoneUser({
-      ddd,
+    const phone_structure = {
       country_code,
-      number,
-    });
-
-    if (phone && phone.users[0].id) {
-      throw new AppError(FORBIDDEN.PHONE_BELONGS_TO_ANOTHER_USER);
-    }
-
-    await this.usersRepository.createUserPhones({
-      id: user_id,
-      country_code,
-      number,
       ddd,
-    });
+      number,
+    };
+
+    const key = CLIENT_PHONE_CACHE_KEY(user_exist.id);
+
+    await this.cacheProvider.save(
+      key,
+      phone_structure,
+      IOREDIS_EXPIRED_ENUM.EX,
+      config.phone.cache.invalidade.time
+    );
 
     const code = Object.values(ENVIRONMENT_TYPE_ENUMS).includes(
       process.env.ENVIRONMENT as ENVIRONMENT_TYPE_ENUMS
     )
       ? number.slice(CODE_STAGING_TEST)
       : faker.phone.phoneNumber("####");
+
     const code_hash = await this.hashProvider.generateHash(code);
+
     const refresh_token = this.jwtProvider.assign({
       payload: { email: user_exist.email },
       secretOrPrivateKey: auth.secret.refresh,
@@ -92,19 +98,27 @@ class CreateUserPhonesClientService {
         },
       },
     });
+
     const expires_date = this.dateProvider.addMinutes(
       config.sms.token.expiration_time
     );
+    await this.usersTokensRepository.deleteByUserIdType({
+      user_id: user_exist.id,
+      type: TYPE_USER_TOKEN_ENUM.PHONE_CONFIRMATION,
+    });
+
     await this.usersTokensRepository.create({
       refresh_token,
       user_id: user_exist.id,
       expires_date,
+      type: TYPE_USER_TOKEN_ENUM.PHONE_CONFIRMATION,
     });
+
     const message: SendSmsDTO = {
       subject: "Confirmação de telefone",
       to: `${country_code}${ddd}${number}`,
       from: config.application.name,
-      text: `Cherry-go, Confirme seu numero com o código: ${code}`,
+      text: `Cherry-go, confirme seu numero com o código: ${code}`,
     };
 
     const messages = [];
@@ -118,7 +132,15 @@ class CreateUserPhonesClientService {
 
     const user_new_event = await this.usersRepository.findById(user_id);
 
-    return { user: instanceToInstance(user_new_event), token: refresh_token };
+    return {
+      user: {
+        ...instanceToInstance(user_new_event),
+        phones: [
+          { phone: { country_code, ddd, number }, active: false } as UserPhone,
+        ],
+      },
+      token: refresh_token,
+    };
   }
 }
 export { CreateUserPhonesClientService };

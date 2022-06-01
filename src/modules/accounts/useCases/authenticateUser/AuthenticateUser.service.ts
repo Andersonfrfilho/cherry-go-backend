@@ -2,6 +2,7 @@ import { instanceToInstance } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 
 import { config } from "@config/environment";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { DocumentUserImage } from "@modules/accounts/infra/typeorm/entities/DocumentUserImage";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
@@ -101,11 +102,16 @@ export class AuthenticateUserService {
     const refresh_token_expires_date = this.dateProvider.addDays(
       expires_in.refresh_days
     );
+    await this.usersTokensRepository.deleteByUserIdType({
+      user_id: user.id,
+      type: TYPE_USER_TOKEN_ENUM.AUTH_SESSION_TOKEN,
+    });
 
     await this.usersTokensRepository.create({
       user_id: user.id,
       expires_date: refresh_token_expires_date,
       refresh_token,
+      type: TYPE_USER_TOKEN_ENUM.AUTH_SESSION_TOKEN,
     });
 
     const token_day = onlyNumber(expires_in.token);

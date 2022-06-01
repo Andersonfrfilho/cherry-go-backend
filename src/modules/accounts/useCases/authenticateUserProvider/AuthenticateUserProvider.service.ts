@@ -6,6 +6,7 @@ import {
   AuthenticateUserProviderServiceDTO,
   AuthenticateUserProviderServiceResponseDTO,
 } from "@modules/accounts/dtos";
+import { TYPE_USER_TOKEN_ENUM } from "@modules/accounts/enums/TypeUserToken.enum";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Providers.repository.interface";
@@ -102,6 +103,7 @@ export class AuthenticateUserProviderService {
       user_id: provider.id,
       expires_date: refresh_token_expires_date,
       refresh_token,
+      type: TYPE_USER_TOKEN_ENUM.AUTH_SESSION_TOKEN,
     });
 
     return {

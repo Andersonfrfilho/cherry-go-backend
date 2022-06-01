@@ -5,12 +5,7 @@ import { UsersTokensRepositoryInterface } from "@modules/accounts/repositories/U
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { PaymentProviderInterface } from "@shared/container/providers/PaymentProvider/Payment.provider.interface";
 import { AppError } from "@shared/errors/AppError";
-import {
-  BAD_REQUEST,
-  FORBIDDEN,
-  NOT_FOUND,
-  UNAUTHORIZED,
-} from "@shared/errors/constants";
+import { NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
 
 @injectable()
 class ConfirmAccountMailUserService {
@@ -65,6 +60,8 @@ class ConfirmAccountMailUserService {
         email: user.email,
       });
     }
+
+    await this.usersTokensRepository.deleteById(user_token.id);
   }
 }
 export { ConfirmAccountMailUserService };

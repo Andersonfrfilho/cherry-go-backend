@@ -10,9 +10,7 @@ class ConfirmAccountPhoneUserController {
     const confirmAccountPhoneUserService = container.resolve(
       ConfirmAccountPhoneUserService
     );
-
     await confirmAccountPhoneUserService.execute({ token, code, user_id });
-
     return response.status(HTTP_STATUS_CODE_SUCCESS_ENUM.NO_CONTENT).send();
   }
 }
