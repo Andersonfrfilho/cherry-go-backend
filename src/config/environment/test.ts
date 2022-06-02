@@ -26,6 +26,12 @@ export const test = {
     bucket_name: process.env.AWS_BUCKET_NAME || "",
     bucket_region: process.env.AWS_BUCKET_REGION || "",
   },
+  cache: {
+    driver: process.env.CACHE_DRIVER || "redis",
+    url: process.env.CACHE_URL || "redis://localhost:6379",
+    port: Number(process.env.CACHE_PORT || 6379),
+    password: process.env.CACHE_PASSWORD || undefined,
+  },
   phone: {
     cache: {
       invalidade: {

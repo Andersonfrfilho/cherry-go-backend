@@ -18,6 +18,12 @@ export const production = {
         : 18,
     port: Number(process.env.PORT || 3333),
   },
+  cache: {
+    driver: process.env.CACHE_DRIVER || "redis",
+    url: process.env.CACHE_URL || "redis://localhost:6379",
+    port: Number(process.env.CACHE_PORT || 6379),
+    password: process.env.CACHE_PASSWORD || undefined,
+  },
   phone: {
     cache: {
       invalidade: {

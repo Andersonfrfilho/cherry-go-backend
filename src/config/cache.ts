@@ -1,5 +1,7 @@
 import { RedisOptions } from "ioredis";
 
+import { config } from "@config/environment";
+
 interface ICacheConfig {
   driver: "redis";
   config: {
@@ -8,12 +10,12 @@ interface ICacheConfig {
 }
 
 export default {
-  driver: "redis",
+  driver: config.cache.driver,
   config: {
     redis: {
-      host: "localhost",
-      port: 6379,
-      password: undefined,
+      host: config.cache.url,
+      port: config.cache.port,
+      password: config.cache.password,
     },
   },
 } as ICacheConfig;
