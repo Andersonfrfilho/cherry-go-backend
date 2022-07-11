@@ -93,4 +93,9 @@ export const NOT_FOUND = {
     status_code,
     code: "4018",
   },
+  USERS_DOES_NOT_EXIST: {
+    message: "Users does not exists!",
+    status_code,
+    code: "4019",
+  },
 };

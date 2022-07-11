@@ -23,8 +23,10 @@ import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appoin
 
 import { UserTags } from "../dtos/repositories/CreateTagsUsersClient.repository.dto";
 import { RatingProviderRepositoryDTO } from "../dtos/repositories/RatingProviderRepository.dto";
+import { UpdateActiveUsersRepositoryDTO } from "../dtos/repositories/UpdateActiveUsers.repository.dto";
 import { UpdateUserRepositoryDTO } from "../dtos/repositories/UpdateUser.repository.dto";
 import { UserTokens } from "../infra/typeorm/entities/UserTokens";
+import { PaginationGetUserProvidersPropsDTO } from "../useCases/getUserProviders/GetUserProviders.service";
 
 export interface UsersRepositoryInterface {
   create(data: CreateUserClientRepositoryDTO): Promise<User>;
@@ -97,4 +99,9 @@ export interface UsersRepositoryInterface {
   getAllClientAppointments(
     data: PaginationGenericPropsDTO<Appointment>
   ): Promise<[Appointment[], number]>;
+  findUsersProvidersWithPages(
+    data: PaginationGetUserProvidersPropsDTO<User>
+  ): Promise<PaginationResponsePropsDTO<User>>;
+  findUsers(ids: string[]): Promise<User[]>;
+  updateActiveUsers(data: UpdateActiveUsersRepositoryDTO[]): Promise<void>;
 }

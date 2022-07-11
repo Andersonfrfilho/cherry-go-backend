@@ -20,7 +20,7 @@ export const development = {
   },
   cache: {
     driver: process.env.CACHE_DRIVER || "redis",
-    url: process.env.CACHE_URL || "redis://localhost:6379",
+    url: process.env.CACHE_URL || "localhost",
     port: Number(process.env.CACHE_PORT || 6379),
     password: process.env.CACHE_PASSWORD || undefined,
   },

@@ -18,10 +18,13 @@ import { UserTags } from "@modules/accounts/dtos/repositories/CreateTagsUsersCli
 import {
   OrderPaginationPropsDTO,
   ORDER_ENUM,
+  ORDER_PATTERN,
   PaginationGenericPropsDTO,
+  PaginationPropsDTO,
   PaginationResponsePropsDTO,
 } from "@modules/accounts/dtos/repositories/PaginationProps.dto";
 import { RatingProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/RatingProviderRepository.dto";
+import { UpdateActiveUsersRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateActiveUsers.repository.dto";
 import { UpdateUserRepositoryDTO } from "@modules/accounts/dtos/repositories/UpdateUser.repository.dto";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { ClientTag } from "@modules/accounts/infra/typeorm/entities/ClientTag";
@@ -32,10 +35,12 @@ import { UserPhone } from "@modules/accounts/infra/typeorm/entities/UserPhone";
 import { UserTermsAccept } from "@modules/accounts/infra/typeorm/entities/UserTermsAccept";
 import { UserTypeUser } from "@modules/accounts/infra/typeorm/entities/UserTypeUser";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
+import { PaginationGetUserProvidersPropsDTO } from "@modules/accounts/useCases/getUserProviders/GetUserProviders.service";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { AppointmentClient } from "@modules/appointments/infra/typeorm/entities/AppointmentClient";
 import { Tag } from "@modules/tags/infra/typeorm/entities/Tag";
+import { paginationResult } from "@utils/paginationResult";
 
 import { ProviderClientRating } from "../entities/ProviderRating";
 import { UserAddress } from "../entities/UsersAddress";
@@ -82,10 +87,78 @@ export class UsersRepository implements UsersRepositoryInterface {
     this.repository_appointments = getRepository<Appointment>(Appointment);
     this.repository_appointments_clients = getRepository(AppointmentClient);
   }
+  async findUsersProvidersWithPages({
+    limit = 0,
+    skip = 0,
+    order = "created_at-",
+    fields,
+  }: // fields,
+  PaginationGetUserProvidersPropsDTO<User>): Promise<
+    PaginationResponsePropsDTO<User>
+  > {
+    const usersQuery = this.repository
+      .createQueryBuilder("foundUsers")
+      .leftJoinAndSelect("foundUsers.types", "types")
+      .leftJoinAndSelect("types.user_type", "user_type")
+      .andWhere("user_type.name like :name", { name: "provider" })
+      .leftJoinAndSelect("foundUsers.documents", "documents")
+      .leftJoinAndSelect("documents.image", "image");
+
+    if (fields?.cpf) {
+      usersQuery.andWhere("foundUsers.cpf like :cpf", {
+        cpf: `%${fields.cpf}%`,
+      });
+    }
+    if (fields?.name) {
+      usersQuery.andWhere("foundUsers.name like :name", {
+        name: `%${fields.name}%`,
+      });
+    }
+    if (fields?.last_name) {
+      usersQuery.andWhere("foundUsers.last_name like :last_name", {
+        last_name: `%${fields.last_name}%`,
+      });
+    }
+    if (fields?.birth_date) {
+      usersQuery.andWhere("foundUsers.birth_date like :birth_date", {
+        birth_date: `%${fields.birth_date}%`,
+      });
+    }
+    if (fields?.email) {
+      usersQuery.andWhere("foundUsers.email like :email", {
+        email: `%${fields.email}%`,
+      });
+    }
+    if (fields?.gender) {
+      usersQuery.andWhere("foundUsers.gender like :gender", {
+        gender: `%${fields.gender}%`,
+      });
+    }
+
+    const [order_property, ordering] = order.split(ORDER_PATTERN);
+
+    const [results, total] = await usersQuery
+      .skip(Number(skip))
+      .take(Number(limit))
+      .orderBy(`foundUsers.${order_property}`, `${ORDER_ENUM[ordering]}`)
+      .getManyAndCount();
+
+    const pagination_props = paginationResult({ skip, limit, total });
+
+    return {
+      results,
+      ...pagination_props,
+    };
+  }
+
+  async findUsers(ids: string[]): Promise<User[]> {
+    return this.repository.findByIds(ids);
+  }
+
   async getAllClientAppointments({
     id,
     element_per_page = 20,
-    element_start_position = 0,
+    element_start_position = 1,
     order = {
       property: "created_at",
       ordering: ORDER_ENUM.DESC,
@@ -320,6 +393,21 @@ export class UsersRepository implements UsersRepositoryInterface {
     await this.repository.update(id, {
       active,
     });
+  }
+
+  async updateActiveUsers(
+    data: UpdateActiveUsersRepositoryDTO[]
+  ): Promise<void> {
+    const changeUsers = data.map((user_type_user) =>
+      this.repository_users_types_users.update(
+        user_type_user.user_type_user_id,
+        {
+          active: user_type_user.active,
+        }
+      )
+    );
+
+    await Promise.all(changeUsers);
   }
 
   async updateActivePhoneUser({

@@ -1,8 +1,12 @@
+import faker from "faker";
 import { getConnection, MigrationInterface, Not } from "typeorm";
 
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
+function between(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
 export class CreateUsersTypes1620665114995 implements MigrationInterface {
   public async up(): Promise<void> {
     const users = (await getConnection("seeds")
@@ -13,52 +17,35 @@ export class CreateUsersTypes1620665114995 implements MigrationInterface {
       .getRepository("types_users")
       .find({ where: { name: Not("admin") } })) as TypeUser[];
 
-    let related = 0;
-    const related_array = [];
-    while (related < users.length && users_types.length !== 0) {
-      let related_types = 0;
-      while (related_types < users_types.length) {
-        if (related <= users_types.length * users_types.length) {
-          related_array.push({
-            user_id: users[related].id,
-            user_type_id: users_types[related_types].id,
-            active: true,
-          });
-          related += 1;
-        }
-        if (
-          related > users_types.length * users_types.length &&
-          related <=
-            users_types.length * users_types.length + users_types.length
-        ) {
-          const data = users_types
-            .filter((_, index) => index !== users_types.length - 1)
-            .map((user_type) => ({
-              user_id: users[related].id,
-              user_type_id: user_type.id,
-              active: true,
-            }));
-          related_array.push(...data);
-          related += 1;
-        }
-        if (
-          related < users.length &&
-          related > users_types.length * users_types.length + users_types.length
-        ) {
-          const data = users_types.map((user_type) => ({
-            user_id: users[related].id,
+    const related_array = users_types
+      .map((user_type) => {
+        const users_with_types_all = users
+          .filter((user, indexUser) => indexUser <= users_types.length - 1)
+          .map((user) => ({
+            user_id: user.id,
             user_type_id: user_type.id,
             active: true,
+            roles: [],
+            permissions: [],
           }));
-          related_array.push(...data);
-          related += 1;
-        }
-        related_types += 1;
-      }
-    }
+
+        return [...users_with_types_all];
+      })
+      .reduce((accumulator, currentValue) => [...accumulator, ...currentValue]);
+
+    const related_array_sorted = users
+      .filter((user, indexUser) => indexUser > users_types.length - 1)
+      .map((user) => ({
+        user_id: user.id,
+        user_type_id: users_types[between(0, users_types.length - 1)].id,
+        active: true,
+        roles: [],
+        permissions: [],
+      }));
+
     await getConnection("seeds")
       .getRepository("users_types_users")
-      .save(related_array);
+      .save([...related_array, ...related_array_sorted]);
   }
 
   public async down(): Promise<void> {

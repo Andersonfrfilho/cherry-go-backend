@@ -4,6 +4,7 @@ import { CreateImageProfileUserServiceDTO } from "@modules/accounts/dtos";
 import { UserProfileImageRepositoryInterface } from "@modules/accounts/repositories/UserProfileImage.repository.interface";
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { ImagesRepositoryInterface } from "@modules/images/repositories/Images.repository.interface";
+import { STORAGE_TYPE_FOLDER_ENUM } from "@shared/container/providers/StorageProvider/enums/StorageTypeFolder.enum";
 import { StorageProviderInterface } from "@shared/container/providers/StorageProvider/Storage.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
@@ -38,7 +39,7 @@ class CreateProfileImageUserService {
 
     const name = await this.storageProvider.save(
       image_profile_name,
-      "profiles"
+      STORAGE_TYPE_FOLDER_ENUM.PROFILES
     );
 
     const image = await this.imagesRepository.create({ name });

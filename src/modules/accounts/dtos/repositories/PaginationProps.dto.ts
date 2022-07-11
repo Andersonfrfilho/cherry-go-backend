@@ -1,10 +1,10 @@
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 
 export enum ORDER_ENUM {
-  ASC = "ASC",
-  DESC = "DESC",
+  "+" = "ASC",
+  "-" = "DESC",
 }
-
+export const ORDER_PATTERN = new RegExp("([+]|[-])");
 export interface OrderPaginationPropsDTO {
   property: string;
   ordering: ORDER_ENUM;
@@ -35,8 +35,10 @@ export interface PaginationPropsGenericDTO<T> {
   [propName: string]: any;
 }
 export interface PaginationResponsePropsDTO<T> {
-  total: number;
   results: Array<T>;
+  total: number;
+  current_page: number;
+  pages_total: number;
 }
 
 export interface PaginationResponseAppointmentsDTO<T> {

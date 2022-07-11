@@ -3,12 +3,13 @@ import { getConnection, MigrationInterface } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
-import { STATUS_PROVIDERS_APPOINTMENT } from "@modules/appointments/enums/StatusProvidersAppointment.enum";
+import { STATUS_PROVIDERS_APPOINTMENT_ENUM } from "@modules/appointments/enums/StatusProvidersAppointment.enum";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { AppointmentsFactory } from "@shared/infra/typeorm/factories";
 
 export class CreateAppointmentProvidersServicesTransportsClients1620963956718
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   public async up(): Promise<void> {
     const providers = await getConnection("seeds")
       .getRepository(Provider)
@@ -90,9 +91,10 @@ export class CreateAppointmentProvidersServicesTransportsClients1620963956718
         related_appointments_providers.push({
           provider_id: providers[provider_index].id,
           appointment_id: appointments[appointment_index].id,
-          status: Object.values(STATUS_PROVIDERS_APPOINTMENT)[
+          status: Object.values(STATUS_PROVIDERS_APPOINTMENT_ENUM)[
             Math.floor(
-              Math.random() * Object.values(STATUS_PROVIDERS_APPOINTMENT).length
+              Math.random() *
+                Object.values(STATUS_PROVIDERS_APPOINTMENT_ENUM).length
             )
           ],
         });

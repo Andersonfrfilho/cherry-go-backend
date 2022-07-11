@@ -4,6 +4,7 @@ import multer from "multer";
 import uploadConfig from "@config/upload";
 import { AuthenticateUserProviderController } from "@modules/accounts/useCases/authenticateUserProvider/AuthenticateUserProvider.controller";
 import { schemaAuthenticateProvider } from "@modules/accounts/useCases/authenticateUserProvider/authenticateUserProvider.schema";
+import { ChangeUserTypeActiveUserProvidersController } from "@modules/accounts/useCases/changeUserTypeActiveUserProviders/ChangeUserTypeActiveUserProviders.controller";
 import { CreateLocalProviderController } from "@modules/accounts/useCases/createLocalProvider/CreateLocalProvider.controller";
 import { schemaCreateLocalProviders } from "@modules/accounts/useCases/createLocalProvider/createLocalsProviders.schema";
 import { CreateProviderDaysAvailabilitiesController } from "@modules/accounts/useCases/createProviderDaysAvailabilities/CreateProviderDaysAvailabilities.controller";
@@ -34,6 +35,8 @@ import { GetAllLocalsProvidersController } from "@modules/accounts/useCases/getA
 import { GetAllPaymentTypeController } from "@modules/accounts/useCases/getAllPaymentType/GetAllPaymentType.controller";
 import { GetAllProvidersLocalsTypesController } from "@modules/accounts/useCases/getAllProviderLocalsTypes/GetAllProviderLocalsTypes.controller";
 import { GetAvailabilitiesOptionsProviderWorkController } from "@modules/accounts/useCases/getAvailabilitiesOptionsProviderWork/GetAvailabilitiesOptionsProviderWork.controller";
+import { GetUserProvidersController } from "@modules/accounts/useCases/getUserProviders/getUserProviders.controller";
+import { schemaGetUserProviders } from "@modules/accounts/useCases/getUserProviders/getUserProviders.schema";
 import { MeProfileUserProviderController } from "@modules/accounts/useCases/meProfileUserProvider/MeProfileUserProvider.controller";
 import { SetLocationCacheProvidersController } from "@modules/accounts/useCases/setLocationCacheProviders/SetLocationCacheProviders.controller";
 import { schemaSetLocationCacheProviders } from "@modules/accounts/useCases/setLocationCacheProviders/setLocationCacheProviders.schema";
@@ -92,8 +95,16 @@ const deleteProvidersLocalsTypesController =
   new DeleteProvidersLocalsTypesController();
 const setLocationCacheProvidersController =
   new SetLocationCacheProvidersController();
-
+const getUserProvidersController = new GetUserProvidersController();
+const changeUserTypeActiveUserProvidersController =
+  new ChangeUserTypeActiveUserProvidersController();
 const uploadImages = multer(uploadConfig);
+
+providersRoutes.get(
+  "/",
+  schemaGetUserProviders,
+  getUserProvidersController.handle
+);
 
 providersRoutes.post(
   "/",
@@ -111,6 +122,12 @@ providersRoutes.patch(
   "/",
   ensureAuthenticated,
   createUsersTypeProvidersController.handle
+);
+
+providersRoutes.patch(
+  "/type/active",
+  ensureAuthenticated,
+  changeUserTypeActiveUserProvidersController.handle
 );
 
 providersRoutes.post(

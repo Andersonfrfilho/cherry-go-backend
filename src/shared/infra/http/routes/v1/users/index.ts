@@ -23,14 +23,11 @@ const getUsersController = new GetUsersController();
 const showUsersController = new ShowUsersController();
 const updateUserController = new UpdateUserController();
 
-usersRoutes.get("/", getUsersController.handle);
 usersRoutes.use("/banks", banksRoutes);
 usersRoutes.use("/transports", transportsRoutes);
 usersRoutes.use("/tariffs", tariffsRoutes);
 usersRoutes.use("/addresses", addressesRoutes);
 usersRoutes.use("/locals", localsRoutes);
-usersRoutes.get("/:id", showUsersController.handle);
-usersRoutes.put("/", updateUserController.handle);
 usersRoutes.use("/clients", clientsRoutes);
 usersRoutes.use("/insides", insidesRoutes);
 usersRoutes.use("/providers", providersRoutes);
@@ -38,6 +35,9 @@ usersRoutes.use("/password", passwordRoutes);
 usersRoutes.use("/confirm", confirmsRoutes);
 usersRoutes.use("/documents", documentsRoutes);
 usersRoutes.use("/profiles", profileRoutes);
+usersRoutes.get("/:id", showUsersController.handle);
+usersRoutes.get("/", getUsersController.handle);
+usersRoutes.put("/", updateUserController.handle);
 usersRoutes.use(authenticateUsersRoutes);
 
 export { usersRoutes };

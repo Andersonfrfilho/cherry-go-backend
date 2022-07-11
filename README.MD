@@ -322,9 +322,22 @@ DELETE FROM
 DELETE FROM
   phones;
 DELETE FROM
-  users;
-DELETE FROM
-  migrations;
+  DELETE FROM users WHERE cpf != '00000000000';
+DELETE FROM migrations WHERE name like 'InsertInfos1622165715932';
+DELETE FROM migrations WHERE name like 'CreatedUsers1619485791890';
+DELETE FROM migrations WHERE name like 'CreatePhones1620358650178';
+DELETE FROM migrations WHERE name like 'CreateAddresses1620612729413';
+DELETE FROM migrations WHERE name like 'CreateUsersTypes1620665114995';
+DELETE FROM migrations WHERE name like 'CreateAddressesDaysTimesTransportsProviders1620665114995';
+DELETE FROM migrations WHERE name like 'CreatePaymentTypes1620675129709';
+DELETE FROM migrations WHERE name like 'CreateUsersImages1620775418678';
+DELETE FROM migrations WHERE name like 'CreateServices1620945118173';
+DELETE FROM migrations WHERE name like 'CreateTags1620955864666';
+DELETE FROM migrations WHERE name like 'CreateClientTags1620960362104';
+DELETE FROM migrations WHERE name like 'CreateDocumentsImages1620960362104';
+DELETE FROM migrations WHERE name like 'CreateUserAcceptTerms1620960362104';
+DELETE FROM migrations WHERE name like 'CreateAppointmentProvidersServicesTransportsClients1620963956718';
+DELETE FROM migrations WHERE name like 'CreateAppointmentTransactions1621058145504';
 ```
 
 ## Typeorm Migrations
@@ -346,11 +359,11 @@ yarn test:unit "d:/project/cherry-go/src/shared/infra/typeorm/factories/AddressF
 
 # Docker
   - create a image:b00a33b..
-    -  ```docker build -t andersonfrfilho/cherry-go-api:5435e13 -f Dockerfile .```
+    -  ```docker build -t andersonfrfilho/cherry-go-api:837f976 -f Dockerfile .```
   - create a container:
-    - ```docker run --name cherry-go-api --network cherry-go-compose_network-cherry-go-local --env-file .env -p 192.168.100.12:3333:3333 -d andersonfrfilho/cherry-go-api:b00a33b```
+    - ```docker run --name cherry-go-api --network cherry-go-compose_default --env-file .env -p 192.168.100.12:3333:3333 -d andersonfrfilho/cherry-go-api:b00a33b```
   - push image:
-    - ```docker push andersonfrfilho/cherry-go-api:5435e13```
+    - ```docker push andersonfrfilho/cherry-go-api:837f976```
   -  docker run cherry-go-backend
     - ```docker run andersonfrfilho/cherry-go_api_backend:1.0.0```
 # Kubernetes
