@@ -569,6 +569,7 @@ export class UsersRepository implements UsersRepositoryInterface {
       .leftJoinAndSelect("foundUsers.addresses", "addresses")
       .leftJoinAndSelect("addresses.address", "address")
       .leftJoinAndSelect("foundUsers.image_profile", "image_profile")
+      .leftJoinAndSelect("image_profile.image", "image")
       .leftJoinAndSelect("foundUsers.terms", "terms")
       .leftJoinAndSelect("foundUsers.transactions", "transactions")
       .leftJoinAndSelect("foundUsers.documents", "documents")
