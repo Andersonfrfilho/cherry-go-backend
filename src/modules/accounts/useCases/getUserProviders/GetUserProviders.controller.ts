@@ -1,7 +1,6 @@
 import { Response, Request } from "express";
 import { container } from "tsyringe";
 
-import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { GetUserProvidersService } from "@modules/accounts/useCases/getUserProviders/GetUserProviders.service";
 
 export class GetUserProvidersController {

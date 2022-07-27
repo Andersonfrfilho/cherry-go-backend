@@ -255,74 +255,36 @@ Made with 💜 &nbsp;by Anderson Fernandes 👋 &nbsp;[See my linkedin](https://
 run command:
 
 ```sql
-DELETE FROM
-  users_terms_accepts;
-DELETE FROM
-  appointments_addresses;
-DELETE FROM
-  appointments_addresses;
-DELETE FROM
-  transactions_events;
-DELETE FROM
-  transactions_itens;
-DELETE FROM
-  transactions;
-DELETE FROM
-  transports;
-DELETE FROM
-  appointments_providers_services;
-DELETE FROM
-  appointments_providers;
-DELETE FROM
-  appointments_clients;
-DELETE FROM
-  appointments;
-DELETE FROM
-  users_documents_images;
-DELETE FROM
-  tags_services;
-DELETE FROM
-  services;
-DELETE FROM
-  providers_images;
-DELETE FROM
-  users_profiles_images;
-DELETE FROM
-  providers_transports_types;
-DELETE FROM
-  providers_tags;
-DELETE FROM
-  providers_payments_types;
-DELETE FROM
- providers_addresses;
-DELETE FROM
- providers_availabilities_days;
-DELETE FROM
- providers_availabilities_times;
-DELETE FROM
-  users_types_users;
-DELETE FROM
-  payments_types;
-DELETE FROM
-  transports_types;
-DELETE FROM
-  types_users;
-DELETE FROM
-  users_addresses;
-DELETE FROM
-  clients_tags;
-DELETE FROM
-  tags;
-DELETE FROM
-  images;
-DELETE FROM
-  addresses;
-DELETE FROM
-  users_phones;
-DELETE FROM
-  phones;
-DELETE FROM
-  DELETE FROM users WHERE cpf != '00000000000';
+DELETE FROM tags;
+DELETE FROM transactions_itens;
+DELETE FROM transactions_events;
+DELETE FROM clients_tags;
+DELETE FROM appointments_addresses;
+DELETE FROM appointments_clients;
+DELETE FROM appointments_locals_types;
+DELETE FROM appointments_providers;
+DELETE FROM appointments_providers_services;
+DELETE FROM appointments;
+DELETE FROM transports;
+DELETE FROM providers_tags;
+DELETE FROM providers_images;
+DELETE FROM providers_availabilities_days;
+DELETE FROM providers_transports_types;
+DELETE FROM providers_locals_types;
+DELETE FROM tags_services;
+DELETE FROM users_phones;
+DELETE FROM users_addresses;
+DELETE FROM users_types_users WHERE user_id != '${{ADMIN_USER_ADMIN}}';
+DELETE FROM providers_addresses;
+DELETE FROM transactions;
+DELETE FROM phones;
+DELETE FROM addresses;
+DELETE FROM users_documents_images;
+DELETE FROM users_profiles_images;
+DELETE FROM users_tokens;
+
+DELETE FROM users WHERE id != '${{ADMIN_USER_ADMIN}}';
+DELETE FROM images;
 DELETE FROM migrations WHERE name like 'InsertInfos1622165715932';
 DELETE FROM migrations WHERE name like 'CreatedUsers1619485791890';
 DELETE FROM migrations WHERE name like 'CreatePhones1620358650178';
@@ -359,11 +321,11 @@ yarn test:unit "d:/project/cherry-go/src/shared/infra/typeorm/factories/AddressF
 
 # Docker
   - create a image:b00a33b..
-    -  ```docker build -t andersonfrfilho/cherry-go-api:91da732 -f Dockerfile .```
+    -  ```docker build -t andersonfrfilho/cherry-go-api:476b79d -f Dockerfile .```
   - create a container:
     - ```docker run --name cherry-go-api --network cherry-go-compose_default --env-file .env -p 192.168.100.12:3333:3333 -d andersonfrfilho/cherry-go-api:b00a33b```
   - push image:
-    - ```docker push andersonfrfilho/cherry-go-api:91da732```
+    - ```docker push andersonfrfilho/cherry-go-api:476b79d```
   -  docker run cherry-go-backend
     - ```docker run andersonfrfilho/cherry-go_api_backend:1.0.0```
 # Kubernetes

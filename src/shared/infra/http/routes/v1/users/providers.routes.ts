@@ -35,7 +35,7 @@ import { GetAllLocalsProvidersController } from "@modules/accounts/useCases/getA
 import { GetAllPaymentTypeController } from "@modules/accounts/useCases/getAllPaymentType/GetAllPaymentType.controller";
 import { GetAllProvidersLocalsTypesController } from "@modules/accounts/useCases/getAllProviderLocalsTypes/GetAllProviderLocalsTypes.controller";
 import { GetAvailabilitiesOptionsProviderWorkController } from "@modules/accounts/useCases/getAvailabilitiesOptionsProviderWork/GetAvailabilitiesOptionsProviderWork.controller";
-import { GetUserProvidersController } from "@modules/accounts/useCases/getUserProviders/getUserProviders.controller";
+import { GetUserProvidersController } from "@modules/accounts/useCases/getUserProviders/GetUserProviders.controller";
 import { schemaGetUserProviders } from "@modules/accounts/useCases/getUserProviders/getUserProviders.schema";
 import { MeProfileUserProviderController } from "@modules/accounts/useCases/meProfileUserProvider/MeProfileUserProvider.controller";
 import { SetLocationCacheProvidersController } from "@modules/accounts/useCases/setLocationCacheProviders/SetLocationCacheProviders.controller";
