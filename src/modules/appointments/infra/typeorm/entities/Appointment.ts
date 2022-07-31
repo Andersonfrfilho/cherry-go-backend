@@ -77,7 +77,7 @@ export class Appointment {
     (payment_type) => payment_type.appointment,
     { eager: true }
   )
-  locals_types: AppointmentLocalType[];
+  locals_types?: AppointmentLocalType[];
 
   @CreateDateColumn()
   created_at?: Date;

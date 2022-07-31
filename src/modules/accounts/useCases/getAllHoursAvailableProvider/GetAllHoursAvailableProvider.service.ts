@@ -10,6 +10,7 @@ import { DateProviderInterface } from "@shared/container/providers/DateProvider/
 import { FormattedHoursDays } from "@shared/container/providers/DateProvider/dtos/Hours.dto";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST, NOT_FOUND } from "@shared/errors/constants";
+import { orderDaysWeek } from "@utils/orderDaysWeek";
 
 interface ParamsDTO {
   user_id: string;
@@ -57,6 +58,10 @@ export class GetAllHoursAvailableProviderService {
     const { hours } = provider;
     const { days } = provider;
 
+    const days_week_order = orderDaysWeek(days);
+
+    console.log(days_week_order);
+
     const dateFormattedNow = this.dateProvider.dateNow();
     const dateFormattedTomorrow = this.dateProvider.addDays(1);
 
@@ -64,6 +69,7 @@ export class GetAllHoursAvailableProviderService {
 
     const day = this.dateProvider.getDay(dateFormattedNow);
     const tomorrow = this.dateProvider.getDay(dateFormattedTomorrow);
+
     const appointment_unavailable_hours_now: Appointment = {
       confirm: false,
       initial_date: this.dateProvider.defineHourMinutesSecondsMilliseconds({
@@ -85,7 +91,7 @@ export class GetAllHoursAvailableProviderService {
       appointment_unavailable_hours_now,
     ]);
 
-    const days_available = days
+    const days_available = days_week_order
       .filter(
         (dayParam) =>
           dayParam.day.toLowerCase() ===
