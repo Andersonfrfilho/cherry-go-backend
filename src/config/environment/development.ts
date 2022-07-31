@@ -17,6 +17,11 @@ export const development = {
         ? Number(process.env.MINIMUM_AGE_REQUIRED || 18)
         : 18,
     port: Number(process.env.PORT || 3333),
+    user: {
+      admin: {
+        cpf: process.env.APPLICATION_USER_ADMIN_CPF || "00000000000",
+      },
+    },
   },
   cache: {
     driver: process.env.CACHE_DRIVER || "redis",

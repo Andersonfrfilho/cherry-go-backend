@@ -17,6 +17,11 @@ export const test = {
         ? Number(process.env.MINIMUM_AGE_REQUIRED || 18)
         : 18,
     port: Number(process.env.PORT || 3333),
+    user: {
+      admin: {
+        cpf: process.env.APPLICATION_USER_ADMIN_CPF || "00000000000",
+      },
+    },
   },
   storage: {
     provider: process.env.STORAGE_PROVIDER || "local",

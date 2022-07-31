@@ -1,6 +1,7 @@
 import { instanceToInstance } from "class-transformer";
 import { getRepository, In, Repository } from "typeorm";
 
+import { config } from "@config/environment";
 import { RELATIONS_PROVIDER_DEFAULT } from "@modules/accounts/constants/relationsProviderDefault.const";
 import {
   CreatePaymentTypesAvailableRepositoryDTO,
@@ -100,6 +101,9 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     const providersQuery = this.repository
       .createQueryBuilder("foundProviders")
       .andWhere("foundProviders.id <> :user_id", { user_id })
+      .andWhere("foundProviders.cpf <> :admin_user_cpf", {
+        admin_user_cpf: config.application.user.admin.cpf,
+      })
       .andWhere("foundProviders.active = :active", { active: true })
       .leftJoinAndSelect("foundProviders.addresses", "addresses");
 
