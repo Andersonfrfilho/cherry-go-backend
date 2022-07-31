@@ -97,12 +97,19 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     distance,
     user_id,
   }: FindByAreaRepositoryDTO): Promise<Provider[]> {
-    const providersQuery = await this.repository
+    const providersQuery = this.repository
       .createQueryBuilder("foundProviders")
       .andWhere("foundProviders.id <> :user_id", { user_id })
       .andWhere("foundProviders.active = :active", { active: true })
-      .leftJoinAndSelect("foundProviders.addresses", "addresses")
-      .andWhere("addresses.city like :city", { city })
+      .leftJoinAndSelect("foundProviders.addresses", "addresses");
+
+    if (city) {
+      providersQuery.andWhere("addresses.city like :city", {
+        city: city.toLowerCase(),
+      });
+    }
+
+    const providersFound = await providersQuery
       .leftJoinAndSelect("foundProviders.locals_types", "locals_types")
       .leftJoinAndSelect("foundProviders.transports_types", "transports_types")
       .leftJoinAndSelect("transports_types.transport_type", "transport_type")
@@ -118,8 +125,8 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       .leftJoinAndSelect("foundProviders.images", "images")
       .leftJoinAndSelect("images.image", "image")
       .getMany();
-
-    let providers_by_address = providersQuery;
+    console.log(providersFound);
+    let providers_by_address = providersFound;
     // order
     // price
     // filters
@@ -144,7 +151,7 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     }
 
     // locals
-    let providers_by_locals = providersQuery;
+    let providers_by_locals = providersFound;
     providers_by_locals = providers_by_locals.filter(
       (provider) =>
         provider.locals &&

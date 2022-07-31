@@ -8,6 +8,7 @@ import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Pro
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { Address } from "@modules/addresses/infra/typeorm/entities/Address";
 import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
+import { GeolocationProviderInterface } from "@shared/container/providers/GeolocationProvider/Geolocation.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 import { distanceRadiusCalculation } from "@utils/distanceByRadius";
@@ -21,10 +22,9 @@ interface GeolocationCurrent {
   latitude: string;
   longitude: string;
 }
-interface ParamDTO {
+interface ParamDTO extends GeolocationCurrent {
   user_id: string;
   distance?: number;
-  location_current?: GeolocationCurrent;
 }
 @injectable()
 export class GetProvidersService {
@@ -34,20 +34,35 @@ export class GetProvidersService {
     @inject("ProvidersRepository")
     private providersRepository: ProvidersRepositoryInterface,
     @inject("CacheProvider")
-    private cacheProvider: CacheProviderInterface
+    private cacheProvider: CacheProviderInterface,
+    @inject("GeolocationProvider")
+    private geolocationProvider: GeolocationProviderInterface
   ) {}
-  async execute({ user_id, distance }: ParamDTO): Promise<Provider[]> {
+  async execute({
+    user_id,
+    distance,
+    longitude,
+    latitude,
+  }: ParamDTO): Promise<Provider[]> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
       throw new AppError(NOT_FOUND.USER_DOES_NOT_EXIST);
     }
 
+    const address =
+      await this.geolocationProvider.reverseGeocodingByLatitudeLongitude({
+        latitude,
+        longitude,
+      });
+
     const providers_found = await this.providersRepository.findByArea({
       city: user.addresses[0].address.city,
       user_id: user.id,
       distance,
+      ...address,
     });
+    console.log(providers_found);
 
     const providers_cache = await this.cacheProvider.recover<
       ProviderGeolocationCache[]
