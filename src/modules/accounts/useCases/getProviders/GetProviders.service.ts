@@ -62,7 +62,6 @@ export class GetProvidersService {
       distance,
       ...address,
     });
-    console.log(providers_found);
 
     const providers_cache = await this.cacheProvider.recover<
       ProviderGeolocationCache[]

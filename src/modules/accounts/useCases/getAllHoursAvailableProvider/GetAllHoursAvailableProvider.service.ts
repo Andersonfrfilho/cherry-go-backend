@@ -60,8 +60,6 @@ export class GetAllHoursAvailableProviderService {
 
     const days_week_order = orderDaysWeek(days);
 
-    console.log(days_week_order);
-
     const dateFormattedNow = this.dateProvider.dateNow();
     const dateFormattedTomorrow = this.dateProvider.addDays(1);
 

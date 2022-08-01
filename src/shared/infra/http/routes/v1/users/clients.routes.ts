@@ -137,6 +137,12 @@ clientsRoutes.post(
 );
 
 clientsRoutes.post(
+  "/appointment",
+  ensureAuthenticated,
+  createAppointmentClientController.handle
+);
+
+clientsRoutes.post(
   "/appointment/stage",
   ensureAuthenticated,
   setStageAppointmentClientController.handle
@@ -160,12 +166,6 @@ clientsRoutes.get(
   getStageAppointmentClientController.handle
 );
 
-clientsRoutes.post(
-  "/appointment",
-  ensureAuthenticated,
-  createAppointmentClientController.handle
-);
-
 clientsRoutes.get(
   "/provider/available/hours",
   ensureAuthenticated,
@@ -185,6 +185,7 @@ clientsRoutes.get(
   ensureAuthenticated,
   getAppointmentsController.handle
 );
+
 clientsRoutes.get("/test", testeController.handle);
 
 export { clientsRoutes };

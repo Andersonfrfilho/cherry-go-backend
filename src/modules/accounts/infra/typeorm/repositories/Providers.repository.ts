@@ -117,20 +117,31 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       .leftJoinAndSelect("foundProviders.locals_types", "locals_types")
       .leftJoinAndSelect("foundProviders.transports_types", "transports_types")
       .leftJoinAndSelect("transports_types.transport_type", "transport_type")
+      .andWhere("transport_type.active = :active", { active: true })
       .leftJoinAndSelect("foundProviders.services", "services")
+      .andWhere("services.active = :active", { active: true })
       .leftJoinAndSelect("foundProviders.ratings", "ratings")
       .leftJoinAndSelect("foundProviders.days", "days")
       .leftJoinAndSelect("foundProviders.hours", "hours")
       .leftJoinAndSelect("foundProviders.locals", "locals")
+      .andWhere("locals.active = :active", { active: true })
       .leftJoinAndSelect("locals.address", "address")
       .leftJoinAndSelect("foundProviders.payments_types", "payments_types")
       .leftJoinAndSelect("payments_types.payment_type", "payment_type")
+      .andWhere("payment_type.active = :active", { active: true })
       .leftJoinAndSelect("foundProviders.image_profile", "image_profile")
       .leftJoinAndSelect("foundProviders.images", "images")
       .leftJoinAndSelect("images.image", "image")
       .getMany();
-    console.log(providersFound);
-    let providers_by_address = providersFound;
+
+    let providers_by_address = providersFound.filter(
+      (provider) =>
+        provider.locals_types.length > 0 &&
+        provider.transports_types.length > 0 &&
+        provider.services.length > 0 &&
+        provider.locals.length > 0 &&
+        provider.payments_types.length > 0
+    );
     // order
     // price
     // filters

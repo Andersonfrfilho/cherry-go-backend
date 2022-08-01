@@ -7,6 +7,7 @@ import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Pro
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { AppointmentsRepositoryInterface } from "@modules/appointments/repositories/Appointments.repository.interface";
 import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
+import { CLIENT_CREATE_APPOINTMENT_CACHE_KEY } from "@shared/container/providers/CacheProvider/keys/keys.const";
 import { DateProviderInterface } from "@shared/container/providers/DateProvider/Date.provider.interface";
 import { AppError } from "@shared/errors/AppError";
 import { BAD_REQUEST, NOT_FOUND } from "@shared/errors/constants";
@@ -34,7 +35,7 @@ export class CreateClientAppointmentService {
 
     const appointment_stage_cache =
       await this.cacheProvider.recover<AppointmentCacheData>(
-        `clients:${client.id}:appointment`
+        CLIENT_CREATE_APPOINTMENT_CACHE_KEY(client.id)
       );
 
     if (!appointment_stage_cache) {
@@ -72,9 +73,11 @@ export class CreateClientAppointmentService {
         "payments_types",
       ],
     });
+
     if (!provider_found) {
       throw new AppError(NOT_FOUND.PROVIDER_DOES_NOT_EXIST);
     }
+
     const services_found = services_cache.every((service_cache_param) =>
       provider_found.services.some(
         (service_provider_found_param) =>
@@ -86,6 +89,7 @@ export class CreateClientAppointmentService {
     if (!services_found) {
       throw new AppError(NOT_FOUND.SERVICE_PROVIDER_DOES_NOT_EXIST);
     }
+
     const duration_total = services_cache.reduce(
       (accumulator, service) => Number(service.duration) + accumulator,
       0
@@ -97,20 +101,26 @@ export class CreateClientAppointmentService {
       provider_id: provider_found.id,
       created_date: new Date(),
     });
+
     const unavailable_hours = this.dateProvider.unavailableHours([
       ...opens,
       ...confirmed,
     ]);
+
     const [hour_start, minutes_start] = hours_cache.start.hour.split(":");
+
     const date_start_compare = this.dateProvider.formattedDateToCompare(
       hour_start,
       minutes_start
     );
+
     const [hour_end, minutes_end] = hours_cache.end.hour.split(":");
+
     const date_end_compare = this.dateProvider.formattedDateToCompare(
       hour_end,
       minutes_end
     );
+
     const available_hour_found = unavailable_hours.every((hour) => {
       const [hour_unavailable_start, minutes_unavailable_start] =
         hour.initial_date.split(":");
@@ -140,13 +150,16 @@ export class CreateClientAppointmentService {
         )
       );
     });
+
     if (!available_hour_found) {
       throw new AppError(BAD_REQUEST.PROVIDER_HOUR_PERIOD_NOT_AVAILABLE);
     }
+
     const local_type_found = provider_found.locals_types.find(
       (local_type_param) =>
         local_type_param.id === local_type_cache.id && local_type_param.active
     );
+
     if (!local_type_found) {
       throw new AppError(BAD_REQUEST.PROVIDER_LOCAL_TYPE_NOT_AVAILABLE);
     }

@@ -1,5 +1,6 @@
 import { getRepository, Repository } from "typeorm";
 
+import { ORDER_PAGINATION_DEFAULT } from "@modules/accounts/constants/Order.const";
 import {
   CreateTagsUsersClientRepositoryDTO,
   CreateUserAddressClientRepositoryDTO,
@@ -140,7 +141,10 @@ export class UsersRepository implements UsersRepositoryInterface {
     const [results, total] = await usersQuery
       .skip(Number(skip))
       .take(Number(limit))
-      .orderBy(`foundUsers.${order_property}`, `${ORDER_ENUM[ordering]}`)
+      .orderBy(
+        `foundUsers.${order_property}`,
+        `${ORDER_ENUM[ordering] as "ASC" | "DESC"}`
+      )
       .getManyAndCount();
 
     const pagination_props = paginationResult({ skip, limit, total });
@@ -157,16 +161,15 @@ export class UsersRepository implements UsersRepositoryInterface {
 
   async getAllClientAppointments({
     id,
-    element_per_page = 20,
-    element_start_position = 1,
-    order = {
-      property: "created_at",
-      ordering: ORDER_ENUM.DESC,
-    } as OrderPaginationPropsDTO,
+    limit = 0,
+    skip = 0,
+    order = ORDER_PAGINATION_DEFAULT,
     fields,
   }: PaginationGenericPropsDTO<Appointment>): Promise<[Appointment[], number]> {
     const providerQuery =
       this.repository_appointments.createQueryBuilder("foundAppointment");
+
+    const [order_property, ordering] = order.split(ORDER_PATTERN);
 
     providerQuery
       .leftJoinAndSelect("foundAppointment.clients", "clients")
@@ -189,9 +192,12 @@ export class UsersRepository implements UsersRepositoryInterface {
       .leftJoinAndSelect("transactions.itens", "itens")
       .leftJoinAndSelect("transactions.events", "events")
       .leftJoinAndSelect("events.payment_type", "payment_type")
-      .skip(element_start_position)
-      .take(element_per_page)
-      .orderBy(`foundAppointment.${order.property}`, `${order.ordering}`);
+      .skip(Number(skip))
+      .take(Number(limit))
+      .orderBy(
+        `foundAppointment.${order_property}`,
+        `${ORDER_ENUM[ordering] as "ASC" | "DESC"}`
+      );
 
     return providerQuery.getManyAndCount();
   }

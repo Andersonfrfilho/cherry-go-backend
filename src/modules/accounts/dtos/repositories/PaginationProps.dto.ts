@@ -10,10 +10,10 @@ export interface OrderPaginationPropsDTO {
   ordering: ORDER_ENUM;
 }
 export interface PaginationGenericPropsDTO<T> {
-  element_per_page?: number;
-  element_start_position?: number;
+  limit?: number;
+  skip?: number;
   fields?: Partial<T>;
-  order?: OrderPaginationPropsDTO;
+  order?: string;
   id?: string;
 }
 

@@ -11,6 +11,7 @@ import { ProvidersRepositoryInterface } from "@modules/accounts/repositories/Pro
 import { UsersRepositoryInterface } from "@modules/accounts/repositories/Users.repository.interface";
 import { CacheProviderInterface } from "@shared/container/providers/CacheProvider/Cache.provider.interface";
 import { IOREDIS_EXPIRED_ENUM } from "@shared/container/providers/CacheProvider/ioredis.cache.enums";
+import { CLIENT_CREATE_APPOINTMENT_CACHE_KEY } from "@shared/container/providers/CacheProvider/keys/keys.const";
 import { AppError } from "@shared/errors/AppError";
 import { NOT_FOUND } from "@shared/errors/constants";
 
@@ -55,7 +56,7 @@ export class SetStageAppointmentClientService {
     }
 
     await this.cacheProvider.save(
-      `clients:${user.id}:appointment`,
+      CLIENT_CREATE_APPOINTMENT_CACHE_KEY(user.id),
       data,
       IOREDIS_EXPIRED_ENUM.EX,
       config.client.cache.invalidade.time
