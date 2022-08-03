@@ -31,7 +31,7 @@ export class UsersFactory {
         email: email || faker.internet.email().toLowerCase(),
         birth_date: birth_date || faker.date.past(),
         gender:
-          gender || faker.random.arrayElement(Object.values(GENDERS_ENUM)),
+          gender || faker.helpers.arrayElement(Object.values(GENDERS_ENUM)),
         cpf: cpf || faker.phone.phoneNumber("###########"),
         rg:
           rg ||

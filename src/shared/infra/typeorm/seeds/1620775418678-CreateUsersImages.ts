@@ -1,6 +1,6 @@
-import faker, { fake } from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
