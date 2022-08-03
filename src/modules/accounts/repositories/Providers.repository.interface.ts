@@ -20,7 +20,10 @@ import { CreateProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/Cre
 import { CreateUserProviderRepositoryDTO } from "../dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "../dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import { DeleteProviderLocalsTypesRepositoryDTO } from "../dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
-import { FindByAreaRepositoryDTO } from "../dtos/repositories/FindByArea.dto";
+import {
+  FindByAreaRepositoryDTO,
+  ResponseFindByAreaRepository,
+} from "../dtos/repositories/FindByArea.dto";
 import { FindByIdProviderRepositoryDTO } from "../dtos/repositories/FindByIdProviderRepository.dto";
 import { GetAllByActiveProviderTransportTypeRepositoryDTO } from "../dtos/repositories/GetAllByActiveProviderTransportTypeRepository.dto";
 import {
@@ -109,5 +112,7 @@ export interface ProvidersRepositoryInterface {
   updateTransportTypesAvailable(
     data: UpdateTransportTypeAvailableRepositoryDTO
   ): Promise<void>;
-  findByArea(data: FindByAreaRepositoryDTO): Promise<Provider[]>;
+  findByArea(
+    data: FindByAreaRepositoryDTO
+  ): Promise<ResponseFindByAreaRepository>;
 }

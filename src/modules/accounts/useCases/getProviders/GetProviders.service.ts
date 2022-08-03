@@ -25,6 +25,15 @@ interface GeolocationCurrent {
 interface ParamDTO extends GeolocationCurrent {
   user_id: string;
   distance?: number;
+  limit?: number;
+  skip?: number;
+}
+
+interface Response {
+  providers: Provider[];
+  total: number;
+  limit: number;
+  skip: number;
 }
 @injectable()
 export class GetProvidersService {
@@ -43,7 +52,9 @@ export class GetProvidersService {
     distance,
     longitude,
     latitude,
-  }: ParamDTO): Promise<Provider[]> {
+    limit = 0,
+    skip = 0,
+  }: ParamDTO): Promise<Response> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
@@ -56,12 +67,15 @@ export class GetProvidersService {
         longitude,
       });
 
-    const providers_found = await this.providersRepository.findByArea({
-      city: user.addresses[0].address.city,
-      user_id: user.id,
-      distance,
-      ...address,
-    });
+    const { providers: providers_found, total } =
+      await this.providersRepository.findByArea({
+        city: user.addresses[0].address.city,
+        user_id: user.id,
+        distance,
+        limit,
+        skip,
+        ...address,
+      });
 
     const providers_cache = await this.cacheProvider.recover<
       ProviderGeolocationCache[]
@@ -124,6 +138,11 @@ export class GetProvidersService {
           : 0,
     }));
 
-    return instanceToInstance(formatted_providers);
+    return {
+      providers: instanceToInstance(formatted_providers),
+      total,
+      limit,
+      skip,
+    };
   }
 }

@@ -17,7 +17,10 @@ import { CreateProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/r
 import { CreateUserProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/CreateUserProviderType.repository.dto";
 import { DeleteAllDaysProviderAvailableRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteAllDaysProviderAvailableRepository.dto";
 import { DeleteProviderLocalsTypesRepositoryDTO } from "@modules/accounts/dtos/repositories/DeleteProviderLocalsTypesRepository.dto";
-import { FindByAreaRepositoryDTO } from "@modules/accounts/dtos/repositories/FindByArea.dto";
+import {
+  FindByAreaRepositoryDTO,
+  ResponseFindByAreaRepository,
+} from "@modules/accounts/dtos/repositories/FindByArea.dto";
 import { FindByIdProviderRepositoryDTO } from "@modules/accounts/dtos/repositories/FindByIdProviderRepository.dto";
 import { GetAllByActiveProviderTransportTypeRepositoryDTO } from "@modules/accounts/dtos/repositories/GetAllByActiveProviderTransportTypeRepository.dto";
 import {
@@ -97,7 +100,9 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
     longitude,
     distance,
     user_id,
-  }: FindByAreaRepositoryDTO): Promise<Provider[]> {
+    limit = 0,
+    skip = 0,
+  }: FindByAreaRepositoryDTO): Promise<ResponseFindByAreaRepository> {
     const providersQuery = this.repository
       .createQueryBuilder("foundProviders")
       .andWhere("foundProviders.id <> :user_id", { user_id })
@@ -113,7 +118,7 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       });
     }
 
-    const providersFound = await providersQuery
+    const [providersFound, total] = await providersQuery
       .leftJoinAndSelect("foundProviders.locals_types", "locals_types")
       .leftJoinAndSelect("foundProviders.transports_types", "transports_types")
       .leftJoinAndSelect("transports_types.transport_type", "transport_type")
@@ -132,7 +137,9 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
       .leftJoinAndSelect("foundProviders.image_profile", "image_profile")
       .leftJoinAndSelect("foundProviders.images", "images")
       .leftJoinAndSelect("images.image", "image")
-      .getMany();
+      .skip(skip)
+      .take(limit)
+      .getManyAndCount();
 
     let providers_by_address = providersFound.filter(
       (provider) =>
@@ -192,7 +199,10 @@ class ProvidersRepository implements ProvidersRepositoryInterface {
         )
     );
 
-    return [...providers_available_by_address, ...providers_by_locals];
+    return {
+      providers: [...providers_available_by_address, ...providers_by_locals],
+      total,
+    };
   }
 
   async deleteServiceProvider(service_id: string): Promise<void> {
