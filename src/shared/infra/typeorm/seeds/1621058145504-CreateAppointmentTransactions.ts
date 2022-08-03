@@ -1,6 +1,6 @@
-import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import {
   ITENS_TYPES_TRANSACTIONS_ENUM,
@@ -9,7 +9,8 @@ import {
 import { Transaction } from "@modules/transactions/infra/typeorm/entities/Transaction";
 
 export class CreateAppointmentTransactions1621058145504
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   public async up(): Promise<void> {
     const appointments = (await getConnection("seeds")
       .getRepository(Appointment)

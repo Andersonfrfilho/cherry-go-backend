@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import faker from "faker";
 import * as uuid from "uuid";
 
 import { config } from "@config/environment";
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
 import { SendForgotPasswordMailService } from "@modules/accounts/useCases/sendForgotPasswordMail/SendForgotPasswordMail.service";

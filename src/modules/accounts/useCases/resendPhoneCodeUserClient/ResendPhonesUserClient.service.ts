@@ -1,7 +1,7 @@
-import faker from "faker";
 import { inject, injectable } from "tsyringe";
 
 import { config } from "@config/environment";
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { CODE_STAGING_TEST } from "@modules/accounts/constants/PhoneConfirmCode.const";
 import {
   CreateUserPhonesClientServiceRequestDTO,

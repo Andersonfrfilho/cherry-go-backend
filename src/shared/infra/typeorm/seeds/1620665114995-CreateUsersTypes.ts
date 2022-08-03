@@ -1,6 +1,6 @@
-import faker from "faker";
 import { getConnection, MigrationInterface, Not } from "typeorm";
 
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 

@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import faker from "faker";
+import { faker } from "@faker-js/faker/locale/pt_BR"
 
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";

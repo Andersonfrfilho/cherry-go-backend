@@ -1,5 +1,4 @@
-import faker from "faker";
-
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { Appointment } from "@modules/appointments/infra/typeorm/entities/Appointment";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";
 

@@ -1,6 +1,5 @@
 import "reflect-metadata";
-import faker from "faker";
-
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { providersRepositoryMock } from "@modules/accounts/repositories/mocks/Providers.repository.mock";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { CreateProviderTimesAvailabilitiesService } from "@modules/accounts/useCases/createProviderTimesAvailabilities/CreateProviderTimesAvailabilities.service";
@@ -32,9 +31,8 @@ describe("CreateProviderTimesAvailabilitiesService", () => {
   const usersTermsFactory = new UsersTermsFactory();
 
   beforeEach(() => {
-    createProviderTimesAvailabilitiesService = new CreateProviderTimesAvailabilitiesService(
-      providersRepositoryMock
-    );
+    createProviderTimesAvailabilitiesService =
+      new CreateProviderTimesAvailabilitiesService(providersRepositoryMock);
   });
 
   it("Should be able to accept create provider times user", async () => {

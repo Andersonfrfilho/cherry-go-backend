@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import faker from "faker";
 
 import auth from "@config/auth";
 import { config } from "@config/environment";
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { phonesRepositoryMock } from "@modules/accounts/repositories/mocks/Phones.repository.mock";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
@@ -58,12 +58,11 @@ describe("CreateUserPhonesClientService", () => {
       },
     ] = usersFactory.generate({ quantity: 1, active: false, id: "true" });
     const [type] = usersTypesFactory.generate({});
-    const [
-      { country_code, ddd, id: phone_id, number },
-    ] = phonesFactory.generate({
-      quantity: 1,
-      id: "true",
-    });
+    const [{ country_code, ddd, id: phone_id, number }] =
+      phonesFactory.generate({
+        quantity: 1,
+        id: "true",
+      });
     const refresh_token_faker = faker.datatype.uuid();
     const code = number.slice(-4);
     const message: SendSmsDTO = {
@@ -176,12 +175,11 @@ describe("CreateUserPhonesClientService", () => {
       active: false,
       id: "true",
     });
-    const [
-      { country_code, ddd, id: phone_id, number },
-    ] = phonesFactory.generate({
-      quantity: 1,
-      id: "true",
-    });
+    const [{ country_code, ddd, id: phone_id, number }] =
+      phonesFactory.generate({
+        quantity: 1,
+        id: "true",
+      });
 
     phonesRepositoryMock.findPhoneUser.mockResolvedValue({
       country_code,

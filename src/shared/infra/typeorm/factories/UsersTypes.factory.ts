@@ -1,5 +1,4 @@
-import faker from "faker";
-
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { USER_TYPES_ENUM } from "@modules/accounts/enums/UserTypes.enum";
 import { TypeUser } from "@modules/accounts/infra/typeorm/entities/TypeUser";
 import { UsersTypesFactoryDTO } from "@shared/infra/typeorm/factories/dtos";

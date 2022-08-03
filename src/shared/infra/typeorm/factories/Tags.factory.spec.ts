@@ -1,4 +1,4 @@
-import faker from "faker";
+import { faker } from "@faker-js/faker/locale/pt_BR"
 
 import { TagsFactory } from "@shared/infra/typeorm/factories";
 

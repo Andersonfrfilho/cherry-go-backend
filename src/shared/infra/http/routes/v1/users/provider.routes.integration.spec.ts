@@ -1,7 +1,7 @@
-import faker from "faker";
 import request from "supertest";
 import { Connection, createConnections } from "typeorm";
 
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { DAYS_WEEK_ENUM } from "@modules/accounts/enums/DaysProviders.enum";
 import { orm_test } from "@root/ormconfig.test";
 import { FORBIDDEN, NOT_FOUND, UNAUTHORIZED } from "@shared/errors/constants";
@@ -44,11 +44,10 @@ describe("Password routes", () => {
     describe("Provider - /", () => {
       it("should be able create provider perfil for user client", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -123,11 +122,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not active", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -165,11 +163,10 @@ describe("Password routes", () => {
 
       it("should be throw to upload profile image, if user not exist", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         const { body: user } = await request(app)
@@ -232,11 +229,10 @@ describe("Password routes", () => {
     describe("Provider - /session", () => {
       it("should be able create provider client", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -314,11 +310,10 @@ describe("Password routes", () => {
 
       it("should be throw error create provider client is not active", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         const { body: user } = await request(app)
@@ -350,11 +345,10 @@ describe("Password routes", () => {
 
       it("should be throw error create provider client is unauthorized password does match", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -417,11 +411,10 @@ describe("Password routes", () => {
     describe("Provider - /days", () => {
       it("should be able create provider days availability client", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -494,11 +487,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not active", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -536,11 +528,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not provider", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -602,11 +593,10 @@ describe("Password routes", () => {
 
       it("should be able create provider days availability client not exist", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         const { body: provider } = await request(app)
@@ -693,11 +683,10 @@ describe("Password routes", () => {
     describe("Provider - /hours", () => {
       it("should be able create provider hours availability client", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -777,11 +766,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not active", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -819,11 +807,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not provider", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -892,11 +879,10 @@ describe("Password routes", () => {
 
       it("should be able create provider hours availability client not exist", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         const { body: provider } = await request(app)
@@ -990,11 +976,10 @@ describe("Password routes", () => {
     describe("Provider - /services", () => {
       it("should be able create provider services availability client", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -1063,11 +1048,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not active", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -1105,11 +1089,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not services provider", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -1167,11 +1150,10 @@ describe("Password routes", () => {
 
       it("should be able create provider services availability client not exist", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         const { body: provider } = await request(app)
@@ -1255,11 +1237,10 @@ describe("Password routes", () => {
     describe("Provider - /payments_types", () => {
       it("should be able create provider payments types availability client", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -1326,11 +1307,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not active", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -1368,11 +1348,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not payments types provider", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -1429,11 +1408,10 @@ describe("Password routes", () => {
 
       it("should be able create provider payment types availability client not exist", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         const { body: provider } = await request(app)
@@ -1515,11 +1493,10 @@ describe("Password routes", () => {
     describe("Provider - /transport_types", () => {
       it("should be able create provider transport types availability client", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -1597,11 +1574,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not active", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -1639,11 +1615,10 @@ describe("Password routes", () => {
 
       it("should be throw error if user is not services provider", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         await request(app)
@@ -1711,11 +1686,10 @@ describe("Password routes", () => {
 
       it("should be able create provider services client not exist", async () => {
         // arrange
-        const [
-          { name, last_name, cpf, rg, email, gender },
-        ] = usersFactory.generate({
-          quantity: 1,
-        });
+        const [{ name, last_name, cpf, rg, email, gender }] =
+          usersFactory.generate({
+            quantity: 1,
+          });
 
         // act
         const { body: provider } = await request(app)

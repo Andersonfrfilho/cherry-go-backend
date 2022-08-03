@@ -1,4 +1,4 @@
-import faker from "faker";
+import { faker } from "@faker-js/faker/locale/pt_BR"
 
 import { Image } from "@modules/images/infra/typeorm/entities/Image";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";

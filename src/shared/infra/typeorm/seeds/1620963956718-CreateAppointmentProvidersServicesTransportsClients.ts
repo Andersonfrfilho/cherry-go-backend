@@ -1,6 +1,6 @@
-import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { STATUS_PROVIDERS_APPOINTMENT_ENUM } from "@modules/appointments/enums/StatusProvidersAppointment.enum";

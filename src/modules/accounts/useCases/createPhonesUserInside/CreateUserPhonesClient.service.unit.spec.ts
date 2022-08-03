@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import faker from "faker";
+import { faker } from "@faker-js/faker/locale/pt_BR"
 
 import auth from "@config/auth";
 import { config } from "@config/environment";

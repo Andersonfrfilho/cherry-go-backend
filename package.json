@@ -9,10 +9,10 @@
     "yarn": ">=1.22.15"
   },
   "dependencies": {
+    "@faker-js/faker": "^7.3.0",
     "@googlemaps/google-maps-services-js": "^3.3.3",
     "@sentry/node": "^6.3.1",
     "@sentry/tracing": "^6.3.1",
-    "@types/faker": "^5.5.3",
     "@vonage/server-sdk": "^2.10.8",
     "aws-sdk": "^2.888.0",
     "axios": "^0.24.0",
@@ -28,7 +28,6 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
-    "faker": "^5.5.3",
     "handlebars": "^4.7.7",
     "ioredis": "^4.27.1",
     "jest-mock-extended": "^1.0.15",

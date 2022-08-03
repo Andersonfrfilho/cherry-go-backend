@@ -1,5 +1,4 @@
-import faker from "faker";
-
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { TRANSPORT_TYPES_ENUM } from "@modules/transports/enums/TransportsTypes.enum";
 import { TransportType } from "@modules/transports/infra/typeorm/entities/TransportType";
 import { ParametersFactoryDTO } from "@shared/infra/typeorm/dtos/Factory.dto";

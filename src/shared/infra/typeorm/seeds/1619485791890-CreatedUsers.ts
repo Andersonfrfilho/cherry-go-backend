@@ -1,6 +1,6 @@
-import faker from "faker";
 import { getConnection, MigrationInterface } from "typeorm";
 
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { UsersFactory } from "@shared/infra/typeorm/factories";
 
 export class CreatedUsers1619485791890 implements MigrationInterface {

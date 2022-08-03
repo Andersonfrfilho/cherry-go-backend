@@ -1,4 +1,4 @@
-import faker from "faker";
+import { faker } from "@faker-js/faker/locale/pt_BR"
 import { getConnection, MigrationInterface } from "typeorm";
 
 import { Provider } from "@modules/accounts/infra/typeorm/entities/Provider";

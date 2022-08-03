@@ -1,5 +1,5 @@
 import { instanceToInstance } from "class-transformer";
-import faker from "faker";
+import { faker } from "@faker-js/faker/locale/pt_BR"
 import { inject, injectable } from "tsyringe";
 
 import { config } from "@config/environment";

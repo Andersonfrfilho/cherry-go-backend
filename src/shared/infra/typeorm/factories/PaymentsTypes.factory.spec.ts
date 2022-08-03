@@ -1,4 +1,4 @@
-import faker from "faker";
+import { faker } from "@faker-js/faker/locale/pt_BR"
 
 import { PAYMENT_TYPES_ENUM } from "@modules/transactions/enums";
 import { PaymentsTypesFactory } from "@shared/infra/typeorm/factories";

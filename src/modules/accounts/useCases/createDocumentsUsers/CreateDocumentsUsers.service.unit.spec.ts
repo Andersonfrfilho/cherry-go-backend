@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import faker from "faker";
+import { faker } from "@faker-js/faker/locale/pt_BR"
 
 import { USER_DOCUMENT_VALUE_ENUM } from "@modules/accounts/enums/UserDocumentValue.enum";
 import { usersRepositoryMock } from "@modules/accounts/repositories/mocks/Users.repository.mock";

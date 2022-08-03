@@ -1,6 +1,6 @@
-import faker from "faker";
 import { getConnection, MigrationInterface, Not } from "typeorm";
 
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { USER_DOCUMENT_VALUE_ENUM } from "@modules/accounts/enums/UserDocumentValue.enum";
 import { User } from "@modules/accounts/infra/typeorm/entities/User";
 import { Image } from "@modules/images/infra/typeorm/entities/Image";

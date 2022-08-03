@@ -1,7 +1,6 @@
 import "reflect-metadata";
-import faker from "faker";
-
 import auth from "@config/auth";
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { usersTokensRepositoryMock } from "@modules/accounts/repositories/mocks/UsersTokens.repository.mock";
 import { dateProviderMock } from "@shared/container/providers/DateProvider/mocks/Date.provider.mock";
 import { jwtProviderMock } from "@shared/container/providers/JwtProvider/mocks/Jwt.provider.mock";

@@ -1,5 +1,4 @@
-import faker from "faker";
-
+import { faker } from "@faker-js/faker/locale/pt_BR";
 import { ImagesFactory } from "@shared/infra/typeorm/factories";
 
 describe("ImagesFactory", () => {
